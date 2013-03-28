@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.josteinaj.no/ns/xprocspec" xmlns:j="http://josteinaj.no/ns" script="basic.xpl">
+    <x:scenario label="When running the basic test">
+        <x:call step="j:example-basic">
+            <x:option name="option-name" select="'xprocspec'"/>
+            <x:param name="param-name" select="'param value'"/>
+            <x:input port="input-sequence">
+                <x:document xml:base="file:/tmp/doc1.xml">
+                    <doc1/>
+                </x:document>
+                <x:document xml:base="file:/tmp/doc2.xml">
+                    <doc2/>
+                </x:document>
+            </x:input>
+        </x:call>
+        <x:expect port="result" label="the name of the element on the result port should be doc" test="local-name(/*)='doc'"/>
+        <x:expect port="output-sequence" label="there should be two documents on the output-sequence port: doc1 and doc2">
+            <x:document>
+                <doc1/>
+            </x:document>
+            <x:document>
+                <doc2/>
+            </x:document>
+        </x:expect>
+    </x:scenario>
+    <x:scenario label="When running the basic test again">
+        <x:call step="j:example-basic">
+            <x:option name="option-name" select="'xprocspec'"/>
+            <x:param name="param-name" select="'param value'"/>
+            <x:input port="input-sequence">
+                <x:document xml:base="file:/tmp/doc1.xml">
+                    <doc1/>
+                </x:document>
+                <x:document xml:base="file:/tmp/doc2.xml">
+                    <doc2/>
+                </x:document>
+            </x:input>
+        </x:call>
+        <x:expect port="result" label="the name of the element on the result port should still be doc" test="local-name(/*)='doc'"/>
+    </x:scenario>
+</x:description>
