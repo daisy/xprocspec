@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<x:description xmlns:x="http://www.josteinaj.no/ns/xprocspec" xmlns:j="http://josteinaj.no/ns" script="basic.xpl">
+<x:description xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test" xmlns:ex="http://example.net/ns" script="basic.xpl">
     <x:scenario label="When running the basic test">
-        <x:call step="j:example-basic">
+        <x:call step="ex:example-basic">
             <x:option name="option-name" select="'xprocspec'"/>
             <x:param name="param-name" select="'param value'"/>
             <x:input port="input-sequence">
@@ -24,7 +24,7 @@
         </x:expect>
     </x:scenario>
     <x:scenario label="When running the basic test again">
-        <x:call step="j:example-basic">
+        <x:call step="ex:example-basic">
             <x:option name="option-name" select="'xprocspec'"/>
             <x:param name="param-name" select="'param value'"/>
             <x:input port="input-sequence">

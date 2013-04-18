@@ -2,7 +2,7 @@
 # This schema is for XProcSpec documents, which can be used to describe the behaviour
 # of XProc steps. They are similar to the XSpec documents used in XSLT
 # testing, but for XProc
-default namespace = "http://www.josteinaj.no/ns/xprocspec"
+default namespace = "http://www.daisy.org/ns/pipeline/xproc/test"
 datatypes xs = "http://www.w3.org/2001/XMLSchema-datatypes"
 
 start = description

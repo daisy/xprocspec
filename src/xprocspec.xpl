@@ -1,21 +1,25 @@
-<p:declare-step xmlns:p="http://www.w3.org/ns/xproc" type="j:xprocspec" name="main" xmlns:cx="http://xmlcalabash.com/ns/extensions" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:j="http://josteinaj.no/ns" exclude-inline-prefixes="#all"
+<p:declare-step xmlns:p="http://www.w3.org/ns/xproc" type="px:xprocspec" name="main" xmlns:cx="http://xmlcalabash.com/ns/extensions" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:px="http://www.daisy.org/ns/pipeline/xproc" exclude-inline-prefixes="#all"
     version="1.0" xpath-version="2.0" xmlns:pkg="http://expath.org/ns/pkg" pkg:import-uri="http://josteinaj.no/ns/2013/xprocspec/xprocspec.xpl">
 
     <p:input port="source"/>
-    <p:output port="result"/>
+    <p:output port="result">
+        <p:pipe port="result" step="report"/>
+    </p:output>
     <p:option name="temp-dir" select="'file:/tmp/'"/>
 
-    <p:import href="preprocess.xpl"/>
-    <p:import href="compile.xpl"/>
-    <p:import href="run.xpl"/>
-    <p:import href="evaluate.xpl"/>
-    <p:import href="report.xpl"/>
-
-    <!-- split the x:description documents into multiple documents; one for each x:scenario -->
-    <j:test-preprocess name="preprocess"/>
+    <p:import href="preprocess/preprocess.xpl"/>
+    <p:import href="compile/compile.xpl"/>
+    <p:import href="run/run.xpl"/>
+    <p:import href="evaluate/evaluate.xpl"/>
+    <p:import href="report/report.xpl"/>
+    
+    <p:identity/>
+    
+    <!-- split the x:description documents into multiple documents; one for each x:scenario with no dependencies between them -->
+    <px:test-preprocess name="preprocess"/>
 
     <!-- make XProc scripts out of each scenario -->
-    <j:test-compile name="compile"/>
+    <px:test-compile name="compile"/>
 
     <!-- store the XProc scripts (just in case there is a lot of tests - it could optionally be done in-memory) -->
     <p:for-each name="test-store">
@@ -44,16 +48,17 @@
     </p:wrap-sequence>
 
     <!-- run the XProc scripts -->
-    <j:test-run name="run">
+    <px:test-run name="run">
         <p:with-option name="test-runner" select="concat($temp-dir,'test.xpl')">
             <p:pipe port="result" step="depend-on-me"/>
         </p:with-option>
-    </j:test-run>
+    </px:test-run>
 
     <!-- compare the results with the expected results -->
-    <j:test-evaluate/>
+    <px:test-evaluate/>
 
     <!-- make a machine readable report as well as a human readable one -->
-    <j:test-report name="report"/>
+    <px:test-report name="report"/>
+    <!--<p:store href="file:/tmp/report.html"/>-->
 
 </p:declare-step>

@@ -1,5 +1,5 @@
-<p:declare-step xmlns:p="http://www.w3.org/ns/xproc" type="j:test-preprocess" name="main" xmlns:cx="http://xmlcalabash.com/ns/extensions" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:j="http://josteinaj.no/ns" exclude-inline-prefixes="#all"
-    version="1.0" xpath-version="2.0" xmlns:pkg="http://expath.org/ns/pkg" pkg:import-uri="http://josteinaj.no/ns/2013/xprocspec/preprocess.xpl" xmlns:x="http://www.josteinaj.no/ns/xprocspec">
+<p:declare-step xmlns:p="http://www.w3.org/ns/xproc" type="px:test-preprocess" name="main" xmlns:cx="http://xmlcalabash.com/ns/extensions" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:px="http://www.daisy.org/ns/pipeline/xproc" exclude-inline-prefixes="#all"
+    version="1.0" xpath-version="2.0" xmlns:pkg="http://expath.org/ns/pkg" pkg:import-uri="http://josteinaj.no/ns/2013/xprocspec/preprocess.xpl" xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test">
 
     <p:input port="source"/>
     <p:output port="result" sequence="true">
