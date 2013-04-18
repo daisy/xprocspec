@@ -5,6 +5,8 @@ This is an experimental tool for testing XProc scripts. The draft spec below is 
 
 Feel free to have a look at the code and give feedback. It works with the bundled example, but there's probably a lot of bugs in there, and is not yet a complete implementation of the draft spec below.
 
+If you wish to try it out; run the XProc script `xprocspec.xpl` with `test/basic.xprocspec` as input on the source port. If you're on Windows you should also provide the `temp-dir` option which should be a `file:///` URI to a directory on your disk (it defaults to `file:/tmp/` which should work in both Linux and OSX). On the `result` output port you will get a HTML report which you can open in your browser to view the results of the test.
+
 # Draft specification
 
 ## x:description
