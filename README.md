@@ -1,9 +1,9 @@
 xprocspec - XProc testing tool
 ==============================
 
-This is an experimental tool for testing XProc scripts. It is based on [XSpec](https://code.google.com/p/xspec/) and is implemented in XProc.
+This is an experimental tool for testing XProc scripts. The draft spec below is based on [XSpec](https://code.google.com/p/xspec/) and is implemented in XProc.
 
-Feel free to have a look at the code and give feedback, but note that it is not yet working.
+Feel free to have a look at the code and give feedback. It works with the bundled example, but there's probably a lot of bugs in there, and is not yet a complete implementation of the draft spec below.
 
 # Draft specification
 
