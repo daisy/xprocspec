@@ -1,5 +1,7 @@
 <project xmlns="http://expath.org/ns/project" name="http://josteinaj.no/ns/2013/xprocspec" abbrev="xprocspec" version="1.0.0">
 
-   <title>XSpec for XProc</title>
+    <title>XSpec for XProc</title>
+
+    <tests dir="src/test/"/>
    
 </project>
