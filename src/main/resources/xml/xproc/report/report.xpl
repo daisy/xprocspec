@@ -5,8 +5,15 @@
     <p:documentation>Makes the machine-readable reports human-readable.</p:documentation>
 
     <p:input port="source" sequence="true"/>
-    <p:output port="result" primary="true"/>
-    <p:output port="html"/>
+    <p:output port="result" primary="true" sequence="true">
+        <p:pipe port="result" step="result"/>
+    </p:output>
+    <p:output port="junit">
+        <p:pipe port="result" step="junit"/>
+    </p:output>
+    <p:output port="html">
+        <p:pipe port="result" step="html"/>
+    </p:output>
 
     <p:insert match="/html:html/html:body/html:div" position="last-child">
         <p:input port="source">
@@ -88,5 +95,45 @@
             <p:document href="report-to-html.xsl"/>
         </p:input>
     </p:xslt>
+    <p:identity name="html"/>
+    
+    <p:wrap-sequence wrapper="x:test-report">
+        <!-- TODO: decide on a main format for machine-readable reports -->
+        <p:input port="source">
+            <p:pipe port="source" step="main"/>
+        </p:input>
+    </p:wrap-sequence>
+    <p:identity name="result"/>
+
+    <p:for-each>
+        <p:iteration-source>
+            <p:pipe port="source" step="main"/>
+        </p:iteration-source>
+        <p:xslt>
+            <p:input port="source"> </p:input>
+            <p:input port="parameters">
+                <p:empty/>
+            </p:input>
+            <p:input port="stylesheet">
+                <p:document href="report-to-junit.xsl"/>
+            </p:input>
+        </p:xslt>
+    </p:for-each>
+    <p:wrap-sequence wrapper="testsuites"/>
+    <p:add-attribute match="/*" attribute-name="disabled" attribute-value="'false'"/>
+    <p:add-attribute match="/*" attribute-name="errors">
+        <p:with-option name="attribute-value" select="sum(/*/*/@errors)"/>
+    </p:add-attribute>
+    <p:add-attribute match="/*" attribute-name="failures">
+        <p:with-option name="attribute-value" select="sum(/*/*/@failures)"/>
+    </p:add-attribute>
+    <!--<p:add-attribute match="/*" attribute-name="name" attribute-value="'TODO'"/>-->
+    <p:add-attribute match="/*" attribute-name="tests">
+        <p:with-option name="attribute-value" select="sum(/*/*/@tests)"/>
+    </p:add-attribute>
+    <p:add-attribute match="/*" attribute-name="time">
+        <p:with-option name="attribute-value" select="sum(/*/*/@time)"/>
+    </p:add-attribute>
+    <p:identity name="junit"/>
 
 </p:declare-step>

@@ -2,9 +2,17 @@
     version="1.0" xpath-version="2.0" xmlns:pkg="http://expath.org/ns/pkg" pkg:import-uri="http://josteinaj.no/ns/2013/xprocspec/xprocspec.xpl">
 
     <p:input port="source"/>
+    
     <p:output port="result">
         <p:pipe port="result" step="report"/>
     </p:output>
+    <p:output port="html">
+        <p:pipe port="html" step="report"/>
+    </p:output>
+    <p:output port="junit">
+        <p:pipe port="junit" step="report"/>
+    </p:output>
+    
     <p:option name="temp-dir" select="'file:/tmp/'"/>
 
     <p:import href="preprocess/preprocess.xpl"/>
@@ -60,5 +68,6 @@
     <!-- make a machine readable report as well as a human readable one -->
     <px:test-report name="report"/>
     <!--<p:store href="file:/tmp/report.html"/>-->
+    <p:sink/>
 
 </p:declare-step>

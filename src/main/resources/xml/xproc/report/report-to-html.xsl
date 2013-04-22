@@ -202,16 +202,16 @@
                 <xsl:text>
 </xsl:text>
                 <xsl:if test="not(@result='true')">
-                    <xsl:if test="./x:expected">
+                    <xsl:if test="./c:expected">
                         <div>
                             <h5 style="display:inline;">Expected:</h5>
-                            <pre class="prettyprint"><xsl:value-of select="./x:expected"/></pre>
+                            <pre class="prettyprint"><xsl:value-of select="./c:expected"/></pre>
                         </div>
                     </xsl:if>
-                    <xsl:if test="./x:was">
+                    <xsl:if test="./c:was">
                         <div>
                             <h5 style="display:inline;">Was:</h5>
-                            <pre class="prettyprint"><xsl:value-of select="./x:was"/></pre>
+                            <pre class="prettyprint"><xsl:value-of select="./c:was"/></pre>
                         </div>
                     </xsl:if>
                 </xsl:if>
