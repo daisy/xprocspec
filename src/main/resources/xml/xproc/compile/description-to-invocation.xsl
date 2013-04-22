@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="3.0" xmlns:p="http://www.w3.org/ns/xproc" xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test" xmlns:c="http://www.w3.org/ns/xproc-step" exclude-result-prefixes="#all">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0" xmlns:p="http://www.w3.org/ns/xproc" xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test" xmlns:c="http://www.w3.org/ns/xproc-step" exclude-result-prefixes="#all">
 
     <xsl:output indent="yes" method="xml"/>
     <xsl:param name="name" required="yes"/>
@@ -29,20 +29,20 @@
                         <xsl:for-each select="/*/x:scenario/x:call/x:option">
                             <xsl:text>
         </xsl:text>
-                            <xsl:variable name="select">
+                            <!--<xsl:variable name="select">
                                 <xsl:evaluate xpath="@select"/>
                             </xsl:variable>
-                            <xsl:variable name="select" select="replace(replace(replace($select,'&amp;','&amp;amp;'),'&quot;','&amp;quot;'),&quot;'&quot;,'&amp;apos;')"/>
-                            <p:with-option name="{@name}" select="'{$select}'"/>
+                            <xsl:variable name="select" select="replace(replace(replace($select,'&amp;','&amp;amp;'),'&quot;','&amp;quot;'),&quot;'&quot;,'&amp;apos;')"/>-->
+                            <p:with-option name="{@name}" select="{@select}"/>
                         </xsl:for-each>
                         <xsl:for-each select="/*/x:scenario/x:call/x:param">
                             <xsl:text>
         </xsl:text>
-                            <xsl:variable name="select">
+                            <!--<xsl:variable name="select">
                                 <xsl:evaluate xpath="@select"/>
                             </xsl:variable>
-                            <xsl:variable name="select" select="replace(replace(replace($select,'&amp;','&amp;amp;'),'&quot;','&amp;quot;'),&quot;'&quot;,'&amp;apos;')"/>
-                            <p:with-param name="{@name}" select="'{$select}'"/>
+                            <xsl:variable name="select" select="replace(replace(replace($select,'&amp;','&amp;amp;'),'&quot;','&amp;quot;'),&quot;'&quot;,'&amp;apos;')"/>-->
+                            <p:with-param name="{@name}" select="{@select}"/>
                         </xsl:for-each>
                         <xsl:for-each select="/*/x:scenario/x:call/x:input">
                             <xsl:text>
@@ -124,9 +124,11 @@
         </xsl:text><p:input port="source">
                     <xsl:text>
             </xsl:text><p:inline exclude-inline-prefixes="#all">
-                        <xsl:copy select="/*">
-                            <xsl:copy-of select="@*|node()"/>
-                        </xsl:copy>
+                        <xsl:for-each select="/*">
+                            <xsl:copy>
+                                <xsl:copy-of select="@*|node()"/>
+                            </xsl:copy>
+                        </xsl:for-each>
                         <xsl:text>
             </xsl:text></p:inline>
                     <xsl:text>
