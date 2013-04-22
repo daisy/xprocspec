@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="3.0" exclude-result-prefixes="#all" xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:p="http://www.w3.org/ns/xproc"
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0" exclude-result-prefixes="#all" xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:p="http://www.w3.org/ns/xproc"
     xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
     <!--
@@ -53,11 +53,7 @@
                     <xsl:for-each select="$scenario/x:call/x:option">
                         <xsl:text>
 </xsl:text>
-                        <property name="option: {@name}">
-                            <xsl:attribute name="value">
-                                <xsl:evaluate xpath="@select"/>
-                            </xsl:attribute>
-                        </property>
+                        <property name="option: {@name}" value="{@select}"/>
                     </xsl:for-each>
                 </xsl:if>
                 <xsl:text>
@@ -66,11 +62,7 @@
                     <xsl:for-each select="$scenario/x:call/x:param">
                         <xsl:text>
 </xsl:text>
-                        <property name="parameter: {@name}">
-                            <xsl:attribute name="value">
-                                <xsl:evaluate xpath="@select"/>
-                            </xsl:attribute>
-                        </property>
+                        <property name="parameter: {@name}" value="{@select}"/>
                     </xsl:for-each>
                 </xsl:if>
                 <xsl:text>

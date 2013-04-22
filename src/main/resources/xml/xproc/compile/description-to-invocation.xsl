@@ -29,20 +29,22 @@
                         <xsl:for-each select="/*/x:scenario/x:call/x:option">
                             <xsl:text>
         </xsl:text>
-                            <!--<xsl:variable name="select">
-                                <xsl:evaluate xpath="@select"/>
-                            </xsl:variable>
-                            <xsl:variable name="select" select="replace(replace(replace($select,'&amp;','&amp;amp;'),'&quot;','&amp;quot;'),&quot;'&quot;,'&amp;apos;')"/>-->
-                            <p:with-option name="{@name}" select="{@select}"/>
+                            <p:with-option name="{@name}" select="{@select}">
+                                <p:inline>
+                                    <context>TODO</context>
+                                </p:inline>
+                            </p:with-option>
+                            <!-- TODO: set context for p:with-option -->
                         </xsl:for-each>
                         <xsl:for-each select="/*/x:scenario/x:call/x:param">
                             <xsl:text>
         </xsl:text>
-                            <!--<xsl:variable name="select">
-                                <xsl:evaluate xpath="@select"/>
-                            </xsl:variable>
-                            <xsl:variable name="select" select="replace(replace(replace($select,'&amp;','&amp;amp;'),'&quot;','&amp;quot;'),&quot;'&quot;,'&amp;apos;')"/>-->
-                            <p:with-param name="{@name}" select="{@select}"/>
+                            <p:with-param name="{@name}" select="{@select}">
+                                <p:inline>
+                                    <context>TODO</context>
+                                </p:inline>
+                            </p:with-param>
+                            <!-- TODO: set context for p:with-param -->
                         </xsl:for-each>
                         <xsl:for-each select="/*/x:scenario/x:call/x:input">
                             <xsl:text>

@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="3.0" xmlns="http://www.w3.org/1999/xhtml" xpath-default-namespace="http://www.w3.org/1999/xhtml" exclude-result-prefixes="#all"
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0" xmlns="http://www.w3.org/1999/xhtml" xpath-default-namespace="http://www.w3.org/1999/xhtml" exclude-result-prefixes="#all"
     xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:p="http://www.w3.org/ns/xproc">
 
-    <xsl:template match="/">
-        <xsl:copy select="*">
+    <xsl:template match="/*">
+        <xsl:copy>
             <xsl:copy-of select="@*"/>
-            <xsl:copy select="head">
-                <xsl:copy-of select="@*|node()"/>
-            </xsl:copy>
-            <xsl:copy select="body">
-                <xsl:copy-of select="@*"/>
-                <xsl:apply-templates select="node()"/>
-                <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet"/>
-                <script src="http://code.jquery.com/jquery.js"> </script>
-                <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"> </script>
-                <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"> </script>
-            </xsl:copy>
+            <xsl:for-each select="head">
+                <xsl:copy>
+                    <xsl:copy-of select="@*|node()"/>
+                </xsl:copy>
+            </xsl:for-each>
+            <xsl:for-each select="body">
+                <xsl:copy>
+                    <xsl:copy-of select="@*"/>
+                    <xsl:apply-templates select="node()"/>
+                    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet"/>
+                    <script src="http://code.jquery.com/jquery.js"> </script>
+                    <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"> </script>
+                    <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"> </script>
+                </xsl:copy>
+            </xsl:for-each>
         </xsl:copy>
     </xsl:template>
 
@@ -128,7 +132,7 @@
                                     <xsl:text>
 </xsl:text>
                                     <td>
-                                        <xsl:evaluate xpath="@select"/>
+                                        <xsl:value-of select="@select"/>
                                     </td>
                                 </tr>
                             </xsl:for-each>
@@ -166,7 +170,7 @@
                                     <xsl:text>
 </xsl:text>
                                     <td>
-                                        <xsl:evaluate xpath="@select"/>
+                                        <xsl:value-of select="@select"/>
                                     </td>
                                 </tr>
                             </xsl:for-each>
