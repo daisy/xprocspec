@@ -23,7 +23,10 @@
     
     <p:identity/>
     
-    <!-- split the x:description documents into multiple documents; one for each x:scenario with no dependencies between them -->
+    <!--
+        split the x:description documents into multiple documents; one for each x:scenario with no dependencies between them.
+        also convert other XProc test syntaxes (currently supported: XProc Test Suite)
+    -->
     <px:test-preprocess name="preprocess"/>
 
     <!-- make XProc scripts out of each scenario -->

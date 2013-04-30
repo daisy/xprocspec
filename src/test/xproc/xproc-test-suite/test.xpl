@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <p:declare-step xmlns:p="http://www.w3.org/ns/xproc" xmlns:c="http://www.w3.org/ns/xproc-step" version="1.0">
+    
     <p:input port="source" sequence="true">
         <p:document href="required/delete-001.xml"/>
         <p:document href="required/add-attribute-001.xml"/>
@@ -656,15 +657,15 @@
         <p:document href="optional/exec-001.xml"/>
         <!--<p:document href="optional/xinclude-001.xml"/>-->
         <p:document href="optional/exec-002.xml"/>
-<!--        <p:document href="optional/xinclude-002.xml"/>-->
+        <!--        <p:document href="optional/xinclude-002.xml"/>-->
         <p:document href="optional/exec-003.xml"/>
-<!--        <p:document href="optional/xinclude-003.xml"/>-->
+        <!--        <p:document href="optional/xinclude-003.xml"/>-->
         <p:document href="optional/exec-004.xml"/>
-<!--        <p:document href="optional/xinclude-004.xml"/>-->
+        <!--        <p:document href="optional/xinclude-004.xml"/>-->
         <p:document href="optional/exec-005.xml"/>
-<!--        <p:document href="optional/xinclude-005.xml"/>-->
+        <!--        <p:document href="optional/xinclude-005.xml"/>-->
         <p:document href="optional/exec-006.xml"/>
-<!--        <p:document href="optional/xinclude-006.xml"/>-->
+        <!--        <p:document href="optional/xinclude-006.xml"/>-->
         <p:document href="optional/exec-007.xml"/>
         <p:document href="optional/xquery-001.xml"/>
         <p:document href="optional/exec-008.xml"/>
@@ -745,7 +746,7 @@
 
     </p:input>
     <p:output port="result" sequence="true"/>
-    
+
     <p:wrap-sequence wrapper="doc"/>
     <p:xslt>
         <p:input port="parameters">
@@ -753,13 +754,37 @@
         </p:input>
         <p:input port="stylesheet">
             <p:inline>
-                <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="3.0">
+                <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="3.0" xmlns:t="http://xproc.org/ns/testsuite" exclude-result-prefixes="#all">
                     <xsl:template match="/*">
                         <test>
-                            <xsl:variable name="children" select="/*/*/*"/>
+                            <xsl:variable name="children" select="/*/*/t:*"/>
+                            <xsl:variable name="bastards" select="/*/*/*[not(namespace-uri()='http://xproc.org/ns/testsuite')]"/>
+                            <xsl:copy-of select="$bastards[1]"/>
                             <xsl:for-each select="distinct-values($children/local-name())">
-                                <xsl:element name="{.}">
-                                    <xsl:call-template name=""></xsl:call-template>
+                                <xsl:variable name="name" select="."/>
+                                <xsl:element name="{$name}">
+                                    <xsl:copy-of select="$children[local-name()=$name]/@*"/>
+                                    <xsl:variable name="children" select="$children[local-name()=$name]/t:*"/>
+                                    <xsl:variable name="bastards" select="$children[local-name()=$name]/*[not(namespace-uri()='http://xproc.org/ns/testsuite')]"/>
+                                    <xsl:copy-of select="$bastards[1]"/>
+                                    <xsl:for-each select="distinct-values($children/local-name())">
+                                        <xsl:variable name="name" select="."/>
+                                        <xsl:element name="{$name}">
+                                            <xsl:copy-of select="$children[local-name()=$name]/@*"/>
+                                            <xsl:variable name="children" select="$children[local-name()=$name]/t:*"/>
+                                            <xsl:variable name="bastards" select="$children[local-name()=$name]/*[not(self::t:*)]"/>
+                                            <xsl:copy-of select="$bastards[1]"/>
+                                            <xsl:for-each select="distinct-values($children/local-name())">
+                                                <xsl:variable name="name" select="."/>
+                                                <xsl:element name="{$name}">
+                                                    <xsl:copy-of select="$children[local-name()=$name]/@*"/>
+                                                    <xsl:variable name="children" select="$children[local-name()=$name]/t:*"/>
+                                                    <xsl:variable name="bastards" select="$children[local-name()=$name]/*[not(self::t:*)]"/>
+                                                    <xsl:copy-of select="$bastards[1]"/>
+                                                </xsl:element>
+                                            </xsl:for-each>
+                                        </xsl:element>
+                                    </xsl:for-each>
                                 </xsl:element>
                             </xsl:for-each>
                         </test>

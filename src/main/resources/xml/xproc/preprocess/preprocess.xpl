@@ -1,10 +1,12 @@
-<p:declare-step xmlns:p="http://www.w3.org/ns/xproc" type="px:test-preprocess" name="main" xmlns:cx="http://xmlcalabash.com/ns/extensions" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:px="http://www.daisy.org/ns/pipeline/xproc" exclude-inline-prefixes="#all"
-    version="1.0" xpath-version="2.0" xmlns:pkg="http://expath.org/ns/pkg" pkg:import-uri="http://josteinaj.no/ns/2013/xprocspec/preprocess.xpl" xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test">
+<p:declare-step xmlns:p="http://www.w3.org/ns/xproc" type="px:test-preprocess" xmlns:cx="http://xmlcalabash.com/ns/extensions" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:px="http://www.daisy.org/ns/pipeline/xproc"
+    exclude-inline-prefixes="#all" version="1.0" xpath-version="2.0" xmlns:pkg="http://expath.org/ns/pkg" pkg:import-uri="http://josteinaj.no/ns/2013/xprocspec/preprocess.xpl" xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test">
 
     <p:input port="source"/>
     <p:output port="result" sequence="true">
         <p:pipe port="result" step="scenarios"/>
     </p:output>
+    
+    <p:import href="http://xmlcalabash.com/extension/steps/library-1.0.xpl"/>
 
     <p:declare-step type="x:perform-imports" name="perform-imports">
         <p:input port="source"/>
@@ -20,8 +22,51 @@
         </p:for-each>
         <p:identity name="perform-imports.imports"/>
     </p:declare-step>
+    
+    <!-- transform other test vocabularies to xprocspec -->
+    <p:choose>
+        <p:when test="/*/namespace-uri()='http://www.daisy.org/ns/pipeline/xproc/test'">
+            <p:identity/>
+        </p:when>
+        <p:when test="/*/namespace-uri()='http://xproc.org/ns/testsuite'">
+            <p:variable name="href" select="concat('file:/tmp/',replace(replace(base-uri(/*),'^.*/([^/]*)$','$1'),'\.[^\.]*',''),'.xpl')"/>
+            <p:xslt>
+                <p:input port="parameters">
+                    <p:empty/>
+                </p:input>
+                <p:input port="stylesheet">
+                    <p:document href="xprocTestSuite-to-xprocspec.xsl"/>
+                </p:input>
+            </p:xslt>
+            <p:add-attribute match="/*" attribute-name="script" name="xproctestsuite">
+                <p:with-option name="attribute-value" select="$href"/>
+            </p:add-attribute>
 
+            <p:store>
+                <p:input port="source" select="/*/x:script/*"/>
+                <p:with-option name="href" select="$href"/>
+            </p:store>
+            
+            <p:identity>
+                <p:input port="source">
+                    <p:pipe port="result" step="xproctestsuite"/>
+                </p:input>
+            </p:identity>
+            <p:delete match="/*/x:script"/>
+        </p:when>
+        <p:otherwise>
+            <p:sink/>
+            <p:identity>
+                <p:input port="source">
+                    <p:empty/>
+                </p:input>
+            </p:identity>
+        </p:otherwise>
+    </p:choose>
+    
+    <p:identity name="main-document"/>
     <x:perform-imports/>
+
     <p:for-each>
         <p:output port="result" sequence="true"/>
 
@@ -60,7 +105,7 @@
 
     <p:identity>
         <p:input port="source">
-            <p:pipe port="source" step="main"/>
+            <p:pipe port="result" step="main-document"/>
         </p:input>
     </p:identity>
     <p:group>
@@ -83,7 +128,7 @@
         <p:load>
             <p:with-option name="href" select="$script-uri"/>
         </p:load>
-        <p:viewport match="//p:declare-step">
+        <p:viewport match="//p:declare-step | //p:pipeline">
             <p:add-attribute match="/*" attribute-name="x:type">
                 <p:with-option name="attribute-value" select="concat('{',namespace-uri-from-QName(resolve-QName(/*/@type,/*)),'}',tokenize(/*/@type,':')[last()])"/>
             </p:add-attribute>
@@ -96,7 +141,7 @@
             </p:iteration-source>
             <p:variable name="step" select="/*/@step"/>
             <p:for-each>
-                <p:iteration-source select="//p:declare-step[@x:type=$step]">
+                <p:iteration-source select="(//p:declare-step | //p:pipeline)[@x:type=$step]">
                     <p:pipe port="result" step="script"/>
                 </p:iteration-source>
                 <p:identity/>
@@ -121,6 +166,16 @@
                     <p:delete match="/*/*[not(self::p:input or self::p:output or self::p:option)]"/>
                 </p:otherwise>
             </p:choose>
+        </p:for-each>
+        <p:for-each>
+            <p:insert match="/p:pipeline" position="first-child">
+                <p:input port="insertion">
+                    <p:inline><p:input port='source' primary='true'/></p:inline>
+                    <p:inline><p:input port='parameters' kind='parameter' primary='true'/></p:inline>
+                    <p:inline><p:output port='result' primary='true'/></p:inline>
+                </p:input>
+            </p:insert>
+            <p:rename match="/p:pipeline" new-name="p:declare-step"/>
         </p:for-each>
         <p:wrap-sequence wrapper="x:step-declaration"/>
     </p:group>

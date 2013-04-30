@@ -11,20 +11,31 @@
     <p:load name="test-runner">
         <p:with-option name="href" select="$test-runner"/>
     </p:load>
-    <cx:eval>
-        <p:input port="pipeline">
-            <p:pipe port="result" step="test-runner"/>
-        </p:input>
-        <p:input port="source">
-            <p:empty/>
-        </p:input>
-        <p:input port="options">
-            <p:empty/>
-        </p:input>
-    </cx:eval>
-    <p:for-each>
-        <p:iteration-source select="/x:wrapper/*"/>
-        <p:identity/>
-    </p:for-each>
+    <p:try name="try">
+        <p:group>
+            <cx:eval>
+                <p:input port="pipeline">
+                    <p:pipe port="result" step="test-runner"/>
+                </p:input>
+                <p:input port="source">
+                    <p:empty/>
+                </p:input>
+                <p:input port="options">
+                    <p:empty/>
+                </p:input>
+            </cx:eval>
+            <p:for-each>
+                <p:iteration-source select="/x:wrapper/*"/>
+                <p:identity/>
+            </p:for-each>
+        </p:group>
+        <p:catch name="catch">
+            <p:identity>
+                <p:input port="source">
+                    <p:pipe step="catch" port="error"/>
+                </p:input>
+            </p:identity>
+        </p:catch>
+    </p:try>
 
 </p:declare-step>

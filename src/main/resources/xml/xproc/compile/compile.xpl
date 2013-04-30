@@ -8,7 +8,7 @@
     <p:output port="test-runner">
         <p:pipe port="result" step="test-runner"/>
     </p:output>
-
+    
     <p:for-each>
         <!-- convert each x:description/scenario/x:call to an XProc script -->
         <p:xslt>
