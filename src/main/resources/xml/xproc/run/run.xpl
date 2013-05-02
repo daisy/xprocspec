@@ -28,6 +28,7 @@
                 <p:iteration-source select="/x:wrapper/*"/>
                 <p:identity/>
             </p:for-each>
+            <p:wrap-sequence wrapper="try-catch-wrapper"/>
         </p:group>
         <p:catch name="catch">
             <p:identity>
@@ -35,7 +36,12 @@
                     <p:pipe step="catch" port="error"/>
                 </p:input>
             </p:identity>
+            <p:wrap-sequence wrapper="try-catch-wrapper"/>
         </p:catch>
     </p:try>
+    <p:for-each>
+        <p:iteration-source select="/try-catch-wrapper/*"/>
+        <p:identity/>
+    </p:for-each>
 
 </p:declare-step>

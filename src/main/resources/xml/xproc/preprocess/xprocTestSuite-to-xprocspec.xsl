@@ -3,7 +3,15 @@
 
     <xsl:output exclude-result-prefixes="#all" indent="yes" method="xml"/>
     
-    <xsl:template match="t:test">
+    <xsl:template match="/t:test-suite">
+        <x:description>
+            <xsl:for-each select="t:test">
+                <x:import href="{@href}"/>
+            </xsl:for-each>
+        </x:description>
+    </xsl:template>
+    
+    <xsl:template match="/t:test">
         <x:description>
             <xsl:choose>
                 <xsl:when test="t:pipeline/@href">
@@ -15,13 +23,14 @@
                         <xsl:choose>
                             <xsl:when test="not(t:compare-pipeline)">
                                 <xsl:for-each select="t:pipeline/*">
-                                    <xsl:copy copy-namespaces="no">
+                                    <xsl:copy>
                                         <xsl:copy-of select="@*"/>
+                                        
                                         <xsl:if test="not(@type)">
                                             <xsl:namespace name="xprocspec" select="'http://www.daisy.org/ns/pipeline/xproc/test'"/>
                                             <xsl:attribute name="type" select="'xprocspec:step'"/>
                                         </xsl:if>
-                                        <xsl:copy-of select="node()" copy-namespaces="no"/>
+                                        <xsl:copy-of select="node()|comment()"/>
                                     </xsl:copy>
                                 </xsl:for-each>
                             </xsl:when>
@@ -51,7 +60,7 @@
                                     <xsl:variable name="step2" select="if ($step2) then $step2 else 'xprocspec:step2'"/>
 
                                     <xsl:for-each select="t:pipeline/*">
-                                        <xsl:copy copy-namespaces="no">
+                                        <xsl:copy>
                                             <xsl:copy-of select="@*"/>
                                             <xsl:attribute name="type" select="$step1"/>
                                             <xsl:if test="not(p:output)">
@@ -61,16 +70,16 @@
                                                     </p:inline>
                                                 </p:output>
                                             </xsl:if>
-                                            <xsl:copy-of select="node()" copy-namespaces="no"/>
+                                            <xsl:copy-of select="node()"/>
                                         </xsl:copy>
                                     </xsl:for-each>
 
                                     <xsl:for-each select="t:compare-pipeline/*">
-                                        <xsl:copy copy-namespaces="no">
+                                        <xsl:copy>
                                             <xsl:copy-of select="@*"/>
                                             <xsl:attribute name="type" select="$step2"/>
                                             <p:option name="xprocspec-depends-on"/>
-                                            <xsl:copy-of select="node()" copy-namespaces="no"/>
+                                            <xsl:copy-of select="node()"/>
                                         </xsl:copy>
                                     </xsl:for-each>
 

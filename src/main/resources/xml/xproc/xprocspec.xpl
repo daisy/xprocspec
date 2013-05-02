@@ -21,11 +21,9 @@
     <p:import href="evaluate/evaluate.xpl"/>
     <p:import href="report/report.xpl"/>
     
-    <p:identity/>
-    
     <!--
-        split the x:description documents into multiple documents; one for each x:scenario with no dependencies between them.
-        also convert other XProc test syntaxes (currently supported: XProc Test Suite)
+        * Convert other XProc test syntaxes (currently supported: XProc Test Suite).
+        * Split the x:description documents into multiple documents; one for each x:scenario with no dependencies between them.
     -->
     <px:test-preprocess name="preprocess"/>
 
@@ -70,7 +68,11 @@
 
     <!-- make a machine readable report as well as a human readable one -->
     <px:test-report name="report"/>
-    <!--<p:store href="file:/tmp/report.html"/>-->
-    <p:sink/>
+    <p:store href="file:/tmp/report.html">
+        <p:input port="source">
+            <p:pipe port="html" step="report"/>
+        </p:input>
+    </p:store>
+    <!--<p:sink/>-->
 
 </p:declare-step>

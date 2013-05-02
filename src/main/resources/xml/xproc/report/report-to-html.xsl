@@ -30,8 +30,8 @@
         <xsl:text>
 </xsl:text>
         <section>
-            <h2> Step: <small>{<xsl:value-of select="namespace-uri-for-prefix('ex',$declaration)"/>}</small><xsl:value-of select="tokenize($declaration/@type,':')[last()]"/>
-            </h2>
+            <h2>Step: <xsl:value-of select="$declaration/@type"/></h2>
+            <p><small><xsl:value-of select="concat(if (contains($declaration/@type,':')) then concat('xmlns:',tokenize($declaration/@type,':')[1],'=&quot;') else 'xmlns=&quot;', replace($declaration/@x:type,'\{(.*)\}.*','$1'))"/>"</small></p>
 
             <xsl:if test="not(./x:test-result/@result='true')">
                 <xsl:if test="$scenario/x:call/x:input">

@@ -12,6 +12,7 @@
     <p:for-each>
         <!-- convert each x:description/scenario/x:call to an XProc script -->
         <p:xslt>
+            <p:log port="result" href="file:/tmp/tmp2.xml"/>
             <p:with-param name="name" select="concat('test',p:iteration-position())"/>
             <p:input port="stylesheet">
                 <p:document href="description-to-invocation.xsl"/>
