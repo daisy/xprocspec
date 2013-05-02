@@ -136,6 +136,9 @@
                     <xsl:apply-templates select="t:option | t:parameter | t:input"/>
                 </x:call>
                 <xsl:apply-templates select="t:output"/>
+                <xsl:if test="/t:test/@error">
+                    <x:expect error="{/t:test/@error}" label="the error {/t:test/@error} should be thrown"/>
+                </xsl:if>
             </x:scenario>
         </x:description>
     </xsl:template>

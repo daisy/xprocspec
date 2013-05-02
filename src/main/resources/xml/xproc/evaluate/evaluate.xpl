@@ -1,11 +1,11 @@
-<p:declare-step xmlns:p="http://www.w3.org/ns/xproc" type="px:test-evaluate" name="main" xmlns:cx="http://xmlcalabash.com/ns/extensions" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:px="http://www.daisy.org/ns/pipeline/xproc" exclude-inline-prefixes="#all"
-    version="1.0" xpath-version="2.0" xmlns:pkg="http://expath.org/ns/pkg" pkg:import-uri="http://josteinaj.no/ns/2013/xprocspec/evaluate.xpl" xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test">
+<p:declare-step xmlns:p="http://www.w3.org/ns/xproc" type="px:test-evaluate" name="main" xmlns:cx="http://xmlcalabash.com/ns/extensions" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:px="http://www.daisy.org/ns/pipeline/xproc"
+    exclude-inline-prefixes="#all" version="1.0" xpath-version="2.0" xmlns:pkg="http://expath.org/ns/pkg" pkg:import-uri="http://josteinaj.no/ns/2013/xprocspec/evaluate.xpl" xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test">
 
     <p:input port="source" sequence="true"/>
     <p:output port="result" sequence="true"/>
-    
+
     <p:import href="compare.xpl"/>
-    
+
     <p:for-each>
         <!-- for each scenario -->
         <p:identity name="description"/>
@@ -13,7 +13,7 @@
             <!-- for each test in the scenario -->
             <p:iteration-source select="/x:description/x:scenario/x:expect"/>
             <p:variable name="port" select="/*/@port"/>
-            
+
             <p:filter name="output-port">
                 <p:with-option name="select" select="concat('/x:description/x:output[@port=&quot;',$port,'&quot;]/*')">
                     <p:inline>
@@ -24,18 +24,24 @@
                     <p:pipe port="result" step="description"/>
                 </p:input>
             </p:filter>
-            
+
+            <p:identity name="errors">
+                <p:input port="source" select="/x:description/c:errors">
+                    <p:pipe port="result" step="description"/>
+                </p:input>
+            </p:identity>
+
             <p:identity>
                 <p:input port="source">
                     <p:pipe port="current" step="test"/>
                 </p:input>
             </p:identity>
-            
+
             <p:choose>
                 <p:when test="/*[@test]">
                     <!-- evaluate @test against x:output[@port=$port] -->
                     <p:variable name="test" select="/*/@test"/>
-                    
+
                     <!-- the XPath expression must evalutate to true() for all documents on the output port, and there must be at least one document on the output port -->
                     <p:for-each>
                         <p:iteration-source>
@@ -55,16 +61,15 @@
                     </p:add-attribute>
                     <p:delete match="/c:result/c:result"/>
                     <p:identity name="test-result"/>
-                    
+
                     <p:group>
-                        <p:variable name="result" select="/*/@result"/>
-                        
                         <p:wrap-sequence wrapper="c:was" name="was">
                             <p:input port="source">
                                 <p:pipe port="result" step="output-port"/>
+                                <p:pipe port="result" step="errors"/>
                             </p:input>
                         </p:wrap-sequence>
-                        
+
                         <p:string-replace match="/*/text()" name="expected">
                             <p:with-option name="replace" select="concat('&quot;',$test,'&quot;')"/>
                             <p:input port="source">
@@ -73,7 +78,7 @@
                                 </p:inline>
                             </p:input>
                         </p:string-replace>
-                        
+
                         <p:insert match="/*" position="last-child">
                             <p:input port="source">
                                 <p:pipe port="result" step="test-result"/>
@@ -84,8 +89,65 @@
                             </p:input>
                         </p:insert>
                     </p:group>
-                    
+
                     <p:add-attribute match="/*" attribute-name="test-type" attribute-value="xpath"/>
+                </p:when>
+                <p:when test="/*[@error]">
+                    <p:variable name="error" select="/*/@error"/>
+
+                    <p:choose>
+                        <p:xpath-context>
+                            <p:pipe port="result" step="description"/>
+                        </p:xpath-context>
+                        <p:when test="/x:description/c:errors/c:error[@code=$error]">
+                            <p:identity>
+                                <p:input port="source">
+                                    <p:inline>
+                                        <c:result result="true"/>
+                                    </p:inline>
+                                </p:input>
+                            </p:identity>
+                        </p:when>
+                        <p:otherwise>
+                            <p:identity>
+                                <p:input port="source">
+                                    <p:inline>
+                                        <c:result result="false"/>
+                                    </p:inline>
+                                </p:input>
+                            </p:identity>
+                        </p:otherwise>
+                    </p:choose>
+                    <p:identity name="test-result"/>
+
+                    <p:group>
+                        <p:wrap-sequence wrapper="c:was" name="was">
+                            <p:input port="source">
+                                <p:pipe port="result" step="errors"/>
+                            </p:input>
+                        </p:wrap-sequence>
+
+                        <p:string-replace match="/*/text()" name="expected">
+                            <p:with-option name="replace" select="concat('&quot;',$error,'&quot;')"/>
+                            <p:input port="source">
+                                <p:inline>
+                                    <c:expected>EXPECTED</c:expected>
+                                </p:inline>
+                            </p:input>
+                        </p:string-replace>
+
+                        <p:insert match="/*" position="last-child">
+                            <p:input port="source">
+                                <p:pipe port="result" step="test-result"/>
+                            </p:input>
+                            <p:input port="insertion">
+                                <p:pipe port="result" step="was"/>
+                                <p:pipe port="result" step="expected"/>
+                            </p:input>
+                        </p:insert>
+                    </p:group>
+
+                    <p:add-attribute match="/*" attribute-name="test-type" attribute-value="error"/>
                 </p:when>
                 <p:otherwise>
                     <p:for-each name="expect">
@@ -105,7 +167,7 @@
                             </p:otherwise>
                         </p:choose>
                     </p:for-each>
-                    
+
                     <p:filter>
                         <p:with-option name="select" select="concat('/x:description/x:output[@port=&quot;',$port,'&quot;]/*')">
                             <p:inline>
@@ -116,7 +178,7 @@
                             <p:pipe port="result" step="description"/>
                         </p:input>
                     </p:filter>
-                    
+
                     <px:compare>
                         <p:input port="source">
                             <p:pipe port="result" step="output-port"/>
@@ -125,7 +187,12 @@
                             <p:pipe port="result" step="expect"/>
                         </p:input>
                     </px:compare>
-                    
+                    <p:insert match="c:was" position="last-child">
+                        <p:input port="insertion">
+                            <p:pipe port="result" step="errors"/>
+                        </p:input>
+                    </p:insert>
+
                     <p:add-attribute match="/*" attribute-name="test-type" attribute-value="xml"/>
                 </p:otherwise>
             </p:choose>

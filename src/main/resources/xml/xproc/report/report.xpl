@@ -87,6 +87,9 @@
             <p:pipe port="source" step="main"/>
         </p:input>
     </p:insert>
+    <p:viewport match="c:was|c:expected">
+        <p:escape-markup/>
+    </p:viewport>
     <p:xslt>
         <p:input port="parameters">
             <p:empty/>
@@ -109,6 +112,9 @@
         <p:iteration-source>
             <p:pipe port="source" step="main"/>
         </p:iteration-source>
+        <p:viewport match="c:was|c:expected">
+            <p:escape-markup/>
+        </p:viewport>
         <p:xslt>
             <p:input port="source"> </p:input>
             <p:input port="parameters">

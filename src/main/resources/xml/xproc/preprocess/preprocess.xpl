@@ -49,6 +49,11 @@
             </p:choose>
             <p:for-each>
                 <p:variable name="href" select="concat('file:/tmp/',replace(replace(base-uri(/*),'^.*/([^/]*)$','$1'),'\.[^\.]*',''),'.xpl')"/>
+                <p:viewport match="t:pipeline//*[@href and not(@href='')] | t:compare-pipeline//*[@href and not(@href='')]">
+                    <p:add-attribute match="/*" attribute-name="href">
+                        <p:with-option name="attribute-value" select="resolve-uri(/*/@href,base-uri(/*))"/>
+                    </p:add-attribute>
+                </p:viewport>
                 <p:xslt>
                     <p:input port="parameters">
                         <p:empty/>

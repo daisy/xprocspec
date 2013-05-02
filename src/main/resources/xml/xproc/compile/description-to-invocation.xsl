@@ -101,9 +101,9 @@
                                     <xsl:if test="$primary-port and not($document/x:scenario/x:call/x:input[@port=$primary-port/@port])">
                                         <xsl:for-each select="$primary-port">
                                             <xsl:copy>
-                                                <xsl:copy-of select="@*"/>
-                                                <xsl:attribute name="kind" select="(@kind,'document')[1]"/>
-                                                <xsl:attribute name="primary" select="'true'"/>
+                                                <xsl:copy-of select="@port|@select"/>
+                                                <!--<xsl:attribute name="kind" select="(@kind,'document')[1]"/>-->
+                                                <!--<xsl:attribute name="primary" select="'true'"/>-->
                                                 <xsl:copy-of select="node()"/>
                                             </xsl:copy>
                                         </xsl:for-each>
