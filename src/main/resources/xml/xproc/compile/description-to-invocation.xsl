@@ -46,7 +46,6 @@
                             <xsl:text>
 </xsl:text>
                             <xsl:element name="{replace(/*/x:step-declaration/*/@type,'.*\}','')}" namespace="{replace(/*/x:step-declaration/*/@x:type,'^\{(.*)\}.*$','$1')}">
-                                <!--<xsl:element name="test:{tokenize(/*/x:step-declaration/*/@x:type,'\}')[last()]}" namespace="{replace(/*/x:step-declaration/*/@x:type,'\{(.*)\}.*','$1')}">-->
                                 <xsl:attribute name="name" select="'test'"/>
                                 <xsl:for-each select="/*/x:scenario/x:call/x:option">
                                     <xsl:text>

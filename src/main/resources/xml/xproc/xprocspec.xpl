@@ -22,10 +22,12 @@
     <p:import href="report/report.xpl"/>
     
     <!--
-        * Convert other XProc test syntaxes (currently supported: XProc Test Suite).
-        * Split the x:description documents into multiple documents; one for each x:scenario with no dependencies between them.
+        * Converts any other XProc test syntaxes (currently supported: XProc Test Suite).
+        * Splits the x:description documents into multiple documents; one for each x:scenario with no dependencies between them.
     -->
-    <px:test-preprocess name="preprocess"/>
+    <px:test-preprocess name="preprocess">
+        <p:with-option name="temp-dir" select="$temp-dir"/>
+    </px:test-preprocess>
 
     <!-- make XProc scripts out of each scenario -->
     <px:test-compile name="compile"/>
@@ -35,32 +37,39 @@
         <p:output port="result">
             <p:pipe port="result" step="store"/>
         </p:output>
-        <p:store name="store">
-            <p:with-option name="href" select="concat($temp-dir,tokenize(/*/@type,':')[last()],'.xpl')"/>
-        </p:store>
+        <p:choose name="store">
+            <p:when test="/*[self::c:errors]">
+                <p:output port="result">
+                    <p:pipe port="result" step="store-error"/>
+                </p:output>
+                <p:store name="store-error">
+                    <p:with-option name="href" select="concat($temp-dir,'error',p:iteration-position(),'.xml')"/>
+                </p:store>
+            </p:when>
+            <p:otherwise>
+                <p:output port="result">
+                    <p:pipe port="result" step="store-step"/>
+                </p:output>
+                <p:store name="store-step">
+                    <p:with-option name="href" select="concat($temp-dir,tokenize(/*/@type,':')[last()],'.xpl')"/>
+                </p:store>
+            </p:otherwise>
+        </p:choose>
     </p:for-each>
-    <p:store name="test-runner-store">
-        <p:with-option name="href" select="concat($temp-dir,'test.xpl')">
-            <p:inline>
-                <doc/>
-            </p:inline>
-        </p:with-option>
-        <p:input port="source">
-            <p:pipe port="test-runner" step="compile"/>
-        </p:input>
-    </p:store>
     <p:wrap-sequence wrapper="wrapper" name="depend-on-me">
         <p:input port="source">
             <p:pipe port="result" step="test-store"/>
-            <p:pipe port="result" step="test-runner-store"/>
         </p:input>
     </p:wrap-sequence>
 
     <!-- run the XProc scripts -->
     <px:test-run name="run">
-        <p:with-option name="test-runner" select="concat($temp-dir,'test.xpl')">
+        <p:with-option name="depend-on-stored-files" select="''">
             <p:pipe port="result" step="depend-on-me"/>
         </p:with-option>
+        <p:input port="source">
+            <p:pipe port="result" step="test-store"/>
+        </p:input>
     </px:test-run>
 
     <!-- compare the results with the expected results -->
@@ -68,11 +77,6 @@
 
     <!-- make a machine readable report as well as a human readable one -->
     <px:test-report name="report"/>
-    <p:store href="file:/tmp/report.html">
-        <p:input port="source">
-            <p:pipe port="html" step="report"/>
-        </p:input>
-    </p:store>
-    <!--<p:sink/>-->
+    <p:sink/>
 
 </p:declare-step>

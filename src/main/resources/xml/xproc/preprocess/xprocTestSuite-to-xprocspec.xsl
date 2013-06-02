@@ -35,7 +35,7 @@
                                 </xsl:for-each>
                             </xsl:when>
                             <xsl:otherwise>
-                                <p:declare-step xmlns:p="http://www.w3.org/ns/xproc" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:xprocspec="http://www.daisy.org/ns/pipeline/xproc/test" type="xprocspec:step" version="1.0">
+                                <p:declare-step xmlns:p="http://www.w3.org/ns/xproc" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:xprocspec="http://www.daisy.org/ns/pipeline/xproc/test" type="xprocspec:step" name="main" version="1.0">
                                     <xsl:namespace name="xprocspec" select="'http://www.daisy.org/ns/pipeline/xproc/test'"/>
                                     <xsl:copy-of select="t:pipeline/*/p:input" copy-namespaces="no"/>
                                     <xsl:for-each select="t:compare-pipeline/*/p:output">
@@ -44,7 +44,6 @@
                                             <p:pipe step="compare-pipeline" port="{@port}"/>
                                         </xsl:copy>
                                     </xsl:for-each>
-                                    <xsl:copy-of select="t:compare-pipeline/*/p:output" copy-namespaces="no"/>
                                     <xsl:copy-of select="t:pipeline/*/p:option" copy-namespaces="no"/>
 
                                     <xsl:variable name="step1" select="t:pipeline/*/@type"/>
@@ -159,9 +158,18 @@
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:for-each select="*">
-                        <x:document>
-                            <xsl:copy-of select="." copy-namespaces="no"/>
-                        </x:document>
+                        <xsl:choose>
+                            <xsl:when test="self::t:document">
+                                <x:document>
+                                    <xsl:copy-of select="*" copy-namespaces="no"/>
+                                </x:document>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <x:document>
+                                    <xsl:copy-of select="." copy-namespaces="no"/>
+                                </x:document>
+                            </xsl:otherwise>
+                        </xsl:choose>
                     </xsl:for-each>
                 </xsl:otherwise>
             </xsl:choose>
@@ -176,9 +184,18 @@
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:for-each select="*">
-                        <x:document>
-                            <xsl:copy-of select="." copy-namespaces="no"/>
-                        </x:document>
+                        <xsl:choose>
+                            <xsl:when test="self::t:document">
+                                <x:document>
+                                    <xsl:copy-of select="*" copy-namespaces="no"/>
+                                </x:document>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <x:document>
+                                    <xsl:copy-of select="." copy-namespaces="no"/>
+                                </x:document>
+                            </xsl:otherwise>
+                        </xsl:choose>
                     </xsl:for-each>
                 </xsl:otherwise>
             </xsl:choose>
