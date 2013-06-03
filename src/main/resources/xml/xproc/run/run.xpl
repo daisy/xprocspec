@@ -1,5 +1,5 @@
 <p:declare-step xmlns:p="http://www.w3.org/ns/xproc" type="px:test-run" name="main" xmlns:cx="http://xmlcalabash.com/ns/extensions" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:px="http://www.daisy.org/ns/pipeline/xproc"
-    exclude-inline-prefixes="#all" version="1.0" xpath-version="2.0" xmlns:pkg="http://expath.org/ns/pkg" pkg:import-uri="http://josteinaj.no/ns/2013/xprocspec/run.xpl" xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test">
+    exclude-inline-prefixes="#all" version="1.0" xpath-version="2.0" xmlns:pkg="http://expath.org/ns/pkg" xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test">
 
     <p:input port="source" sequence="true"/>
     <p:output port="result" sequence="true"/>
@@ -31,7 +31,7 @@
                                 <p:empty/>
                             </p:input>
                         </cx:eval>
-                        <p:wrap-sequence wrapper="try-catch-wrapper"/>
+                        <p:wrap-sequence wrapper="calabash-issue-102"/>
                     </p:group>
                     <p:catch name="catch">
                         <p:identity>
@@ -39,11 +39,12 @@
                                 <p:pipe step="catch" port="error"/>
                             </p:input>
                         </p:identity>
-                        <p:wrap-sequence wrapper="try-catch-wrapper"/>
+                        <p:wrap-sequence wrapper="calabash-issue-102"/>
                     </p:catch>
                 </p:try>
                 <p:for-each>
-                    <p:iteration-source select="/try-catch-wrapper/*"/>
+                    <!-- temporary fix for https://github.com/ndw/xmlcalabash1/issues/102 -->
+                    <p:iteration-source select="/calabash-issue-102/*"/>
                     <p:identity/>
                 </p:for-each>
             </p:otherwise>

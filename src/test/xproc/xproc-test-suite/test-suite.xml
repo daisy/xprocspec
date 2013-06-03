@@ -1,6 +1,6 @@
 <t:test-suite xmlns:t='http://xproc.org/ns/testsuite'>
 <t:title>All tests</t:title>
-<t:test href='required/delete-001.xml'/>
+<!--<t:test href='required/delete-001.xml'/>
 <t:test href='required/add-attribute-001.xml'/>
 <t:test href='required/declare-step-011.xml'/>
 <t:test href='required/add-attribute-002.xml'/>
@@ -698,7 +698,7 @@
 <t:test href='optional/hash-003.xml'/>
 <t:test href='optional/hash-004.xml'/>
 <t:test href='optional/hash-005.xml'/>
-<t:test href='optional/hash-006.xml'/>
+<t:test href='optional/hash-006.xml'/>-->
 
 <t:test href='optional/template-003.xml'/>
 <t:test href='optional/in-scope-names-001.xml'/>

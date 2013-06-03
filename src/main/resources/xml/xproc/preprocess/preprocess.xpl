@@ -1,5 +1,5 @@
 <p:declare-step xmlns:p="http://www.w3.org/ns/xproc" type="px:test-preprocess" xmlns:cx="http://xmlcalabash.com/ns/extensions" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:px="http://www.daisy.org/ns/pipeline/xproc" exclude-inline-prefixes="#all"
-    version="1.0" xpath-version="2.0" xmlns:t="http://xproc.org/ns/testsuite" xmlns:pkg="http://expath.org/ns/pkg" pkg:import-uri="http://josteinaj.no/ns/2013/xprocspec/preprocess.xpl" xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test">
+    version="1.0" xpath-version="2.0" xmlns:t="http://xproc.org/ns/testsuite" xmlns:pkg="http://expath.org/ns/pkg" xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test">
 
     <p:input port="source"/>
     <p:output port="result" sequence="true">
@@ -50,6 +50,7 @@
                                 <p:load>
                                     <p:with-option name="href" select="$href"/>
                                 </p:load>
+                                <p:wrap-sequence wrapper="calabash-issue-102"/>
                             </p:group>
                             <p:catch name="catch">
                                 <p:identity>
@@ -60,8 +61,14 @@
                                 <p:add-attribute match="/*" attribute-name="xml:base">
                                     <p:with-option name="attribute-value" select="$href"/>
                                 </p:add-attribute>
+                                <p:wrap-sequence wrapper="calabash-issue-102"/>
                             </p:catch>
                         </p:try>
+                        <p:for-each>
+                            <!-- temporary fix for https://github.com/ndw/xmlcalabash1/issues/102 -->
+                            <p:iteration-source select="/calabash-issue-102/*"/>
+                            <p:identity/>
+                        </p:for-each>
                         <p:add-attribute match="/*" attribute-name="test-uri">
                             <p:with-option name="attribute-value" select="$href"/>
                         </p:add-attribute>
@@ -112,6 +119,7 @@
                                 <p:delete match="/*/x:script"/>
                             </p:otherwise>
                         </p:choose>
+                        <p:wrap-sequence wrapper="calabash-issue-102"/>
                     </p:group>
                     <p:catch name="catch">
                         <p:identity>
@@ -122,8 +130,14 @@
                         <p:add-attribute match="/*" attribute-name="xml:base">
                             <p:with-option name="attribute-value" select="$href"/>
                         </p:add-attribute>
+                        <p:wrap-sequence wrapper="calabash-issue-102"/>
                     </p:catch>
                 </p:try>
+                <p:for-each>
+                    <!-- temporary fix for https://github.com/ndw/xmlcalabash1/issues/102 -->
+                    <p:iteration-source select="/calabash-issue-102/*"/>
+                    <p:identity/>
+                </p:for-each>
 
                 <p:add-attribute match="/*" attribute-name="test-grammar" attribute-value="XProc Test Suite"/>
             </p:for-each>
@@ -150,6 +164,7 @@
         <p:variable name="base" select="base-uri(/*)"/>
         <p:try>
             <p:group>
+                <p:output port="result" sequence="true"/>
                 <p:choose>
                     <p:when test="/*[self::c:errors]">
                         <p:output port="result" sequence="true"/>
@@ -185,7 +200,7 @@
                             </p:xslt>
                             <p:for-each>
                                 <p:iteration-source select="/*/*"/>
-                                <p:variable name="step" select="//x:call/@x:step"/>
+                                <p:variable name="step" select="(//x:call/@x:step)[1]"/>
                                 <p:insert match="/*" position="first-child">
                                     <p:input port="insertion">
                                         <p:pipe port="result" step="step-declarations"/>
@@ -214,7 +229,7 @@
                                 <p:delete match="/*/*"/>
                             </p:for-each>
                             <p:wrap-sequence wrapper="wrapper"/>
-                            <p:delete match="x:call[concat(@step-namespace,@step-name)=preceding::x:call/concat(@step-namespace,@step-name)]"/>
+                            <p:delete match="x:call[concat('{',@step-namespace,'}',@step-name)=preceding::x:call/concat('{',@step-namespace,'}',@step-name)]"/>
                             <p:for-each>
                                 <p:iteration-source select="/*/*"/>
                                 <p:identity/>
@@ -277,9 +292,9 @@
                                         </p:inline>
                                     </p:input>
                                 </p:insert>
-                                <p:rename match="/p:pipeline" new-name="p:declare-step"/>
                                 <p:delete match="/p:pipeline/p:input[@port=following-sibling::p:input/@port]"/>
                                 <p:delete match="/p:pipeline/p:output[@port=following-sibling::p:output/@port]"/>
+                                <p:rename match="/p:pipeline" new-name="p:declare-step"/>
                             </p:for-each>
                             <p:wrap-sequence wrapper="x:step-declaration"/>
                         </p:group>
@@ -287,8 +302,10 @@
                         <p:sink/>
                     </p:otherwise>
                 </p:choose>
+                <p:wrap-sequence wrapper="calabash-issue-102"/>
             </p:group>
             <p:catch name="catch">
+                <p:output port="result" sequence="true"/>
                 <p:identity>
                     <p:input port="source">
                         <p:pipe port="error" step="catch"/>
@@ -297,13 +314,22 @@
                 <p:add-attribute match="/*" attribute-name="xml:base">
                     <p:with-option name="attribute-value" select="$base"/>
                 </p:add-attribute>
+                <p:wrap-sequence wrapper="calabash-issue-102"/>
             </p:catch>
         </p:try>
-
-
-        <p:add-attribute match="/*" attribute-name="test-base-uri">
-            <p:with-option name="attribute-value" select="$test-base-uri"/>
-        </p:add-attribute>
+        <p:for-each>
+            <!-- temporary fix for https://github.com/ndw/xmlcalabash1/issues/102 -->
+            <p:iteration-source select="/calabash-issue-102/*"/>
+            <p:identity/>
+        </p:for-each>
+        
+        <p:for-each>
+           <p:add-attribute match="/*" attribute-name="test-base-uri">
+               <p:with-option name="attribute-value" select="$test-base-uri">
+                   <p:empty/>
+               </p:with-option>
+           </p:add-attribute>
+        </p:for-each>
     </p:for-each>
     <p:identity name="result"/>
 

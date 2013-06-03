@@ -1,5 +1,5 @@
 <p:declare-step xmlns:p="http://www.w3.org/ns/xproc" type="px:xprocspec" name="main" xmlns:cx="http://xmlcalabash.com/ns/extensions" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:px="http://www.daisy.org/ns/pipeline/xproc" exclude-inline-prefixes="#all"
-    version="1.0" xpath-version="2.0" xmlns:pkg="http://expath.org/ns/pkg" pkg:import-uri="http://josteinaj.no/ns/2013/xprocspec/xprocspec.xpl">
+    version="1.0" xpath-version="2.0" xmlns:pkg="http://expath.org/ns/pkg" pkg:import-uri="http://www.daisy.org/pipeline/modules/xprocspec/xprocspec.xpl">
 
     <p:input port="source"/>
     
@@ -24,6 +24,7 @@
     <!--
         * Converts any other XProc test syntaxes (currently supported: XProc Test Suite).
         * Splits the x:description documents into multiple documents; one for each x:scenario with no dependencies between them.
+        TODO: better feedback on what went wrong in compile errors (for instance "missing step attribute")
     -->
     <px:test-preprocess name="preprocess">
         <p:with-option name="temp-dir" select="$temp-dir"/>
@@ -37,6 +38,9 @@
         <p:output port="result">
             <p:pipe port="result" step="store"/>
         </p:output>
+        <p:add-attribute match="/*" attribute-name="xml:base">
+            <p:with-option name="attribute-value" select="base-uri(/*)"/>
+        </p:add-attribute>
         <p:choose name="store">
             <p:when test="/*[self::c:errors]">
                 <p:output port="result">
@@ -77,6 +81,19 @@
 
     <!-- make a machine readable report as well as a human readable one -->
     <px:test-report name="report"/>
-    <p:sink/>
+    
+    <!-- debugging: comment out "report" and uncomment this group: -->
+    <!--<p:group name="report">
+        <p:output port="result">
+            <p:pipe port="result" step="result"/>
+        </p:output>
+        <p:output port="html">
+            <p:pipe port="result" step="result"/>
+        </p:output>
+        <p:output port="junit">
+            <p:pipe port="result" step="result"/>
+        </p:output>
+        <p:wrap-sequence wrapper="wrapped-result" name="result"/>
+    </p:group>-->
 
 </p:declare-step>

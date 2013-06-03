@@ -1,5 +1,5 @@
 <p:declare-step xmlns:p="http://www.w3.org/ns/xproc" type="px:test-compile" name="main" xmlns:cx="http://xmlcalabash.com/ns/extensions" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:px="http://www.daisy.org/ns/pipeline/xproc"
-    exclude-inline-prefixes="#all" version="1.0" xpath-version="2.0" xmlns:pkg="http://expath.org/ns/pkg" pkg:import-uri="http://josteinaj.no/ns/2013/xprocspec/compile.xpl" xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test">
+    exclude-inline-prefixes="#all" version="1.0" xpath-version="2.0" xmlns:pkg="http://expath.org/ns/pkg" xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test">
 
     <p:input port="source" sequence="true"/>
     <p:output port="result" sequence="true" primary="true">
@@ -22,6 +22,7 @@
                                 <p:document href="description-to-invocation.xsl"/>
                             </p:input>
                         </p:xslt>
+                        <p:wrap-sequence wrapper="calabash-issue-102"/>
                     </p:group>
                     <p:catch name="catch">
                         <p:identity>
@@ -32,8 +33,14 @@
                         <p:add-attribute match="/*" attribute-name="xml:base">
                             <p:with-option name="attribute-value" select="$base"/>
                         </p:add-attribute>
+                        <p:wrap-sequence wrapper="calabash-issue-102"/>
                     </p:catch>
                 </p:try>
+                <p:for-each>
+                    <!-- temporary fix for https://github.com/ndw/xmlcalabash1/issues/102 -->
+                    <p:iteration-source select="/calabash-issue-102/*"/>
+                    <p:identity/>
+                </p:for-each>
             </p:otherwise>
         </p:choose>
     </p:for-each>
