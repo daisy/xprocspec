@@ -5,6 +5,9 @@
     <p:output port="result" sequence="true"/>
 
     <p:import href="compare.xpl"/>
+    <p:import href="../utils/recursive-directory-list.xpl"/>
+
+    <p:import href="http://xmlcalabash.com/extension/steps/library-1.0.xpl"/>
 
     <p:for-each>
         <!-- for each scenario -->
@@ -35,28 +38,89 @@
                 </p:insert>
             </p:when>
             <p:otherwise>
+                <p:variable name="temp-dir" select="/*/@temp-dir"/>
                 <p:identity name="description"/>
                 <p:for-each name="test">
                     <!-- for each test in the scenario -->
                     <p:iteration-source select="/x:description/x:scenario/x:expect"/>
-                    <p:variable name="port" select="/*/@port"/>
 
-                    <p:filter name="output-port">
-                        <p:with-option name="select" select="concat('/x:description/x:output[@port=&quot;',$port,'&quot;]/*')">
-                            <p:inline>
-                                <doc/>
-                            </p:inline>
-                        </p:with-option>
-                        <p:input port="source">
-                            <p:pipe port="result" step="description"/>
-                        </p:input>
-                    </p:filter>
-
-                    <p:identity name="errors">
-                        <p:input port="source" select="/x:description/c:errors">
-                            <p:pipe port="result" step="description"/>
-                        </p:input>
-                    </p:identity>
+                    <p:group name="context">
+                        <p:output port="result" sequence="true"/>
+                        <p:choose>
+                            <p:when test="/*/@port">
+                                <p:variable name="position" select="(/*/@position,'all')[1]"/>
+                                <p:filter>
+                                    <p:with-option name="select" select="concat('/x:description/x:output[@port=&quot;',/*/@port,'&quot;]/*')"/>
+                                    <p:input port="source">
+                                        <p:pipe port="result" step="description"/>
+                                    </p:input>
+                                </p:filter>
+                                <p:choose>
+                                    <p:xpath-context>
+                                        <p:inline>
+                                            <doc/>
+                                        </p:inline>
+                                    </p:xpath-context>
+                                    <p:when test="string(number($position))='NaN'">
+                                        <p:identity/>
+                                    </p:when>
+                                    <p:otherwise>
+                                        <p:split-sequence initial-only="true">
+                                            <p:with-option name="test" select="concat('position()=',$position)"/>
+                                        </p:split-sequence>
+                                    </p:otherwise>
+                                </p:choose>
+                            </p:when>
+                            <p:when test="/*/@directory">
+                                <px:xprocspec-directory-list>
+                                    <p:with-option name="path" select="resolve-uri(/*/@directory,if (/*/@base-uri='temp-dir') then $temp-dir else base-uri(/*))"/>
+                                    <p:with-option name="depth" select="if (/*/@recursive='true') then '-1' else '0'"/>
+                                </px:xprocspec-directory-list>
+                                <p:delete match="//*/@xml:base"/>
+                            </p:when>
+                            <p:when test="/*/@directory-info">
+                                <!-- TODO: use calabash extension step, possibly rename to non-calabash namespace -->
+                                <p:identity>
+                                    <p:input port="source">
+                                        <p:inline>
+                                            <c:body>TODO: directory-info</c:body>
+                                        </p:inline>
+                                    </p:input>
+                                </p:identity>
+                            </p:when>
+                            <p:when test="/*/@file">
+                                <p:variable name="method" select="(/*/@method,'xml')[1]"/>
+                                <!-- TODO: copy stuff from px:fileset-load to support loading of non-XML documents -->
+                                <p:load>
+                                    <p:with-option name="href" select="resolve-uri((@file,@href)[1],if (/*/@base-uri='temp-dir') then $temp-dir else base-uri(/*))"/>
+                                </p:load>
+                            </p:when>
+                            <p:when test="/*/@file-info">
+                                <!-- TODO: use calabash extension step, possibly rename to non-calabash namespace -->
+                                <p:identity>
+                                    <p:input port="source">
+                                        <p:inline>
+                                            <c:body>TODO: file-info</c:body>
+                                        </p:inline>
+                                    </p:input>
+                                </p:identity>
+                            </p:when>
+                            <p:when test="/*/@error">
+                                <p:identity>
+                                    <p:input port="source" select="/x:description/c:errors">
+                                        <p:pipe port="result" step="description"/>
+                                    </p:input>
+                                </p:identity>
+                            </p:when>
+                            <p:otherwise>
+                                <p:identity>
+                                    <p:input port="source">
+                                        <p:empty/>
+                                    </p:input>
+                                </p:identity>
+                            </p:otherwise>
+                        </p:choose>
+                    </p:group>
 
                     <p:identity>
                         <p:input port="source">
@@ -66,19 +130,19 @@
 
                     <p:choose>
                         <p:when test="/*[@test]">
-                            <!-- evaluate @test against x:output[@port=$port] -->
+                            <!-- evaluate @test against context -->
                             <p:variable name="test" select="/*/@test"/>
 
                             <!-- the XPath expression must evalutate to true() for all documents on the output port, and there must be at least one document on the output port -->
                             <p:for-each>
                                 <p:iteration-source>
-                                    <p:pipe port="result" step="output-port"/>
+                                    <p:pipe port="result" step="context"/>
                                 </p:iteration-source>
                                 <p:filter>
                                     <p:with-option name="select" select="concat('if (',$test,') then /* else /*[false()]')"/>
-                                    <p:input port="source">
+                                    <!--<p:input port="source">
                                         <p:pipe port="result" step="output-port"/>
-                                    </p:input>
+                                    </p:input>-->
                                 </p:filter>
                                 <p:count/>
                             </p:for-each>
@@ -92,8 +156,7 @@
                             <p:group>
                                 <p:wrap-sequence wrapper="c:was" name="was">
                                     <p:input port="source">
-                                        <p:pipe port="result" step="output-port"/>
-                                        <p:pipe port="result" step="errors"/>
+                                        <p:pipe port="result" step="context"/>
                                     </p:input>
                                 </p:wrap-sequence>
 
@@ -150,7 +213,7 @@
                             <p:group>
                                 <p:wrap-sequence wrapper="c:was" name="was">
                                     <p:input port="source">
-                                        <p:pipe port="result" step="errors"/>
+                                        <p:pipe port="result" step="context"/>
                                     </p:input>
                                 </p:wrap-sequence>
 
@@ -180,11 +243,65 @@
                             <p:for-each name="expect">
                                 <p:output port="result" sequence="true"/>
                                 <p:iteration-source select="/x:expect/x:document"/>
+
                                 <p:choose>
-                                    <p:when test="@href">
+                                    <p:when test="/*/@port">
+                                        <p:variable name="position" select="(/*/@position,'all')[1]"/>
+                                        <p:filter>
+                                            <p:with-option name="select" select="concat('/x:description/x:output[@port=&quot;',/*/@port,'&quot;]/*')"/>
+                                            <p:input port="source">
+                                                <p:pipe port="result" step="description"/>
+                                            </p:input>
+                                        </p:filter>
+                                        <p:choose>
+                                            <p:xpath-context>
+                                                <p:inline>
+                                                    <doc/>
+                                                </p:inline>
+                                            </p:xpath-context>
+                                            <p:when test="string(number($position))='NaN'">
+                                                <p:identity/>
+                                            </p:when>
+                                            <p:otherwise>
+                                                <p:split-sequence initial-only="true">
+                                                    <p:with-option name="test" select="concat('position()=',$position)"/>
+                                                </p:split-sequence>
+                                            </p:otherwise>
+                                        </p:choose>
+                                    </p:when>
+                                    <p:when test="/*/@directory">
+                                        <px:xprocspec-directory-list>
+                                            <p:with-option name="path" select="resolve-uri(/*/@directory,if (/*/@base-uri='temp-dir') then $temp-dir else base-uri(/*))"/>
+                                            <p:with-option name="depth" select="if (/*/@recursive='true') then '-1' else '0'"/>
+                                        </px:xprocspec-directory-list>
+                                        <p:delete match="//*/@xml:base"/>
+                                    </p:when>
+                                    <p:when test="/*/@directory-info">
+                                        <!-- TODO: use calabash extension step, possibly rename to non-calabash namespace -->
+                                        <p:identity>
+                                            <p:input port="source">
+                                                <p:inline>
+                                                    <c:body>TODO: directory-info</c:body>
+                                                </p:inline>
+                                            </p:input>
+                                        </p:identity>
+                                    </p:when>
+                                    <p:when test="/*/@file">
+                                        <p:variable name="method" select="(/*/@method,'xml')[1]"/>
+                                        <!-- TODO: copy stuff from px:fileset-load to support loading of non-XML documents -->
                                         <p:load>
-                                            <p:with-option name="href" select="@href"/>
+                                            <p:with-option name="href" select="resolve-uri((@file,@href)[1],if (/*/@base-uri='temp-dir') then $temp-dir else base-uri(/*))"/>
                                         </p:load>
+                                    </p:when>
+                                    <p:when test="/*/@file-info">
+                                        <!-- TODO: use calabash extension step, possibly rename to non-calabash namespace -->
+                                        <p:identity>
+                                            <p:input port="source">
+                                                <p:inline>
+                                                    <c:body>TODO: file-info</c:body>
+                                                </p:inline>
+                                            </p:input>
+                                        </p:identity>
                                     </p:when>
                                     <p:otherwise>
                                         <p:for-each>
@@ -195,30 +312,14 @@
                                 </p:choose>
                             </p:for-each>
 
-                            <p:filter>
-                                <p:with-option name="select" select="concat('/x:description/x:output[@port=&quot;',$port,'&quot;]/*')">
-                                    <p:inline>
-                                        <doc/>
-                                    </p:inline>
-                                </p:with-option>
-                                <p:input port="source">
-                                    <p:pipe port="result" step="description"/>
-                                </p:input>
-                            </p:filter>
-
                             <px:compare>
                                 <p:input port="source">
-                                    <p:pipe port="result" step="output-port"/>
+                                    <p:pipe port="result" step="context"/>
                                 </p:input>
                                 <p:input port="alternate">
                                     <p:pipe port="result" step="expect"/>
                                 </p:input>
                             </px:compare>
-                            <p:insert match="c:was" position="last-child">
-                                <p:input port="insertion">
-                                    <p:pipe port="result" step="errors"/>
-                                </p:input>
-                            </p:insert>
 
                             <p:add-attribute match="/*" attribute-name="test-type" attribute-value="xml"/>
                         </p:otherwise>

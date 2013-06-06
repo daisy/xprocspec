@@ -31,7 +31,13 @@
     </px:test-preprocess>
 
     <!-- make XProc scripts out of each scenario -->
-    <px:test-compile name="compile"/>
+    <px:test-compile name="compile">
+        <p:with-option name="temp-dir" select="$temp-dir">
+            <p:inline>
+                <doc/>
+            </p:inline>
+        </p:with-option>
+    </px:test-compile>
 
     <!-- store the XProc scripts (just in case there is a lot of tests - it could optionally be done in-memory) -->
     <p:for-each name="test-store">

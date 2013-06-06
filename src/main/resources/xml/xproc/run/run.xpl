@@ -31,6 +31,54 @@
                                 <p:empty/>
                             </p:input>
                         </cx:eval>
+                        <p:identity name="test-output"/>
+                        
+                        <p:identity>
+                            <p:input port="source">
+                                <p:pipe port="result" step="test"/>
+                            </p:input>
+                        </p:identity>
+                        <p:xslt name="option-evaluation">
+                            <p:input port="parameters">
+                                <p:empty/>
+                            </p:input>
+                            <p:input port="stylesheet">
+                                <p:document href="invocation-to-option-evaluation.xsl"/>
+                            </p:input>
+                        </p:xslt>
+                        <cx:eval name="options-and-parameters">
+                            <p:input port="pipeline">
+                                <p:pipe port="result" step="option-evaluation"/>
+                            </p:input>
+                            <p:input port="source">
+                                <p:empty/>
+                            </p:input>
+                            <p:input port="options">
+                                <p:empty/>
+                            </p:input>
+                        </cx:eval>
+                        <p:identity>
+                            <p:input port="source">
+                                <p:pipe port="result" step="test-output"/>
+                            </p:input>
+                        </p:identity>
+                        <p:viewport match="//x:call/x:option">
+                            <p:variable name="name" select="/*/@name"/>
+                            <p:add-attribute match="/*" attribute-name="value">
+                                <p:with-option name="attribute-value" select="/*/c:options/@*[name()=$name]">
+                                    <p:pipe port="result" step="options-and-parameters"/>
+                                </p:with-option>
+                            </p:add-attribute>
+                        </p:viewport>
+                        <p:viewport match="//x:call/x:param">
+                            <p:variable name="name" select="/*/@name"/>
+                            <p:add-attribute match="/*" attribute-name="value">
+                                <p:with-option name="attribute-value" select="/*/c:params/@*[name()=$name]">
+                                    <p:pipe port="result" step="options-and-parameters"/>
+                                </p:with-option>
+                            </p:add-attribute>
+                        </p:viewport>
+                        
                         <p:wrap-sequence wrapper="calabash-issue-102"/>
                     </p:group>
                     <p:catch name="catch">

@@ -145,7 +145,7 @@
                                     <xsl:text>
 </xsl:text>
                                     <td>
-                                        <xsl:value-of select="@select"/>
+                                        <xsl:value-of select="@value"/>
                                     </td>
                                 </tr>
                             </xsl:for-each>
@@ -183,7 +183,7 @@
                                     <xsl:text>
 </xsl:text>
                                     <td>
-                                        <xsl:value-of select="@select"/>
+                                        <xsl:value-of select="@value"/>
                                     </td>
                                 </tr>
                             </xsl:for-each>

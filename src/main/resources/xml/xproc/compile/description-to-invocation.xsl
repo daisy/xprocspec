@@ -3,6 +3,7 @@
 
     <xsl:output indent="yes" method="xml"/>
     <xsl:param name="name" required="yes"/>
+    <xsl:param name="temp-dir" required="yes"/>
 
     <xsl:template match="/x:description">
         <p:declare-step xmlns:p="http://www.w3.org/ns/xproc" type="x:{$name}" name="main" xmlns:cx="http://xmlcalabash.com/ns/extensions" xmlns:c="http://www.w3.org/ns/xproc-step" version="1.0" xpath-version="2.0">
@@ -52,10 +53,14 @@
 </xsl:text>
                                     <p:with-option name="{@name}" select="{@select}">
                                         <p:inline>
-                                            <context>TODO</context>
+                                            <context>
+                                                <xsl:if test="@base-uri='temp-dir'">
+                                                    <xsl:attribute name="xml:base" select="$temp-dir"/>
+                                                </xsl:if>
+                                                <xsl:text>TODO</xsl:text>
+                                            </context>
                                         </p:inline>
                                     </p:with-option>
-                                    <!-- TODO: set context for p:with-option -->
                                 </xsl:for-each>
 
                                 <xsl:variable name="parameter-ports" select="/*/x:step-declaration/*/p:input[@kind='parameter']"/>
@@ -81,9 +86,12 @@
                                             <xsl:text>
 </xsl:text>
                                             <p:with-param name="{@name}" select="{@select}">
-                                                <p:inline>
-                                                    <context>TODO</context>
-                                                </p:inline>
+                                                <context>
+                                                    <xsl:if test="@base-uri='temp-dir'">
+                                                        <xsl:attribute name="xml:base" select="$temp-dir"/>
+                                                    </xsl:if>
+                                                    <xsl:text>TODO</xsl:text>
+                                                </context>
                                             </p:with-param>
                                             <!-- TODO: set context for p:with-param -->
                                         </xsl:for-each>
