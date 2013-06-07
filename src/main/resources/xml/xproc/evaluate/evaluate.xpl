@@ -5,6 +5,7 @@
     <p:output port="result" sequence="true"/>
 
     <p:import href="compare.xpl"/>
+    <p:import href="../utils/load.xpl"/>
     <p:import href="../utils/recursive-directory-list.xpl"/>
 
     <p:import href="http://xmlcalabash.com/extension/steps/library-1.0.xpl"/>
@@ -89,11 +90,10 @@
                                 </p:identity>
                             </p:when>
                             <p:when test="/*/@file">
-                                <p:variable name="method" select="(/*/@method,'xml')[1]"/>
-                                <!-- TODO: copy stuff from px:fileset-load to support loading of non-XML documents -->
-                                <p:load>
-                                    <p:with-option name="href" select="resolve-uri((@file,@href)[1],if (/*/@base-uri='temp-dir') then $temp-dir else base-uri(/*))"/>
-                                </p:load>
+                                <px:xprocspec-load>
+                                    <p:with-option name="href" select="resolve-uri((/*/@file,/*/@href)[1],if (/*/@base-uri='temp-dir') then $temp-dir else base-uri(/*))"/>
+                                    <p:with-option name="method" select="(/*/@method,'xml')[1]"/>
+                                </px:xprocspec-load>
                             </p:when>
                             <p:when test="/*/@file-info">
                                 <!-- TODO: use calabash extension step, possibly rename to non-calabash namespace -->
@@ -287,11 +287,10 @@
                                         </p:identity>
                                     </p:when>
                                     <p:when test="/*/@file">
-                                        <p:variable name="method" select="(/*/@method,'xml')[1]"/>
-                                        <!-- TODO: copy stuff from px:fileset-load to support loading of non-XML documents -->
-                                        <p:load>
-                                            <p:with-option name="href" select="resolve-uri((@file,@href)[1],if (/*/@base-uri='temp-dir') then $temp-dir else base-uri(/*))"/>
-                                        </p:load>
+                                        <px:xprocspec-load>
+                                            <p:with-option name="href" select="resolve-uri((/*/@file,/*/@href)[1],if (/*/@base-uri='temp-dir') then $temp-dir else base-uri(/*))"/>
+                                            <p:with-option name="method" select="(/*/@method,'xml')[1]"/>
+                                        </px:xprocspec-load>
                                     </p:when>
                                     <p:when test="/*/@file-info">
                                         <!-- TODO: use calabash extension step, possibly rename to non-calabash namespace -->
