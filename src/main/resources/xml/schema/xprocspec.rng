@@ -1,0 +1,740 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0" xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+
+    <start>
+        <ref name="description"/>
+    </start>
+
+    <define name="description">
+        <a:documentation xml:space="preserve">
+            A description is a description of a script. 
+            It must have a script associated with it.
+            It may also have a version to aid development over time.
+        </a:documentation>
+        <element name="description" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+            <ref name="description.common"/>
+            <choice>
+                <group>
+                    <zeroOrMore>
+                        <ref name="import"/>
+                    </zeroOrMore>
+                    <oneOrMore>
+                        <ref name="scenario"/>
+                    </oneOrMore>
+                </group>
+                <group>
+                    <oneOrMore>
+                        <ref name="import"/>
+                    </oneOrMore>
+                    <zeroOrMore>
+                        <ref name="scenario"/>
+                    </zeroOrMore>
+                </group>
+            </choice>
+        </element>
+    </define>
+
+    <define name="description.common">
+        <ref name="common-attributes"/>
+        <attribute name="script">
+            <data type="anyURI"/>
+        </attribute>
+        <optional>
+            <attribute name="xproc-version">
+                <data type="NMTOKEN"/>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="version">
+                <data type="NMTOKEN"/>
+            </attribute>
+        </optional>
+        <optional>
+            <ref name="pending"/>
+        </optional>
+    </define>
+
+    <define name="errors">
+        <element name="errors" ns="http://www.w3.org/ns/xproc-step">
+            <zeroOrMore>
+                <element name="error" ns="http://www.w3.org/ns/xproc-step">
+                    <optional>
+                        <attribute name="name">
+                            <data type="NCName"/>
+                        </attribute>
+                    </optional>
+                    <optional>
+                        <attribute name="type">
+                            <data type="QName"/>
+                        </attribute>
+                    </optional>
+                    <optional>
+                        <attribute name="code">
+                            <data type="QName"/>
+                        </attribute>
+                    </optional>
+                    <optional>
+                        <attribute name="href">
+                            <data type="anyURI"/>
+                        </attribute>
+                    </optional>
+                    <optional>
+                        <attribute name="line">
+                            <data type="integer"/>
+                        </attribute>
+                    </optional>
+                    <optional>
+                        <attribute name="column">
+                            <data type="integer"/>
+                        </attribute>
+                    </optional>
+                    <optional>
+                        <attribute name="offset">
+                            <data type="integer"/>
+                        </attribute>
+                    </optional>
+                    <ref name="any-content"/>
+                </element>
+            </zeroOrMore>
+        </element>
+    </define>
+
+    <define name="step-declaration">
+        <element name="step-declaration">
+            <choice>
+                <element name="declare-step" ns="http://www.w3.org/ns/xproc">
+                    <ref name="xproc.declare-step"/>
+                </element>
+                <element name="pipeline" ns="http://www.w3.org/ns/xproc">
+                    <ref name="xproc.declare-step"/>
+                </element>
+            </choice>
+        </element>
+    </define>
+
+    <define name="step-declaration.evaluated">
+        <element name="step-declaration">
+            <choice>
+                <element name="declare-step" ns="http://www.w3.org/ns/xproc">
+                    <ref name="xproc.declare-step.evaluated"/>
+                </element>
+                <element name="pipeline" ns="http://www.w3.org/ns/xproc">
+                    <ref name="xproc.declare-step.evaluated"/>
+                </element>
+            </choice>
+        </element>
+    </define>
+
+    <define name="output">
+        <element name="output" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+            <!-- TODO -->
+            <ref name="any-attribute"/>
+            <ref name="any-content"/>
+        </element>
+    </define>
+
+    <define name="common-attributes">
+        <zeroOrMore>
+            <attribute>
+                <nsName ns="http://www.w3.org/XML/1998/namespace"/>
+            </attribute>
+        </zeroOrMore>
+    </define>
+
+    <define name="pending">
+        <a:documentation xml:space="preserve">
+            Anything that is within a &lt;pending&gt; element will remain untested, but will be
+            reported as (eventual) desired behaviour. This is a good way of commenting out
+            a set of behaviours that haven't been implemented yet, or scenarios whose
+            desired behaviour hasn't been determined, or tests for code that you're not
+            currently working on, to make the testing process faster.
+            
+            An optional label attribute can be used to describe why the scenario or
+            assertion should not be tested.
+        </a:documentation>
+
+        <element name="pending" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+            <ref name="common-attributes"/>
+            <optional>
+                <ref name="label"/>
+            </optional>
+            <choice>
+                <oneOrMore>
+                    <ref name="scenario"/>
+                </oneOrMore>
+                <oneOrMore>
+                    <ref name="assertion"/>
+                </oneOrMore>
+            </choice>
+        </element>
+    </define>
+
+    <define name="import">
+        <a:documentation xml:space="preserve">
+            An import brings in all the scenarios from the referenced file (which must
+            itself be an XProcSpec description). All the unshared scenarios in that imported
+            XProcSpec will be run on the stylesheet that this XProcSpec document describes.
+            Importing is recursive and may be circular (although only one copy of a given
+            imported document will actually be imported).
+        </a:documentation>
+        <element name="import" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+            <ref name="common-attributes"/>
+            <attribute name="href">
+                <data type="anyURI"/>
+            </attribute>
+        </element>
+    </define>
+
+    <define name="scenario">
+        <a:documentation xml:space="preserve">
+            A step scenario is one based on a call to a pipeline. The &lt;call&gt;
+            element defines the step call and the inputs, options and parameters passed to it and the
+            &lt;assertion&gt; elements test the ports of the pipeline. Child scenarios
+            can override the ports, options and parameters in the template call.
+        </a:documentation>
+        <element name="scenario" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+            <ref name="scenario.common"/>
+            <zeroOrMore>
+                <ref name="like"/>
+            </zeroOrMore>
+            <choice>
+                <oneOrMore>
+                    <ref name="scenario"/>
+                </oneOrMore>
+                <oneOrMore>
+                    <ref name="context"/>
+                    <oneOrMore>
+                        <ref name="assertion"/>
+                    </oneOrMore>
+                </oneOrMore>
+            </choice>
+        </element>
+    </define>
+
+    <define name="scenario.common">
+        <ref name="common-attributes"/>
+        <!--<ref name="label"/>-->
+        <ref name="call"/>
+    </define>
+
+    <define name="label">
+        <a:documentation xml:space="preserve">
+            A scenario's label should describe the context that the scenario sets. Top-
+            level scenarios' labels should be of the form "the square of a number" or 
+            "the XHTML for a &lt;P1&gt; element". Nested scenario labels will usually start with 
+            the word "with"; it should make sense if the labels of ancestor scenarios are 
+            concatenated with this one. For example "with a Type attribute".
+        </a:documentation>
+        <choice>
+            <attribute name="label"/>
+            <element name="label" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+                <ref name="common-attributes"/>
+                <ref name="any-content"/>
+            </element>
+        </choice>
+    </define>
+    
+    <define name="label.attribute-required">
+        <attribute name="label"/>
+        <optional>
+            <element name="label" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+                <ref name="common-attributes"/>
+                <ref name="any-content"/>
+            </element>
+        </optional>
+    </define>
+
+    <define name="context">
+        <a:documentation>Defines the context against which assertions</a:documentation>
+        <element name="context" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+            <ref name="common-attributes"/>
+            <optional>
+                <ref name="label"/>
+            </optional>
+            <oneOrMore>
+                <ref name="document"/>
+            </oneOrMore>
+        </element>
+    </define>
+
+    <define name="assertion">
+        <choice>
+            <ref name="expect"/>
+            <ref name="validate"/>
+            <!-- extension point for future types of assertions -->
+        </choice>
+    </define>
+
+    <define name="expect">
+        <a:documentation xml:space="preserve">
+            Defines what is expected from the context document(s).
+            The types of expectations are as follows:
+            * XPath assertion:
+              The "test" attribute can be used to perform XPath tests
+              against each of the input documents. The XPath expression
+              is evaluated once against each document in the context.
+              The test succeeds if the XPath expression does not fail
+              when evaluated against any of the context documents.
+            * Document comparison:
+              If no "test" attribute is present, then the sequence of
+              documents in the context will be compared to the sequence
+              of documents defined by the x:document elements inside the
+              x:expect element. The x:document element can be used to
+              refer to ports (both inputs and outputs), directory
+              listings (recursive and non-recursive), file contents
+              (xml, html, text, binary) as well as information about
+              a file or directory (size, readable, writable, hidden,
+              last-modified).
+        </a:documentation>
+        <element name="expect" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+            <ref name="common-attributes"/>
+            <ref name="label"/>
+            <choice>
+                <group>
+                    <!-- XPath assertion -->
+                    <attribute name="test"/>
+                </group>
+                <group>
+                    <!-- Document comparison -->
+                    <zeroOrMore>
+                        <ref name="document"/>
+                    </zeroOrMore>
+                </group>
+            </choice>
+        </element>
+    </define>
+
+    <define name="validate">
+        <a:documentation>Validates the context document(s).</a:documentation>
+        <element name="validate" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+            <ref name="common-attributes"/>
+            <ref name="label"/>
+            <attribute name="grammar">
+                <choice>
+                    <value>relax-ng</value>
+                    <value>schematron</value>
+                    <value>xml-schema</value>
+                </choice>
+            </attribute>
+        </element>
+    </define>
+
+    <define name="call">
+        <a:documentation xml:space="preserve">
+            A &lt;call&gt; element defines a step call and the
+            inputs, options and parameters passed to it.
+        </a:documentation>
+        <element name="call" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+            <ref name="common-attributes"/>
+            <optional>
+                <attribute name="step">
+                    <data type="QName"/>
+                </attribute>
+            </optional>
+            <zeroOrMore>
+                <choice>
+                    <ref name="option"/>
+                    <ref name="param"/>
+                    <ref name="input"/>
+                </choice>
+            </zeroOrMore>
+        </element>
+    </define>
+
+    <define name="option">
+        <element name="option" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+            <ref name="common-attributes"/>
+            <attribute name="name">
+                <data type="QName"/>
+            </attribute>
+            <attribute name="select"/>
+            <optional>
+                <attribute name="base-uri">
+                    <choice>
+                        <value>temp-dir</value>
+                    </choice>
+                </attribute>
+            </optional>
+        </element>
+    </define>
+
+    <define name="param">
+        <element name="param" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+            <ref name="common-attributes"/>
+            <attribute name="name">
+                <data type="QName"/>
+            </attribute>
+            <attribute name="select"/>
+            <optional>
+                <attribute name="base-uri">
+                    <choice>
+                        <value>temp-dir</value>
+                    </choice>
+                </attribute>
+            </optional>
+        </element>
+    </define>
+
+    <define name="input">
+        <element name="input" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+            <ref name="common-attributes"/>
+            <zeroOrMore>
+                <ref name="document"/>
+            </zeroOrMore>
+        </element>
+    </define>
+
+    <define name="like">
+        <a:documentation xml:space="preserve">
+            The &lt;like&gt; element pulls a shared scenario into this one (which may be shared
+            or unshared). Any environment set within the shared scenario is merged with
+            this one, and any tests in the shared scenario are run in addition to the
+            ones in this scenario. This allows for modular, reusable sets of tests which
+            can be applied in multiple contexts.
+        </a:documentation>
+        <element name="like" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+            <ref name="common-attributes"/>
+            <ref name="label"/>
+        </element>
+    </define>
+
+    <define name="document">
+        <a:documentation xml:space="preserve">
+            The x:document element is used to refer to a document (or a sequence of documents).
+            It can be used in a number of ways:
+            * Inline
+              You can provide an element inside x:document directly.
+            * File
+              Using the "file" attribute (anyURI), you can use the contents of a file.
+              The default method for reading files is "xml", but using the "method"
+              attribute you can also choose "html", "text" and "binary" as methods
+              for loading the file. You can specify a URI relative to the temporary
+              directory used for the test by specifying the "base-uri" attribute with
+              a value of "temp-dir".
+            * Directory
+              Using the "directory" attribute (anyURI), you can get a directory listing.
+              By default, the result is the same as invoking the standard XProc step
+              p:directory-list. If you specify the "recursive" attribute and give it
+              the value "true", you will get a recursive directory listing, listing
+              all subfolders and their contents as well. You can specify a URI relative
+              to the temporary directory used for the test by specifying the "base-uri"
+              attribute with a value of "temp-dir".
+        </a:documentation>
+        <element name="document" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+            <ref name="common-attributes"/>
+            <choice>
+                <group>
+                    <!-- inline document -->
+                    <ref name="any-element"/>
+                </group>
+                <group>
+                    <!-- file -->
+                    <attribute name="file">
+                        <data type="anyURI"/>
+                    </attribute>
+                    <optional>
+                        <attribute name="method">
+                            <choice>
+                                <value>xml</value>
+                                <value>html</value>
+                                <value>text</value>
+                                <value>binary</value>
+                            </choice>
+                        </attribute>
+                    </optional>
+                    <optional>
+                        <attribute name="base-uri">
+                            <choice>
+                                <value>temp-dir</value>
+                            </choice>
+                        </attribute>
+                    </optional>
+                </group>
+                <group>
+                    <!-- directory -->
+                    <attribute name="directory">
+                        <data type="anyURI"/>
+                    </attribute>
+                    <optional>
+                        <attribute name="recursive">
+                            <data type="boolean"/>
+                        </attribute>
+                    </optional>
+                    <optional>
+                        <attribute name="base-uri">
+                            <choice>
+                                <value>temp-dir</value>
+                            </choice>
+                        </attribute>
+                    </optional>
+                </group>
+            </choice>
+        </element>
+    </define>
+
+    <define name="any-content">
+        <interleave>
+            <zeroOrMore>
+                <ref name="any-element"/>
+            </zeroOrMore>
+            <text/>
+        </interleave>
+    </define>
+
+    <define name="any-element">
+        <element>
+            <anyName/>
+            <ref name="any-attribute"/>
+            <zeroOrMore>
+                <ref name="any-content"/>
+            </zeroOrMore>
+        </element>
+    </define>
+
+    <define name="any-attribute">
+        <zeroOrMore>
+            <attribute>
+                <anyName/>
+            </attribute>
+        </zeroOrMore>
+    </define>
+
+
+    <!-- Anything below this line is not used for authoring -->
+
+    <define name="description.flat.common">
+        <attribute name="test-base-uri"/>
+        <attribute name="test-grammar"/>
+        <ref name="scenario.flat"/>
+    </define>
+
+    <define name="scenario.flat">
+        <element name="scenario" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+            <ref name="scenario.common"/>
+            <optional>
+                <ref name="label"/>
+            </optional>
+            <attribute name="label"/>
+            <oneOrMore>
+                <ref name="context"/>
+                <oneOrMore>
+                    <ref name="assertion"/>
+                </oneOrMore>
+            </oneOrMore>
+        </element>
+    </define>
+
+    <define name="scenario-results">
+        <element name="scenario-results" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+            <zeroOrMore>
+                <element name="test-result" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+                    <ref name="common-attributes"/>
+                    <attribute name="label"/>
+                    <optional>
+                        <attribute name="test"/>
+                    </optional>
+                    <attribute name="test-type">
+                        <choice>
+                            <value>xml</value>
+                            <value>xpath</value>
+                            <value>error</value>
+                            <value>relax-ng</value>
+                            <value>schematron</value>
+                            <value>xml-schema</value>
+                        </choice>
+                    </attribute>
+                    <attribute name="result">
+                        <data type="boolean"/>
+                    </attribute>
+                    <element name="was" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+                        <ref name="any-content"/>
+                    </element>
+                    <element name="expected" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+                        <ref name="any-content"/>
+                    </element>
+                </element>
+            </zeroOrMore>
+        </element>
+    </define>
+
+
+    <!-- XProc elements (used for step signatures inside the x:step-declaration element) -->
+
+    <define name="xproc.declare-step.common">
+        <a:documentation xml:space="preserve">
+            The contents of a XProc step declaration/signature (simplified)
+        </a:documentation>
+        <optional>
+            <attribute name="name">
+                <data type="NCName"/>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="type">
+                <data type="QName"/>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="psvi-required">
+                <data type="boolean"/>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="xpath-version">
+                <data type="string"/>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="exclude-inline-prefixes"/>
+        </optional>
+        <optional>
+            <attribute name="version">
+                <data type="string"/>
+            </attribute>
+        </optional>
+    </define>
+
+    <define name="xproc.declare-step">
+        <ref name="xproc.declare-step.common"/>
+        <zeroOrMore>
+            <choice>
+                <ref name="xproc.input"/>
+                <ref name="xproc.output"/>
+                <ref name="xproc.option"/>
+            </choice>
+        </zeroOrMore>
+    </define>
+
+    <define name="xproc.declare-step.evaluated">
+        <ref name="xproc.declare-step.common"/>
+        <zeroOrMore>
+            <choice>
+                <ref name="xproc.input"/>
+                <ref name="xproc.output"/>
+                <ref name="xproc.option"/>
+            </choice>
+        </zeroOrMore>
+    </define>
+
+    <define name="xproc.option.common">
+        <attribute name="name">
+            <data type="NCName"/>
+        </attribute>
+        <choice>
+            <optional>
+                <optional>
+                    <attribute name="required">
+                        <value>false</value>
+                    </attribute>
+                </optional>
+                <attribute name="select"/>
+            </optional>
+            <optional>
+                <attribute name="required">
+                    <data type="boolean"/>
+                </attribute>
+            </optional>
+        </choice>
+        <ref name="any-attribute"/>
+    </define>
+
+    <define name="xproc.option">
+        <element name="option" ns="http://www.w3.org/ns/xproc">
+            <ref name="xproc.option.common"/>
+        </element>
+    </define>
+
+    <define name="xproc.option.evaluated">
+        <element name="option" ns="http://www.w3.org/ns/xproc">
+            <ref name="xproc.option.common"/>
+            <attribute name="value"/>
+        </element>
+    </define>
+
+    <define name="xproc.input">
+        <element name="input" ns="http://www.w3.org/ns/xproc">
+            <ref name="xproc.ports-common"/>
+            <optional>
+                <attribute name="select"/>
+            </optional>
+            <choice>
+                <element name="empty" ns="http://www.w3.org/ns/xproc">
+                    <ref name="any-attribute"/>
+                </element>
+                <zeroOrMore>
+                    <ref name="xproc.document-inline-data"/>
+                </zeroOrMore>
+            </choice>
+        </element>
+    </define>
+
+    <define name="xproc.output">
+        <element name="output" ns="http://www.w3.org/ns/xproc">
+            <ref name="xproc.ports-common"/>
+            <choice>
+                <element name="empty" ns="http://www.w3.org/ns/xproc">
+                    <ref name="any-attribute"/>
+                </element>
+                <zeroOrMore>
+                    <element name="pipe" ns="http://www.w3.org/ns/xproc">
+                        <attribute name="step">
+                            <data type="NCName"/>
+                        </attribute>
+                        <attribute name="port">
+                            <data type="NCName"/>
+                        </attribute>
+                        <ref name="any-attribute"/>
+                    </element>
+                    <ref name="xproc.document-inline-data"/>
+                </zeroOrMore>
+            </choice>
+        </element>
+    </define>
+
+    <define name="xproc.ports-common">
+        <attribute name="port">
+            <data type="NCName"/>
+        </attribute>
+        <attribute name="sequence">
+            <data type="boolean"/>
+        </attribute>
+        <attribute name="primary">
+            <data type="boolean"/>
+        </attribute>
+        <attribute name="kind">
+            <choice>
+                <value>document</value>
+                <value>parameter</value>
+            </choice>
+        </attribute>
+    </define>
+
+    <define name="xproc.document-inline-data">
+        <element name="document" ns="http://www.w3.org/ns/xproc">
+            <attribute name="href">
+                <data type="anyURI"/>
+            </attribute>
+            <zeroOrMore>
+                <attribute>
+                    <anyName>
+                        <except>
+                            <name>href</name>
+                        </except>
+                    </anyName>
+                </attribute>
+            </zeroOrMore>
+            <ref name="any-attribute"/>
+        </element>
+        <element name="inline" ns="http://www.w3.org/ns/xproc">
+            <ref name="any-attribute"/>
+            <ref name="any-content"/>
+        </element>
+        <element name="data" ns="http://www.w3.org/ns/xproc">
+            <attribute name="href">
+                <data type="anyURI"/>
+            </attribute>
+            <ref name="any-attribute"/>
+        </element>
+    </define>
+
+</grammar>

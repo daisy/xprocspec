@@ -79,6 +79,13 @@
                             </p:add-attribute>
                         </p:viewport>
                         
+                        <!-- validate output grammar -->
+                        <p:validate-with-relax-ng>
+                            <p:input port="schema">
+                                <p:document href="../../schema/xprocspec.run.rng"/>
+                            </p:input>
+                        </p:validate-with-relax-ng>
+                        
                         <p:wrap-sequence wrapper="calabash-issue-102"/>
                     </p:group>
                     <p:catch name="catch">

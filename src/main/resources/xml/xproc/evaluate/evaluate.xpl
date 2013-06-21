@@ -12,6 +12,9 @@
 
     <p:for-each>
         <!-- for each scenario -->
+        
+        <p:variable name="base" select="base-uri(/*)"/>
+        
         <p:choose>
             <p:when test="/*[self::c:errors]">
                 <p:identity name="c-error"/>
@@ -40,6 +43,7 @@
             </p:when>
             <p:otherwise>
                 <p:variable name="temp-dir" select="/*/@temp-dir"/>
+                
                 <p:identity name="description"/>
                 <p:for-each name="test">
                     <!-- for each test in the scenario -->
@@ -339,7 +343,37 @@
                 </p:insert>
             </p:otherwise>
         </p:choose>
-
+        
+        <!-- validate output grammar -->
+        <p:for-each>
+            <p:try>
+                <p:group>
+                    <p:validate-with-relax-ng>
+                        <p:input port="schema">
+                            <p:document href="../../schema/xprocspec.evaluate.rng"/>
+                        </p:input>
+                    </p:validate-with-relax-ng>
+                    <p:wrap-sequence wrapper="calabash-issue-102"/>
+                </p:group>
+                <p:catch name="catch">
+                    <p:identity>
+                        <p:input port="source">
+                            <p:pipe port="error" step="catch"/>
+                        </p:input>
+                    </p:identity>
+                    <p:add-attribute match="/*" attribute-name="xml:base">
+                        <p:with-option name="attribute-value" select="$base"/>
+                    </p:add-attribute>
+                    <p:wrap-sequence wrapper="calabash-issue-102"/>
+                </p:catch>
+            </p:try>
+            <p:for-each>
+                <!-- temporary fix for https://github.com/ndw/xmlcalabash1/issues/102 -->
+                <p:iteration-source select="/calabash-issue-102/*"/>
+                <p:identity/>
+            </p:for-each>
+        </p:for-each>
+        
     </p:for-each>
 
 </p:declare-step>

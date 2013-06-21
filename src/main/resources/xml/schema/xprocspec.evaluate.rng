@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0" xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+    
+    <include href="xprocspec.rng">
+        <start>
+            <choice>
+                <ref name="description.flattened.evaluated"/>
+                <ref name="errors"/>
+            </choice>
+        </start>
+    </include>
+    
+    <define name="description.flattened.evaluated">
+        <element name="description" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+            <ref name="description.flat.common"/>
+            <ref name="step-declaration.evaluated"/>
+            <zeroOrMore>
+                <ref name="output"/>
+            </zeroOrMore>
+            <ref name="scenario-results"/>
+        </element>
+    </define>
+    
+</grammar>

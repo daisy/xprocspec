@@ -45,6 +45,14 @@
                                 <p:document href="description-to-invocation.xsl"/>
                             </p:input>
                         </p:xslt>
+                        
+                        <!-- validate output grammar -->
+                        <p:validate-with-relax-ng>
+                            <p:input port="schema">
+                                <p:document href="../../schema/xprocspec.compile.rng"/>
+                            </p:input>
+                        </p:validate-with-relax-ng>
+                        
                         <p:wrap-sequence wrapper="calabash-issue-102"/>
                     </p:group>
                     <p:catch name="catch">

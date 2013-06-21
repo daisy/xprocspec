@@ -5,7 +5,7 @@
     <p:output port="result" sequence="true">
         <p:pipe port="result" step="result"/>
     </p:output>
-    
+
     <p:option name="temp-dir" required="true"/>
 
     <p:import href="http://xmlcalabash.com/extension/steps/library-1.0.xpl"/>
@@ -34,6 +34,35 @@
     <p:choose>
         <p:when test="/*/namespace-uri()='http://www.daisy.org/ns/pipeline/xproc/test'">
             <p:output port="result" primary="true" sequence="true"/>
+
+            <!-- if xprocspec grammar is used in the input document; validate it -->
+            <p:try>
+                <p:group>
+                    <p:validate-with-relax-ng>
+                        <p:input port="schema">
+                            <p:document href="../../schema/xprocspec.rng"/>
+                        </p:input>
+                    </p:validate-with-relax-ng>
+                    <p:wrap-sequence wrapper="calabash-issue-102"/>
+                </p:group>
+                <p:catch name="catch">
+                    <p:identity>
+                        <p:input port="source">
+                            <p:pipe port="error" step="catch"/>
+                        </p:input>
+                    </p:identity>
+                    <p:add-attribute match="/*" attribute-name="xml:base">
+                        <p:with-option name="attribute-value" select="$test-base-uri"/>
+                    </p:add-attribute>
+                    <p:wrap-sequence wrapper="calabash-issue-102"/>
+                </p:catch>
+            </p:try>
+            <p:for-each>
+                <!-- temporary fix for https://github.com/ndw/xmlcalabash1/issues/102 -->
+                <p:iteration-source select="/calabash-issue-102/*"/>
+                <p:identity/>
+            </p:for-each>
+
             <p:add-attribute match="/*" attribute-name="test-grammar" attribute-value="XProcSpec"/>
         </p:when>
         <p:when test="/*/namespace-uri()='http://xproc.org/ns/testsuite'">
@@ -322,13 +351,43 @@
             <p:iteration-source select="/calabash-issue-102/*"/>
             <p:identity/>
         </p:for-each>
-        
+
         <p:for-each>
-           <p:add-attribute match="/*" attribute-name="test-base-uri">
-               <p:with-option name="attribute-value" select="$test-base-uri">
-                   <p:empty/>
-               </p:with-option>
-           </p:add-attribute>
+            <p:add-attribute match="/*" attribute-name="test-base-uri">
+                <p:with-option name="attribute-value" select="$test-base-uri">
+                    <p:empty/>
+                </p:with-option>
+            </p:add-attribute>
+        </p:for-each>
+    </p:for-each>
+
+    <!-- validate output grammar -->
+    <p:for-each>
+        <p:try>
+            <p:group>
+                <p:validate-with-relax-ng>
+                    <p:input port="schema">
+                        <p:document href="../../schema/xprocspec.preprocess.rng"/>
+                    </p:input>
+                </p:validate-with-relax-ng>
+                <p:wrap-sequence wrapper="calabash-issue-102"/>
+            </p:group>
+            <p:catch name="catch">
+                <p:identity>
+                    <p:input port="source">
+                        <p:pipe port="error" step="catch"/>
+                    </p:input>
+                </p:identity>
+                <p:add-attribute match="/*" attribute-name="xml:base">
+                    <p:with-option name="attribute-value" select="$test-base-uri"/>
+                </p:add-attribute>
+                <p:wrap-sequence wrapper="calabash-issue-102"/>
+            </p:catch>
+        </p:try>
+        <p:for-each>
+            <!-- temporary fix for https://github.com/ndw/xmlcalabash1/issues/102 -->
+            <p:iteration-source select="/calabash-issue-102/*"/>
+            <p:identity/>
         </p:for-each>
     </p:for-each>
     <p:identity name="result"/>

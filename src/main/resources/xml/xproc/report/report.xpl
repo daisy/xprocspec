@@ -107,6 +107,34 @@
             <p:pipe port="source" step="main"/>
         </p:input>
     </p:wrap-sequence>
+    
+    <!-- validate output grammar -->
+    <p:for-each>
+        <p:try>
+            <p:group>
+                <p:validate-with-relax-ng>
+                    <p:input port="schema">
+                        <p:document href="../../schema/xprocspec.results.rng"/>
+                    </p:input>
+                </p:validate-with-relax-ng>
+                <p:wrap-sequence wrapper="calabash-issue-102"/>
+            </p:group>
+            <p:catch name="catch">
+                <p:identity>
+                    <p:input port="source">
+                        <p:pipe port="error" step="catch"/>
+                    </p:input>
+                </p:identity>
+                <p:wrap-sequence wrapper="x:test-report"/>
+                <p:wrap-sequence wrapper="calabash-issue-102"/>
+            </p:catch>
+        </p:try>
+        <p:for-each>
+            <!-- temporary fix for https://github.com/ndw/xmlcalabash1/issues/102 -->
+            <p:iteration-source select="/calabash-issue-102/*"/>
+            <p:identity/>
+        </p:for-each>
+    </p:for-each>
     <p:identity name="result"/>
 
     <p:for-each>
