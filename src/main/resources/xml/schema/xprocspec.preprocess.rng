@@ -12,6 +12,7 @@
         <define name="description">
             <element name="description" ns="http://www.daisy.org/ns/pipeline/xproc/test">
                 <a:documentation>after preprocessing, each description has a new step-declaration element, no imports and only one scenario</a:documentation>
+                <ref name="description.common"/>
                 <attribute name="test-base-uri"/>
                 <attribute name="test-grammar"/>
                 <ref name="step-declaration"/>
@@ -53,6 +54,10 @@
             <a:documentation>if an error occurs an XProc error document will be returned, allowing graceful error reporting</a:documentation>
             <attribute name="xml:base"/>
             <attribute name="error-location"/>
+            <attribute name="test-base-uri"/>
+            <optional>
+                <attribute name="test-grammar"/>
+            </optional>
             <zeroOrMore>
                 <element name="error" ns="http://www.w3.org/ns/xproc-step">
                     <optional>
@@ -98,7 +103,7 @@
 
     <define name="step-declaration">
         <a:documentation>an XProc step declaration</a:documentation>
-        <element name="step-declaration">
+        <element name="step-declaration" ns="http://www.daisy.org/ns/pipeline/xproc/test">
             <choice>
                 <element name="declare-step" ns="http://www.w3.org/ns/xproc">
                     <ref name="xproc.declare-step"/>
@@ -124,6 +129,11 @@
                 <data type="QName"/>
             </attribute>
         </optional>
+        <attribute name="type" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+            <data type="string">
+                <param name="pattern">\{.*\}.*</param>
+            </data>
+        </attribute>
         <optional>
             <attribute name="psvi-required">
                 <data type="boolean"/>

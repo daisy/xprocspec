@@ -18,7 +18,7 @@
         <p:choose>
             <p:when test="/*[self::c:errors]">
                 <p:identity name="c-error"/>
-                <p:wrap-sequence wrapper="x:description"/>
+                <!--<p:wrap-sequence wrapper="x:description"/>
                 <p:wrap-sequence wrapper="x:scenario-results" name="without-test-result"/>
                 <p:wrap-sequence wrapper="c:was">
                     <p:input port="source">
@@ -39,7 +39,7 @@
                     <p:input port="insertion">
                         <p:pipe port="result" step="test-result"/>
                     </p:input>
-                </p:insert>
+                </p:insert>-->
             </p:when>
             <p:otherwise>
                 <p:variable name="temp-dir" select="/*/@temp-dir"/>
@@ -391,7 +391,7 @@
         </p:choose>
 
         <!-- validate output grammar -->
-        <p:for-each>
+        <p:group>
             <p:identity name="try.input"/>
             <p:try>
                 <p:group>
@@ -442,7 +442,7 @@
                 <p:iteration-source select="/calabash-issue-102/*"/>
                 <p:identity/>
             </p:for-each>
-        </p:for-each>
+        </p:group>
 
     </p:for-each>
 

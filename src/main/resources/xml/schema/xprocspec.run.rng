@@ -6,6 +6,7 @@
         <define name="description">
             <element name="description" ns="http://www.daisy.org/ns/pipeline/xproc/test">
                 <a:documentation>after execution, the outputs from the XProc step is appended as output elements to the description element</a:documentation>
+                <ref name="description.common"/>
                 <attribute name="test-base-uri"/>
                 <attribute name="test-grammar"/>
                 <ref name="step-declaration"/>

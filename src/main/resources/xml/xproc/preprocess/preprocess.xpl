@@ -381,6 +381,8 @@
                                             </p:input>
                                         </p:identity>
                                         <p:delete match="/*/*[not(self::p:input or self::p:output or self::p:option)]"/>
+                                        <p:add-attribute match="(/*/p:input | /*/p:output)[not(@sequence)]" attribute-name="sequence" attribute-value="false"/>
+                                        <p:add-attribute match="(/*/p:input | /*/p:output)[not(@kind)]" attribute-name="kind" attribute-value="document"/>
                                     </p:otherwise>
                                 </p:choose>
                             </p:for-each>
