@@ -36,6 +36,7 @@
             <p:output port="result" primary="true" sequence="true"/>
 
             <!-- if xprocspec grammar is used in the input document; validate it -->
+            <p:identity name="try.input"/>
             <p:try>
                 <p:group>
                     <p:validate-with-relax-ng>
@@ -54,6 +55,29 @@
                     <p:add-attribute match="/*" attribute-name="xml:base">
                         <p:with-option name="attribute-value" select="$test-base-uri"/>
                     </p:add-attribute>
+                    <p:add-attribute match="/*" attribute-name="error-location" attribute-value="preprocess.xpl - input document validation"/>
+                    
+                    <p:identity name="errors-without-was"/>
+                    <p:wrap-sequence wrapper="x:was">
+                        <p:input port="source">
+                            <p:pipe port="result" step="try.input"/>
+                        </p:input>
+                    </p:wrap-sequence>
+                    <p:add-attribute match="/*" attribute-name="xml:base">
+                        <p:with-option name="attribute-value" select="base-uri(/*/*)"/>
+                    </p:add-attribute>
+                    <p:wrap-sequence wrapper="c:error"/>
+                    <p:add-attribute match="/*" attribute-name="type" attribute-value="was"/>
+                    <p:identity name="was"/>
+                    <p:insert match="/*" position="last-child">
+                        <p:input port="source">
+                            <p:pipe port="result" step="errors-without-was"/>
+                        </p:input>
+                        <p:input port="insertion">
+                            <p:pipe port="result" step="was"/>
+                        </p:input>
+                    </p:insert>
+                    
                     <p:wrap-sequence wrapper="calabash-issue-102"/>
                 </p:catch>
             </p:try>
@@ -74,11 +98,15 @@
                     <p:for-each>
                         <p:iteration-source select="/t:test-suite/t:test"/>
                         <p:variable name="href" select="resolve-uri(/*/@href,base-uri())"/>
+                        <p:add-attribute match="/*" attribute-name="error-location" attribute-value="xproc-test-suite-load-tests"/>
+                        
+                        <p:identity name="load-test-suite"/>
                         <p:try>
                             <p:group>
                                 <p:load>
                                     <p:with-option name="href" select="$href"/>
                                 </p:load>
+                                <p:delete match="/*/@error-location"/>
                                 <p:wrap-sequence wrapper="calabash-issue-102"/>
                             </p:group>
                             <p:catch name="catch">
@@ -90,6 +118,29 @@
                                 <p:add-attribute match="/*" attribute-name="xml:base">
                                     <p:with-option name="attribute-value" select="$href"/>
                                 </p:add-attribute>
+                                <p:add-attribute match="/*" attribute-name="error-location" attribute-value="preprocess.xpl - loading t:test-suite"/>
+                                
+                                <p:identity name="errors-without-was"/>
+                                <p:wrap-sequence wrapper="x:was">
+                                    <p:input port="source">
+                                        <p:pipe port="result" step="load-test-suite"/>
+                                    </p:input>
+                                </p:wrap-sequence>
+                                <p:add-attribute match="/*" attribute-name="xml:base">
+                                    <p:with-option name="attribute-value" select="base-uri(/*/*)"/>
+                                </p:add-attribute>
+                                <p:wrap-sequence wrapper="c:error"/>
+                                <p:add-attribute match="/*" attribute-name="type" attribute-value="was"/>
+                                <p:identity name="was"/>
+                                <p:insert match="/*" position="last-child">
+                                    <p:input port="source">
+                                        <p:pipe port="result" step="errors-without-was"/>
+                                    </p:input>
+                                    <p:input port="insertion">
+                                        <p:pipe port="result" step="was"/>
+                                    </p:input>
+                                </p:insert>
+                                
                                 <p:wrap-sequence wrapper="calabash-issue-102"/>
                             </p:catch>
                         </p:try>
@@ -111,6 +162,7 @@
                 </p:otherwise>
             </p:choose>
             <p:for-each>
+                <p:identity name="try.input"/>
                 <p:try>
                     <p:group>
                         <p:choose>
@@ -159,6 +211,29 @@
                         <p:add-attribute match="/*" attribute-name="xml:base">
                             <p:with-option name="attribute-value" select="$href"/>
                         </p:add-attribute>
+                        <p:add-attribute match="/*" attribute-name="error-location" attribute-value="preprocess.xpl - xproc test suite to xprocspec conversion"/>
+                        
+                        <p:identity name="errors-without-was"/>
+                        <p:wrap-sequence wrapper="x:was">
+                            <p:input port="source">
+                                <p:pipe port="result" step="try.input"/>
+                            </p:input>
+                        </p:wrap-sequence>
+                        <p:add-attribute match="/*" attribute-name="xml:base">
+                            <p:with-option name="attribute-value" select="base-uri(/*/*)"/>
+                        </p:add-attribute>
+                        <p:wrap-sequence wrapper="c:error"/>
+                        <p:add-attribute match="/*" attribute-name="type" attribute-value="was"/>
+                        <p:identity name="was"/>
+                        <p:insert match="/*" position="last-child">
+                            <p:input port="source">
+                                <p:pipe port="result" step="errors-without-was"/>
+                            </p:input>
+                            <p:input port="insertion">
+                                <p:pipe port="result" step="was"/>
+                            </p:input>
+                        </p:insert>
+                        
                         <p:wrap-sequence wrapper="calabash-issue-102"/>
                     </p:catch>
                 </p:try>
@@ -191,6 +266,8 @@
     <p:for-each name="for-each">
         <p:output port="scenarios" sequence="true"/>
         <p:variable name="base" select="base-uri(/*)"/>
+        
+        <p:identity name="try.input"/>
         <p:try>
             <p:group>
                 <p:output port="result" sequence="true"/>
@@ -343,6 +420,29 @@
                 <p:add-attribute match="/*" attribute-name="xml:base">
                     <p:with-option name="attribute-value" select="$base"/>
                 </p:add-attribute>
+                <p:add-attribute match="/*" attribute-name="error-location" attribute-value="preprocess.xpl - flatten scenarios and get step declaration"/>
+                
+                <p:identity name="errors-without-was"/>
+                <p:wrap-sequence wrapper="x:was">
+                    <p:input port="source">
+                        <p:pipe port="result" step="try.input"/>
+                    </p:input>
+                </p:wrap-sequence>
+                <p:add-attribute match="/*" attribute-name="xml:base">
+                    <p:with-option name="attribute-value" select="base-uri(/*/*)"/>
+                </p:add-attribute>
+                <p:wrap-sequence wrapper="c:error"/>
+                <p:add-attribute match="/*" attribute-name="type" attribute-value="was"/>
+                <p:identity name="was"/>
+                <p:insert match="/*" position="last-child">
+                    <p:input port="source">
+                        <p:pipe port="result" step="errors-without-was"/>
+                    </p:input>
+                    <p:input port="insertion">
+                        <p:pipe port="result" step="was"/>
+                    </p:input>
+                </p:insert>
+                
                 <p:wrap-sequence wrapper="calabash-issue-102"/>
             </p:catch>
         </p:try>
@@ -363,6 +463,7 @@
 
     <!-- validate output grammar -->
     <p:for-each>
+        <p:identity name="try.input"/>
         <p:try>
             <p:group>
                 <p:validate-with-relax-ng>
@@ -381,6 +482,29 @@
                 <p:add-attribute match="/*" attribute-name="xml:base">
                     <p:with-option name="attribute-value" select="$test-base-uri"/>
                 </p:add-attribute>
+                <p:add-attribute match="/*" attribute-name="error-location" attribute-value="preprocess.xpl - validate output grammar"/>
+                
+                <p:identity name="errors-without-was"/>
+                <p:wrap-sequence wrapper="x:was">
+                    <p:input port="source">
+                        <p:pipe port="result" step="try.input"/>
+                    </p:input>
+                </p:wrap-sequence>
+                <p:add-attribute match="/*" attribute-name="xml:base">
+                    <p:with-option name="attribute-value" select="base-uri(/*/*)"/>
+                </p:add-attribute>
+                <p:wrap-sequence wrapper="c:error"/>
+                <p:add-attribute match="/*" attribute-name="type" attribute-value="was"/>
+                <p:identity name="was"/>
+                <p:insert match="/*" position="last-child">
+                    <p:input port="source">
+                        <p:pipe port="result" step="errors-without-was"/>
+                    </p:input>
+                    <p:input port="insertion">
+                        <p:pipe port="result" step="was"/>
+                    </p:input>
+                </p:insert>
+                
                 <p:wrap-sequence wrapper="calabash-issue-102"/>
             </p:catch>
         </p:try>

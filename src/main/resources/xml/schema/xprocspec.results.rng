@@ -1,28 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grammar xmlns="http://relaxng.org/ns/structure/1.0" xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
 
-    <include href="xprocspec.rng">
+    <include href="xprocspec.evaluate.rng">
         <start>
             <element name="test-report" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+                <a:documentation>The x:test-report wraps all the scenario descriptions (and their results) as a single XML document.</a:documentation>
                 <zeroOrMore>
                     <choice>
-                        <ref name="description.flattened.evaluated"/>
+                        <ref name="description"/>
                         <ref name="errors"/>
                     </choice>
                 </zeroOrMore>
             </element>
         </start>
     </include>
-
-    <define name="description.flattened.evaluated">
-        <element name="description" ns="http://www.daisy.org/ns/pipeline/xproc/test">
-            <ref name="description.flat.common"/>
-            <ref name="step-declaration.evaluated"/>
-            <zeroOrMore>
-                <ref name="output"/>
-            </zeroOrMore>
-            <ref name="scenario-results"/>
-        </element>
-    </define>
 
 </grammar>

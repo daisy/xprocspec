@@ -159,19 +159,37 @@
                             <xsl:for-each select="/*/x:step-declaration/*/p:output">
                                 <xsl:text>
 </xsl:text>
-                                <p:wrap-sequence wrapper="x:output">
+                                <p:for-each>
                                     <xsl:text>
 </xsl:text>
-                                    <p:input port="source">
+                                    <p:iteration-source>
                                         <xsl:text>
 </xsl:text>
                                         <p:pipe port="{@port}" step="test"/>
                                         <xsl:text>
 </xsl:text>
-                                    </p:input>
+                                    </p:iteration-source>
                                     <xsl:text>
 </xsl:text>
-                                </p:wrap-sequence>
+                                    <p:variable name="base-uri" select="base-uri(/*)"/>
+                                    <xsl:text>
+</xsl:text>
+                                    <p:wrap-sequence wrapper="x:document"/>
+                                    <xsl:text>
+</xsl:text>
+                                    <p:add-attribute match="/*" attribute-name="xml:base">
+                                        <xsl:text>
+</xsl:text>
+                                        <p:with-option name="attribute-value" select="$base-uri"/>
+                                        <xsl:text>
+</xsl:text>
+                                    </p:add-attribute>
+                                    <xsl:text>
+</xsl:text>
+                                </p:for-each>
+                                <xsl:text>
+</xsl:text>
+                                <p:wrap-sequence wrapper="x:output"/>
                                 <xsl:text>
 </xsl:text>
                                 <p:add-attribute match="/*" attribute-name="port" attribute-value="{@port}"/>

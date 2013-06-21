@@ -110,6 +110,7 @@
     
     <!-- validate output grammar -->
     <p:for-each>
+        <p:identity name="try.input"/>
         <p:try>
             <p:group>
                 <p:validate-with-relax-ng>
@@ -125,6 +126,29 @@
                         <p:pipe port="error" step="catch"/>
                     </p:input>
                 </p:identity>
+                <p:add-attribute match="/*" attribute-name="error-location" attribute-value="report.xpl - validation of output grammar"/>
+                
+                <p:identity name="errors-without-was"/>
+                <p:wrap-sequence wrapper="x:was">
+                    <p:input port="source">
+                        <p:pipe port="result" step="try.input"/>
+                    </p:input>
+                </p:wrap-sequence>
+                <p:add-attribute match="/*" attribute-name="xml:base">
+                    <p:with-option name="attribute-value" select="base-uri(/*/*)"/>
+                </p:add-attribute>
+                <p:wrap-sequence wrapper="c:error"/>
+                <p:add-attribute match="/*" attribute-name="type" attribute-value="was"/>
+                <p:identity name="was"/>
+                <p:insert match="/*" position="last-child">
+                    <p:input port="source">
+                        <p:pipe port="result" step="errors-without-was"/>
+                    </p:input>
+                    <p:input port="insertion">
+                        <p:pipe port="result" step="was"/>
+                    </p:input>
+                </p:insert>
+                
                 <p:wrap-sequence wrapper="x:test-report"/>
                 <p:wrap-sequence wrapper="calabash-issue-102"/>
             </p:catch>

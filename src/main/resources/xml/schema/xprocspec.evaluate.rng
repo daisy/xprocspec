@@ -1,23 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grammar xmlns="http://relaxng.org/ns/structure/1.0" xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
     
-    <include href="xprocspec.rng">
-        <start>
-            <choice>
-                <ref name="description.flattened.evaluated"/>
-                <ref name="errors"/>
-            </choice>
-        </start>
+    <include href="xprocspec.run.rng">
+        
+        <define name="description">
+            <element name="description" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+                <a:documentation>after evaluation, the results from all the assertions are appended to the description element</a:documentation>
+                <attribute name="test-base-uri"/>
+                <attribute name="test-grammar"/>
+                <ref name="step-declaration"/>
+                <ref name="scenario"/>
+                <zeroOrMore>
+                    <ref name="output"/>
+                </zeroOrMore>
+                <optional>
+                    <!-- if an error occurs during step execution, then it is stored here -->
+                    <ref name="errors"/>
+                </optional>
+                <ref name="scenario-results"/>
+            </element>
+        </define>
+        
     </include>
     
-    <define name="description.flattened.evaluated">
-        <element name="description" ns="http://www.daisy.org/ns/pipeline/xproc/test">
-            <ref name="description.flat.common"/>
-            <ref name="step-declaration.evaluated"/>
+    <define name="scenario-results">
+        <element name="scenario-results" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+            <a:documentation>The x:scenario-results element contains all the results from all of the scenarios assertions.</a:documentation>
             <zeroOrMore>
-                <ref name="output"/>
+                <element name="test-result" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+                    <a:documentation xml:space="preserve">
+                        The x:test-result element represents the results from one specific assertion.
+                        The result from the evaluation is contained in the boolean "result" attribute.
+                        The type of assertion is given by the "test-type" attribute.
+                        If the assertion is an XPath test, then the XPath expression is given in the "test" attribute.
+                        The expected content and the actual content are contained in the x:expected and x:was elements respectively.
+                    </a:documentation>
+                    <ref name="common-attributes"/>
+                    <attribute name="label"/>
+                    <optional>
+                        <attribute name="test"/>
+                    </optional>
+                    <attribute name="test-type">
+                        <choice>
+                            <value>xml</value>
+                            <value>xpath</value>
+                            <value>error</value>
+                            <value>relax-ng</value>
+                            <value>schematron</value>
+                            <value>xml-schema</value>
+                        </choice>
+                    </attribute>
+                    <attribute name="result">
+                        <data type="boolean"/>
+                    </attribute>
+                    <element name="was" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+                        <ref name="any-content"/>
+                    </element>
+                    <element name="expected" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+                        <ref name="any-content"/>
+                    </element>
+                </element>
             </zeroOrMore>
-            <ref name="scenario-results"/>
         </element>
     </define>
     
