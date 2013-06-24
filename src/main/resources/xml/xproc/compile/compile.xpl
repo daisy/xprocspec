@@ -1,4 +1,4 @@
-<p:declare-step xmlns:p="http://www.w3.org/ns/xproc" type="px:test-compile" name="main" xmlns:cx="http://xmlcalabash.com/ns/extensions" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:px="http://www.daisy.org/ns/pipeline/xproc"
+<p:declare-step xmlns:p="http://www.w3.org/ns/xproc" type="pxi:test-compile" name="main" xmlns:cx="http://xmlcalabash.com/ns/extensions" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:pxi="http://www.daisy.org/ns/pipeline/xproc-internal/xprocspec"
     exclude-inline-prefixes="#all" version="1.0" xpath-version="2.0" xmlns:cxf="http://xmlcalabash.com/ns/extensions/fileutils" xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test">
 
     <p:input port="source" sequence="true"/>
@@ -21,6 +21,11 @@
             </p:inline>
         </p:with-option>
     </cxf:mkdir>
+    <pxi:message message=" * created directory using Calabash's cxf:mkdir" cx:depends-on="mkdir" p:use-when="p:system-property('p:product-name') = 'XML Calabash'"/>
+    <pxi:message message=" * using as temporary directory: $1">
+        <p:with-option name="param1" select="$test-temp-dir"/>
+    </pxi:message>
+    <p:sink/>
     
     <p:for-each cx:depends-on="mkdir">
         <!-- convert each x:description/scenario/x:call to an XProc script -->
@@ -29,6 +34,7 @@
         </p:iteration-source>
         <p:choose>
             <p:when test="/*[self::c:errors]">
+                <pxi:message message=" * error document; skipping"/>
                 <p:identity/>
             </p:when>
             <p:otherwise>
@@ -37,11 +43,15 @@
                 <p:identity name="try.input"/>
                 <p:try>
                     <p:group>
+                        <p:variable name="test-name" select="concat('test',p:iteration-position())"/>
+                        <pxi:message message="converting test '$1' to XProc">
+                            <p:with-option name="param1" select="$test-name"/>
+                        </pxi:message>
                         <p:add-attribute match="/*" attribute-name="temp-dir">
                             <p:with-option name="attribute-value" select="$test-temp-dir"/>
                         </p:add-attribute>
                         <p:xslt>
-                            <p:with-param name="name" select="concat('test',p:iteration-position())"/>
+                            <p:with-param name="name" select="$test-name"/>
                             <p:with-param name="temp-dir" select="$test-temp-dir"/>
                             <p:input port="stylesheet">
                                 <p:document href="description-to-invocation.xsl"/>

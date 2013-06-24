@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<p:declare-step version="1.0" type="px:xprocspec-directory-list" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:p="http://www.w3.org/ns/xproc" xmlns:px="http://www.daisy.org/ns/pipeline/xproc"
-    xmlns:pxi="http://www.daisy.org/ns/pipeline/xproc/internal">
+<p:declare-step version="1.0" type="pxi:directory-list" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:p="http://www.w3.org/ns/xproc" xmlns:pxi="http://www.daisy.org/ns/pipeline/xproc-internal/xprocspec">
 
     <p:documentation>The p:directory-list step will return the contents of a single directory. The px:directory-list step will process a directory and it's subdirectories recursively. See also:
         http://xproc.org/library/#recursive-directory-list.</p:documentation>
@@ -9,7 +8,7 @@
     <p:option name="path" required="true"/>
     <p:option name="depth" select="-1"/>
 
-    <p:declare-step type="pxi:xprocspec-directory-list">
+    <p:declare-step type="pxi:directory-list-recursive">
         <p:output port="result"/>
         <p:option name="path" required="true"/>
         <p:option name="depth" select="-1"/>
@@ -23,10 +22,10 @@
 
             <p:choose>
                 <p:when test="$depth != 0">
-                    <pxi:xprocspec-directory-list>
+                    <pxi:directory-list-recursive>
                         <p:with-option name="path" select="concat($path,'/',$name)"/>
                         <p:with-option name="depth" select="$depth - 1"/>
-                    </pxi:xprocspec-directory-list>
+                    </pxi:directory-list-recursive>
                 </p:when>
                 <p:otherwise>
                     <p:identity/>
@@ -35,10 +34,10 @@
         </p:viewport>
     </p:declare-step>
     
-    <pxi:xprocspec-directory-list>
+    <pxi:directory-list-recursive>
         <p:with-option name="path" select="$path"/>
         <p:with-option name="depth" select="$depth"/>
-    </pxi:xprocspec-directory-list>
+    </pxi:directory-list-recursive>
 
     <!-- 
          * sort directories alphabetically for easier comparison with other directories

@@ -47,6 +47,17 @@
                 </element>
             </optional>
         </define>
+
+        <define name="call">
+            <element name="call" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+                <ref name="call.common"/>
+                <attribute name="step">
+                    <data type="QName"/>
+                </attribute>
+                <attribute name="step" ns="http://www.daisy.org/ns/pipeline/xproc/test"/>
+            </element>
+        </define>
+
     </include>
 
     <define name="errors">
@@ -199,6 +210,7 @@
                 </anyName>
             </attribute>
         </zeroOrMore>
+        <ref name="xproc.common"/>
     </define>
 
     <define name="xproc.option">
@@ -279,6 +291,7 @@
         <attribute name="primary">
             <data type="boolean"/>
         </attribute>
+        <ref name="xproc.common"/>
     </define>
 
     <define name="xproc.document-inline-data">
@@ -325,6 +338,25 @@
                 <ref name="xproc.document-inline-data"/>
             </zeroOrMore>
         </choice>
+    </define>
+
+    <define name="xproc.common">
+        <zeroOrMore>
+            <choice>
+                <element name="documentation" ns="http://www.w3.org/ns/xproc">
+                    <ref name="any-attribute"/>
+                    <zeroOrMore>
+                        <ref name="any-element"/>
+                    </zeroOrMore>
+                </element>
+                <element name="pipeinfo" ns="http://www.w3.org/ns/xproc">
+                    <ref name="any-attribute"/>
+                    <zeroOrMore>
+                        <ref name="any-element"/>
+                    </zeroOrMore>
+                </element>
+            </choice>
+        </zeroOrMore>
     </define>
 
 </grammar>

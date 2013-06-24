@@ -229,26 +229,30 @@
             </attribute>
         </element>
     </define>
-
+    
+    <define name="call.common">
+        <ref name="common-attributes"/>
+        <zeroOrMore>
+            <choice>
+                <ref name="option"/>
+                <ref name="param"/>
+                <ref name="input"/>
+            </choice>
+        </zeroOrMore>
+    </define>
+    
     <define name="call">
         <a:documentation xml:space="preserve">
             A &lt;call&gt; element defines a step call and the
             inputs, options and parameters passed to it.
         </a:documentation>
         <element name="call" ns="http://www.daisy.org/ns/pipeline/xproc/test">
-            <ref name="common-attributes"/>
+            <ref name="call.common"/>
             <optional>
                 <attribute name="step">
                     <data type="QName"/>
                 </attribute>
             </optional>
-            <zeroOrMore>
-                <choice>
-                    <ref name="option"/>
-                    <ref name="param"/>
-                    <ref name="input"/>
-                </choice>
-            </zeroOrMore>
         </element>
     </define>
 

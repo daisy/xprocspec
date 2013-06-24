@@ -1,4 +1,4 @@
-<p:declare-step xmlns:p="http://www.w3.org/ns/xproc" type="px:test-evaluate" name="main" xmlns:cx="http://xmlcalabash.com/ns/extensions" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:px="http://www.daisy.org/ns/pipeline/xproc"
+<p:declare-step xmlns:p="http://www.w3.org/ns/xproc" type="pxi:test-evaluate" name="main" xmlns:cx="http://xmlcalabash.com/ns/extensions" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:pxi="http://www.daisy.org/ns/pipeline/xproc-internal/xprocspec"
     exclude-inline-prefixes="#all" version="1.0" xpath-version="2.0" xmlns:pkg="http://expath.org/ns/pkg" xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test">
 
     <p:input port="source" sequence="true"/>
@@ -80,10 +80,10 @@
                                         </p:choose>
                                     </p:when>
                                     <p:when test="/*/@directory">
-                                        <px:xprocspec-directory-list>
+                                        <pxi:directory-list>
                                             <p:with-option name="path" select="resolve-uri(/*/@directory,if (/*/@base-uri='temp-dir') then $temp-dir else base-uri(/*))"/>
                                             <p:with-option name="depth" select="if (/*/@recursive='true') then '-1' else '0'"/>
-                                        </px:xprocspec-directory-list>
+                                        </pxi:directory-list>
                                         <p:delete match="//*/@xml:base"/>
                                     </p:when>
                                     <p:when test="/*/@directory-info">
@@ -97,10 +97,10 @@
                                         </p:identity>
                                     </p:when>
                                     <p:when test="/*/@file">
-                                        <px:xprocspec-load>
+                                        <pxi:load>
                                             <p:with-option name="href" select="resolve-uri((/*/@file,/*/@href)[1],if (/*/@base-uri='temp-dir') then $temp-dir else base-uri(/*))"/>
                                             <p:with-option name="method" select="(/*/@method,'xml')[1]"/>
-                                        </px:xprocspec-load>
+                                        </pxi:load>
                                     </p:when>
                                     <p:when test="/*/@file-info">
                                         <!-- TODO: use calabash extension step, possibly rename to non-calabash namespace -->
@@ -277,10 +277,10 @@
                                                 </p:choose>
                                             </p:when>
                                             <p:when test="/*/@directory">
-                                                <px:xprocspec-directory-list>
+                                                <pxi:directory-list>
                                                     <p:with-option name="path" select="resolve-uri(/*/@directory,if (/*/@base-uri='temp-dir') then $temp-dir else base-uri(/*))"/>
                                                     <p:with-option name="depth" select="if (/*/@recursive='true') then '-1' else '0'"/>
-                                                </px:xprocspec-directory-list>
+                                                </pxi:directory-list>
                                                 <p:delete match="//*/@xml:base"/>
                                             </p:when>
                                             <p:when test="/*/@directory-info">
@@ -294,10 +294,10 @@
                                                 </p:identity>
                                             </p:when>
                                             <p:when test="/*/@file">
-                                                <px:xprocspec-load>
+                                                <pxi:load>
                                                     <p:with-option name="href" select="resolve-uri((/*/@file,/*/@href)[1],if (/*/@base-uri='temp-dir') then $temp-dir else base-uri(/*))"/>
                                                     <p:with-option name="method" select="(/*/@method,'xml')[1]"/>
-                                                </px:xprocspec-load>
+                                                </pxi:load>
                                             </p:when>
                                             <p:when test="/*/@file-info">
                                                 <!-- TODO: use calabash extension step, possibly rename to non-calabash namespace -->
@@ -318,14 +318,14 @@
                                         </p:choose>
                                     </p:for-each>
 
-                                    <px:compare>
+                                    <pxi:compare>
                                         <p:input port="source">
                                             <p:pipe port="result" step="context"/>
                                         </p:input>
                                         <p:input port="alternate">
                                             <p:pipe port="result" step="expect"/>
                                         </p:input>
-                                    </px:compare>
+                                    </pxi:compare>
 
                                     <p:add-attribute match="/*" attribute-name="test-type" attribute-value="xml"/>
                                 </p:otherwise>

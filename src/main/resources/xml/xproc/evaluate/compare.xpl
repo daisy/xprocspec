@@ -1,4 +1,4 @@
-<p:declare-step type="px:compare" name="main" version="1.0" xmlns:p="http://www.w3.org/ns/xproc" xmlns:px="http://www.daisy.org/ns/pipeline/xproc" xmlns:c="http://www.w3.org/ns/xproc-step">
+<p:declare-step type="pxi:compare" name="main" version="1.0" xmlns:p="http://www.w3.org/ns/xproc" xmlns:pxi="http://www.daisy.org/ns/pipeline/xproc-internal/xprocspec" xmlns:c="http://www.w3.org/ns/xproc-step">
     
     <!-- TODO: implement "ignore-ordering" option -->
     
