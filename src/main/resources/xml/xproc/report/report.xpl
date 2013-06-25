@@ -14,6 +14,8 @@
     <p:output port="html">
         <p:pipe port="result" step="html"/>
     </p:output>
+    
+    <p:import href="../utils/logging-library.xpl"/>
 
     <p:insert match="/html:html/html:body/html:div" position="last-child">
         <p:input port="source">
@@ -88,7 +90,7 @@
             <p:pipe port="source" step="main"/>
         </p:input>
     </p:insert>
-    <p:viewport match="c:was|c:expected">
+    <p:viewport match="c:error/*">
         <p:escape-markup/>
     </p:viewport>
     <p:xslt>

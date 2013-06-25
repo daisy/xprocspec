@@ -9,14 +9,19 @@
     <p:import href="../utils/recursive-directory-list.xpl"/>
 
     <p:import href="http://xmlcalabash.com/extension/steps/library-1.0.xpl"/>
+    <p:import href="../utils/logging-library.xpl"/>
 
-    <p:for-each>
+    <p:for-each name="current-test">
         <!-- for each scenario -->
 
         <p:variable name="base" select="base-uri(/*)"/>
+        <p:identity>
+            <p:log port="result" href="file:/tmp/current.xml"/>
+        </p:identity>
 
         <p:choose>
             <p:when test="/*[self::c:errors]">
+                <pxi:message message=" * error document; skipping"/>
                 <p:identity name="c-error"/>
                 <!--<p:wrap-sequence wrapper="x:description"/>
                 <p:wrap-sequence wrapper="x:scenario-results" name="without-test-result"/>
@@ -147,9 +152,6 @@
                                         </p:iteration-source>
                                         <p:filter>
                                             <p:with-option name="select" select="concat('if (',$test,') then /* else /*[false()]')"/>
-                                            <!--<p:input port="source">
-                                        <p:pipe port="result" step="output-port"/>
-                                    </p:input>-->
                                         </p:filter>
                                         <p:count/>
                                     </p:for-each>
@@ -356,6 +358,9 @@
                         <p:add-attribute match="/*" attribute-name="xml:base">
                             <p:with-option name="attribute-value" select="$base"/>
                         </p:add-attribute>
+                        <p:add-attribute match="/*" attribute-name="test-base-uri">
+                            <p:with-option name="attribute-value" select="$base"/>
+                        </p:add-attribute>
                         <p:add-attribute match="/*" attribute-name="error-location" attribute-value="evaluate.xpl - evaluation of assertions"/>
                         
                         <p:identity name="errors-without-was"/>
@@ -409,6 +414,9 @@
                         </p:input>
                     </p:identity>
                     <p:add-attribute match="/*" attribute-name="xml:base">
+                        <p:with-option name="attribute-value" select="$base"/>
+                    </p:add-attribute>
+                    <p:add-attribute match="/*" attribute-name="test-base-uri">
                         <p:with-option name="attribute-value" select="$base"/>
                     </p:add-attribute>
                     <p:add-attribute match="/*" attribute-name="error-location" attribute-value="evaluate.xpl - validation of output grammar"/>

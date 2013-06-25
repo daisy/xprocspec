@@ -41,7 +41,10 @@
                 <xsl:otherwise>
                     <h2>Step: <xsl:value-of select="$declaration/@type"/></h2>
                     <xsl:if test="$declaration/@type and $declaration/@x:type">
-                        <p><small><xsl:value-of select="concat(if (contains($declaration/@type,':')) then concat('xmlns:',tokenize($declaration/@type,':')[1],'=&quot;') else 'xmlns=&quot;', replace($declaration/@x:type,'\{(.*)\}.*','$1'))"/>"</small></p>
+                        <p>
+                            <small><xsl:value-of select="concat(if (contains($declaration/@type,':')) then concat('xmlns:',tokenize($declaration/@type,':')[1],'=&quot;') else 'xmlns=&quot;', replace($declaration/@x:type,'\{(.*)\}.*','$1'))"
+                                />"</small>
+                        </p>
                     </xsl:if>
                 </xsl:otherwise>
             </xsl:choose>
@@ -202,9 +205,7 @@
                 <h4>
                     <img
                         src="data:image/gif;base64,R0lGODlhGAAYAPf/AP///1XPGFnRF1DNGEvLGCC3G0bIGUHGGV7SFyS4GzG+Gii6Giy8Gvr6+mbZGF7TFy2+GjbAGWLVF2PVF1PNA/X19WPWF9/f32HZGFHPGG/mGCS5G8Hxmii8Gm3hGB3SH2DYAgm7CDLAGrq6ulnSFwa6CCi7Gvz8/DzEGSC4G0vNGBy1G2faGDfCGQK5CGnfGOz64TvDGbjtkez55F7HSD69BSW/HPb98LbrkSizC22/ZVHQGfT87V/XAh28HBy3Gxy2Gzm7DDvCGR/GHrnFuVrVGFLRGPf39zTeJE7JAxy+F3G6cyyzCmDYEjvEGVHRGTS7EjG/Gv39/R29HD28BEvMGEPBBG3gGDLUHRK8CFDbGmneGMbKxh7EHbjDuWPXGGDWGOvr6w25E7fashHGFFbQDSS7GzfTHWbfEsrwsr6+vjW7NDTcHpzoYaa/pjm6PJLWcyTCEEa+JoTOdRrOHND1siC8B1rTF0zZGyrXH6vEqjneIzDgH/v7+6a8p2jYFSi9GtXyx0bkHTjWHV7YFFbRGMDAwM7OzjjCJz/dHG3iGEW5HsvLyyzPHWHYBCLCHSOwBVbTGTHAGkzKIDzVG1bTGFbSGTbCGfL77Si7FtXh1D/PGhe9B0HDFGfgGWziFtfX19Xd1F/UF6rmgrG+sjS5DVzVBCG4D2XbCFDmHQq6DFfVGUa+Pju/FGDXCRfAB6PrZyK7IS++Jiy+KGrhGPDw8GG5ZPv++Wi7aSrZH1vTA1K6VFnSBozNgWfHT7nnoxrKGU7LCRjNGx/OHmnNMuPj4xS9Ch+4BmHDOQ/EEUfaG5PFjijQHi3SHYPRZIzYYjrgHhS6GQ++CWTZGBG6E1/WAjHRHZjjZUHDDkfBCV/VGEbJGVfRA1/EQWfFSGbcGEDiHWfbGFzXGELXG1XQGKnrdmXbGEznHTq8B1bKDjC5NGnbETreHtHzuNX2u17WDEC6HCy9GkfEA6jscCjMHlvXGG7kGSm+G2PbByPGHWjcGMbOxdXyxDzUGyW8HP///yH5BAEAAP8ALAAAAAAYABgAAAj/AP8JHCjwljsO82BxqMODoEOHN8qtA1HNEb4eIFC1gfHQYbs/uj4p8nDFgyJ7Gky5ktFRIA5e717oY+GgJotwW2ih4XatYxoKTcx9sTBBgtEJEyxM++aJwiiHM9KVwaDtwQMEWLM+EAUGA6Ek/Ag+k1fvDgkBaNOmJXGniLhgxAZiylbJErkAePPqBQCgUKRVVgIJ/EVlRwYVAxIrVsyXr5EnNeAIdIZORRUCmDNnbsxXiwpsyAR6C2JgmwEDfCedRs05FR4DnRYJ7FbqgG3OtzmfU2a7FTyBvpjEQLGJs3EAgsahcCIEihyBcyBFuNQv0XG+4Ci1aBEhQg4aAsfYwVGgQNIgdsehnREhIgr5Y70E1kJ0igEDCFjYcN5jDQKEePZlEocmAy3zyj0LLGBCM3zwhUQjgHRgQoIdcKJDAwOFwUoWNiSQwAbM5JIHPWZs4GEC/hgjSygO7TNLCPmkUMCMNM6YwiPSKKHHCQ6dQMQaIQAzxBQ/rLACED50MUwIsbhRQUcNcIELNSUkI8wHH9BBRgmq7OLFky1JcQEpS7wRjQsuiKGOLX6A0kdLBDVQzCGGjDCCGoyAcgScfPb5T0AAOw=="
-                        alt="Success:"/>
-                    No errors occured on step invocation.
-                </h4>
+                        alt="Success:"/> No errors occured on step invocation. </h4>
             </xsl:if>
             <xsl:for-each select="$tests">
                 <xsl:text>
@@ -241,6 +242,98 @@
                     </xsl:if>
                 </xsl:if>
             </xsl:for-each>
+            <hr/>
+        </section>
+    </xsl:template>
+
+    <xsl:template match="c:errors">
+        <xsl:variable name="xml-base" select="@xml:base"/>
+        <xsl:variable name="error-location" select="@error-location"/>
+        <xsl:variable name="test-base-uri" select="@test-base-uri"/>
+        <xsl:variable name="test-grammar" select="@test-grammar"/>
+        <xsl:text>
+</xsl:text>
+        <section>
+            <h2>Compilation error</h2>
+            <xsl:text>
+</xsl:text>
+            <p>
+                <xsl:if test="@xml:base">
+                    <span>xml:base: <code><xsl:value-of select="@xml:base"/></code>
+                        <br/>
+                    </span>
+                </xsl:if>
+                <xsl:if test="@error-location">
+                    <span>error-location: <code><xsl:value-of select="@error-location"/></code>
+                        <br/>
+                    </span>
+                </xsl:if>
+                <xsl:if test="@test-base-uri">
+                    <span>test-base-uri: <code><xsl:value-of select="@test-base-uri"/></code>
+                        <br/>
+                    </span>
+                </xsl:if>
+                <xsl:if test="@test-grammar">
+                    <span>test-grammar: <code><xsl:value-of select="@test-grammar"/></code>
+                        <br/>
+                    </span>
+                </xsl:if>
+            </p>
+
+            <xsl:for-each select="c:error">
+                <p>
+                    <xsl:if test="@name">
+                        <span>name: <code><xsl:value-of select="@name"/></code>
+                            <br/>
+                        </span>
+                    </xsl:if>
+                    <xsl:if test="@type and not(@type='was')">
+                        <span>type: <code><xsl:value-of select="@type"/></code>
+                            <br/>
+                        </span>
+                    </xsl:if>
+                    <xsl:if test="@code">
+                        <span>code: <code><xsl:value-of select="@code"/></code>
+                            <br/>
+                        </span>
+                    </xsl:if>
+                    <xsl:if test="@href">
+                        <span>href: <code><xsl:value-of select="@href"/></code>
+                            <br/>
+                        </span>
+                    </xsl:if>
+                    <xsl:if test="@line">
+                        <span>line: <code><xsl:value-of select="@line"/></code>
+                            <br/>
+                        </span>
+                    </xsl:if>
+                    <xsl:if test="@column">
+                        <span>column: <code><xsl:value-of select="@column"/></code>
+                            <br/>
+                        </span>
+                    </xsl:if>
+                    <xsl:if test="@offset">
+                        <span>offset: <code><xsl:value-of select="@offset"/></code>
+                            <br/>
+                        </span>
+                    </xsl:if>
+                </p>
+                <xsl:text>
+</xsl:text>
+                <div>
+                    <xsl:if test="./x:was">
+                        <h5 style="display:inline;">Was:</h5>
+                        <xsl:text>
+</xsl:text>
+                    </xsl:if>
+                    <xsl:for-each select="node()">
+                        <pre class="prettyprint"><xsl:value-of select="."/></pre>
+                    </xsl:for-each>
+                </div>
+            </xsl:for-each>
+
+            <xsl:text>
+</xsl:text>
             <hr/>
         </section>
     </xsl:template>

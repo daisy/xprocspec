@@ -8,6 +8,7 @@
     <!-- This version of run.xpl depends on Calabash and its cx:eval. Hopefully dynamic evaluation of pipelines will be included in XProc v2. -->
 
     <p:import href="http://xmlcalabash.com/extension/steps/library-1.0.xpl"/>
+    <p:import href="../utils/logging-library.xpl"/>
 
     <p:for-each>
         <p:load name="test">
@@ -15,6 +16,7 @@
         </p:load>
         <p:choose>
             <p:when test="/*[self::c:errors]">
+                <pxi:message message=" * error document; skipping"/>
                 <p:identity/>
             </p:when>
             <p:otherwise>
@@ -91,6 +93,9 @@
                         <p:add-attribute match="/*" attribute-name="xml:base">
                             <p:with-option name="attribute-value" select="$test-href"/>
                         </p:add-attribute>
+                        <p:add-attribute match="/*" attribute-name="test-base-uri">
+                            <p:with-option name="attribute-value" select="$test-href"/>
+                        </p:add-attribute>
                         <p:add-attribute match="/*" attribute-name="error-location" attribute-value="run.xpl - dynamic evaluation"/>
                         
                         <p:identity name="errors-without-was"/>
@@ -142,6 +147,9 @@
                             </p:input>
                         </p:identity>
                         <p:add-attribute match="/*" attribute-name="xml:base">
+                            <p:with-option name="attribute-value" select="$test-href"/>
+                        </p:add-attribute>
+                        <p:add-attribute match="/*" attribute-name="test-base-uri">
                             <p:with-option name="attribute-value" select="$test-href"/>
                         </p:add-attribute>
                         <p:add-attribute match="/*" attribute-name="error-location" attribute-value="run.xpl - validation of output grammar"/>

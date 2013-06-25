@@ -547,6 +547,9 @@
                 <p:add-attribute match="/*" attribute-name="xml:base">
                     <p:with-option name="attribute-value" select="$test-base-uri"/>
                 </p:add-attribute>
+                <p:add-attribute match="/*" attribute-name="test-base-uri">
+                    <p:with-option name="attribute-value" select="$test-base-uri"/>
+                </p:add-attribute>
                 <p:add-attribute match="/*" attribute-name="error-location" attribute-value="preprocess.xpl - validate output grammar"/>
 
                 <p:identity name="errors-without-was"/>

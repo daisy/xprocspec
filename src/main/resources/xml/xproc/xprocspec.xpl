@@ -40,6 +40,7 @@
     <!-- make XProc scripts out of each scenario -->
     <pxi:message message="compiling..."/>
     <pxi:test-compile name="compile">
+        <p:log port="result" href="file:/tmp/compiled.xml"/>
         <p:with-option name="temp-dir" select="$temp-dir">
             <p:inline>
                 <doc/>

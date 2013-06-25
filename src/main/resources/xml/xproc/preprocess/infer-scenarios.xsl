@@ -26,7 +26,7 @@
                                 </x:call>
                             </xsl:otherwise>
                         </xsl:choose>
-                        <xsl:copy-of select="$scenarios/x:expect"/>
+                        <xsl:copy-of select="$scenarios/(x:context|x:expect)"/>
                     </xsl:copy>
                 </x:description>
             </xsl:for-each>
