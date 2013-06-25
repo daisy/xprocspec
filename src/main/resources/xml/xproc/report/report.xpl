@@ -167,7 +167,7 @@
         <p:iteration-source>
             <p:pipe port="source" step="main"/>
         </p:iteration-source>
-        <p:viewport match="c:was|c:expected">
+        <p:viewport match="x:was|x:expected|c:error/*">
             <p:escape-markup/>
         </p:viewport>
         <p:xslt>
