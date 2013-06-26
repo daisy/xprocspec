@@ -1,6 +1,8 @@
 xprocspec - XProc testing tool
 ==============================
 
+[![Build Status](https://travis-ci.org/josteinaj/xprocspec.png?branch=dev)](https://travis-ci.org/josteinaj/xprocspec)
+
 This is an experimental tool for testing XProc scripts. The draft spec below is based on [XSpec](https://code.google.com/p/xspec/) and is implemented in XProc.
 
 Feel free to have a look at the code and give feedback. It works with the bundled example, but there's probably a lot of bugs in there, and is not yet a complete implementation of the draft spec below.
