@@ -1,10 +1,23 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://www.w3.org/ns/xproc-step" lang="en" dir="ltr">
-<head>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://www.w3.org/ns/xproc-step"><head>
         <title>xprocspec</title>
-        <meta charset="utf-8">
-        
-        
+        <meta charset="utf-8"/>
+        <script class="remove" src="http://darobin.github.com/respec/builds/respec-w3c-common.js"> </script>
+        <script class="remove">
+            var respecConfig = {
+                "specStatus": "unofficial",
+                "shortName": "xprocspec",
+                "subtitle": "A tool for testing XProc scripts",
+                "edDraftURI": "http://josteinaj.github.io/xprocspec/www/documentation/index.html",
+                "editors": [
+                    {
+                        "name": "Jostein Austvik Jacobsen",
+                        "url": "http://github.com/josteinaj",
+                        "company": "NLB",
+                        "companyURL": "http://www.nlb.no/en/"
+                    }
+                ]
+            };
+        </script>
         <style>
             /* based on the CSS used for the HTML5 spec */
             h2 + h3,
@@ -70,173 +83,14 @@
             dd{
                 padding-top:5px;
             }</style>
-    <style>/*****************************************************************
- * ReSpec 3 CSS
- * Robin Berjon - http://berjon.com/
- *****************************************************************/
-
-/* --- INLINES --- */
-em.rfc2119 { 
-    text-transform:     lowercase;
-    font-variant:       small-caps;
-    font-style:         normal;
-    color:              #900;
-}
-
-h1 acronym, h2 acronym, h3 acronym, h4 acronym, h5 acronym, h6 acronym, a acronym,
-h1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {
-    border: none;
-}
-
-dfn {
-    font-weight:    bold;
-}
-
-a.internalDFN {
-    color:  inherit;
-    border-bottom:  1px solid #99c;
-    text-decoration:    none;
-}
-
-a.externalDFN {
-    color:  inherit;
-    border-bottom:  1px dotted #ccc;
-    text-decoration:    none;
-}
-
-a.bibref {
-    text-decoration:    none;
-}
-
-cite .bibref {
-    font-style: normal;
-}
-
-code {
-    color:  #ff4500;
-}
-
-/* --- TOC --- */
-.toc a, .tof a {
-    text-decoration:    none;
-}
-
-a .secno, a .figno {
-    color:  #000;
-}
-
-ul.tof, ol.tof {
-    list-style: none outside none;
-}
-
-.caption {
-    margin-top: 0.5em;
-    font-style:   italic;
-}
-
-/* --- TABLE --- */
-table.simple {
-    border-spacing: 0;
-    border-collapse:    collapse;
-    border-bottom:  3px solid #005a9c;
-}
-
-.simple th {
-    background: #005a9c;
-    color:  #fff;
-    padding:    3px 5px;
-    text-align: left;
-}
-
-.simple th[scope="row"] {
-    background: inherit;
-    color:  inherit;
-    border-top: 1px solid #ddd;
-}
-
-.simple td {
-    padding:    3px 10px;
-    border-top: 1px solid #ddd;
-}
-
-.simple tr:nth-child(even) {
-    background: #f0f6ff;
-}
-
-/* --- DL --- */
-.section dd > p:first-child {
-    margin-top: 0;
-}
-
-.section dd > p:last-child {
-    margin-bottom: 0;
-}
-
-.section dd {
-    margin-bottom:  1em;
-}
-
-.section dl.attrs dd, .section dl.eldef dd {
-    margin-bottom:  0;
-}
-</style><link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/w3c-unofficial"></head>
-    <body class="h-entry"><div class="head">
-  <p>
-    
-  </p>
-  <h1 class="title p-name" id="title">xprocspec</h1>
-  
-    <h2 id="subtitle">A tool for testing XProc scripts</h2>
-  
-  <h2 id="unofficial-draft-02-july-2013">Unofficial Draft <time class="dt-published" datetime="2013-07-02">02 July 2013</time></h2>
-  <dl>
-    
-    
-      <dt>Latest editor's draft:</dt>
-      <dd><a href="http://josteinaj.github.io/xprocspec/www/documentation/index.html">http://josteinaj.github.io/xprocspec/www/documentation/index.html</a></dd>
-    
-    
-    
-    
-    
-    
-    <dt>Editor:</dt>
-    <dd class="p-author h-card vcard"><a class="u-url url p-name fn" href="http://github.com/josteinaj">Jostein Austvik Jacobsen</a>, <a class="p-org org h-org h-card" href="http://www.nlb.no/en/">NLB</a></dd>
-
-    
-    
-  </dl>
-  
-  
-  
-  
-    
-      
-        <p class="copyright">
-          This document is licensed under a
-          <a class="subfoot" href="http://creativecommons.org/licenses/by/3.0/" rel="license">Creative Commons
-          Attribution 3.0 License</a>.
-        </p>
-      
-    
-  
-  <hr>
-</div>
-        <section id="abstract" class="introductory"><h2>Abstract</h2><p>xprocspec is a tool for testing XProc scripts. This specification defines the grammar used to define XProc tests for use with xprocspec. This document is automatically generated based on the <a href="../../src/main/resources/xml/schema/xprocspec.rng">Relax NG schema for the xprocspec grammar</a>.</p></section><section id="sotd" class="introductory"><h2>Status of This Document</h2>
-  
-    <p>
-      This document is merely a public working draft of a potential specification. It has
-      no official standing of any kind and does not represent the support or consensus of any
-      standards organisation.
-    </p>
-    
-  
-</section><section id="toc"><h2 class="introductory">Table of Contents</h2><ul class="toc"><li class="tocline"><a href="#definitions" class="tocxref"><span class="secno">1. </span>Definitions</a><ul class="toc"><li class="tocline"><a href="#the-description-element" class="tocxref"><span class="secno">1.1 </span>The <code>description</code> element</a></li><li class="tocline"><a href="#the-pending-element" class="tocxref"><span class="secno">1.2 </span>The <code>pending</code> element</a></li><li class="tocline"><a href="#the-pending-element" class="tocxref"><span class="secno">1.3 </span>The <code>pending</code> element</a></li><li class="tocline"><a href="#the-import-element" class="tocxref"><span class="secno">1.4 </span>The <code>import</code> element</a></li><li class="tocline"><a href="#the-scenario-element" class="tocxref"><span class="secno">1.5 </span>The <code>scenario</code> element</a></li><li class="tocline"><a href="#the-call-element" class="tocxref"><span class="secno">1.6 </span>The <code>call</code> element</a></li><li class="tocline"><a href="#the-label-element" class="tocxref"><span class="secno">1.7 </span>The <code>label</code> element</a></li><li class="tocline"><a href="#the-context-element" class="tocxref"><span class="secno">1.8 </span>The <code>context</code> element</a></li><li class="tocline"><a href="#the-expect-element" class="tocxref"><span class="secno">1.9 </span>The <code>expect</code> element</a></li><li class="tocline"><a href="#the-validate-element" class="tocxref"><span class="secno">1.10 </span>The <code>validate</code> element</a></li><li class="tocline"><a href="#the-expect-element" class="tocxref"><span class="secno">1.11 </span>The <code>expect</code> element</a></li><li class="tocline"><a href="#the-validate-element" class="tocxref"><span class="secno">1.12 </span>The <code>validate</code> element</a></li><li class="tocline"><a href="#the-option-element" class="tocxref"><span class="secno">1.13 </span>The <code>option</code> element</a></li><li class="tocline"><a href="#the-param-element" class="tocxref"><span class="secno">1.14 </span>The <code>param</code> element</a></li><li class="tocline"><a href="#the-input-element" class="tocxref"><span class="secno">1.15 </span>The <code>input</code> element</a></li><li class="tocline"><a href="#the-call-element" class="tocxref"><span class="secno">1.16 </span>The <code>call</code> element</a></li><li class="tocline"><a href="#the-option-element" class="tocxref"><span class="secno">1.17 </span>The <code>option</code> element</a></li><li class="tocline"><a href="#the-param-element" class="tocxref"><span class="secno">1.18 </span>The <code>param</code> element</a></li><li class="tocline"><a href="#the-input-element" class="tocxref"><span class="secno">1.19 </span>The <code>input</code> element</a></li><li class="tocline"><a href="#the-like-element" class="tocxref"><span class="secno">1.20 </span>The <code>like</code> element</a></li><li class="tocline"><a href="#the-document-element" class="tocxref"><span class="secno">1.21 </span>The <code>document</code> element</a></li></ul></li><li class="tocline"><a href="#acknowledgements" class="tocxref"><span class="secno">A. </span>Acknowledgements</a></li></ul></section>
+    </head>
+    <body>
+        <section id="abstract">xprocspec is a tool for testing XProc scripts. This specification defines the grammar used to define XProc tests for use with xprocspec. This document is automatically generated based on the <a href="../../src/main/resources/xml/schema/xprocspec.rng">Relax NG schema for the xprocspec grammar</a>.</section>
         
-<section xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test" xmlns:f="http://www.daisy.org/ns/pipeline/xproc/test/internal-functions" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" id="definitions">
-<!--OddPage--><h2><span class="secno">1. </span>Definitions</h2>
+<section xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test" xmlns:f="http://www.daisy.org/ns/pipeline/xproc/test/internal-functions" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">
+<h2>Definitions</h2>
 <section id="the-description-element">
-<h3><span class="secno">1.1 </span>The <code>description</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-pending-element"><code>pending</code></a><small title="optional">?</small></dd><dd><a href="#the-import-element"><code>import</code></a><small title="zero or more">*</small></dd><dd><a href="#the-scenario-element"><code>scenario</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-description-script"><code>script</code></a>
+<h2>The <code>description</code> element</h2><dl class="element"><dt>Content model:</dt><dd><a href="#the-pending-element"><code>pending</code></a><small title="optional">?</small></dd><dd><a href="#the-import-element"><code>import</code></a><small title="zero or more">*</small></dd><dd><a href="#the-scenario-element"><code>scenario</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-description-script"><code>script</code></a>
                                                 -- type: anyURI</dd><dd><a href="#attr-description-version"><code>version</code></a><small title="optional">?</small>
                                                 -- type: NMTOKEN</dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p id="attr-description-script">The <code>script</code> attribute is a URI that points to the XProc script you want to test.</p>
@@ -244,7 +98,7 @@ table.simple {
 <p>The <code>description</code> element is the root element of an xprocspec test and describes the functionality of a specific XProc script.</p>
 </section>
 <section id="the-pending-element">
-<h3><span class="secno">1.2 </span>The <code>pending</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-label-element"><code>label</code></a><small title="optional">?</small></dd><dd><a href="#the-scenario-element"><code>scenario</code></a><small title="zero or more">*</small></dd><dd><a href="#the-expect-element"><code>expect</code></a><small title="zero or more">*</small></dd><dd><a href="#the-validate-element"><code>validate</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-pending-label"><code>label</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
+<h2>The <code>pending</code> element</h2><dl class="element"><dt>Content model:</dt><dd><a href="#the-label-element"><code>label</code></a><small title="optional">?</small></dd><dd><a href="#the-scenario-element"><code>scenario</code></a><small title="zero or more">*</small></dd><dd><a href="#the-expect-element"><code>expect</code></a><small title="zero or more">*</small></dd><dd><a href="#the-validate-element"><code>validate</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-pending-label"><code>label</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p id="attr-pending-label"><em>TODO</em>: the attribute <code>label</code> has not been documented yet.</p>
 <p>
                 Anything that is within a &lt;pending&gt; element will remain untested, but will be
@@ -258,7 +112,7 @@ table.simple {
             </p>
 </section>
 <section id="the-pending-element">
-<h3><span class="secno">1.3 </span>The <code>pending</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-label-element"><code>label</code></a><small title="optional">?</small></dd><dd><a href="#the-scenario-element"><code>scenario</code></a><small title="zero or more">*</small></dd><dd><a href="#the-expect-element"><code>expect</code></a><small title="zero or more">*</small></dd><dd><a href="#the-validate-element"><code>validate</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-pending-label"><code>label</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
+<h2>The <code>pending</code> element</h2><dl class="element"><dt>Content model:</dt><dd><a href="#the-label-element"><code>label</code></a><small title="optional">?</small></dd><dd><a href="#the-scenario-element"><code>scenario</code></a><small title="zero or more">*</small></dd><dd><a href="#the-expect-element"><code>expect</code></a><small title="zero or more">*</small></dd><dd><a href="#the-validate-element"><code>validate</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-pending-label"><code>label</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p id="attr-pending-label"><em>TODO</em>: the attribute <code>label</code> has not been documented yet.</p>
 <p>
                 Anything that is within a &lt;pending&gt; element will remain untested, but will be
@@ -272,7 +126,7 @@ table.simple {
             </p>
 </section>
 <section id="the-import-element">
-<h3><span class="secno">1.4 </span>The <code>import</code> element</h3><dl class="element"><dt>Content model:</dt><dd>Empty.</dd><dt>Content attributes:</dt><dd><a href="#attr-import-href"><code>href</code></a>
+<h2>The <code>import</code> element</h2><dl class="element"><dt>Content model:</dt><dd>Empty.</dd><dt>Content attributes:</dt><dd><a href="#attr-import-href"><code>href</code></a>
                                                 -- type: anyURI</dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p id="attr-import-href"><em>TODO</em>: the attribute <code>href</code> has not been documented yet.</p>
 <p>
@@ -284,7 +138,7 @@ table.simple {
             </p>
 </section>
 <section id="the-scenario-element">
-<h3><span class="secno">1.5 </span>The <code>scenario</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-call-element"><code>call</code></a></dd><dd><a href="#the-label-element"><code>label</code></a><small title="optional">?</small></dd><dd><a href="#the-like-element"><code>like</code></a><small title="zero or more">*</small></dd><dd><a href="#the-scenario-element"><code>scenario</code></a><small title="zero or more">*</small></dd><dd><a href="#the-context-element"><code>context</code></a><small title="zero or more">*</small></dd><dd><a href="#the-expect-element"><code>expect</code></a><small title="zero or more">*</small></dd><dd><a href="#the-validate-element"><code>validate</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-scenario-label"><code>label</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
+<h2>The <code>scenario</code> element</h2><dl class="element"><dt>Content model:</dt><dd><a href="#the-call-element"><code>call</code></a></dd><dd><a href="#the-label-element"><code>label</code></a><small title="optional">?</small></dd><dd><a href="#the-like-element"><code>like</code></a><small title="zero or more">*</small></dd><dd><a href="#the-scenario-element"><code>scenario</code></a><small title="zero or more">*</small></dd><dd><a href="#the-context-element"><code>context</code></a><small title="zero or more">*</small></dd><dd><a href="#the-expect-element"><code>expect</code></a><small title="zero or more">*</small></dd><dd><a href="#the-validate-element"><code>validate</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-scenario-label"><code>label</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p id="attr-scenario-label"><em>TODO</em>: the attribute <code>label</code> has not been documented yet.</p>
 <p>
                 A step scenario is one based on a call to a pipeline. The &lt;call&gt;
@@ -294,7 +148,7 @@ table.simple {
             </p>
 </section>
 <section id="the-call-element">
-<h3><span class="secno">1.6 </span>The <code>call</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-option-element"><code>option</code></a><small title="zero or more">*</small></dd><dd><a href="#the-param-element"><code>param</code></a><small title="zero or more">*</small></dd><dd><a href="#the-input-element"><code>input</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-call-step"><code>step</code></a><small title="optional">?</small>
+<h2>The <code>call</code> element</h2><dl class="element"><dt>Content model:</dt><dd><a href="#the-option-element"><code>option</code></a><small title="zero or more">*</small></dd><dd><a href="#the-param-element"><code>param</code></a><small title="zero or more">*</small></dd><dd><a href="#the-input-element"><code>input</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-call-step"><code>step</code></a><small title="optional">?</small>
                                                 -- type: QName</dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p id="attr-call-step"><em>TODO</em>: the attribute <code>step</code> has not been documented yet.</p>
 <p>
@@ -303,16 +157,16 @@ table.simple {
             </p>
 </section>
 <section id="the-label-element">
-<h3><span class="secno">1.7 </span>The <code>label</code> element</h3><dl class="element"><dt>Content model:</dt><dd>Zero or more elements from any namespace.</dd><dt>Content attributes:</dt><dd>Zero or more attributes from any namespace.</dd></dl>
+<h2>The <code>label</code> element</h2><dl class="element"><dt>Content model:</dt><dd>Zero or more elements from any namespace.</dd><dt>Content attributes:</dt><dd>Zero or more attributes from any namespace.</dd></dl>
 <p><em>TODO</em>: the element <code>label</code> has not been documented yet.</p>
 </section>
 <section id="the-context-element">
-<h3><span class="secno">1.8 </span>The <code>context</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-label-element"><code>label</code></a><small title="optional">?</small></dd><dd><a href="#the-document-element"><code>document</code></a><small title="oen or more">+</small></dd><dt>Content attributes:</dt><dd><a href="#attr-context-label"><code>label</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
+<h2>The <code>context</code> element</h2><dl class="element"><dt>Content model:</dt><dd><a href="#the-label-element"><code>label</code></a><small title="optional">?</small></dd><dd><a href="#the-document-element"><code>document</code></a><small title="oen or more">+</small></dd><dt>Content attributes:</dt><dd><a href="#attr-context-label"><code>label</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p id="attr-context-label"><em>TODO</em>: the attribute <code>label</code> has not been documented yet.</p>
 <p>Defines the context against which assertions</p>
 </section>
 <section id="the-expect-element">
-<h3><span class="secno">1.9 </span>The <code>expect</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-label-element"><code>label</code></a><small title="optional">?</small></dd><dd><a href="#the-document-element"><code>document</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-expect-label"><code>label</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-test"><code>test</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
+<h2>The <code>expect</code> element</h2><dl class="element"><dt>Content model:</dt><dd><a href="#the-label-element"><code>label</code></a><small title="optional">?</small></dd><dd><a href="#the-document-element"><code>document</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-expect-label"><code>label</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-test"><code>test</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p id="attr-expect-label"><em>TODO</em>: the attribute <code>label</code> has not been documented yet.</p>
 <p id="attr-expect-test"><em>TODO</em>: the attribute <code>test</code> has not been documented yet.</p>
 
@@ -340,7 +194,7 @@ table.simple {
             
 </section>
 <section id="the-validate-element">
-<h3><span class="secno">1.10 </span>The <code>validate</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-label-element"><code>label</code></a><small title="optional">?</small></dd><dt>Content attributes:</dt><dd><a href="#attr-validate-grammar"><code>grammar</code></a><small title="optional">?</small>
+<h2>The <code>validate</code> element</h2><dl class="element"><dt>Content model:</dt><dd><a href="#the-label-element"><code>label</code></a><small title="optional">?</small></dd><dt>Content attributes:</dt><dd><a href="#attr-validate-grammar"><code>grammar</code></a><small title="optional">?</small>
                                                 -- values: 
                                                 <code>relax-ng</code>, <code>schematron</code>, <code>xml-schema</code></dd><dd><a href="#attr-validate-label"><code>label</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p id="attr-validate-grammar"><em>TODO</em>: the attribute <code>grammar</code> has not been documented yet.</p>
@@ -348,7 +202,7 @@ table.simple {
 <p>Validates the context document(s).</p>
 </section>
 <section id="the-expect-element">
-<h3><span class="secno">1.11 </span>The <code>expect</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-label-element"><code>label</code></a><small title="optional">?</small></dd><dd><a href="#the-document-element"><code>document</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-expect-label"><code>label</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-test"><code>test</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
+<h2>The <code>expect</code> element</h2><dl class="element"><dt>Content model:</dt><dd><a href="#the-label-element"><code>label</code></a><small title="optional">?</small></dd><dd><a href="#the-document-element"><code>document</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-expect-label"><code>label</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-test"><code>test</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p id="attr-expect-label"><em>TODO</em>: the attribute <code>label</code> has not been documented yet.</p>
 <p id="attr-expect-test"><em>TODO</em>: the attribute <code>test</code> has not been documented yet.</p>
 
@@ -376,7 +230,7 @@ table.simple {
             
 </section>
 <section id="the-validate-element">
-<h3><span class="secno">1.12 </span>The <code>validate</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-label-element"><code>label</code></a><small title="optional">?</small></dd><dt>Content attributes:</dt><dd><a href="#attr-validate-grammar"><code>grammar</code></a>
+<h2>The <code>validate</code> element</h2><dl class="element"><dt>Content model:</dt><dd><a href="#the-label-element"><code>label</code></a><small title="optional">?</small></dd><dt>Content attributes:</dt><dd><a href="#attr-validate-grammar"><code>grammar</code></a>
                                                 -- values: 
                                                 <code>relax-ng</code>, <code>schematron</code>, <code>xml-schema</code></dd><dd><a href="#attr-validate-label"><code>label</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p id="attr-validate-grammar"><em>TODO</em>: the attribute <code>grammar</code> has not been documented yet.</p>
@@ -384,7 +238,7 @@ table.simple {
 <p>Validates the context document(s).</p>
 </section>
 <section id="the-option-element">
-<h3><span class="secno">1.13 </span>The <code>option</code> element</h3><dl class="element"><dt>Content model:</dt><dd>Empty.</dd><dt>Content attributes:</dt><dd><a href="#attr-option-base-uri"><code>base-uri</code></a><small title="optional">?</small>
+<h2>The <code>option</code> element</h2><dl class="element"><dt>Content model:</dt><dd>Empty.</dd><dt>Content attributes:</dt><dd><a href="#attr-option-base-uri"><code>base-uri</code></a><small title="optional">?</small>
                                                 -- values: 
                                                 <code>temp-dir</code></dd><dd><a href="#attr-option-name"><code>name</code></a><small title="optional">?</small>
                                                 -- type: QName</dd><dd><a href="#attr-option-select"><code>select</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
@@ -394,7 +248,7 @@ table.simple {
 <p><em>TODO</em>: the element <code>option</code> has not been documented yet.</p>
 </section>
 <section id="the-param-element">
-<h3><span class="secno">1.14 </span>The <code>param</code> element</h3><dl class="element"><dt>Content model:</dt><dd>Empty.</dd><dt>Content attributes:</dt><dd><a href="#attr-param-base-uri"><code>base-uri</code></a><small title="optional">?</small>
+<h2>The <code>param</code> element</h2><dl class="element"><dt>Content model:</dt><dd>Empty.</dd><dt>Content attributes:</dt><dd><a href="#attr-param-base-uri"><code>base-uri</code></a><small title="optional">?</small>
                                                 -- values: 
                                                 <code>temp-dir</code></dd><dd><a href="#attr-param-name"><code>name</code></a><small title="optional">?</small>
                                                 -- type: QName</dd><dd><a href="#attr-param-select"><code>select</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
@@ -404,11 +258,11 @@ table.simple {
 <p><em>TODO</em>: the element <code>param</code> has not been documented yet.</p>
 </section>
 <section id="the-input-element">
-<h3><span class="secno">1.15 </span>The <code>input</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-document-element"><code>document</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd>Zero or more attributes from any namespace.</dd></dl>
+<h2>The <code>input</code> element</h2><dl class="element"><dt>Content model:</dt><dd><a href="#the-document-element"><code>document</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd>Zero or more attributes from any namespace.</dd></dl>
 <p><em>TODO</em>: the element <code>input</code> has not been documented yet.</p>
 </section>
 <section id="the-call-element">
-<h3><span class="secno">1.16 </span>The <code>call</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-option-element"><code>option</code></a><small title="zero or more">*</small></dd><dd><a href="#the-param-element"><code>param</code></a><small title="zero or more">*</small></dd><dd><a href="#the-input-element"><code>input</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-call-step"><code>step</code></a><small title="optional">?</small>
+<h2>The <code>call</code> element</h2><dl class="element"><dt>Content model:</dt><dd><a href="#the-option-element"><code>option</code></a><small title="zero or more">*</small></dd><dd><a href="#the-param-element"><code>param</code></a><small title="zero or more">*</small></dd><dd><a href="#the-input-element"><code>input</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-call-step"><code>step</code></a><small title="optional">?</small>
                                                 -- type: QName</dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p id="attr-call-step"><em>TODO</em>: the attribute <code>step</code> has not been documented yet.</p>
 <p>
@@ -417,7 +271,7 @@ table.simple {
             </p>
 </section>
 <section id="the-option-element">
-<h3><span class="secno">1.17 </span>The <code>option</code> element</h3><dl class="element"><dt>Content model:</dt><dd>Empty.</dd><dt>Content attributes:</dt><dd><a href="#attr-option-base-uri"><code>base-uri</code></a><small title="optional">?</small>
+<h2>The <code>option</code> element</h2><dl class="element"><dt>Content model:</dt><dd>Empty.</dd><dt>Content attributes:</dt><dd><a href="#attr-option-base-uri"><code>base-uri</code></a><small title="optional">?</small>
                                                 -- values: 
                                                 <code>temp-dir</code></dd><dd><a href="#attr-option-name"><code>name</code></a>
                                                 -- type: QName</dd><dd><a href="#attr-option-select"><code>select</code></a></dd><dd>Zero or more attributes from any namespace.</dd></dl>
@@ -427,7 +281,7 @@ table.simple {
 <p><em>TODO</em>: the element <code>option</code> has not been documented yet.</p>
 </section>
 <section id="the-param-element">
-<h3><span class="secno">1.18 </span>The <code>param</code> element</h3><dl class="element"><dt>Content model:</dt><dd>Empty.</dd><dt>Content attributes:</dt><dd><a href="#attr-param-base-uri"><code>base-uri</code></a><small title="optional">?</small>
+<h2>The <code>param</code> element</h2><dl class="element"><dt>Content model:</dt><dd>Empty.</dd><dt>Content attributes:</dt><dd><a href="#attr-param-base-uri"><code>base-uri</code></a><small title="optional">?</small>
                                                 -- values: 
                                                 <code>temp-dir</code></dd><dd><a href="#attr-param-name"><code>name</code></a>
                                                 -- type: QName</dd><dd><a href="#attr-param-select"><code>select</code></a></dd><dd>Zero or more attributes from any namespace.</dd></dl>
@@ -437,11 +291,11 @@ table.simple {
 <p><em>TODO</em>: the element <code>param</code> has not been documented yet.</p>
 </section>
 <section id="the-input-element">
-<h3><span class="secno">1.19 </span>The <code>input</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-document-element"><code>document</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd>Zero or more attributes from any namespace.</dd></dl>
+<h2>The <code>input</code> element</h2><dl class="element"><dt>Content model:</dt><dd><a href="#the-document-element"><code>document</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd>Zero or more attributes from any namespace.</dd></dl>
 <p><em>TODO</em>: the element <code>input</code> has not been documented yet.</p>
 </section>
 <section id="the-like-element">
-<h3><span class="secno">1.20 </span>The <code>like</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-label-element"><code>label</code></a><small title="optional">?</small></dd><dt>Content attributes:</dt><dd><a href="#attr-like-label"><code>label</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
+<h2>The <code>like</code> element</h2><dl class="element"><dt>Content model:</dt><dd><a href="#the-label-element"><code>label</code></a><small title="optional">?</small></dd><dt>Content attributes:</dt><dd><a href="#attr-like-label"><code>label</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p id="attr-like-label"><em>TODO</em>: the attribute <code>label</code> has not been documented yet.</p>
 <p>
                 The &lt;like&gt; element pulls a shared scenario into this one (which may be shared
@@ -452,7 +306,7 @@ table.simple {
             </p>
 </section>
 <section id="the-document-element">
-<h3><span class="secno">1.21 </span>The <code>document</code> element</h3><dl class="element"><dt>Content model:</dt><dd>One element from any namespace. (optional)</dd><dt>Content attributes:</dt><dd><a href="#attr-document-base-uri"><code>base-uri</code></a><small title="optional">?</small>
+<h2>The <code>document</code> element</h2><dl class="element"><dt>Content model:</dt><dd>One element from any namespace. (optional)</dd><dt>Content attributes:</dt><dd><a href="#attr-document-base-uri"><code>base-uri</code></a><small title="optional">?</small>
                                                 -- values: 
                                                 <code>temp-dir</code></dd><dd><a href="#attr-document-directory"><code>directory</code></a><small title="optional">?</small>
                                                 -- type: anyURI</dd><dd><a href="#attr-document-file"><code>file</code></a><small title="optional">?</small>
@@ -494,8 +348,8 @@ table.simple {
             
 </section>
 </section>
-        <section class="appendix" id="acknowledgements">
-            <!--OddPage--><h2><span class="secno">A. </span>Acknowledgements</h2>
+        <section class="appendix">
+            <h2>Acknowledgements</h2>
             <p>This specification is generated using a combination of <a href="https://github.com/darobin/respec" target="_blank">respec</a> (for the W3C-style specification) and <a href="http://xmlcalabash.com/" target="_blank">XML Calabash</a> (for
                 running a custom XProc script that converts the Relax NG-files into HTML).</p>
         </section>

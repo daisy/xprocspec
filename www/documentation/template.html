@@ -1,76 +1,95 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <title>This Is The Name Of Your Specification</title>
+        <title>xprocspec</title>
         <meta charset="utf-8" />
-        <script src="http://darobin.github.com/respec/builds/respec-w3c-common.js" class="remove"></script>
+        <script src="http://darobin.github.com/respec/builds/respec-w3c-common.js" class="remove"> </script>
         <script class="remove">
-      var respecConfig = {
-          // specification status (e.g. WD, LCWD, NOTE, etc.). If in doubt use ED.
-          specStatus:           "unofficial",
-          
-          // the specification's short name, as in http://www.w3.org/TR/short-name/
-          shortName:            "xprocspec",
-
-          // if your specification has a subtitle that goes below the main
-          // formal title, define it here
-          subtitle   :  "A tool for testing XProc scripts",
-
-          // if you wish the publication date to be other than today, set this
-          // publishDate:  "2009-08-06",
-
-          // if the specification's copyright date is a range of years, specify
-          // the start date here:
-          // copyrightStart: "2005"
-
-          // if there is a previously published draft, uncomment this and set its YYYY-MM-DD date
-          // and its maturity status
-          // previousPublishDate:  "1977-03-15",
-          // previousMaturity:  "WD",
-
-          // if there a publicly available Editor's Draft, this is the link
-          edDraftURI:           "http://josteinaj.github.io/xprocspec/documentation/index.html",
-
-          // if this is a LCWD, uncomment and set the end of its review period
-          // lcEnd: "2009-08-05",
-
-          // editors, add as many as you like
-          // only "name" is required
-          editors:  [
-              { name: "Jostein Austvik Jacobsen", url: "http://github.com/josteinaj",
-                company: "NLB", companyURL: "http://www.nlb.no/" },
-          ],
-
-          // authors, add as many as you like. 
-          // This is optional, uncomment if you have authors as well as editors.
-          // only "name" is required. Same format as editors.
-
-          //authors:  [
-          //    { name: "Your Name", url: "http://example.org/",
-          //      company: "Your Company", companyURL: "http://example.com/" },
-          //],
-          
-          // name of the WG
-          // wg:           "XProcSpec Documentation Generator",
-          
-          // URI of the public WG page
-          wgURI:        "https://github.com/josteinaj/xprocspec/contributors",
-          
-          // name (without the @w3c.org) of the public mailing to which comments are due
-          // wgPublicList: "spec-writers-anonymous",
-          
-          // URI of the patent status for this WG, for Rec-track documents
-          // !!!! IMPORTANT !!!!
-          // This is important for Rec-track documents, do not copy a patent URI from a random
-          // document unless you know what you're doing. If in doubt ask your friendly neighbourhood
-          // Team Contact.
-          // wgPatentURI:  "",
-      };
-    </script>
+            var respecConfig = {
+                "specStatus": "unofficial",
+                "shortName": "xprocspec",
+                "subtitle": "A tool for testing XProc scripts",
+                "edDraftURI": "http://josteinaj.github.io/xprocspec/www/documentation/index.html",
+                "editors": [
+                    {
+                        "name": "Jostein Austvik Jacobsen",
+                        "url": "http://github.com/josteinaj",
+                        "company": "NLB",
+                        "companyURL": "http://www.nlb.no/en/"
+                    }
+                ]
+            };
+        </script>
+        <style>
+            /* based on the CSS used for the HTML5 spec */
+            h2 + h3,
+            h3 + h4,
+            h4 + h5,
+            h5 + h6{
+                margin-top:0.5em;
+            }
+            h1,
+            h2,
+            h3,
+            h4,
+            h5,
+            h6{
+                page-break-after:avoid;
+            }
+            h3{
+                position:relative;
+                z-index:3;
+                padding-top:20px;
+            }
+            h2 + .element,
+            h2 + div + .element,
+            h3 + .element,
+            h3 + div + .element,
+            h4 + .element,
+            h4 + div + .element,
+            h5 + .element,
+            h5 + div + .element,
+            h6 + .element,
+            h6 + div + .element{
+                margin-top:-3em;
+                padding-top:2em;
+            }
+            .element{
+                background:#F4F4FA;
+                color:black;
+                margin:0 0 1em 0.15em;
+                padding:0 1em 1em 0.75em;
+                border-left:solid #9999FF 0.25em;
+                position:relative;
+                z-index:1;
+            }
+            .element:before{
+                position:absolute;
+                z-index:2;
+                top:0;
+                left:-1.15em;
+                height:2em;
+                width:0.9em;
+                background:#F4F4FA;
+                content:' ';
+                border-style:none none solid solid;
+                border-color:#9999FF;
+                border-width:0.25em;
+            }
+            section{
+                padding-bottom:20px;
+            }
+            dt{
+                padding-top:10px;
+            }
+            dd{
+                padding-top:5px;
+            }</style>
     </head>
     <body>
-        <section id="abstract">XProcSpec is a tool for testing XProc scripts.</section>
-        <section id="replaceme">TODO</section>
+        <section id="abstract">xprocspec is a tool for testing XProc scripts. This specification defines the grammar used to define XProc tests for use with xprocspec. This document is automatically generated based on the <a
+                href="../../src/main/resources/xml/schema/xprocspec.rng">Relax NG schema for the xprocspec grammar</a>.</section>
+        <section id="replaceme"> </section>
         <section class="appendix">
             <h2>Acknowledgements</h2>
             <p>This specification is generated using a combination of <a href="https://github.com/darobin/respec" target="_blank">respec</a> (for the W3C-style specification) and <a href="http://xmlcalabash.com/" target="_blank">XML Calabash</a> (for
