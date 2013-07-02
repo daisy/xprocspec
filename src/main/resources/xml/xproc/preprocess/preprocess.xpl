@@ -117,7 +117,7 @@
                 <p:identity/>
             </p:for-each>
 
-            <p:add-attribute match="/*" attribute-name="test-grammar" attribute-value="XProcSpec"/>
+            <p:add-attribute match="/*" attribute-name="test-grammar" attribute-value="xprocspec"/>
         </p:when>
         <p:when test="/*/namespace-uri()='http://xproc.org/ns/testsuite'">
             <p:output port="result" primary="true" sequence="true"/>

@@ -16,7 +16,7 @@ The `junit` output port contains a JUnit report used the [pipeline-xproc-connect
 # Draft specification
 
 ## x:description
-The x:description element must be the root element of an XProcSpec document. It describes one or more test scenarios for an XProc step or a library of XProc steps.
+The x:description element must be the root element of an xprocspec document. It describes one or more test scenarios for an XProc step or a library of XProc steps.
 
 ### Required attributes:
 script: the URI to the XProc script.
@@ -32,7 +32,7 @@ One or more of the following in any order:
 * x:pending
 
 ## x:import
-An import brings in all the scenarios from the referenced file (which must itself be an XProcSpec description document). All the unshared scenarios in that imported XProcSpec will be run on the XProc script that this XProcSpec document describes. Importing is recursive and may be circular (although only one copy of a given imported document will actually be imported).
+An import brings in all the scenarios from the referenced file (which must itself be an xprocspec description document). All the unshared scenarios in that imported xprocspec will be run on the XProc script that this xprocspec document describes. Importing is recursive and may be circular (although only one copy of a given imported document will actually be imported).
 
 ### Required attributes:
 * href: URI to the document to be imported.

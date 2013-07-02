@@ -86,8 +86,8 @@
         <element name="import" ns="http://www.daisy.org/ns/pipeline/xproc/test">
             <a:documentation xml:space="preserve">
                 An import brings in all the scenarios from the referenced file (which must
-                itself be an XProcSpec description). All the unshared scenarios in that imported
-                XProcSpec will be run on the stylesheet that this XProcSpec document describes.
+                itself be an xprocspec description). All the unshared scenarios in that imported
+                xprocspec will be run on the stylesheet that this xprocspec document describes.
                 Importing is recursive and may be circular (although only one copy of a given
                 imported document will actually be imported).
             </a:documentation>
