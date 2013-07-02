@@ -31,7 +31,7 @@
     <p:output port="result.document.secondary.select-children" sequence="true">
         <p:pipe port="source.document.secondary.select-children" step="main"/>
     </p:output>
-    <p:output port="result.parameter.primary.sequence">
+    <p:output port="result.parameter.primary.sequence" sequence="true">
         <p:pipe port="source.parameter.primary.sequence" step="main"/>
     </p:output>
     <p:output port="result.parameter.secondary">

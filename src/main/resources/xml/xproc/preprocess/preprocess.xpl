@@ -342,13 +342,29 @@
                             </pxi:message>
                             <p:for-each>
                                 <p:iteration-source select="/*/*"/>
+                                <pxi:message message="   * step: $1">
+                                    <p:with-option name="param1" select="/*/@step"/>
+                                </pxi:message>
                                 <p:identity/>
                             </p:for-each>
                             <p:identity name="calls"/>
-
-                            <p:load>
-                                <p:with-option name="href" select="$script-uri"/>
-                            </p:load>
+                            
+                            <p:try>
+                                <p:group>
+                                    <pxi:message message=" * trying to load: $1">
+                                        <p:with-option name="param1" select="$script-uri"/>
+                                    </pxi:message>
+                                    <p:load>
+                                        <p:with-option name="href" select="$script-uri"/>
+                                    </p:load>
+                                    <pxi:message message="   * success!"/>
+                                </p:group>
+                                <p:catch>
+                                    <pxi:error code="XPS02" message=" * unable to load script: $1">
+                                        <p:with-option name="param1" select="$script-uri"/>
+                                    </pxi:error>
+                                </p:catch>
+                            </p:try>
                             <p:viewport match="//p:declare-step | //p:pipeline">
                                 <p:add-attribute match="/*" attribute-name="x:type">
                                     <p:with-option name="attribute-value" select="concat('{',namespace-uri-from-QName(resolve-QName(/*/@type,/*)),'}',tokenize(/*/@type,':')[last()])"/>

@@ -40,12 +40,12 @@
             </p:when>
             <p:otherwise>
                 <p:variable name="base" select="base-uri(/*)"/>
-
+                
                 <p:identity name="try.input"/>
                 <p:try>
                     <p:group>
                         <p:variable name="test-name" select="concat('test',p:iteration-position())"/>
-                        <pxi:message message="converting test '$1' to XProc">
+                        <pxi:message message=" * converting test '$1' to XProc">
                             <p:with-option name="param1" select="$test-name"/>
                         </pxi:message>
                         <p:add-attribute match="/*" attribute-name="temp-dir">
@@ -58,6 +58,9 @@
                                 <p:document href="description-to-invocation.xsl"/>
                             </p:input>
                         </p:xslt>
+                        <pxi:message message="   * done"/>
+                        
+                        <p:wrap-sequence wrapper="calabash-issue-102"/>
                     </p:group>
                     <p:catch name="catch">
                         <p:identity>
@@ -107,11 +110,15 @@
                 <p:try>
                     <p:group>
                         <!-- validate output grammar -->
+                        <pxi:message message=" * validating output grammar for $1">
+                            <p:with-option name="param1" select="$base"/>
+                        </pxi:message>
                         <p:validate-with-relax-ng>
                             <p:input port="schema">
                                 <p:document href="../../schema/xprocspec.compile.rng"/>
                             </p:input>
                         </p:validate-with-relax-ng>
+                        <pxi:message message="   * done!"/>
 
                         <p:wrap-sequence wrapper="calabash-issue-102"/>
                     </p:group>

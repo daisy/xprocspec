@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-model href="http://www.daisy.org/pipeline/modules/xprocspec/xprocspec.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
-<x:description xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test" xmlns:ex="http://example.net/ns" script="../steps/identity.xpl">
+<x:description xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test" xmlns:ex="http://example.net/ns" script="steps/identity.xpl">
     <x:scenario label="Identity">
         <x:call step="ex:identity">
             <x:option name="option" select="'option-value'"/>

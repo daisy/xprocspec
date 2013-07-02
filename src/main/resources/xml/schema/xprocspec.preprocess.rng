@@ -252,30 +252,35 @@
     <define name="xproc.output">
         <element name="output" ns="http://www.w3.org/ns/xproc">
             <ref name="xproc.ports-common"/>
+            <attribute name="kind">
+                <value>document</value>
+            </attribute>
             <choice>
                 <element name="empty" ns="http://www.w3.org/ns/xproc">
                     <ref name="any-attribute"/>
                 </element>
                 <zeroOrMore>
-                    <element name="pipe" ns="http://www.w3.org/ns/xproc">
-                        <attribute name="step">
-                            <data type="NCName"/>
-                        </attribute>
-                        <attribute name="port">
-                            <data type="NCName"/>
-                        </attribute>
-                        <zeroOrMore>
-                            <attribute ns="">
-                                <anyName>
-                                    <except>
-                                        <name>step</name>
-                                        <name>port</name>
-                                    </except>
-                                </anyName>
-                            </attribute>
-                        </zeroOrMore>
-                    </element>
-                    <ref name="xproc.document-inline-data"/>
+                    <choice>
+                       <element name="pipe" ns="http://www.w3.org/ns/xproc">
+                           <attribute name="step">
+                               <data type="NCName"/>
+                           </attribute>
+                           <attribute name="port">
+                               <data type="NCName"/>
+                           </attribute>
+                           <zeroOrMore>
+                               <attribute ns="">
+                                   <anyName>
+                                       <except>
+                                           <name>step</name>
+                                           <name>port</name>
+                                       </except>
+                                   </anyName>
+                               </attribute>
+                           </zeroOrMore>
+                       </element>
+                       <ref name="xproc.document-inline-data"/>
+                    </choice>
                 </zeroOrMore>
             </choice>
         </element>
@@ -295,38 +300,40 @@
     </define>
 
     <define name="xproc.document-inline-data">
-        <element name="document" ns="http://www.w3.org/ns/xproc">
-            <attribute name="href">
-                <data type="anyURI"/>
-            </attribute>
-            <zeroOrMore>
-                <attribute ns="">
-                    <anyName>
-                        <except>
-                            <name>href</name>
-                        </except>
-                    </anyName>
+        <choice>
+            <element name="document" ns="http://www.w3.org/ns/xproc">
+                <attribute name="href">
+                    <data type="anyURI"/>
                 </attribute>
-            </zeroOrMore>
-        </element>
-        <element name="inline" ns="http://www.w3.org/ns/xproc">
-            <ref name="any-attribute"/>
-            <ref name="any-content"/>
-        </element>
-        <element name="data" ns="http://www.w3.org/ns/xproc">
-            <attribute name="href">
-                <data type="anyURI"/>
-            </attribute>
-            <zeroOrMore>
-                <attribute ns="">
-                    <anyName>
-                        <except>
-                            <name>href</name>
-                        </except>
-                    </anyName>
+                <zeroOrMore>
+                    <attribute ns="">
+                        <anyName>
+                            <except>
+                                <name>href</name>
+                            </except>
+                        </anyName>
+                    </attribute>
+                </zeroOrMore>
+            </element>
+            <element name="inline" ns="http://www.w3.org/ns/xproc">
+                <ref name="any-attribute"/>
+                <ref name="any-content"/>
+            </element>
+            <element name="data" ns="http://www.w3.org/ns/xproc">
+                <attribute name="href">
+                    <data type="anyURI"/>
                 </attribute>
-            </zeroOrMore>
-        </element>
+                <zeroOrMore>
+                    <attribute ns="">
+                        <anyName>
+                            <except>
+                                <name>href</name>
+                            </except>
+                        </anyName>
+                    </attribute>
+                </zeroOrMore>
+            </element>
+        </choice>
     </define>
 
     <define name="xproc.param-set">
