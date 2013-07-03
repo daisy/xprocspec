@@ -18,41 +18,26 @@
     </p:declare-step>
 
     <p:declare-step type="pxi:perform-imports" name="perform-imports">
-        <p:input port="source" primary="true"/>
-        <p:output port="result" sequence="true" primary="true">
-            <p:pipe port="source" step="perform-imports"/>
-            <p:pipe port="result" step="perform-imports.imports"/>
-        </p:output>
+        <p:input port="source"/>
+        <p:output port="result"/>
         <pxi:message message=" * checking $1 for imports">
             <p:with-option name="param1" select="base-uri(/*)"/>
         </pxi:message>
-        <p:choose>
-            <p:when test="/*/x:import">
-                <p:for-each>
-                    <p:iteration-source select="/*/x:import"/>
-                    <p:variable name="import-href" select="resolve-uri(/*/@href,base-uri(/*))"/>
-                    <pxi:message message=" * importing $1">
-                        <p:with-option name="param1" select="$import-href"/>
-                    </pxi:message>
-                    <p:load>
-                        <p:with-option name="href" select="$import-href"/>
-                    </p:load>
-                    <!-- TODO: validate grammar -->
-                    <pxi:perform-imports/>
-                    <p:add-attribute match="/*" attribute-name="test-uri">
-                        <p:with-option name="attribute-value" select="base-uri(/*)"/>
-                    </p:add-attribute>
-                </p:for-each>
-            </p:when>
-            <p:otherwise>
-                <pxi:message message=" * nothing to import: $1">
-                    <p:with-option name="param1" select="base-uri(/*)"/>
-                </pxi:message>
+        <p:viewport match="/*/x:import">
+            <p:variable name="import-href" select="resolve-uri(/*/@href,base-uri(/*))"/>
+            <pxi:message message=" * importing $1">
+                <p:with-option name="param1" select="$import-href"/>
+            </pxi:message>
+            <p:load>
+                <p:with-option name="href" select="$import-href"/>
+            </p:load>
+            <!-- TODO: validate loaded grammar -->
+            <pxi:perform-imports/>
+            <p:for-each>
+                <p:iteration-source select="/*/x:scenario"/>
                 <p:identity/>
-            </p:otherwise>
-        </p:choose>
-        <p:identity name="perform-imports.imports"/>
-        <p:sink/>
+            </p:for-each>
+        </p:viewport>
     </p:declare-step>
 
     <p:variable name="test-base-uri" select="base-uri(/*)"/>
@@ -447,11 +432,15 @@
                                 <p:pipe port="result" step="main-document"/>
                             </p:input>
                         </p:identity>
-                        <pxi:message message=" * checking for imports"/>
-                        <pxi:perform-imports/>
+                        <pxi:message message=" * checking for imports">
+                            <p:log port="result" href="file:/tmp/preprocess.import.in.xml"/>
+                        </pxi:message>
+                        <pxi:perform-imports>
+                            <p:log port="result" href="file:/tmp/preprocess.import.out.xml"/>
+                        </pxi:perform-imports>
 
-                        <p:for-each>
-                            <p:output port="result" sequence="true"/>
+                        <!--<p:for-each>
+                            <p:output port="result" sequence="true"/>-->
 
                             <!-- create a new x:description document for each x:scenario element with inferred inputs, options and parameters -->
                             <pxi:message message=" * creating a new x:description document for each x:scenario element with inferred inputs, options and parameters"/>
@@ -483,7 +472,7 @@
                                     <p:with-option name="match" select="concat('/*/x:script-declaration/*[not(@x:type=&quot;',$step,'&quot;)]')"/>
                                 </p:delete>
                             </p:for-each>
-                        </p:for-each>
+                        <!--</p:for-each>-->
                     </p:otherwise>
                 </p:choose>
                 <p:wrap-sequence wrapper="calabash-issue-102"/>

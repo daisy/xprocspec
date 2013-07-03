@@ -28,7 +28,7 @@
                 <oneOrMore>
                     <ref name="context"/>
                     <oneOrMore>
-                        <ref name="assertion"/>
+                        <ref name="expect"/>
                     </oneOrMore>
                 </oneOrMore>
             </element>
@@ -230,20 +230,24 @@
                     <attribute name="kind">
                         <value>document</value>
                     </attribute>
-                    <choice>
-                        <element name="empty" ns="http://www.w3.org/ns/xproc">
-                            <ref name="any-attribute"/>
-                        </element>
-                        <zeroOrMore>
-                            <ref name="xproc.document-inline-data"/>
-                        </zeroOrMore>
-                    </choice>
+                    <optional>
+                        <choice>
+                            <element name="empty" ns="http://www.w3.org/ns/xproc">
+                                <ref name="any-attribute"/>
+                            </element>
+                            <zeroOrMore>
+                                <ref name="xproc.document-inline-data"/>
+                            </zeroOrMore>
+                        </choice>
+                    </optional>
                 </group>
                 <group>
                     <attribute name="kind">
                         <value>parameter</value>
                     </attribute>
-                    <ref name="xproc.param-set"/>
+                    <optional>
+                        <ref name="xproc.param-set"/>
+                    </optional>
                 </group>
             </choice>
         </element>

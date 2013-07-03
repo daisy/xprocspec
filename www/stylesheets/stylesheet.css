@@ -98,7 +98,7 @@ header h2 {
   max-width: 100%;
 }
 
-#downloads {
+#buttons {
   margin-bottom: 40px;
 }
 
@@ -152,16 +152,16 @@ a.button span {
   height: 23px;
 }
 
-#download-zip span {
+#button-left span {
   background: transparent url(../images/zip-icon.png) 12px 50% no-repeat;
 }
-#download-tar-gz span {
-  background: transparent url(../images/tar-gz-icon.png) 12px 50% no-repeat;
+#button-middle span {
+  background: transparent url(../images/text_xml.png) 12px 50% no-repeat;
 }
-#view-on-github span {
+#button-right span {
   background: transparent url(../images/octocat-icon.png) 12px 50% no-repeat;
 }
-#view-on-github {
+#button-right {
   margin-right: 0;
 }
 
@@ -352,10 +352,10 @@ footer a:hover {
     padding-top: 10px;
     padding-bottom: 10px;
   }
-  #downloads {
+  #buttons {
     margin-bottom: 25px;
   }
-  #download-zip, #download-tar-gz {
+  #button-left, #button-middle {
     display: none;
   }
   .inner {

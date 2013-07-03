@@ -90,7 +90,7 @@
             <p:pipe port="source" step="main"/>
         </p:input>
     </p:insert>
-    <p:viewport match="c:error/*">
+    <p:viewport match="c:error/* | x:was/* | x:expected/*">
         <p:escape-markup/>
     </p:viewport>
     <p:xslt>
@@ -104,7 +104,6 @@
     <p:identity name="html"/>
     
     <p:wrap-sequence wrapper="x:test-report">
-        <!-- TODO: decide on a main format for machine-readable reports -->
         <p:input port="source">
             <p:pipe port="source" step="main"/>
         </p:input>

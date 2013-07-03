@@ -76,7 +76,7 @@
                     <ref name="scenario"/>
                 </oneOrMore>
                 <oneOrMore>
-                    <ref name="assertion"/>
+                    <ref name="expect"/>
                 </oneOrMore>
             </choice>
         </element>
@@ -118,7 +118,7 @@
                 <oneOrMore>
                     <ref name="context"/>
                     <oneOrMore>
-                        <ref name="assertion"/>
+                        <ref name="expect"/>
                     </oneOrMore>
                 </oneOrMore>
             </choice>
@@ -160,14 +160,6 @@
         </element>
     </define>
 
-    <define name="assertion">
-        <choice>
-            <ref name="expect"/>
-            <ref name="validate"/>
-            <!-- extension point for future types of assertions -->
-        </choice>
-    </define>
-
     <define name="expect">
         <element name="expect" ns="http://www.daisy.org/ns/pipeline/xproc/test">
             <a:documentation xml:space="preserve" xmlns="http://www.w3.org/1999/xhtml">
@@ -187,10 +179,10 @@
                   of documents defined by the `document` elements inside the
                   `expect` element. The `document` element can be used to
                   refer to ports (both inputs and outputs), directory
-                  listings (recursive and non-recursive), file contents
-                  (`xml`, `html`, `text`, `binary`) as well as information about
-                  a file or directory (size, readable, writable, hidden,
-                  last-modified).</dd>
+                  listings (recursive and non-recursive) and file contents
+                  (`xml`, `html`, `text`, `binary`).
+                  <!-- TODO: possibly also information about a file or directory (size, readable, writable, hidden, last-modified) ? -->
+                  </dd>
                 </dl>
             </a:documentation>
             <ref name="common-attributes"/>
@@ -198,30 +190,35 @@
             <choice>
                 <group>
                     <!-- XPath assertion -->
+                    <attribute name="type">
+                        <value>xpath</value>
+                    </attribute>
                     <attribute name="test"/>
                 </group>
                 <group>
                     <!-- Document comparison -->
+                    <attribute name="type">
+                        <value>compare</value>
+                    </attribute>
                     <zeroOrMore>
                         <ref name="document"/>
                     </zeroOrMore>
                 </group>
+                <group>
+                    <!-- Document validation -->
+                    <attribute name="type">
+                        <a:documentation>Validates the context document(s).</a:documentation>
+                        <value>validate</value>
+                    </attribute>
+                    <attribute name="grammar">
+                        <choice>
+                            <value>relax-ng</value>
+                            <value>schematron</value>
+                            <value>xml-schema</value>
+                        </choice>
+                    </attribute>
+                </group>
             </choice>
-        </element>
-    </define>
-
-    <define name="validate">
-        <element name="validate" ns="http://www.daisy.org/ns/pipeline/xproc/test">
-            <a:documentation>Validates the context document(s).</a:documentation>
-            <ref name="common-attributes"/>
-            <ref name="label"/>
-            <attribute name="grammar">
-                <choice>
-                    <value>relax-ng</value>
-                    <value>schematron</value>
-                    <value>xml-schema</value>
-                </choice>
-            </attribute>
         </element>
     </define>
 
@@ -311,45 +308,77 @@
     <define name="document">
         <element name="document" ns="http://www.daisy.org/ns/pipeline/xproc/test">
             <a:documentation xmlns="http://www.w3.org/1999/xhtml">
-                <p>The `document` element is used to refer to a document (or a sequence of documents).
-                    It can be used in a number of ways:</p>
+                <p>The `document` element is used to define which documents are provided on a steps input
+                   ports, what the context is when making assertions, and for assertions when making
+                   comparisons. It can be used in a number of ways:</p>
                 <dl>
                     <dt>Inline:</dt>
-                    <dd>You can provide an element inside the `document` element directly.</dd>
+                    <dd>If none of the `port`, `file` or `directory` attributes are provided, then the
+                        `document` element is replaced by its content. You can provide any number of
+                        elements inside the `document` element. You can explicitly specify a `xml:base`
+                        attribute on the `document` element if you want to set the base URI of the inline
+                        document(s). If the `xml:base` is a relative URI, it will be resolved against the
+                        base URI of the xprocspec test document, or if the `base-uri` attribute is provided
+                        with the value `temp-dir`, then the `xml:base` attribute will be resolved against
+                        the temporary directory used for the test.</dd>
                     <dt>Port:</dt>
-                    <dd>You can reference a port (input or output) to get the (sequence of) document(s) from that port.</dd>
+                    <dd>If the `port` attribute is provided, then the `document` element will be replaced
+                        with the documents on that port. The `position` attribute can be used to select
+                        only part of the sequence of documents appearing on that port.</dd>
                     <dt>File:</dt>
-                    <dd>Using the `file` attribute (`anyURI`), you can use the contents of a file.
-                        The default method for reading files is `xml`, but using the `method`
+                    <dd>If the `file` attribute is provided, then the `document` element will be replaced
+                        by the contents of the file located at the location pointed to by the `file`
+                        attribute. The default method for reading files is `xml`, but using the `method`
                         attribute you can also choose `html`, `text` and `binary` as methods
-                        for loading the file. You can specify a URI relative to the temporary
-                        directory used for the test by specifying the `base-uri` attribute with
-                        a value of `temp-dir`.</dd>
+                        for loading the file. The `file` URI is by default resolved against the base URI
+                        of the xprocspec test document. However, if you provide the `base-uri` attribute
+                        with a value of `temp-dir`, then the `file` URI will be resolved against the
+                        temporary directory used for the test instead.</dd>
                     <dt>Directory:</dt>
-                    <dd>Using the `directory` attribute (`anyURI`), you can get a directory listing.
-                        By default, the result is the same as invoking the standard XProc step
+                    <dd>If the `directory` attribute is provided, then the `document` element will be
+                        replaced with a directory listing of the directory pointed to by the `directory`
+                        attribute. By default, the result is the same as invoking the standard XProc step
                         p:directory-list. If you specify the `recursive` attribute and give it
                         the value `true`, you will get a recursive directory listing, listing
-                        all subfolders and their contents as well. You can specify a URI relative
-                        to the temporary directory used for the test by specifying the `base-uri`
-                        attribute with a value of `temp-dir`.</dd>
+                        all subfolders and their contents as well. The `directory` URI is by default
+                        resolved against the base URI of the xprocspec test document. However, if you
+                        provide the `base-uri` attribute with a value of `temp-dir`, then the `directory`
+                        URI will be resolved against the temporary directory used for the test instead.</dd>
                 </dl>
             </a:documentation>
             <ref name="common-attributes"/>
             <choice>
                 <group>
                     <!-- inline document -->
+                    <attribute name="type">
+                        <value>inline</value>
+                    </attribute>
                     <ref name="any-element"/>
                 </group>
                 <group>
                     <!-- port (input or output) -->
+                    <attribute name="type">
+                        <value>port</value>
+                    </attribute>
                     <attribute name="port">
                         <data type="QName"/>
                     </attribute>
+                    <optional>
+                        <attribute name="position">
+                            <choice>
+                                <value>all</value>
+                                <value>last</value>
+                                <data type="integer"/>
+                            </choice>
+                        </attribute>
+                    </optional>
                 </group>
                 <group>
                     <!-- file -->
-                    <attribute name="file">
+                    <attribute name="type">
+                        <value>file</value>
+                    </attribute>
+                    <attribute name="href">
                         <data type="anyURI"/>
                     </attribute>
                     <optional>
@@ -372,7 +401,10 @@
                 </group>
                 <group>
                     <!-- directory -->
-                    <attribute name="directory">
+                    <attribute name="type">
+                        <value>directory</value>
+                    </attribute>
+                    <attribute name="href">
                         <data type="anyURI"/>
                     </attribute>
                     <optional>
@@ -387,6 +419,16 @@
                             </choice>
                         </attribute>
                     </optional>
+                </group>
+                <group>
+                    <!-- errors -->
+                    <attribute name="type">
+                        <a:documentation>If an error occurs during step execution, the error(s) generated is available by `c:errors` document is available</a:documentation>
+                        <value>errors</value>
+                    </attribute>
+                    <attribute name="errors">
+                        <value><![CDATA[]]></value>
+                    </attribute>
                 </group>
             </choice>
         </element>

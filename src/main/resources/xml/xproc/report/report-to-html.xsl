@@ -23,12 +23,16 @@
         </xsl:copy>
     </xsl:template>
 
-    <xsl:template match="x:scenario-results">
-        <xsl:variable name="declaration" select="./x:description/x:step-declaration/*"/>
-        <xsl:variable name="scenario" select="./x:description/x:scenario"/>
-        <xsl:variable name="tests" select="./x:test-result"/>
-        <xsl:variable name="test-grammar" select="((./x:description|./x:description/c:errors)/@test-grammar)[1]"/>
-        <xsl:variable name="test-base-uri" select="((./x:description|./x:description/c:errors)/@test-base-uri)[1]"/>
+    <xsl:template match="x:test-report">
+        <xsl:apply-templates/>
+    </xsl:template>
+    
+    <xsl:template match="x:description">
+        <xsl:variable name="declaration" select="x:step-declaration/*"/>
+        <xsl:variable name="scenario" select="x:scenario"/>
+        <xsl:variable name="tests" select="x:test-result"/>
+        <xsl:variable name="test-grammar" select="@test-grammar"/>
+        <xsl:variable name="test-base-uri" select="@test-base-uri"/>
         <!--<xsl:variable name="scenario-relative-href" select="substring-after($)"></xsl:variable>-->
         <xsl:text>
 </xsl:text>
@@ -223,26 +227,28 @@
                                 alt="Failed:"/>
                         </xsl:otherwise>
                     </xsl:choose>
-                    <xsl:value-of select="concat(' ',$scenario/@label,' ',@label)"/>
+                    <xsl:value-of select="@label"/>
                 </h4>
                 <xsl:text>
 </xsl:text>
                 <xsl:if test="not(@result='true')">
-                    <xsl:if test="./c:expected">
+                    <xsl:if test="x:expected">
                         <div>
                             <h5 style="display:inline;">Expected:</h5>
-                            <pre class="prettyprint"><xsl:value-of select="./c:expected"/></pre>
+                            <pre class="prettyprint"><xsl:value-of select="x:expected"/></pre>
                         </div>
                     </xsl:if>
-                    <xsl:if test="./c:was">
+                    <xsl:if test="x:was">
                         <div>
-                            <h5 style="display:inline;">Was:</h5>
-                            <pre class="prettyprint"><xsl:value-of select="./c:was"/></pre>
+                            <h5 style="display:inline;">Was: (<xsl:value-of select="concat(count(x:was/*),' elements, ',count(x:was/node()),' nodes')"/>)</h5>
+                            <pre class="prettyprint"><xsl:value-of select="x:was"/></pre>
                         </div>
                     </xsl:if>
                 </xsl:if>
             </xsl:for-each>
-            <hr/>
+            <xsl:if test="following::x:description | following::c:errors">
+                <hr/>
+            </xsl:if>
         </section>
     </xsl:template>
 
@@ -334,7 +340,9 @@
 
             <xsl:text>
 </xsl:text>
-            <hr/>
+            <xsl:if test="following::x:description | following::c:errors">
+                <hr/>
+            </xsl:if>
         </section>
     </xsl:template>
 

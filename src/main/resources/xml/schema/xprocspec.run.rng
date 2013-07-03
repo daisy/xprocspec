@@ -9,6 +9,7 @@
                 <ref name="description.common"/>
                 <attribute name="test-base-uri"/>
                 <attribute name="test-grammar"/>
+                <attribute name="temp-dir"/>
                 <ref name="step-declaration"/>
                 <ref name="scenario"/>
                 <zeroOrMore>
@@ -18,14 +19,6 @@
                     <!-- if an error occurs during step execution, then it is stored here -->
                     <ref name="errors"/>
                 </optional>
-            </element>
-        </define>
-
-        <define name="xproc.option">
-            <element name="option" ns="http://www.w3.org/ns/xproc">
-                <a:documentation>after execution, the value used for each option is provided in attributes named "value" on each option</a:documentation>
-                <ref name="xproc.option.common"/>
-                <attribute name="value"/>
             </element>
         </define>
 
@@ -50,6 +43,42 @@
                         </element>
                     </zeroOrMore>
                 </element>
+            </element>
+        </define>
+        
+        <define name="option">
+            <element name="option" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+                <attribute name="value"/>
+                <ref name="common-attributes"/>
+                <attribute name="name">
+                    <data type="QName"/>
+                </attribute>
+                <attribute name="select"/>
+                <optional>
+                    <attribute name="base-uri">
+                        <choice>
+                            <value>temp-dir</value>
+                        </choice>
+                    </attribute>
+                </optional>
+            </element>
+        </define>
+        
+        <define name="param">
+            <element name="param" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+                <attribute name="value"/>
+                <ref name="common-attributes"/>
+                <attribute name="name">
+                    <data type="QName"/>
+                </attribute>
+                <attribute name="select"/>
+                <optional>
+                    <attribute name="base-uri">
+                        <choice>
+                            <value>temp-dir</value>
+                        </choice>
+                    </attribute>
+                </optional>
             </element>
         </define>
         

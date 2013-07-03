@@ -188,7 +188,7 @@ table.simple {
   
     <h2 id="subtitle">A tool for testing XProc scripts</h2>
   
-  <h2 id="unofficial-draft-02-july-2013">Unofficial Draft <time class="dt-published" datetime="2013-07-02">02 July 2013</time></h2>
+  <h2 id="unofficial-draft-03-july-2013">Unofficial Draft <time class="dt-published" datetime="2013-07-03">03 July 2013</time></h2>
   <dl>
     
     
@@ -332,10 +332,10 @@ table.simple {
                   of documents defined by the <code>document</code> elements inside the
                   <code>expect</code> element. The <code>document</code> element can be used to
                   refer to ports (both inputs and outputs), directory
-                  listings (recursive and non-recursive), file contents
-                  (<code>xml</code>, <code>html</code>, <code>text</code>, <code>binary</code>) as well as information about
-                  a file or directory (size, readable, writable, hidden,
-                  last-modified).</dd>
+                  listings (recursive and non-recursive) and file contents
+                  (<code>xml</code>, <code>html</code>, <code>text</code>, <code>binary</code>).
+                  <!-- TODO: possibly also information about a file or directory (size, readable, writable, hidden, last-modified) ? -->
+                  </dd>
                 </dl>
             
 </section>
@@ -368,10 +368,10 @@ table.simple {
                   of documents defined by the <code>document</code> elements inside the
                   <code>expect</code> element. The <code>document</code> element can be used to
                   refer to ports (both inputs and outputs), directory
-                  listings (recursive and non-recursive), file contents
-                  (<code>xml</code>, <code>html</code>, <code>text</code>, <code>binary</code>) as well as information about
-                  a file or directory (size, readable, writable, hidden,
-                  last-modified).</dd>
+                  listings (recursive and non-recursive) and file contents
+                  (<code>xml</code>, <code>html</code>, <code>text</code>, <code>binary</code>).
+                  <!-- TODO: possibly also information about a file or directory (size, readable, writable, hidden, last-modified) ? -->
+                  </dd>
                 </dl>
             
 </section>
@@ -459,37 +459,55 @@ table.simple {
                                                 -- type: anyURI</dd><dd><a href="#attr-document-method"><code>method</code></a><small title="optional">?</small>
                                                 -- values: 
                                                 <code>xml</code>, <code>html</code>, <code>text</code>, <code>binary</code></dd><dd><a href="#attr-document-port"><code>port</code></a><small title="optional">?</small>
-                                                -- type: QName</dd><dd><a href="#attr-document-recursive"><code>recursive</code></a><small title="optional">?</small>
+                                                -- type: QName</dd><dd><a href="#attr-document-position"><code>position</code></a><small title="optional">?</small>
+                                                -- values: 
+                                                <code>all</code>, <code>last</code>, 
+                                                            or any value of type <code>integer</code></dd><dd><a href="#attr-document-recursive"><code>recursive</code></a><small title="optional">?</small>
                                                 -- type: boolean</dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p id="attr-document-base-uri"><em>TODO</em>: the attribute <code>base-uri</code> has not been documented yet.</p>
 <p id="attr-document-directory"><em>TODO</em>: the attribute <code>directory</code> has not been documented yet.</p>
 <p id="attr-document-file"><em>TODO</em>: the attribute <code>file</code> has not been documented yet.</p>
 <p id="attr-document-method"><em>TODO</em>: the attribute <code>method</code> has not been documented yet.</p>
 <p id="attr-document-port"><em>TODO</em>: the attribute <code>port</code> has not been documented yet.</p>
+<p id="attr-document-position"><em>TODO</em>: the attribute <code>position</code> has not been documented yet.</p>
 <p id="attr-document-recursive"><em>TODO</em>: the attribute <code>recursive</code> has not been documented yet.</p>
 
-                <p>The <code>document</code> element is used to refer to a document (or a sequence of documents).
-                    It can be used in a number of ways:</p>
+                <p>The <code>document</code> element is used to define which documents are provided on a steps input
+                   ports, what the context is when making assertions, and for assertions when making
+                   comparisons. It can be used in a number of ways:</p>
                 <dl>
                     <dt>Inline:</dt>
-                    <dd>You can provide an element inside the <code>document</code> element directly.</dd>
+                    <dd>If none of the <code>port</code>, <code>file</code> or <code>directory</code> attributes are provided, then the
+                        <code>document</code> element is replaced by its content. You can provide any number of
+                        elements inside the <code>document</code> element. You can explicitly specify a <code>xml:base</code>
+                        attribute on the <code>document</code> element if you want to set the base URI of the inline
+                        document(s). If the <code>xml:base</code> is a relative URI, it will be resolved against the
+                        base URI of the xprocspec test document, or if the <code>base-uri</code> attribute is provided
+                        with the value <code>temp-dir</code>, then the <code>xml:base</code> attribute will be resolved against
+                        the temporary directory used for the test.</dd>
                     <dt>Port:</dt>
-                    <dd>You can reference a port (input or output) to get the (sequence of) document(s) from that port.</dd>
+                    <dd>If the <code>port</code> attribute is provided, then the <code>document</code> element will be replaced
+                        with the documents on that port. The <code>position</code> attribute can be used to select
+                        only part of the sequence of documents appearing on that port.</dd>
                     <dt>File:</dt>
-                    <dd>Using the <code>file</code> attribute (<code>anyURI</code>), you can use the contents of a file.
-                        The default method for reading files is <code>xml</code>, but using the <code>method</code>
+                    <dd>If the <code>file</code> attribute is provided, then the <code>document</code> element will be replaced
+                        by the contents of the file located at the location pointed to by the <code>file</code>
+                        attribute. The default method for reading files is <code>xml</code>, but using the <code>method</code>
                         attribute you can also choose <code>html</code>, <code>text</code> and <code>binary</code> as methods
-                        for loading the file. You can specify a URI relative to the temporary
-                        directory used for the test by specifying the <code>base-uri</code> attribute with
-                        a value of <code>temp-dir</code>.</dd>
+                        for loading the file. The <code>file</code> URI is by default resolved against the base URI
+                        of the xprocspec test document. However, if you provide the <code>base-uri</code> attribute
+                        with a value of <code>temp-dir</code>, then the <code>file</code> URI will be resolved against the
+                        temporary directory used for the test instead.</dd>
                     <dt>Directory:</dt>
-                    <dd>Using the <code>directory</code> attribute (<code>anyURI</code>), you can get a directory listing.
-                        By default, the result is the same as invoking the standard XProc step
+                    <dd>If the <code>directory</code> attribute is provided, then the <code>document</code> element will be
+                        replaced with a directory listing of the directory pointed to by the <code>directory</code>
+                        attribute. By default, the result is the same as invoking the standard XProc step
                         p:directory-list. If you specify the <code>recursive</code> attribute and give it
                         the value <code>true</code>, you will get a recursive directory listing, listing
-                        all subfolders and their contents as well. You can specify a URI relative
-                        to the temporary directory used for the test by specifying the <code>base-uri</code>
-                        attribute with a value of <code>temp-dir</code>.</dd>
+                        all subfolders and their contents as well. The <code>directory</code> URI is by default
+                        resolved against the base URI of the xprocspec test document. However, if you
+                        provide the <code>base-uri</code> attribute with a value of <code>temp-dir</code>, then the <code>directory</code>
+                        URI will be resolved against the temporary directory used for the test instead.</dd>
                 </dl>
             
 </section>

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test" xmlns:f="http://www.daisy.org/ns/pipeline/xproc/test/internal-functions" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns="http://www.w3.org/1999/xhtml"
     xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" version="2.0">
-
+    
+    <!-- TODO: join documentation that is written across through multiple <attribute/>s with the same name -->
+    
     <xsl:template match="/rng:grammar">
         <xsl:text>
 </xsl:text>
@@ -90,11 +92,18 @@
                                             </xsl:when>
                                             <xsl:when test="rng:choice">
                                                 -- values: 
-                                                <xsl:for-each select="for $v in (rng:choice/rng:value) return $v">
+                                                <xsl:for-each select="for $v in (rng:choice/(rng:value|rng:data)) return $v">
                                                     <xsl:if test="position()&gt;1">
                                                         <xsl:text>, </xsl:text>
                                                     </xsl:if>
-                                                    <code><xsl:value-of select="normalize-space(.)"/></code>
+                                                    <xsl:choose>
+                                                        <xsl:when test="self::rng:value">
+                                                            <code><xsl:value-of select="normalize-space(.)"/></code>
+                                                        </xsl:when>
+                                                        <xsl:when test="self::rng:data">
+                                                            or any value of type <code><xsl:value-of select="@type"/></code>
+                                                        </xsl:when>
+                                                    </xsl:choose>
                                                 </xsl:for-each>
                                             </xsl:when>
                                         </xsl:choose>
