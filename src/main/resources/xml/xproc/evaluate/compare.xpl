@@ -1,25 +1,25 @@
 <p:declare-step type="pxi:compare" name="main" version="1.0" xmlns:p="http://www.w3.org/ns/xproc" xmlns:pxi="http://www.daisy.org/ns/pipeline/xproc-internal/xprocspec" xmlns:c="http://www.w3.org/ns/xproc-step">
-    
+
     <!-- TODO: implement "ignore-ordering" option -->
-    
+
     <p:input port="source" primary="true" sequence="true"/>
     <p:input port="alternate" sequence="true"/>
     <p:output port="result" primary="true"/>
-    
+
     <p:serialization port="result" indent="true"/>
-    
+
     <p:option name="fail-if-not-equal" select="'false'"/>
-    
+
     <p:wrap-sequence name="wrapped-source" wrapper="wrapper"/>
     <p:string-replace match="text()" replace="normalize-space(replace(.,'&#x00a0;',' '))" name="source"/>
-    
+
     <p:wrap-sequence name="wrapped-alternate" wrapper="wrapper">
         <p:input port="source">
             <p:pipe port="alternate" step="main"/>
         </p:input>
     </p:wrap-sequence>
     <p:string-replace match="text()" replace="normalize-space(replace(.,'&#x00a0;',' '))" name="alternate"/>
-    
+
     <p:compare name="compare">
         <p:with-option name="fail-if-not-equal" select="$fail-if-not-equal"/>
         <p:input port="source">
@@ -29,7 +29,7 @@
             <p:pipe port="result" step="alternate"/>
         </p:input>
     </p:compare>
-    
+
     <p:add-attribute match="/*" attribute-name="result">
         <p:input port="source">
             <p:pipe port="result" step="compare"/>
@@ -39,7 +39,7 @@
         </p:with-option>
     </p:add-attribute>
     <p:delete match="/*/node()" name="result"/>
-    
+
     <p:choose>
         <p:when test="/*/@result='true'">
             <p:identity/>
@@ -66,5 +66,5 @@
             </p:insert>
         </p:otherwise>
     </p:choose>
-    
+
 </p:declare-step>

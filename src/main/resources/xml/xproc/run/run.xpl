@@ -36,7 +36,7 @@
                             </p:input>
                         </cx:eval>
                         <p:identity name="test-output"/>
-                        
+
                         <p:identity>
                             <p:input port="source">
                                 <p:pipe port="result" step="test"/>
@@ -97,7 +97,7 @@
                             <p:with-option name="attribute-value" select="$test-href"/>
                         </p:add-attribute>
                         <p:add-attribute match="/*" attribute-name="error-location" attribute-value="run.xpl - dynamic evaluation"/>
-                        
+
                         <p:identity name="errors-without-was"/>
                         <p:wrap-sequence wrapper="x:was">
                             <p:input port="source">
@@ -118,7 +118,7 @@
                                 <p:pipe port="result" step="was"/>
                             </p:input>
                         </p:insert>
-                        
+
                         <p:wrap-sequence wrapper="calabash-issue-102"/>
                     </p:catch>
                 </p:try>
@@ -127,7 +127,7 @@
                     <p:iteration-source select="/calabash-issue-102/*"/>
                     <p:identity/>
                 </p:for-each>
-                
+
                 <p:identity name="try.input.2"/>
                 <p:try>
                     <p:group>
@@ -137,7 +137,7 @@
                                 <p:document href="../../schema/xprocspec.run.rng"/>
                             </p:input>
                         </p:validate-with-relax-ng>
-                        
+
                         <p:wrap-sequence wrapper="calabash-issue-102"/>
                     </p:group>
                     <p:catch name="catch">
@@ -153,7 +153,7 @@
                             <p:with-option name="attribute-value" select="$test-href"/>
                         </p:add-attribute>
                         <p:add-attribute match="/*" attribute-name="error-location" attribute-value="run.xpl - validation of output grammar"/>
-                        
+
                         <p:identity name="errors-without-was"/>
                         <p:wrap-sequence wrapper="x:was">
                             <p:input port="source">
@@ -174,7 +174,7 @@
                                 <p:pipe port="result" step="was"/>
                             </p:input>
                         </p:insert>
-                        
+
                         <p:wrap-sequence wrapper="calabash-issue-102"/>
                     </p:catch>
                 </p:try>

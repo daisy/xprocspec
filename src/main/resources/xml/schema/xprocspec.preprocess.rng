@@ -63,7 +63,12 @@
     <define name="errors">
         <element name="errors" ns="http://www.w3.org/ns/xproc-step">
             <a:documentation>if an error occurs an XProc error document will be returned, allowing graceful error reporting</a:documentation>
-            <attribute name="xml:base"/>
+            <zeroOrMore>
+                <choice>
+                    <ref name="common-attributes"/>
+                    <attribute name="xml:base"/>
+                </choice>
+            </zeroOrMore>
             <attribute name="error-location"/>
             <attribute name="test-base-uri"/>
             <optional>
@@ -71,6 +76,7 @@
             </optional>
             <zeroOrMore>
                 <element name="error" ns="http://www.w3.org/ns/xproc-step">
+                    <ref name="common-attributes"/>
                     <optional>
                         <attribute name="name">
                             <data type="NCName"/>
@@ -265,25 +271,25 @@
                 </element>
                 <zeroOrMore>
                     <choice>
-                       <element name="pipe" ns="http://www.w3.org/ns/xproc">
-                           <attribute name="step">
-                               <data type="NCName"/>
-                           </attribute>
-                           <attribute name="port">
-                               <data type="NCName"/>
-                           </attribute>
-                           <zeroOrMore>
-                               <attribute ns="">
-                                   <anyName>
-                                       <except>
-                                           <name>step</name>
-                                           <name>port</name>
-                                       </except>
-                                   </anyName>
-                               </attribute>
-                           </zeroOrMore>
-                       </element>
-                       <ref name="xproc.document-inline-data"/>
+                        <element name="pipe" ns="http://www.w3.org/ns/xproc">
+                            <attribute name="step">
+                                <data type="NCName"/>
+                            </attribute>
+                            <attribute name="port">
+                                <data type="NCName"/>
+                            </attribute>
+                            <zeroOrMore>
+                                <attribute ns="">
+                                    <anyName>
+                                        <except>
+                                            <name>step</name>
+                                            <name>port</name>
+                                        </except>
+                                    </anyName>
+                                </attribute>
+                            </zeroOrMore>
+                        </element>
+                        <ref name="xproc.document-inline-data"/>
                     </choice>
                 </zeroOrMore>
             </choice>

@@ -26,21 +26,18 @@
     <!--
         * Converts any other XProc test syntaxes (currently supported: XProc Test Suite).
         * Splits the x:description documents into multiple documents; one for each x:scenario with no dependencies between them.
-        TODO: better feedback on what went wrong in compile errors (for instance "missing step attribute")
     -->
     <pxi:message message="#### $1 ####">
         <p:with-option name="param1" select="base-uri(/*)"/>
     </pxi:message>
     <pxi:message message="preprocessing..."/>
     <pxi:test-preprocess name="preprocess">
-        <p:log port="result" href="file:/tmp/preprocessed.xml"/>
         <p:with-option name="temp-dir" select="$temp-dir"/>
     </pxi:test-preprocess>
 
     <!-- make XProc scripts out of each scenario -->
     <pxi:message message="compiling..."/>
     <pxi:test-compile name="compile">
-        <p:log port="result" href="file:/tmp/compiled.xml"/>
         <p:with-option name="temp-dir" select="$temp-dir">
             <p:inline>
                 <doc/>
@@ -102,7 +99,7 @@
     <!-- make a machine readable report as well as a human readable one -->
     <pxi:message message="reporting..."/>
     <pxi:test-report name="report"/>
-    
+
     <p:identity>
         <p:input port="source">
             <p:pipe port="junit" step="report"/>

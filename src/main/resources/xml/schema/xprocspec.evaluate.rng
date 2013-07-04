@@ -32,31 +32,46 @@
                     The x:test-result element represents the results from one specific assertion.
                     The result from the evaluation is contained in the boolean "result" attribute.
                     The type of assertion is given by the "test-type" attribute.
-                    If the assertion is an XPath test, then the XPath expression is given in the "test" attribute.
+                    <!--If the assertion is an XPath test, then the XPath expression is given in the "test" attribute.-->
                     The expected content and the actual content are contained in the x:expected and x:was elements respectively.
                 </a:documentation>
                 <ref name="common-attributes"/>
                 <attribute name="label"/>
-                <optional>
-                    <attribute name="test"/>
-                </optional>
-                <attribute name="test-type">
-                    <choice>
-                        <value>xml</value>
-                        <value>xpath</value>
-                        <value>error</value>
-                        <value>relax-ng</value>
-                        <value>schematron</value>
-                        <value>xml-schema</value>
-                    </choice>
-                </attribute>
+                <choice>
+                    <group>
+                        <!-- XPath assertion -->
+                        <attribute name="type">
+                            <value>xpath</value>
+                        </attribute>
+                        <attribute name="test"/>
+                    </group>
+                    <group>
+                        <!-- Document comparison -->
+                        <attribute name="type">
+                            <value>compare</value>
+                        </attribute>
+                    </group>
+                    <group>
+                        <!-- Document validation -->
+                        <attribute name="type">
+                            <value>validate</value>
+                        </attribute>
+                        <attribute name="grammar">
+                            <choice>
+                                <value>relax-ng</value>
+                                <value>schematron</value>
+                                <value>xml-schema</value>
+                            </choice>
+                        </attribute>
+                    </group>
+                </choice>
                 <attribute name="result">
                     <data type="boolean"/>
                 </attribute>
-                <element name="was" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+                <element name="expected" ns="http://www.daisy.org/ns/pipeline/xproc/test">
                     <ref name="any-content"/>
                 </element>
-                <element name="expected" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+                <element name="was" ns="http://www.daisy.org/ns/pipeline/xproc/test">
                     <ref name="any-content"/>
                 </element>
             </element>

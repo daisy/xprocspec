@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0" xmlns:t="http://xproc.org/ns/testsuite" xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test" xmlns:xprocspec="http://www.daisy.org/ns/pipeline/xproc/test" exclude-result-prefixes="#all">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0" xmlns:t="http://xproc.org/ns/testsuite" xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test" xmlns:xprocspec="http://www.daisy.org/ns/pipeline/xproc/test"
+    exclude-result-prefixes="#all">
 
     <xsl:output exclude-result-prefixes="#all" indent="yes" method="xml"/>
-    
+
     <xsl:template match="/t:test-suite">
         <x:description>
             <xsl:for-each select="t:test">
@@ -10,7 +11,7 @@
             </xsl:for-each>
         </x:description>
     </xsl:template>
-    
+
     <xsl:template match="/t:test">
         <x:description>
             <xsl:choose>
@@ -25,7 +26,7 @@
                                 <xsl:for-each select="t:pipeline/*">
                                     <xsl:copy>
                                         <xsl:copy-of select="@*"/>
-                                        
+
                                         <xsl:if test="not(@type)">
                                             <xsl:namespace name="xprocspec" select="'http://www.daisy.org/ns/pipeline/xproc/test'"/>
                                             <xsl:attribute name="type" select="'xprocspec:step'"/>
@@ -175,7 +176,7 @@
             </xsl:choose>
         </x:input>
     </xsl:template>
-    
+
     <xsl:template match="t:output">
         <x:expect port="{@port}" label="the output port {@port} should contain {count(*)} document{if(count(*)=1)then''else's'}">
             <xsl:choose>

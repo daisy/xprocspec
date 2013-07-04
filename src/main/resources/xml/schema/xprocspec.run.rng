@@ -2,7 +2,7 @@
 <grammar xmlns="http://relaxng.org/ns/structure/1.0" xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
 
     <include href="xprocspec.preprocess.rng">
-        
+
         <define name="description">
             <element name="description" ns="http://www.daisy.org/ns/pipeline/xproc/test">
                 <a:documentation>after execution, the outputs from the XProc step is appended as output elements to the description element</a:documentation>
@@ -45,7 +45,7 @@
                 </element>
             </element>
         </define>
-        
+
         <define name="option">
             <element name="option" ns="http://www.daisy.org/ns/pipeline/xproc/test">
                 <attribute name="value"/>
@@ -63,7 +63,7 @@
                 </optional>
             </element>
         </define>
-        
+
         <define name="param">
             <element name="param" ns="http://www.daisy.org/ns/pipeline/xproc/test">
                 <attribute name="value"/>
@@ -81,7 +81,7 @@
                 </optional>
             </element>
         </define>
-        
+
     </include>
 
     <define name="output">

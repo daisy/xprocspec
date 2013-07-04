@@ -50,7 +50,15 @@
     <define name="common-attributes">
         <zeroOrMore>
             <attribute>
-                <nsName ns="http://www.w3.org/XML/1998/namespace"/>
+                <a:documentation>Foreign attributes.</a:documentation>
+                <anyName>
+                    <except>
+                        <nsName ns=""/>
+                        <nsName ns="http://www.daisy.org/ns/pipeline/xproc/test"/>
+                        <nsName ns="http://www.w3.org/ns/xproc-step"/>
+                        <nsName ns="http://www.w3.org/ns/xproc"/>
+                    </except>
+                </anyName>
             </attribute>
         </zeroOrMore>
     </define>
@@ -308,42 +316,25 @@
     <define name="document">
         <element name="document" ns="http://www.daisy.org/ns/pipeline/xproc/test">
             <a:documentation xmlns="http://www.w3.org/1999/xhtml">
-                <p>The `document` element is used to define which documents are provided on a steps input
-                   ports, what the context is when making assertions, and for assertions when making
-                   comparisons. It can be used in a number of ways:</p>
+                <p>The `document` element is used to define which documents are provided on a steps input ports, what the context is when making assertions, and for assertions when making comparisons. It can be used in a number of ways:</p>
                 <dl>
                     <dt>Inline:</dt>
-                    <dd>If none of the `port`, `file` or `directory` attributes are provided, then the
-                        `document` element is replaced by its content. You can provide any number of
-                        elements inside the `document` element. You can explicitly specify a `xml:base`
-                        attribute on the `document` element if you want to set the base URI of the inline
-                        document(s). If the `xml:base` is a relative URI, it will be resolved against the
-                        base URI of the xprocspec test document, or if the `base-uri` attribute is provided
-                        with the value `temp-dir`, then the `xml:base` attribute will be resolved against
-                        the temporary directory used for the test.</dd>
+                    <dd>If type `type` attribute is `inline`, then the `document` element is replaced by its content. There must be exactly one element inside the `document` element. To specify the base URI of the document, you can specify a
+                        `xml:base` on either the `document` element (implicit base URI) or the child element itself (explicit base URI). The `xml:base` on `document` element is resolved against the base URI of the xprocspec test document, or if the
+                        `base-uri` attribute has the value `temp-dir`, it will be resolved against the temporary directory used for the test. If the `base-uri` attribute has the value `temp-dir` without specifying a `xml:base` attribute on the
+                        `document` element, then the `document` element will have the temporary directory used for the test as its base URI.</dd>
                     <dt>Port:</dt>
-                    <dd>If the `port` attribute is provided, then the `document` element will be replaced
-                        with the documents on that port. The `position` attribute can be used to select
-                        only part of the sequence of documents appearing on that port.</dd>
+                    <dd>If the `type` attribute is `port`, then the `document` element will be replaced with the documents on that port. The `position` attribute can be used to select only part of the sequence of documents appearing on that
+                        port.</dd>
                     <dt>File:</dt>
-                    <dd>If the `file` attribute is provided, then the `document` element will be replaced
-                        by the contents of the file located at the location pointed to by the `file`
-                        attribute. The default method for reading files is `xml`, but using the `method`
-                        attribute you can also choose `html`, `text` and `binary` as methods
-                        for loading the file. The `file` URI is by default resolved against the base URI
-                        of the xprocspec test document. However, if you provide the `base-uri` attribute
-                        with a value of `temp-dir`, then the `file` URI will be resolved against the
-                        temporary directory used for the test instead.</dd>
+                    <dd>If the `type` attribute is `file`, then the `document` element will be replaced by the contents of the file located at the location pointed to by the `file` attribute. The default method for reading files is `xml`, but using
+                        the `method` attribute you can also choose `html`, `text` and `binary` as methods for loading the file. The `file` URI is by default resolved against the base URI of the xprocspec test document. However, if you provide the
+                        `base-uri` attribute with a value of `temp-dir`, then the `file` URI will be resolved against the temporary directory used for the test instead.</dd>
                     <dt>Directory:</dt>
-                    <dd>If the `directory` attribute is provided, then the `document` element will be
-                        replaced with a directory listing of the directory pointed to by the `directory`
-                        attribute. By default, the result is the same as invoking the standard XProc step
-                        p:directory-list. If you specify the `recursive` attribute and give it
-                        the value `true`, you will get a recursive directory listing, listing
-                        all subfolders and their contents as well. The `directory` URI is by default
-                        resolved against the base URI of the xprocspec test document. However, if you
-                        provide the `base-uri` attribute with a value of `temp-dir`, then the `directory`
-                        URI will be resolved against the temporary directory used for the test instead.</dd>
+                    <dd>If the `type` attribute is `directory`, then the `document` element will be replaced with a directory listing of the directory pointed to by the `directory` attribute. By default, the result is the same as invoking the
+                        standard XProc step p:directory-list. If you specify the `recursive` attribute and give it the value `true`, you will get a recursive directory listing, listing all subfolders and their contents as well. The `directory` URI is
+                        by default resolved against the base URI of the xprocspec test document. However, if you provide the `base-uri` attribute with a value of `temp-dir`, then the `directory` URI will be resolved against the temporary directory
+                        used for the test instead.</dd>
                 </dl>
             </a:documentation>
             <ref name="common-attributes"/>

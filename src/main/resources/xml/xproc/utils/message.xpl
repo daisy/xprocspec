@@ -20,8 +20,10 @@
         <p:pipe port="result" step="result"/>
     </p:output>
 
-    <p:option name="severity" select="'INFO'"/>                 <!-- one of either: WARN, INFO, DEBUG. Defaults to "INFO". Use px:error to throw errors. -->
-    <p:option name="message" required="true"/>                  <!-- message to be logged. $1, $2 etc will be replaced with the contents of param1, param2 etc. -->
+    <p:option name="severity" select="'INFO'"/>
+    <!-- one of either: WARN, INFO, DEBUG. Defaults to "INFO". Use px:error to throw errors. -->
+    <p:option name="message" required="true"/>
+    <!-- message to be logged. $1, $2 etc will be replaced with the contents of param1, param2 etc. -->
     <p:option name="param1" select="''"/>
     <p:option name="param2" select="''"/>
     <p:option name="param3" select="''"/>
@@ -35,7 +37,7 @@
 
     <p:import href="http://xmlcalabash.com/extension/steps/library-1.0.xpl" use-when="p:system-property('p:product-name') = 'XML Calabash'"/>
     <p:import href="error.xpl"/>
-    
+
     <!--
         Calabash:
         <p:declare-step type="cx:message">
@@ -55,7 +57,7 @@
             <p:output port="result" sequence="true"/>
         </p:declare-step>
     -->
-    
+
     <!-- TODO: implement this in Java to make use of the logging levels there -->
     <p:declare-step type="dp2i:message">
         <p:option name="message" required="true"/>
@@ -69,7 +71,8 @@
             <irrelevant/>
         </p:inline>
     </p:variable>
-    <p:variable name="validSeverity" use-when="p:system-property('p:xpath-version')='1.0'" select="concat(
+    <p:variable name="validSeverity" use-when="p:system-property('p:xpath-version')='1.0'"
+        select="concat(
         substring($severity, 1, number($severity='WARN' or $severity='INFO' or $severity='DEBUG') * string-length($severity)),
         substring('INFO', 1, number(not($severity='WARN' or $severity='INFO' or $severity='DEBUG')) * string-length('INFO'))
         )">
@@ -77,7 +80,7 @@
             <irrelevant/>
         </p:inline>
     </p:variable>
-    
+
     <p:add-attribute match="/*" attribute-name="message" name="message">
         <p:input port="source">
             <p:inline>
@@ -110,7 +113,7 @@
                 <irrelevant/>
             </p:inline>
         </p:xpath-context>
-        
+
         <!-- Pipeline 2 -->
         <p:when test="p:step-available('dp2i:message')">
             <dp2i:message>
@@ -127,7 +130,7 @@
         </p:when>
 
         <p:otherwise>
-            
+
             <!-- Calabash -->
             <cx:message p:use-when="p:system-property('p:product-name') = 'XML Calabash'">
                 <p:with-option name="message" select="concat('[',$validSeverity,'] ',/*/@message)">

@@ -33,7 +33,7 @@
             </p:choose>
         </p:viewport>
     </p:declare-step>
-    
+
     <pxi:directory-list-recursive>
         <p:with-option name="path" select="$path"/>
         <p:with-option name="depth" select="$depth"/>

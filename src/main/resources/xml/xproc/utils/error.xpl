@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <p:declare-step type="pxi:error" name="main" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:p="http://www.w3.org/ns/xproc" xmlns:cx="http://xmlcalabash.com/ns/extensions" xmlns:x="http://www.emc.com/documentum/xml/xproc"
     xmlns:pxi="http://www.daisy.org/ns/pipeline/xproc-internal/xprocspec" xmlns:d="http://www.daisy.org/ns/pipeline/data" exclude-inline-prefixes="#all" version="1.0">
-    
+
     <p:documentation xmlns="http://www.w3.org/1999/xhtml">
         <p>Example usage:</p>
         <pre xml:space="preserve">
@@ -18,15 +18,19 @@
             &lt;/px:error&gt;
         </pre>
     </p:documentation>
-    
+
     <p:output port="result" sequence="true">
         <p:pipe port="result" step="error"/>
     </p:output>
-    
-    <p:option name="code" required="true"/>                       <!-- QName -->
-    <p:option name="code-prefix" select="''"/>                    <!-- NCName -->
-    <p:option name="code-namespace" select="''"/>                 <!-- anyURI -->
-    <p:option name="message" required="true"/>                    <!-- description of the error that occured. $1, $2 etc will be replaced with the contents of param1, param2 etc. -->
+
+    <p:option name="code" required="true"/>
+    <!-- QName -->
+    <p:option name="code-prefix" select="''"/>
+    <!-- NCName -->
+    <p:option name="code-namespace" select="''"/>
+    <!-- anyURI -->
+    <p:option name="message" required="true"/>
+    <!-- description of the error that occured. $1, $2 etc will be replaced with the contents of param1, param2 etc. -->
     <p:option name="param1" select="''"/>
     <p:option name="param2" select="''"/>
     <p:option name="param3" select="''"/>
@@ -37,7 +41,7 @@
     <p:option name="param8" select="''"/>
     <p:option name="param9" select="''"/>
     <!-- in the unlikely event that you need more parameters you'll have to format the message string yourself -->
-    
+
     <p:string-replace match="/*/text()" name="message">
         <p:input port="source">
             <p:inline>
@@ -57,9 +61,10 @@
             </p:inline>
         </p:with-option>
     </p:string-replace>
-    
+
     <p:group>
-        <p:variable name="code-localName" use-when="p:system-property('p:xpath-version')='1.0'" select="concat(
+        <p:variable name="code-localName" use-when="p:system-property('p:xpath-version')='1.0'"
+            select="concat(
             substring(substring-after($code,':'), 1, number(contains($code,':')) * string-length(substring-after($code,':'))),
             substring($code, 1, number(not(contains($code,':'))) * string-length($code))
             )"/>
@@ -105,5 +110,5 @@
         </p:choose>
     </p:group>
     <p:identity name="error"/>
-    
+
 </p:declare-step>

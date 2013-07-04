@@ -333,7 +333,7 @@
                                 <p:identity/>
                             </p:for-each>
                             <p:identity name="calls"/>
-                            
+
                             <p:try>
                                 <p:group>
                                     <pxi:message message=" * trying to load: $1">
@@ -432,47 +432,39 @@
                                 <p:pipe port="result" step="main-document"/>
                             </p:input>
                         </p:identity>
-                        <pxi:message message=" * checking for imports">
-                            <p:log port="result" href="file:/tmp/preprocess.import.in.xml"/>
-                        </pxi:message>
-                        <pxi:perform-imports>
-                            <p:log port="result" href="file:/tmp/preprocess.import.out.xml"/>
-                        </pxi:perform-imports>
+                        <pxi:message message=" * checking for imports"/>
+                        <pxi:perform-imports/>
 
-                        <!--<p:for-each>
-                            <p:output port="result" sequence="true"/>-->
-
-                            <!-- create a new x:description document for each x:scenario element with inferred inputs, options and parameters -->
-                            <pxi:message message=" * creating a new x:description document for each x:scenario element with inferred inputs, options and parameters"/>
-                            <p:add-attribute match="/*" attribute-name="script">
-                                <p:with-option name="attribute-value" select="resolve-uri(/*/@script,base-uri(/*))"/>
+                        <!-- create a new x:description document for each x:scenario element with inferred inputs, options and parameters -->
+                        <pxi:message message=" * creating a new x:description document for each x:scenario element with inferred inputs, options and parameters"/>
+                        <p:add-attribute match="/*" attribute-name="script">
+                            <p:with-option name="attribute-value" select="resolve-uri(/*/@script,base-uri(/*))"/>
+                        </p:add-attribute>
+                        <p:viewport match="//x:call[@step]">
+                            <p:add-attribute match="/*" attribute-name="x:step">
+                                <p:with-option name="attribute-value" select="concat('{',namespace-uri-from-QName(resolve-QName(/*/@step,/*)),'}',tokenize(/*/@step,':')[last()])"/>
                             </p:add-attribute>
-                            <p:viewport match="//x:call[@step]">
-                                <p:add-attribute match="/*" attribute-name="x:step">
-                                    <p:with-option name="attribute-value" select="concat('{',namespace-uri-from-QName(resolve-QName(/*/@step,/*)),'}',tokenize(/*/@step,':')[last()])"/>
-                                </p:add-attribute>
-                            </p:viewport>
-                            <p:xslt>
-                                <p:input port="parameters">
-                                    <p:empty/>
+                        </p:viewport>
+                        <p:xslt>
+                            <p:input port="parameters">
+                                <p:empty/>
+                            </p:input>
+                            <p:input port="stylesheet">
+                                <p:document href="infer-scenarios.xsl"/>
+                            </p:input>
+                        </p:xslt>
+                        <p:for-each>
+                            <p:iteration-source select="/*/*"/>
+                            <p:variable name="step" select="(//x:call/@x:step)[1]"/>
+                            <p:insert match="/*" position="first-child">
+                                <p:input port="insertion">
+                                    <p:pipe port="result" step="step-declarations"/>
                                 </p:input>
-                                <p:input port="stylesheet">
-                                    <p:document href="infer-scenarios.xsl"/>
-                                </p:input>
-                            </p:xslt>
-                            <p:for-each>
-                                <p:iteration-source select="/*/*"/>
-                                <p:variable name="step" select="(//x:call/@x:step)[1]"/>
-                                <p:insert match="/*" position="first-child">
-                                    <p:input port="insertion">
-                                        <p:pipe port="result" step="step-declarations"/>
-                                    </p:input>
-                                </p:insert>
-                                <p:delete>
-                                    <p:with-option name="match" select="concat('/*/x:script-declaration/*[not(@x:type=&quot;',$step,'&quot;)]')"/>
-                                </p:delete>
-                            </p:for-each>
-                        <!--</p:for-each>-->
+                            </p:insert>
+                            <p:delete>
+                                <p:with-option name="match" select="concat('/*/x:script-declaration/*[not(@x:type=&quot;',$step,'&quot;)]')"/>
+                            </p:delete>
+                        </p:for-each>
                     </p:otherwise>
                 </p:choose>
                 <p:wrap-sequence wrapper="calabash-issue-102"/>
@@ -528,7 +520,7 @@
             </p:add-attribute>
         </p:for-each>
     </p:for-each>
-    
+
     <!-- validate output grammar -->
     <p:for-each>
         <p:identity name="try.input"/>

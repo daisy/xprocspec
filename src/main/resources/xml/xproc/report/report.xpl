@@ -1,6 +1,5 @@
 <p:declare-step xmlns:p="http://www.w3.org/ns/xproc" type="pxi:test-report" name="main" xmlns:cx="http://xmlcalabash.com/ns/extensions" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:pxi="http://www.daisy.org/ns/pipeline/xproc-internal/xprocspec"
-    exclude-inline-prefixes="#all" version="1.0" xpath-version="2.0" xmlns:pkg="http://expath.org/ns/pkg" xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test"
-    xmlns:html="http://www.w3.org/1999/xhtml">
+    exclude-inline-prefixes="#all" version="1.0" xpath-version="2.0" xmlns:pkg="http://expath.org/ns/pkg" xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test" xmlns:html="http://www.w3.org/1999/xhtml">
 
     <p:documentation>Makes the machine-readable reports human-readable.</p:documentation>
 
@@ -14,7 +13,7 @@
     <p:output port="html">
         <p:pipe port="result" step="html"/>
     </p:output>
-    
+
     <p:import href="../utils/logging-library.xpl"/>
 
     <p:insert match="/html:html/html:body/html:div" position="last-child">
@@ -22,7 +21,7 @@
             <p:inline exclude-inline-prefixes="#all">
                 <html xmlns="http://www.w3.org/1999/xhtml">
                     <head>
-                        <meta charset="utf-8" />
+                        <meta charset="utf-8"/>
                         <title>Test Results</title>
                         <style type="text/css" xml:space="preserve"> 
                             body { 
@@ -102,13 +101,13 @@
         </p:input>
     </p:xslt>
     <p:identity name="html"/>
-    
+
     <p:wrap-sequence wrapper="x:test-report">
         <p:input port="source">
             <p:pipe port="source" step="main"/>
         </p:input>
     </p:wrap-sequence>
-    
+
     <!-- validate output grammar -->
     <p:for-each>
         <p:identity name="try.input"/>
@@ -128,7 +127,7 @@
                     </p:input>
                 </p:identity>
                 <p:add-attribute match="/*" attribute-name="error-location" attribute-value="report.xpl - validation of output grammar"/>
-                
+
                 <p:identity name="errors-without-was"/>
                 <p:wrap-sequence wrapper="x:was">
                     <p:input port="source">
@@ -149,7 +148,7 @@
                         <p:pipe port="result" step="was"/>
                     </p:input>
                 </p:insert>
-                
+
                 <p:wrap-sequence wrapper="x:test-report"/>
                 <p:wrap-sequence wrapper="calabash-issue-102"/>
             </p:catch>

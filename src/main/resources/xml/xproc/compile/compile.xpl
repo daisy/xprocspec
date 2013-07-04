@@ -12,7 +12,7 @@
             <doc/>
         </p:inline>
     </p:variable>
-    
+
     <p:import href="../utils/logging-library.xpl"/>
     <p:import href="http://xmlcalabash.com/extension/steps/library-1.0.xpl" use-when="p:system-property('p:product-name') = 'XML Calabash'"/>
     <cxf:mkdir fail-on-error="false" name="mkdir" p:use-when="p:system-property('p:product-name') = 'XML Calabash'">
@@ -40,7 +40,7 @@
             </p:when>
             <p:otherwise>
                 <p:variable name="base" select="base-uri(/*)"/>
-                
+
                 <p:identity name="try.input"/>
                 <p:try>
                     <p:group>
@@ -59,7 +59,7 @@
                             </p:input>
                         </p:xslt>
                         <pxi:message message="   * done"/>
-                        
+
                         <p:wrap-sequence wrapper="calabash-issue-102"/>
                     </p:group>
                     <p:catch name="catch">

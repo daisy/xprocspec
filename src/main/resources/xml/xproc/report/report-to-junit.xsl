@@ -12,8 +12,7 @@
     <xsl:template match="/*">
         <xsl:choose>
             <xsl:when test="self::c:errors">
-                <testsuite name="compilation error" package="no.josteinaj.xprocspec" timestamp="{x:now()}" hostname="localhost" tests="1" errors="1"
-                    failures="0" skipped="false" disabled="false" id="{generate-id()}" time="0">
+                <testsuite name="compilation error" package="no.josteinaj.xprocspec" timestamp="{x:now()}" hostname="localhost" tests="1" errors="1" failures="0" skipped="false" disabled="false" id="{generate-id()}" time="0">
                     <properties>
                         <xsl:for-each select="@*">
                             <property name="name()" value="."/>

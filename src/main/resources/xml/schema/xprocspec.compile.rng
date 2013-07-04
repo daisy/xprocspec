@@ -9,7 +9,7 @@
             </choice>
         </start>
     </include>
-    
+
     <define name="xproc-step">
         <element name="declare-step" ns="http://www.w3.org/ns/xproc">
             <a:documentation>the xproc step declaration</a:documentation>
@@ -17,5 +17,5 @@
             <ref name="any-content"/>
         </element>
     </define>
-    
+
 </grammar>

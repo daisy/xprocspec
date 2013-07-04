@@ -26,7 +26,7 @@
     <xsl:template match="x:test-report">
         <xsl:apply-templates/>
     </xsl:template>
-    
+
     <xsl:template match="x:description">
         <xsl:variable name="declaration" select="x:step-declaration/*"/>
         <xsl:variable name="scenario" select="x:scenario"/>
