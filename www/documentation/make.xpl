@@ -31,11 +31,21 @@
     
     <p:load href="../../src/main/resources/xml/schema/xprocspec.rng"/>
     <p:xslt>
+        <p:log port="result" href="file:/tmp/simplify-rng.out.xml"/>
         <p:input port="parameters">
             <p:empty/>
         </p:input>
         <p:input port="stylesheet">
             <p:document href="simplify-rng.xsl"/>
+        </p:input>
+    </p:xslt>
+    <p:xslt>
+        <p:log port="result" href="file:/tmp/rng-to-documentation.input.xml"/>
+        <p:input port="parameters">
+            <p:empty/>
+        </p:input>
+        <p:input port="stylesheet">
+            <p:document href="simplify-rng-2.xsl"/>
         </p:input>
     </p:xslt>
     <p:xslt>
@@ -46,6 +56,15 @@
             <p:document href="rng-to-documentation.xsl"/>
         </p:input>
     </p:xslt>
+    <p:xslt>
+        <p:input port="parameters">
+            <p:empty/>
+        </p:input>
+        <p:input port="stylesheet">
+            <p:document href="create-element-links.xsl"/>
+        </p:input>
+    </p:xslt>
+    <p:delete match="//*[preceding::*/@id=@id]"/>
     <p:identity name="generated"/>
     
     <p:replace match="//*[@id='replaceme']">

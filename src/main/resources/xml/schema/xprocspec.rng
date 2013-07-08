@@ -7,7 +7,7 @@
 
     <define name="description">
         <element name="description" ns="http://www.daisy.org/ns/pipeline/xproc/test">
-            <a:documentation xml:space="preserve">The `description` element is the root element of an xprocspec test and describes the functionality of a specific XProc script.</a:documentation>
+            <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">The `description` element is the root element of an xprocspec test and describes the functionality of a specific XProc script.</a:documentation>
             <ref name="description.common"/>
             <choice>
                 <group>
@@ -15,7 +15,10 @@
                         <ref name="import"/>
                     </zeroOrMore>
                     <oneOrMore>
-                        <ref name="scenario"/>
+                        <choice>
+                            <ref name="scenario"/>
+                            <ref name="pending-scenario"/>
+                        </choice>
                     </oneOrMore>
                 </group>
                 <group>
@@ -23,7 +26,10 @@
                         <ref name="import"/>
                     </oneOrMore>
                     <zeroOrMore>
-                        <ref name="scenario"/>
+                        <choice>
+                            <ref name="scenario"/>
+                            <ref name="pending-scenario"/>
+                        </choice>
                     </zeroOrMore>
                 </group>
             </choice>
@@ -33,24 +39,24 @@
     <define name="description.common">
         <ref name="common-attributes"/>
         <attribute name="script">
-            <a:documentation>The `script` attribute is a URI that points to the XProc script you want to test.</a:documentation>
+            <a:documentation xmlns="http://www.w3.org/1999/xhtml">The `script` attribute is a URI that points to the XProc script you want to test.</a:documentation>
             <data type="anyURI"/>
         </attribute>
         <optional>
             <attribute name="version">
-                <a:documentation>The `version` attribute can be used to aid development over time.</a:documentation>
+                <a:documentation xmlns="http://www.w3.org/1999/xhtml">The `version` attribute can be used to aid development over time.</a:documentation>
                 <data type="NMTOKEN"/>
             </attribute>
         </optional>
         <optional>
-            <ref name="pending"/>
+            <ref name="pending-attribute"/>
         </optional>
     </define>
 
     <define name="common-attributes">
         <zeroOrMore>
             <attribute>
-                <a:documentation>Foreign attributes.</a:documentation>
+                <a:documentation xmlns="http://www.w3.org/1999/xhtml">Foreign attributes.</a:documentation>
                 <anyName>
                     <except>
                         <nsName ns=""/>
@@ -63,44 +69,18 @@
         </zeroOrMore>
     </define>
 
-    <define name="pending">
-        <element name="pending" ns="http://www.daisy.org/ns/pipeline/xproc/test">
-            <a:documentation xml:space="preserve">
-                Anything that is within a &lt;pending&gt; element will remain untested, but will be
-                reported as (eventual) desired behaviour. This is a good way of commenting out
-                a set of behaviours that haven't been implemented yet, or scenarios whose
-                desired behaviour hasn't been determined, or tests for code that you're not
-                currently working on, to make the testing process faster.
-                
-                An optional label attribute can be used to describe why the scenario or
-                assertion should not be tested.
-            </a:documentation>
-            <ref name="common-attributes"/>
-            <optional>
-                <ref name="label"/>
-            </optional>
-            <choice>
-                <oneOrMore>
-                    <ref name="scenario"/>
-                </oneOrMore>
-                <oneOrMore>
-                    <ref name="expect"/>
-                </oneOrMore>
-            </choice>
-        </element>
-    </define>
-
     <define name="import">
         <element name="import" ns="http://www.daisy.org/ns/pipeline/xproc/test">
-            <a:documentation xml:space="preserve">
-                An import brings in all the scenarios from the referenced file (which must
-                itself be an xprocspec description). All the unshared scenarios in that imported
-                xprocspec will be run on the stylesheet that this xprocspec document describes.
+            <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+                An import runs the xprocspec description in the referenced file. It has no
+                effect on the scenarios in the current document, but can be a useful method
+                to group xprocspec descriptions into a test suite.
                 Importing is recursive and may be circular (although only one copy of a given
                 imported document will actually be imported).
             </a:documentation>
             <ref name="common-attributes"/>
             <attribute name="href">
+                <a:documentation xmlns="http://www.w3.org/1999/xhtml">The `href` attribute contains a URI pointing to the xprocspec file to be imported.</a:documentation>
                 <data type="anyURI"/>
             </attribute>
         </element>
@@ -108,17 +88,21 @@
 
     <define name="scenario">
         <element name="scenario" ns="http://www.daisy.org/ns/pipeline/xproc/test">
-            <a:documentation xml:space="preserve">
-                A step scenario is one based on a call to a pipeline. The &lt;call&gt;
-                element defines the step call and the inputs, options and parameters passed to it and the
-                &lt;assertion&gt; elements test the ports of the pipeline. Child scenarios
-                can override the ports, options and parameters in the template call.
+            <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+                A scenario groups together the definition of the script environment
+                (the `call` element) and the script assertions (the `context` and
+                `expect` elements). The `call`
+                element defines the inputs, options and parameters passed to the step
+                and the `context` and `expect` elements are used to perform assertions
+                on the result. Child scenarios inherit the contents of the `call`
+                element, but can override its inputs, options and parameters by in its
+                own `call` element.
             </a:documentation>
             <ref name="scenario.common"/>
             <ref name="label"/>
-            <zeroOrMore>
+            <!--<zeroOrMore>
                 <ref name="like"/>
-            </zeroOrMore>
+            </zeroOrMore>-->
             <choice>
                 <oneOrMore>
                     <ref name="scenario"/>
@@ -135,77 +119,155 @@
 
     <define name="scenario.common">
         <ref name="common-attributes"/>
+        <ref name="pending-attribute"/>
         <ref name="call"/>
     </define>
 
-    <define name="label">
-        <choice>
-            <a:documentation xml:space="preserve">
-                A scenario's label should describe the context that the scenario sets. Top-
-                level scenarios' labels should be of the form "the square of a number" or 
-                "the XHTML for a &lt;P1&gt; element". Nested scenario labels will usually start with 
-                the word "with"; it should make sense if the labels of ancestor scenarios are 
-                concatenated with this one. For example "with a Type attribute".
+    <define name="call.common">
+        <ref name="common-attributes"/>
+        <zeroOrMore>
+            <choice>
+                <ref name="input"/>
+                <ref name="option"/>
+                <ref name="param"/>
+            </choice>
+        </zeroOrMore>
+    </define>
+
+    <define name="call">
+        <element name="call" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+            <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+                A `call` element defines a step call and the
+                inputs, options and parameters passed to it.
             </a:documentation>
-            <attribute name="label"/>
-            <element name="label" ns="http://www.daisy.org/ns/pipeline/xproc/test">
-                <ref name="common-attributes"/>
-                <ref name="any-content"/>
-            </element>
-        </choice>
+            <ref name="call.common"/>
+            <optional>
+                <attribute name="step">
+                    <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+                        The `step` attribute is the name of the step (as declared in XProc scripts by the `p:declare-step/@type` attribute).
+                        For instance `step="example:mystep"`.
+                        The `step` attribute is a QName so remember to declare the namespace for its namespace prefix.
+                    </a:documentation>
+                    <data type="QName"/>
+                </attribute>
+            </optional>
+        </element>
+    </define>
+
+    <define name="option">
+        <element name="option" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+            <a:documentation xmlns="http://www.w3.org/1999/xhtml">The option element is used to provide values to XProc options on the XProc step you are testing.</a:documentation>
+            <ref name="common-attributes"/>
+            <attribute name="name">
+                <a:documentation xmlns="http://www.w3.org/1999/xhtml">The `name` attribute is the name of the option used in the XProc step.</a:documentation>
+                <data type="QName"/>
+            </attribute>
+            <attribute name="select" xml:space="preserve">
+                <a:documentation xmlns="http://www.w3.org/1999/xhtml">
+                    The `select` attribute is a XPath expression used to select a value for the XProc option
+                    (equivalent of the `p:with-option/@select` attribute in XProc).
+                </a:documentation>
+            </attribute>
+            <optional>
+                <attribute name="base-uri">
+                    <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+                        If the `base-uri` attribute is set to `temp-dir`, then the base URI of the context element when evaluating
+                        the XPath expression will be the temporary directory used for the test. This is useful if the value of
+                        the option is a URI pointing to a directory where the XProc steps will store files. Every xprocspec
+                        scenario is assigned its own temporary directory so that subsequent evaluations of the step does not conflict
+                        with eachother.
+                    </a:documentation>
+                    <choice>
+                        <value>temp-dir</value>
+                    </choice>
+                </attribute>
+            </optional>
+        </element>
+    </define>
+
+    <define name="param">
+        <element name="param" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+            <a:documentation xmlns="http://www.w3.org/1999/xhtml">The param element is used to provide values to XProc paramaters on the XProc step you are testing.</a:documentation>
+            <ref name="common-attributes"/>
+            <attribute name="name">
+                <a:documentation xmlns="http://www.w3.org/1999/xhtml">The `name` attribute is the name of the parameter to be provided on the XProc steps primary parameter input port.</a:documentation>
+                <data type="QName"/>
+            </attribute>
+            <attribute name="select">
+                <a:documentation xmlns="http://www.w3.org/1999/xhtml"> The `select` attribute is a XPath expression used to select a value for the XProc parameter (equivalent of the `p:with-param/@select` attribute in XProc). </a:documentation>
+            </attribute>
+            <optional>
+                <attribute name="base-uri">
+                    <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+                        If the `base-uri` attribute is set to `temp-dir`, then the base URI of the context element when evaluating
+                        the XPath expression will be the temporary directory used for the test.
+                    </a:documentation>
+                    <choice>
+                        <value>temp-dir</value>
+                    </choice>
+                </attribute>
+            </optional>
+        </element>
+    </define>
+    
+    <define name="input">
+        <element name="input" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+            <a:documentation xmlns="http://www.w3.org/1999/xhtml">The input element is used to provide documents on the input ports of the XProc step you are testing.</a:documentation>
+            <ref name="common-attributes"/>
+            <zeroOrMore>
+                <ref name="document"/>
+            </zeroOrMore>
+        </element>
+    </define>
+
+    <define name="label">
+        <attribute name="label">
+            <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">The `label` attribute is used to describe the current element in human-readable words.</a:documentation>
+        </attribute>
     </define>
 
     <define name="context">
         <element name="context" ns="http://www.daisy.org/ns/pipeline/xproc/test">
-            <a:documentation>Defines the context against which assertions</a:documentation>
+            <a:documentation xmlns="http://www.w3.org/1999/xhtml">Defines the context against which assertions are made.</a:documentation>
             <ref name="common-attributes"/>
             <optional>
                 <ref name="label"/>
             </optional>
-            <oneOrMore>
+            <zeroOrMore>
                 <ref name="document"/>
-            </oneOrMore>
+            </zeroOrMore>
         </element>
     </define>
 
     <define name="expect">
         <element name="expect" ns="http://www.daisy.org/ns/pipeline/xproc/test">
-            <a:documentation xml:space="preserve" xmlns="http://www.w3.org/1999/xhtml">
-                <p>
+            <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
                 Defines what is expected from the context document(s).
-                The types of expectations are as follows:</p>
-                <dl>
-                  <dt>XPath assertion:</dt>
-                  <dd>The `test` attribute can be used to perform XPath tests
-                  against each of the input documents. The XPath expression
-                  is evaluated once against each document in the context.
-                  The test succeeds if the XPath expression does not fail
-                  when evaluated against any of the context documents.</dd>
-                  <dt>Document comparison:</dt>
-                  <dd>If no `test` attribute is present, then the sequence of
-                  documents in the context will be compared to the sequence
-                  of documents defined by the `document` elements inside the
-                  `expect` element. The `document` element can be used to
-                  refer to ports (both inputs and outputs), directory
-                  listings (recursive and non-recursive) and file contents
-                  (`xml`, `html`, `text`, `binary`).
-                  <!-- TODO: possibly also information about a file or directory (size, readable, writable, hidden, last-modified) ? -->
-                  </dd>
-                </dl>
             </a:documentation>
             <ref name="common-attributes"/>
+            <ref name="pending-attribute"/>
             <ref name="label"/>
             <choice>
                 <group>
                     <!-- XPath assertion -->
                     <attribute name="type">
+                        <a:documentation xmlns="http://www.w3.org/1999/xhtml">The `type` attribute is used to define the type of assertion you want to make.</a:documentation>
                         <value>xpath</value>
                     </attribute>
-                    <attribute name="test"/>
+                    <attribute name="test">
+                        <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+                            When `type` is `xpath`, you can use the `test` attribute to define a XPath expression.
+                            The expression will be evaluated to either true or false, representing a successful and a failed test respectively.
+                        </a:documentation>
+                    </attribute>
                 </group>
                 <group>
                     <!-- Document comparison -->
                     <attribute name="type">
+                        <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+                            When `type` is `compare`, you can put a sequence of `x:document` elements inside the `x:expect` element.
+                            The assertion succeeds if the document sequence in context equals the document sequence inside the `x:expect` element.
+                        </a:documentation>
                         <value>compare</value>
                     </attribute>
                     <zeroOrMore>
@@ -215,10 +277,14 @@
                 <group>
                     <!-- Document validation -->
                     <attribute name="type">
-                        <a:documentation>Validates the context document(s).</a:documentation>
+                        <a:documentation xmlns="http://www.w3.org/1999/xhtml">When `type` is `validate`, the documents in context is validated against the schema provided in the `x:document` element inside the `x:expect` element.</a:documentation>
                         <value>validate</value>
                     </attribute>
                     <attribute name="grammar">
+                        <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+                            The `grammar` attribute is used to set the grammar of the `x:document` element (used when `type` is `validate`).
+                            The assertion succeeds if all of the documents in context validates against the schema given by the child `x:document` element.
+                        </a:documentation>
                         <choice>
                             <value>relax-ng</value>
                             <value>schematron</value>
@@ -230,118 +296,22 @@
         </element>
     </define>
 
-    <define name="call.common">
-        <ref name="common-attributes"/>
-        <zeroOrMore>
-            <choice>
-                <ref name="option"/>
-                <ref name="param"/>
-                <ref name="input"/>
-            </choice>
-        </zeroOrMore>
-    </define>
-
-    <define name="call">
-        <element name="call" ns="http://www.daisy.org/ns/pipeline/xproc/test">
-            <a:documentation xml:space="preserve">
-                A &lt;call&gt; element defines a step call and the
-                inputs, options and parameters passed to it.
-            </a:documentation>
-            <ref name="call.common"/>
-            <optional>
-                <attribute name="step">
-                    <data type="QName"/>
-                </attribute>
-            </optional>
-        </element>
-    </define>
-
-    <define name="option">
-        <element name="option" ns="http://www.daisy.org/ns/pipeline/xproc/test">
-            <ref name="common-attributes"/>
-            <attribute name="name">
-                <data type="QName"/>
-            </attribute>
-            <attribute name="select"/>
-            <optional>
-                <attribute name="base-uri">
-                    <choice>
-                        <value>temp-dir</value>
-                    </choice>
-                </attribute>
-            </optional>
-        </element>
-    </define>
-
-    <define name="param">
-        <element name="param" ns="http://www.daisy.org/ns/pipeline/xproc/test">
-            <ref name="common-attributes"/>
-            <attribute name="name">
-                <data type="QName"/>
-            </attribute>
-            <attribute name="select"/>
-            <optional>
-                <attribute name="base-uri">
-                    <choice>
-                        <value>temp-dir</value>
-                    </choice>
-                </attribute>
-            </optional>
-        </element>
-    </define>
-
-    <define name="input">
-        <element name="input" ns="http://www.daisy.org/ns/pipeline/xproc/test">
-            <ref name="common-attributes"/>
-            <zeroOrMore>
-                <ref name="document"/>
-            </zeroOrMore>
-        </element>
-    </define>
-
-    <define name="like">
-        <element name="like" ns="http://www.daisy.org/ns/pipeline/xproc/test">
-            <a:documentation xml:space="preserve">
-                The &lt;like&gt; element pulls a shared scenario into this one (which may be shared
-                or unshared). Any environment set within the shared scenario is merged with
-                this one, and any tests in the shared scenario are run in addition to the
-                ones in this scenario. This allows for modular, reusable sets of tests which
-                can be applied in multiple contexts.
-            </a:documentation>
-            <ref name="common-attributes"/>
-            <ref name="label"/>
-        </element>
-    </define>
-
     <define name="document">
         <element name="document" ns="http://www.daisy.org/ns/pipeline/xproc/test">
             <a:documentation xmlns="http://www.w3.org/1999/xhtml">
-                <p>The `document` element is used to define which documents are provided on a steps input ports, what the context is when making assertions, and for assertions when making comparisons. It can be used in a number of ways:</p>
-                <dl>
-                    <dt>Inline:</dt>
-                    <dd>If type `type` attribute is `inline`, then the `document` element is replaced by its content. There must be exactly one element inside the `document` element. To specify the base URI of the document, you can specify a
-                        `xml:base` on either the `document` element (implicit base URI) or the child element itself (explicit base URI). The `xml:base` on `document` element is resolved against the base URI of the xprocspec test document, or if the
-                        `base-uri` attribute has the value `temp-dir`, it will be resolved against the temporary directory used for the test. If the `base-uri` attribute has the value `temp-dir` without specifying a `xml:base` attribute on the
-                        `document` element, then the `document` element will have the temporary directory used for the test as its base URI.</dd>
-                    <dt>Port:</dt>
-                    <dd>If the `type` attribute is `port`, then the `document` element will be replaced with the documents on that port. The `position` attribute can be used to select only part of the sequence of documents appearing on that
-                        port.</dd>
-                    <dt>File:</dt>
-                    <dd>If the `type` attribute is `file`, then the `document` element will be replaced by the contents of the file located at the location pointed to by the `file` attribute. The default method for reading files is `xml`, but using
-                        the `method` attribute you can also choose `html`, `text` and `binary` as methods for loading the file. The `file` URI is by default resolved against the base URI of the xprocspec test document. However, if you provide the
-                        `base-uri` attribute with a value of `temp-dir`, then the `file` URI will be resolved against the temporary directory used for the test instead.</dd>
-                    <dt>Directory:</dt>
-                    <dd>If the `type` attribute is `directory`, then the `document` element will be replaced with a directory listing of the directory pointed to by the `directory` attribute. By default, the result is the same as invoking the
-                        standard XProc step p:directory-list. If you specify the `recursive` attribute and give it the value `true`, you will get a recursive directory listing, listing all subfolders and their contents as well. The `directory` URI is
-                        by default resolved against the base URI of the xprocspec test document. However, if you provide the `base-uri` attribute with a value of `temp-dir`, then the `directory` URI will be resolved against the temporary directory
-                        used for the test instead.</dd>
-                </dl>
+                <p>The `document` element is used to define which documents are provided on a steps input ports, what the context is when making assertions, and for assertions when making comparisons or performing validations. It can be used in a number of ways:</p>
             </a:documentation>
             <ref name="common-attributes"/>
             <choice>
                 <group>
                     <!-- inline document -->
                     <attribute name="type">
+                        <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+                            If the `type` attribute is `inline`, then the `document` element is replaced by its content. There must be exactly one element inside the `document` element. To specify the base URI of the document, you can specify a
+                            `xml:base` on either the `document` element (implicit base URI) or the child element itself (explicit base URI). The `xml:base` on `document` element is resolved against the base URI of the xprocspec test document, or if the
+                            `base-uri` attribute has the value `temp-dir`, it will be resolved against the temporary directory used for the test. If the `base-uri` attribute has the value `temp-dir` without specifying a `xml:base` attribute on the
+                            `document` element, then the `document` element will have the temporary directory used for the test as its base URI.
+                        </a:documentation>
                         <value>inline</value>
                     </attribute>
                     <ref name="any-element"/>
@@ -349,13 +319,22 @@
                 <group>
                     <!-- port (input or output) -->
                     <attribute name="type">
+                        <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+                            If the `type` attribute is `port`, then the `document` element will be replaced with the documents on that port. The `position` attribute can be used to select only part of the sequence of documents appearing on that
+                            port.
+                        </a:documentation>
                         <value>port</value>
                     </attribute>
                     <attribute name="port">
+                        <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+                            The `port` is the name of a XProc input or output port.
+                            The `x:document` element will represent the sequence of documents provided on the input port, or the sequence of documents returned on the output port.
+                        </a:documentation>
                         <data type="QName"/>
                     </attribute>
                     <optional>
                         <attribute name="position">
+                            <a:documentation xmlns="http://www.w3.org/1999/xhtml">By specifying the `position` attribute, a certain document in the sequence of documents appearing on the port can be selected.</a:documentation>
                             <choice>
                                 <value>all</value>
                                 <value>last</value>
@@ -367,13 +346,20 @@
                 <group>
                     <!-- file -->
                     <attribute name="type">
+                        <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+                            If the `type` attribute is `file`, then the `document` element will be replaced by the contents of the file located at the location pointed to by the `file` attribute. The default method for reading files is `xml`, but using
+                            the `method` attribute you can also choose `html`, `text` and `binary` as methods for loading the file. The `file` URI is by default resolved against the base URI of the xprocspec test document. However, if you provide the
+                            `base-uri` attribute with a value of `temp-dir`, then the `file` URI will be resolved against the temporary directory used for the test instead.
+                        </a:documentation>
                         <value>file</value>
                     </attribute>
                     <attribute name="href">
+                        <a:documentation xmlns="http://www.w3.org/1999/xhtml">When `type` is `file`; the `href` attribute is a URI pointing to the file you want the contents of.</a:documentation>
                         <data type="anyURI"/>
                     </attribute>
                     <optional>
                         <attribute name="method">
+                            <a:documentation xmlns="http://www.w3.org/1999/xhtml">By default, files loaded by using `method="file"` will be loaded as XML files. Non-XML files can be loaded by specifying another `method`.</a:documentation>
                             <choice>
                                 <value>xml</value>
                                 <value>html</value>
@@ -384,6 +370,8 @@
                     </optional>
                     <optional>
                         <attribute name="base-uri">
+                            <a:documentation xmlns="http://www.w3.org/1999/xhtml">If the `base-uri` attribute is `temp-dir`, then the URI in the `href` attribute will be resolved against the temporary directory used for the test, instead of the base
+                                URI of the xprocspec document.</a:documentation>
                             <choice>
                                 <value>temp-dir</value>
                             </choice>
@@ -393,18 +381,29 @@
                 <group>
                     <!-- directory -->
                     <attribute name="type">
+                        <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+                            If the `type` attribute is `directory`, then the `document` element will be replaced with a directory listing of the directory pointed to by the `directory` attribute. The `directory` URI is
+                            by default resolved against the base URI of the xprocspec test document. However, if you provide the `base-uri` attribute with a value of `temp-dir`, then the `directory` URI will be resolved against the temporary directory
+                            used for the test instead.
+                        </a:documentation>
                         <value>directory</value>
                     </attribute>
                     <attribute name="href">
+                        <a:documentation xmlns="http://www.w3.org/1999/xhtml">When `type` is `directory`; the `href` attribute is a URI pointing to the directory you want listed.</a:documentation>
                         <data type="anyURI"/>
                     </attribute>
                     <optional>
                         <attribute name="recursive">
+                            <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+                                By default, the result is the same as invoking the standard XProc step `p:directory-list`. If you specify the `recursive` attribute and give it the value `true`,
+                                you will get a recursive directory listing, listing all subfolders and their contents as well.
+                            </a:documentation>
                             <data type="boolean"/>
                         </attribute>
                     </optional>
                     <optional>
                         <attribute name="base-uri">
+                            <a:documentation xmlns="http://www.w3.org/1999/xhtml"><!-- documented in the "file" group --></a:documentation>
                             <choice>
                                 <value>temp-dir</value>
                             </choice>
@@ -414,16 +413,86 @@
                 <group>
                     <!-- errors -->
                     <attribute name="type">
-                        <a:documentation>If an error occurs during step execution, the error(s) generated is available by `c:errors` document is available</a:documentation>
+                        <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+                            If the `type` attribute is `errors`, then a `c:errors` document (as defined in the XProc spec) will be made available if any errors occur during step execution.
+                            If no errors occur, an empty sequence is returned.
+                        </a:documentation>
                         <value>errors</value>
-                    </attribute>
-                    <attribute name="errors">
-                        <value><![CDATA[]]></value>
                     </attribute>
                 </group>
             </choice>
         </element>
     </define>
+
+    <define name="pending">
+        <element name="pending" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+            <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+                <p>Assertions and scenarios that is within a `pending` element will remain untested, but will be
+                reported as (eventual) desired behaviour. This is a good way of commenting out
+                a set of behaviours that haven't been implemented yet, or scenarios whose
+                desired behaviour hasn't been determined, or tests for code that you're not
+                currently working on, to make the testing process faster, while still showing
+                the pending assertions and scenarios in the resulting reports.</p>
+                
+                <p id="attr-pending-label">An optional `label` attribute can be used to describe why the scenario or
+                assertion should not be evaluated.</p>
+            </a:documentation>
+            <ref name="common-attributes"/>
+            <optional>
+                <ref name="label"/>
+            </optional>
+            <oneOrMore>
+                <choice>
+                    <ref name="scenario"/>
+                    <group>
+                        <optional>
+                            <ref name="context"/>
+                        </optional>
+                        <oneOrMore>
+                            <ref name="expect"/>
+                        </oneOrMore>
+                    </group>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+
+    <define name="pending-scenario">
+        <element name="pending" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+            <ref name="common-attributes"/>
+            <optional>
+                <ref name="label"/>
+            </optional>
+            <oneOrMore>
+                <ref name="scenario"/>
+            </oneOrMore>
+        </element>
+    </define>
+
+    <define name="pending-attribute">
+        <attribute name="pending">
+            <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+               <p>Assertions or scenarios with the <code>pending</code> attribute will remain untested, but will be
+               reported as (eventual) desired behaviour. Its semantics is the same as for the
+               <a href="#the-pending-element"><code>pending</code></a> element. If the attribute is not empty;
+               its content describes why the assertion or scenario should not be evaluated.</p>
+           </a:documentation>
+        </attribute>
+    </define>
+
+    <!-- I have my doubts as to how useful the "like" element is for XProc tests. It also assumes that all @label attributes are unique. Commenting out for now. Unless this becomes a requested feature it will be removed completely in the future. -->
+    <!--<define name="like">
+        <element name="like" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+            <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+                The `like` element pulls a scenario into this one. Any environment set within
+                the other scenario is merged with this one, and any tests in the other scenario
+                are run in addition to the ones in this scenario. This allows for modular, reusable sets of tests which
+                can be applied in multiple contexts.
+            </a:documentation>
+            <ref name="common-attributes"/>
+            <ref name="label"/>
+        </element>
+    </define>-->
 
     <define name="any-content">
         <interleave>
