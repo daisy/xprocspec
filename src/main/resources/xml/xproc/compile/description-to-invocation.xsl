@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0" xmlns:p="http://www.w3.org/ns/xproc" xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test" xmlns:c="http://www.w3.org/ns/xproc-step" exclude-result-prefixes="#all">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0" xmlns:p="http://www.w3.org/ns/xproc" xmlns:x="http://www.daisy.org/ns/xprocspec" xmlns:c="http://www.w3.org/ns/xproc-step" exclude-result-prefixes="#all">
 
     <xsl:output indent="yes" method="xml"/>
     <xsl:param name="name" required="yes"/>
@@ -7,7 +7,7 @@
 
     <xsl:template match="/x:description">
         <p:declare-step xmlns:p="http://www.w3.org/ns/xproc" type="x:{$name}" name="main" xmlns:cx="http://xmlcalabash.com/ns/extensions" xmlns:c="http://www.w3.org/ns/xproc-step" version="1.0" xpath-version="2.0">
-            <xsl:namespace name="x" select="'http://www.daisy.org/ns/pipeline/xproc/test'"/>
+            <xsl:namespace name="x" select="'http://www.daisy.org/ns/xprocspec'"/>
             <xsl:text>
 </xsl:text>
             <p:output port="result"/>

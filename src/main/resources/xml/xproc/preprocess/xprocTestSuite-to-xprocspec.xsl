@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0" xmlns:t="http://xproc.org/ns/testsuite" xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test" xmlns:xprocspec="http://www.daisy.org/ns/pipeline/xproc/test"
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0" xmlns:t="http://xproc.org/ns/testsuite" xmlns:x="http://www.daisy.org/ns/xprocspec" xmlns:xprocspec="http://www.daisy.org/ns/xprocspec"
     exclude-result-prefixes="#all">
 
     <xsl:output exclude-result-prefixes="#all" indent="yes" method="xml"/>
@@ -28,7 +28,7 @@
                                         <xsl:copy-of select="@*"/>
 
                                         <xsl:if test="not(@type)">
-                                            <xsl:namespace name="xprocspec" select="'http://www.daisy.org/ns/pipeline/xproc/test'"/>
+                                            <xsl:namespace name="xprocspec" select="'http://www.daisy.org/ns/xprocspec'"/>
                                             <xsl:attribute name="type" select="'xprocspec:step'"/>
                                         </xsl:if>
                                         <xsl:copy-of select="node()|comment()"/>
@@ -36,8 +36,8 @@
                                 </xsl:for-each>
                             </xsl:when>
                             <xsl:otherwise>
-                                <p:declare-step xmlns:p="http://www.w3.org/ns/xproc" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:xprocspec="http://www.daisy.org/ns/pipeline/xproc/test" type="xprocspec:step" name="main" version="1.0">
-                                    <xsl:namespace name="xprocspec" select="'http://www.daisy.org/ns/pipeline/xproc/test'"/>
+                                <p:declare-step xmlns:p="http://www.w3.org/ns/xproc" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:xprocspec="http://www.daisy.org/ns/xprocspec" type="xprocspec:step" name="main" version="1.0">
+                                    <xsl:namespace name="xprocspec" select="'http://www.daisy.org/ns/xprocspec'"/>
                                     <xsl:copy-of select="t:pipeline/*/p:input" copy-namespaces="no"/>
                                     <xsl:for-each select="t:compare-pipeline/*/p:output">
                                         <xsl:copy copy-namespaces="no">
@@ -124,7 +124,7 @@
             </xsl:choose>
             <x:scenario label="{t:title}">
                 <x:call>
-                    <xsl:namespace name="xprocspec" select="'http://www.daisy.org/ns/pipeline/xproc/test'"/>
+                    <xsl:namespace name="xprocspec" select="'http://www.daisy.org/ns/xprocspec'"/>
                     <xsl:choose>
                         <xsl:when test="t:compare-pipeline or not(t:pipeline/*[@type])">
                             <xsl:attribute name="step" select="'xprocspec:step'"/>

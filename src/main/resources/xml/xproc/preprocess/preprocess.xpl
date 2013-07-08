@@ -1,5 +1,5 @@
-<p:declare-step xmlns:p="http://www.w3.org/ns/xproc" type="pxi:test-preprocess" xmlns:cx="http://xmlcalabash.com/ns/extensions" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:pxi="http://www.daisy.org/ns/pipeline/xproc-internal/xprocspec"
-    exclude-inline-prefixes="#all" version="1.0" xpath-version="2.0" xmlns:t="http://xproc.org/ns/testsuite" xmlns:pkg="http://expath.org/ns/pkg" xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test">
+<p:declare-step xmlns:p="http://www.w3.org/ns/xproc" type="pxi:test-preprocess" xmlns:cx="http://xmlcalabash.com/ns/extensions" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:pxi="http://www.daisy.org/ns/xprocspec/xproc-internal/"
+    exclude-inline-prefixes="#all" version="1.0" xpath-version="2.0" xmlns:t="http://xproc.org/ns/testsuite" xmlns:x="http://www.daisy.org/ns/xprocspec">
 
     <p:input port="source"/>
     <p:output port="result" sequence="true">
@@ -44,7 +44,7 @@
 
     <!-- transform other test vocabularies to xprocspec -->
     <p:choose>
-        <p:when test="/*/namespace-uri()='http://www.daisy.org/ns/pipeline/xproc/test'">
+        <p:when test="/*/namespace-uri()='http://www.daisy.org/ns/xprocspec'">
             <p:output port="result" primary="true" sequence="true"/>
 
             <!-- if xprocspec grammar is used in the input document; validate it -->

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <p:declare-step xmlns:p="http://www.w3.org/ns/xproc" xmlns:c="http://www.w3.org/ns/xproc-step" name="main" type="pxi:load" xmlns:cx="http://xmlcalabash.com/ns/extensions" version="1.0"
-    xmlns:pxi="http://www.daisy.org/ns/pipeline/xproc-internal/xprocspec">
+    xmlns:pxi="http://www.daisy.org/ns/xprocspec/xproc-internal/">
 
     <p:output port="result"/>
 

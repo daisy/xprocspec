@@ -4,7 +4,7 @@
     <include href="xprocspec.preprocess.rng">
 
         <define name="description">
-            <element name="description" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+            <element name="description" ns="http://www.daisy.org/ns/xprocspec">
                 <a:documentation>after execution, the outputs from the XProc step is appended as output elements to the description element</a:documentation>
                 <ref name="description.common"/>
                 <attribute name="test-base-uri"/>
@@ -47,7 +47,7 @@
         </define>
 
         <define name="option">
-            <element name="option" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+            <element name="option" ns="http://www.daisy.org/ns/xprocspec">
                 <attribute name="value"/>
                 <ref name="common-attributes"/>
                 <attribute name="name">
@@ -65,7 +65,7 @@
         </define>
 
         <define name="param">
-            <element name="param" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+            <element name="param" ns="http://www.daisy.org/ns/xprocspec">
                 <attribute name="value"/>
                 <ref name="common-attributes"/>
                 <attribute name="name">
@@ -85,14 +85,14 @@
     </include>
 
     <define name="output">
-        <element name="output" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+        <element name="output" ns="http://www.daisy.org/ns/xprocspec">
             <a:documentation xml:space="preserve">
                 Each x:document element contained by the x:output element represents a document appearing on the
                 output port represented by this x:output element. The name of the output port is gived by the "port" attribute.
             </a:documentation>
             <attribute name="port"/>
             <zeroOrMore>
-                <element name="document" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+                <element name="document" ns="http://www.daisy.org/ns/xprocspec">
                     <a:documentation>A document appearing on the output port. The xml:base attribute contains the base URI of the document.</a:documentation>
                     <attribute name="xml:base"/>
                     <ref name="any-element"/>

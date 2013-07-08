@@ -6,7 +6,7 @@
     </start>
 
     <define name="description">
-        <element name="description" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+        <element name="description" ns="http://www.daisy.org/ns/xprocspec">
             <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">The `description` element is the root element of an xprocspec test and describes the functionality of a specific XProc script.</a:documentation>
             <ref name="description.common"/>
             <choice>
@@ -60,7 +60,7 @@
                 <anyName>
                     <except>
                         <nsName ns=""/>
-                        <nsName ns="http://www.daisy.org/ns/pipeline/xproc/test"/>
+                        <nsName ns="http://www.daisy.org/ns/xprocspec"/>
                         <nsName ns="http://www.w3.org/ns/xproc-step"/>
                         <nsName ns="http://www.w3.org/ns/xproc"/>
                     </except>
@@ -70,7 +70,7 @@
     </define>
 
     <define name="import">
-        <element name="import" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+        <element name="import" ns="http://www.daisy.org/ns/xprocspec">
             <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
                 An import runs the xprocspec description in the referenced file. It has no
                 effect on the scenarios in the current document, but can be a useful method
@@ -87,7 +87,7 @@
     </define>
 
     <define name="scenario">
-        <element name="scenario" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+        <element name="scenario" ns="http://www.daisy.org/ns/xprocspec">
             <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
                 A scenario groups together the definition of the script environment
                 (the `call` element) and the script assertions (the `context` and
@@ -137,7 +137,7 @@
     </define>
 
     <define name="call">
-        <element name="call" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+        <element name="call" ns="http://www.daisy.org/ns/xprocspec">
             <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
                 A `call` element defines a step call and the
                 inputs, options and parameters passed to it.
@@ -157,7 +157,7 @@
     </define>
 
     <define name="option">
-        <element name="option" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+        <element name="option" ns="http://www.daisy.org/ns/xprocspec">
             <a:documentation xmlns="http://www.w3.org/1999/xhtml">The option element is used to provide values to XProc options on the XProc step you are testing.</a:documentation>
             <ref name="common-attributes"/>
             <attribute name="name">
@@ -188,7 +188,7 @@
     </define>
 
     <define name="param">
-        <element name="param" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+        <element name="param" ns="http://www.daisy.org/ns/xprocspec">
             <a:documentation xmlns="http://www.w3.org/1999/xhtml">The param element is used to provide values to XProc paramaters on the XProc step you are testing.</a:documentation>
             <ref name="common-attributes"/>
             <attribute name="name">
@@ -213,7 +213,7 @@
     </define>
     
     <define name="input">
-        <element name="input" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+        <element name="input" ns="http://www.daisy.org/ns/xprocspec">
             <a:documentation xmlns="http://www.w3.org/1999/xhtml">The input element is used to provide documents on the input ports of the XProc step you are testing.</a:documentation>
             <ref name="common-attributes"/>
             <zeroOrMore>
@@ -229,7 +229,7 @@
     </define>
 
     <define name="context">
-        <element name="context" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+        <element name="context" ns="http://www.daisy.org/ns/xprocspec">
             <a:documentation xmlns="http://www.w3.org/1999/xhtml">Defines the context against which assertions are made.</a:documentation>
             <ref name="common-attributes"/>
             <optional>
@@ -242,7 +242,7 @@
     </define>
 
     <define name="expect">
-        <element name="expect" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+        <element name="expect" ns="http://www.daisy.org/ns/xprocspec">
             <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
                 Defines what is expected from the context document(s).
             </a:documentation>
@@ -301,7 +301,7 @@
     </define>
 
     <define name="document">
-        <element name="document" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+        <element name="document" ns="http://www.daisy.org/ns/xprocspec">
             <a:documentation xmlns="http://www.w3.org/1999/xhtml">
                 <p>The `document` element is used to define which documents are provided on a steps input ports, what the context is when making assertions, and for assertions when making comparisons or performing validations. It can be used in a number of ways:</p>
             </a:documentation>
@@ -429,7 +429,7 @@
     </define>
 
     <define name="pending">
-        <element name="pending" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+        <element name="pending" ns="http://www.daisy.org/ns/xprocspec">
             <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
                 <p>Assertions and scenarios that is within a `pending` element will remain untested, but will be
                 reported as (eventual) desired behaviour. This is a good way of commenting out
@@ -462,7 +462,7 @@
     </define>
 
     <define name="pending-scenario">
-        <element name="pending" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+        <element name="pending" ns="http://www.daisy.org/ns/xprocspec">
             <ref name="common-attributes"/>
             <optional>
                 <ref name="label"/>
@@ -486,7 +486,7 @@
 
     <!-- I have my doubts as to how useful the "like" element is for XProc tests. It also assumes that all @label attributes are unique. Commenting out for now. Unless this becomes a requested feature it will be removed completely in the future. -->
     <!--<define name="like">
-        <element name="like" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+        <element name="like" ns="http://www.daisy.org/ns/xprocspec">
             <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
                 The `like` element pulls a scenario into this one. Any environment set within
                 the other scenario is merged with this one, and any tests in the other scenario

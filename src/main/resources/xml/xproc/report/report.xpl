@@ -1,5 +1,5 @@
-<p:declare-step xmlns:p="http://www.w3.org/ns/xproc" type="pxi:test-report" name="main" xmlns:cx="http://xmlcalabash.com/ns/extensions" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:pxi="http://www.daisy.org/ns/pipeline/xproc-internal/xprocspec"
-    exclude-inline-prefixes="#all" version="1.0" xpath-version="2.0" xmlns:pkg="http://expath.org/ns/pkg" xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test" xmlns:html="http://www.w3.org/1999/xhtml">
+<p:declare-step xmlns:p="http://www.w3.org/ns/xproc" type="pxi:test-report" name="main" xmlns:cx="http://xmlcalabash.com/ns/extensions" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:pxi="http://www.daisy.org/ns/xprocspec/xproc-internal/"
+    exclude-inline-prefixes="#all" version="1.0" xpath-version="2.0" xmlns:x="http://www.daisy.org/ns/xprocspec" xmlns:html="http://www.w3.org/1999/xhtml">
 
     <p:documentation>Makes the machine-readable reports human-readable.</p:documentation>
 

@@ -10,7 +10,7 @@
         </start>
 
         <define name="description">
-            <element name="description" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+            <element name="description" ns="http://www.daisy.org/ns/xprocspec">
                 <a:documentation>after preprocessing, each description has a new step-declaration element, no imports and only one scenario</a:documentation>
                 <ref name="description.common"/>
                 <attribute name="test-base-uri"/>
@@ -21,7 +21,7 @@
         </define>
 
         <define name="scenario">
-            <element name="scenario" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+            <element name="scenario" ns="http://www.daisy.org/ns/xprocspec">
                 <a:documentation>after preprocessing, the scenario does not contain any other scenarios or references to other scenarios</a:documentation>
                 <ref name="scenario.common"/>
                 <ref name="label"/>
@@ -41,7 +41,7 @@
             </a:documentation>
             <attribute name="label"/>
             <optional>
-                <element name="label" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+                <element name="label" ns="http://www.daisy.org/ns/xprocspec">
                     <ref name="common-attributes"/>
                     <ref name="any-content"/>
                 </element>
@@ -49,12 +49,12 @@
         </define>
 
         <define name="call">
-            <element name="call" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+            <element name="call" ns="http://www.daisy.org/ns/xprocspec">
                 <ref name="call.common"/>
                 <attribute name="step">
                     <data type="QName"/>
                 </attribute>
-                <attribute name="step" ns="http://www.daisy.org/ns/pipeline/xproc/test"/>
+                <attribute name="step" ns="http://www.daisy.org/ns/xprocspec"/>
             </element>
         </define>
 
@@ -120,7 +120,7 @@
 
     <define name="step-declaration">
         <a:documentation>an XProc step declaration</a:documentation>
-        <element name="step-declaration" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+        <element name="step-declaration" ns="http://www.daisy.org/ns/xprocspec">
             <choice>
                 <element name="declare-step" ns="http://www.w3.org/ns/xproc">
                     <ref name="xproc.declare-step"/>
@@ -146,7 +146,7 @@
                 <data type="QName"/>
             </attribute>
         </optional>
-        <attribute name="type" ns="http://www.daisy.org/ns/pipeline/xproc/test">
+        <attribute name="type" ns="http://www.daisy.org/ns/xprocspec">
             <data type="string">
                 <param name="pattern">\{.*\}.*</param>
             </data>

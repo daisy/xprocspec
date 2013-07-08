@@ -1,15 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
    <modelVersion>4.0.0</modelVersion>
-   <groupId>no.josteinaj</groupId>
+   
+   <groupId>org.daisy</groupId>
    <artifactId>xprocspec</artifactId>
    <version>1.0-SNAPSHOT</version>
    <packaging>jar</packaging>
-
+   
+   <name>xprocspec</name>
+   <description>A tool for testing XProc scripts</description>
+   <url>http://josteinaj.github.io/xprocspec/</url>
+   <inceptionYear>2013</inceptionYear>
+   <licenses>
+      <license>
+         <name>GNU Lesser General Public License (LGPL)</name>
+         <url>http://www.gnu.org/licenses/lgpl.html</url>
+         <distribution>repo</distribution>
+         <comments>A business-friendly OSS license</comments>
+      </license>
+   </licenses>
+   <developers>
+      <developer>
+         <name>Jostein Austvik Jacobsen</name>
+         <email>josteinaj@gmail.com</email>
+         <organization>NLB - the Norwegian library of talking books and braille</organization>
+         <organizationUrl>http://www.nlb.no/en/</organizationUrl>
+         <id>josteinaj</id>
+         <timezone>+1</timezone>
+         <url>https://github.com/josteinaj</url>
+      </developer>
+   </developers>
+   <issueManagement>
+      <url>https://github.com/josteinaj/xprocspec/issues</url>
+      <system>GitHub Issues</system>
+   </issueManagement>
+   <scm>
+      <url>https://github.com/josteinaj/xprocspec</url>
+      <connection>scm:git:git://github.com/josteinaj/xprocspec.git</connection>
+      <developerConnection>scm:git:git@github.com:josteinaj/xprocspec.git</developerConnection>
+   </scm>
+   <properties>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+   </properties>
+   
    <build>
       <plugins>
-         <plugin>
+         <!--<plugin>
             <groupId>org.daisy.pipeline.maven</groupId>
             <artifactId>xproc-maven-plugin</artifactId>
             <version>1.0-SNAPSHOT</version>
@@ -43,7 +79,7 @@
                   </exclusions>
                </dependency>
             </dependencies>
-         </plugin>
+         </plugin>-->
       </plugins>
    </build>
    <reporting>
