@@ -1,7 +1,0 @@
-<project xmlns="http://expath.org/ns/project" name="http://www.daisy.org/pipeline/modules/xprocspec" abbrev="xprocspec" version="1.0.0">
-
-    <title>XSpec for XProc</title>
-
-    <tests dir="src/test/"/>
-   
-</project>
