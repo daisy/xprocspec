@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
    <modelVersion>4.0.0</modelVersion>
-   
+
    <groupId>org.daisy</groupId>
    <artifactId>xprocspec</artifactId>
    <version>1.0-SNAPSHOT</version>
    <packaging>jar</packaging>
-   
+
    <name>xprocspec</name>
    <description>A tool for testing XProc scripts</description>
    <url>http://josteinaj.github.io/xprocspec/</url>
@@ -39,17 +39,42 @@
       <connection>scm:git:git://github.com/josteinaj/xprocspec.git</connection>
       <developerConnection>scm:git:git@github.com:josteinaj/xprocspec.git</developerConnection>
    </scm>
+
+   <repositories>
+      <repository>
+         <id>central</id>
+         <name>Maven Central</name>
+         <url>http://repo.maven.apache.org/maven2/</url>
+      </repository>
+      <repository>
+         <id>sonatype-nexus-snapshots</id>
+         <name>oss.sonatype.org github Release Repository Snapshot Repository</name>
+         <releases>
+            <enabled>false</enabled>
+         </releases>
+         <snapshots>
+            <enabled>true</enabled>
+         </snapshots>
+         <url>http://oss.sonatype.org/content/repositories/snapshots/</url>
+      </repository>
+   </repositories>
    <distributionManagement>
+      <repository>
+         <id>sonatype-nexus-staging</id>
+         <name>oss.sonatype.org Staging Repository</name>
+         <url>http://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+      </repository>
       <snapshotRepository>
          <id>sonatype-nexus-snapshots</id>
          <name>Sonatype Nexus Snapshots</name>
          <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
       </snapshotRepository>
    </distributionManagement>
+
    <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
    </properties>
-   
+
    <build>
       <plugins>
          <!--<plugin>
