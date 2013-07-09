@@ -29,9 +29,8 @@
     <p:identity name="template"/>
     <p:sink/>
     
-    <p:load href="../../src/main/resources/xml/schema/xprocspec.rng"/>
+    <p:load href="../../src/main/resources/content/xml/schema/xprocspec.rng"/>
     <p:xslt>
-        <p:log port="result" href="file:/tmp/simplify-rng.out.xml"/>
         <p:input port="parameters">
             <p:empty/>
         </p:input>
@@ -40,7 +39,6 @@
         </p:input>
     </p:xslt>
     <p:xslt>
-        <p:log port="result" href="file:/tmp/rng-to-documentation.input.xml"/>
         <p:input port="parameters">
             <p:empty/>
         </p:input>
