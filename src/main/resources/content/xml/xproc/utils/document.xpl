@@ -23,34 +23,32 @@
     <p:variable name="method" select="if (/*/@method=('xml','html','text','binary')) then /*/@method else 'xml'"/>
     <p:variable name="directory" select="resolve-uri(/*/@directory, $base-dir)"/>
     <p:variable name="recursive" select="if (/*/@recursive=('true','false')) then /*/@recursive else 'false'"/>
-
-
-    <p:identity xml:base="foo">
+    
+    
+    <p:identity>
         <p:input port="source">
             <p:pipe step="main" port="description"/>
         </p:input>
     </p:identity>
     <p:choose>
-        <p:when test="/*/@type='inline'">
-            <p:identity>
-                <p:input port="source">
-                    <p:pipe port="document" step="main"/>
-                </p:input>
-            </p:identity>
-            <p:group>
-                <p:variable name="base" select="resolve-uri((/*/@xml:base,/*/base-uri())[1],$base-dir)"/>
-                <p:delete match="@*"/>
-                <p:add-attribute match="/*" attribute-name="xml:base">
-                    <p:with-option name="attribute-value" select="if (/*/*/@xml:base) then resolve-uri(/*/*/@xml:base,$base) else $base"/>
-                </p:add-attribute>
-            </p:group>
-        </p:when>
-
-        <p:when test="/*/@type='port'">
-            <p:variable name="position" select="if ($position=('all','last') or matches($position,'\d+')) then $position else 'all'"/>
-            <p:filter>
+        <p:when test="$type='port'">
+            <p:variable name="position" select="if (/*/@position=('all','last') or matches(/*/@position,'\d+')) then /*/@position else 'all'">
+                <p:pipe port="document" step="main"/>
+            </p:variable>
+            <p:filter name="port">
                 <p:with-option name="select" select="concat('/x:description/x:output[@port=&quot;',$port,'&quot;]/x:document')"/>
             </p:filter>
+            <p:count/>
+            <pxi:assert>
+                <p:with-option name="test" select="number(/*) &gt; 0"/>
+                <p:with-option name="message" select="concat('   * port not found: &quot;',$port,'&quot;')"/>
+            </pxi:assert>
+            
+            <p:identity>
+                <p:input port="source">
+                    <p:pipe port="result" step="port"/>
+                </p:input>
+            </p:identity>
             <p:choose>
                 <p:xpath-context>
                     <p:inline>
@@ -68,14 +66,14 @@
             </p:choose>
             <p:for-each>
                 <p:variable name="base" select="resolve-uri((/*/@xml:base,/*/base-uri())[1],$base-dir)"/>
-                <p:delete match="@*"/>
+                <p:delete match="/*/@*"/>
                 <p:add-attribute match="/*" attribute-name="xml:base">
                     <p:with-option name="attribute-value" select="if (/*/*/@xml:base) then resolve-uri(/*/*/@xml:base,$base) else $base"/>
                 </p:add-attribute>
             </p:for-each>
         </p:when>
 
-        <p:when test="/*/@type='file'">
+        <p:when test="$type='file'">
             <p:identity>
                 <p:input port="source">
                     <p:pipe port="document" step="main"/>
@@ -94,7 +92,7 @@
             </p:group>
         </p:when>
 
-        <p:when test="/*/@type='directory'">
+        <p:when test="$type='directory'">
             <pxi:directory-list>
                 <p:with-option name="path" select="$directory"/>
                 <p:with-option name="depth" select="if ($recursive='true') then '-1' else '0'"/>
@@ -106,7 +104,7 @@
             </p:add-attribute>
         </p:when>
 
-        <p:when test="/*/@type='errors'">
+        <p:when test="$type='errors'">
             <p:for-each>
                 <p:iteration-source select="(/x:description/c:errors)[1]"/>
                 <p:identity/>
@@ -114,19 +112,29 @@
             <p:group>
                 <p:variable name="base" select="base-uri(/*)"/>
                 <p:wrap-sequence wrapper="x:document"/>
+                <pxi:assert message="   * no errors occured">
+                    <p:with-option name="test" select="count(/*/*) &gt; 0"/>
+                </pxi:assert>
                 <p:add-attribute match="/*" attribute-name="xml:base">
                     <p:with-option name="attribute-value" select="if (/*/*/@xml:base) then resolve-uri(/*/*/@xml:base,$base) else $base"/>
                 </p:add-attribute>
             </p:group>
         </p:when>
-
+        
         <p:otherwise>
-            <!-- unknown document type; should not happen but XProc requires a p:otherwise -->
+            <!-- default is 'inline' -->
             <p:identity>
                 <p:input port="source">
-                    <p:empty/>
+                    <p:pipe port="document" step="main"/>
                 </p:input>
             </p:identity>
+            <p:group>
+                <p:variable name="base" select="resolve-uri((/*/@xml:base,/*/base-uri())[1],$base-dir)"/>
+                <p:delete match="@*"/>
+                <p:add-attribute match="/*" attribute-name="xml:base">
+                    <p:with-option name="attribute-value" select="if (/*/*/@xml:base) then resolve-uri(/*/*/@xml:base,$base) else $base"/>
+                </p:add-attribute>
+            </p:group>
         </p:otherwise>
     </p:choose>
 

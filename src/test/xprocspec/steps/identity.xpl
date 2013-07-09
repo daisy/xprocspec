@@ -42,7 +42,8 @@
     </p:output>
     
     <p:option name="option"/>
-    <p:option name="option.required" required="true"/>
+<!--    <p:option name="option.required" required="true"/>-->
+    <p:option name="option.required" select="'required'"/>
     <p:option name="option.default" select="'default'"/>
     
     <p:identity>
@@ -72,7 +73,7 @@
     <p:add-attribute match="/*/*[@name='option.default']" attribute-name="value">
         <p:with-option name="attribute-value" select="$option.default"/>
     </p:add-attribute>
-    <p:delete match="/*/*[not(@value)]"/>
+    <p:delete match="/*/*[not(.[@value])]"/>
     <p:identity name="options"/>
     
 </p:declare-step>

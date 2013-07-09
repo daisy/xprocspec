@@ -104,10 +104,10 @@
             <p:pipe port="junit" step="report"/>
         </p:input>
     </p:identity>
-    <pxi:message message="Results: tests: $1, errors: $2, failures: $3">
+    <pxi:message message="Results: tests: $1, failures: $2, errors: $3">
         <p:with-option name="param1" select="/*/@tests"/>
-        <p:with-option name="param2" select="/*/@errors"/>
-        <p:with-option name="param3" select="/*/@failures"/>
+        <p:with-option name="param2" select="/*/@failures"/>
+        <p:with-option name="param3" select="/*/@errors"/>
     </pxi:message>
     <p:sink/>
 

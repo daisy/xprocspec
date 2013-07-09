@@ -27,7 +27,6 @@
                         <p:identity name="description"/>
                         <p:viewport match="//x:document">
                             <!-- resolve all x:documents in the description -->
-
                             <pxi:document>
                                 <p:input port="description">
                                     <p:pipe port="result" step="description"/>
@@ -54,7 +53,7 @@
                             <p:identity name="context-group"/>
                             <p:for-each name="context">
                                 <p:output port="result" sequence="true"/>
-                                <p:iteration-source select="/x:context-group/x:context/x:document"/>
+                                <p:iteration-source select="/x:context-group/x:context/x:document/*"/>
                                 <p:identity/>
                             </p:for-each>
                             <p:for-each name="assertions">
@@ -110,7 +109,7 @@
                                     <p:when test="/x:expect[@type='compare']">
                                         <p:for-each name="expect">
                                             <p:output port="result" sequence="true"/>
-                                            <p:iteration-source select="/x:expect/x:document"/>
+                                            <p:iteration-source select="/x:expect/x:document/*"/>
                                             <p:identity/>
                                         </p:for-each>
 
