@@ -20,32 +20,33 @@
             </element>
         </define>
 
-        <define name="scenario">
-            <element name="scenario" ns="http://www.daisy.org/ns/xprocspec">
-                <a:documentation>after preprocessing, the scenario does not contain any other scenarios or references to other scenarios</a:documentation>
-                <ref name="scenario.common"/>
-                <ref name="label"/>
+        <define name="scenario.common-children">
+            <ref name="call"/>
+            <oneOrMore>
+                <ref name="context"/>
                 <oneOrMore>
-                    <ref name="context"/>
-                    <oneOrMore>
-                        <ref name="expect"/>
-                    </oneOrMore>
+                    <ref name="expect"/>
                 </oneOrMore>
-            </element>
+            </oneOrMore>
         </define>
 
-        <define name="label">
-            <a:documentation xml:space="preserve">
-                labels *must* be attributes after preprocessing. if they are only present as elements then
-                the attribute will be generated based on the element.
-            </a:documentation>
-            <attribute name="label"/>
+        <define name="context.attributes">
+            <ref name="common-attributes"/>
+            <ref name="label"/>
+            <attribute name="id">
+                <data type="ID"/>
+            </attribute>
+        </define>
+
+        <define name="expect.attributes">
+            <ref name="common-attributes"/>
             <optional>
-                <element name="label" ns="http://www.daisy.org/ns/xprocspec">
-                    <ref name="common-attributes"/>
-                    <ref name="any-content"/>
-                </element>
+                <ref name="pending-attribute"/>
             </optional>
+            <ref name="label"/>
+            <attribute name="contextref">
+                <data type="IDREF"/>
+            </attribute>
         </define>
 
         <define name="call">
@@ -56,6 +57,15 @@
                 </attribute>
                 <attribute name="step" ns="http://www.daisy.org/ns/xprocspec"/>
             </element>
+        </define>
+        
+        <define name="pending-attribute">
+            <a:documentation>after preprocessing, the pending attribute must have a non-empty value</a:documentation>
+            <attribute name="pending">
+                <data type="string">
+                    <param name="pattern">.+</param>
+                </data>
+            </attribute>
         </define>
 
     </include>

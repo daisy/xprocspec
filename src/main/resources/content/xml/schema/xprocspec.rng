@@ -99,30 +99,46 @@
                 own `call` element.
             </a:documentation>
             <ref name="scenario.common"/>
-            <ref name="label"/>
-            <!--<zeroOrMore>
-                <ref name="like"/>
-            </zeroOrMore>-->
             <choice>
-                <oneOrMore>
-                    <ref name="scenario"/>
-                </oneOrMore>
-                <oneOrMore>
-                    <ref name="context"/>
-                    <oneOrMore>
-                        <ref name="expect"/>
-                    </oneOrMore>
-                </oneOrMore>
+                <group>
+                    <optional>
+                        <ref name="pending-attribute"/>
+                    </optional>
+                    <ref name="scenario.common-children"/>
+                </group>
+                <group>
+                    <ref name="pending-attribute"/>
+                </group>
             </choice>
         </element>
     </define>
 
     <define name="scenario.common">
         <ref name="common-attributes"/>
-        <optional>
-            <ref name="pending-attribute"/>
-        </optional>
+        <ref name="label"/>
+    </define>
+    
+    <define name="scenario.common-children">
         <ref name="call"/>
+        <choice>
+            <oneOrMore>
+                <choice>
+                    <ref name="scenario"/>
+                    <ref name="pending-scenario"/>
+                </choice>
+            </oneOrMore>
+            <oneOrMore>
+                <choice>
+                    <group>
+                        <ref name="context"/>
+                        <oneOrMore>
+                            <ref name="expect"/>
+                        </oneOrMore>
+                    </group>
+                    <ref name="pending-assertions"/>
+                </choice>
+            </oneOrMore>
+        </choice>
     </define>
 
     <define name="call.common">
@@ -211,7 +227,7 @@
             </optional>
         </element>
     </define>
-    
+
     <define name="input">
         <element name="input" ns="http://www.daisy.org/ns/xprocspec">
             <a:documentation xmlns="http://www.w3.org/1999/xhtml">The input element is used to provide documents on the input ports of the XProc step you are testing.</a:documentation>
@@ -225,20 +241,33 @@
     <define name="label">
         <attribute name="label">
             <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">The `label` attribute is used to describe the current element in human-readable words.</a:documentation>
+            <data type="string">
+                <param name="pattern">.+</param>
+            </data>
         </attribute>
+    </define>
+
+    <define name="context.attributes">
+        <ref name="common-attributes"/>
+        <ref name="label"/>
     </define>
 
     <define name="context">
         <element name="context" ns="http://www.daisy.org/ns/xprocspec">
             <a:documentation xmlns="http://www.w3.org/1999/xhtml">Defines the context against which assertions are made.</a:documentation>
-            <ref name="common-attributes"/>
-            <optional>
-                <ref name="label"/>
-            </optional>
+            <ref name="context.attributes"/>
             <zeroOrMore>
                 <ref name="document"/>
             </zeroOrMore>
         </element>
+    </define>
+
+    <define name="expect.attributes">
+        <ref name="common-attributes"/>
+        <optional>
+            <ref name="pending-attribute"/>
+        </optional>
+        <ref name="label"/>
     </define>
 
     <define name="expect">
@@ -246,11 +275,7 @@
             <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
                 Defines what is expected from the context document(s).
             </a:documentation>
-            <ref name="common-attributes"/>
-            <optional>
-                <ref name="pending-attribute"/>
-            </optional>
-            <ref name="label"/>
+            <ref name="expect.attributes"/>
             <choice>
                 <group>
                     <!-- XPath assertion -->
@@ -303,7 +328,8 @@
     <define name="document">
         <element name="document" ns="http://www.daisy.org/ns/xprocspec">
             <a:documentation xmlns="http://www.w3.org/1999/xhtml">
-                <p>The `document` element is used to define which documents are provided on a steps input ports, what the context is when making assertions, and for assertions when making comparisons or performing validations. It can be used in a number of ways:</p>
+                <p>The `document` element is used to define which documents are provided on a steps input ports, what the context is when making assertions, and for assertions when making comparisons or performing validations. It can be used in a
+                    number of ways:</p>
             </a:documentation>
             <ref name="common-attributes"/>
             <choice>
@@ -428,7 +454,7 @@
         </element>
     </define>
 
-    <define name="pending">
+    <define name="pending-assertions">
         <element name="pending" ns="http://www.daisy.org/ns/xprocspec">
             <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
                 <p>Assertions and scenarios that is within a `pending` element will remain untested, but will be
@@ -437,26 +463,18 @@
                 desired behaviour hasn't been determined, or tests for code that you're not
                 currently working on, to make the testing process faster, while still showing
                 the pending assertions and scenarios in the resulting reports.</p>
-                
-                <p id="attr-pending-label">An optional `label` attribute can be used to describe why the scenario or
-                assertion should not be evaluated.</p>
             </a:documentation>
             <ref name="common-attributes"/>
-            <optional>
-                <ref name="label"/>
-            </optional>
+            <ref name="label"/>
             <oneOrMore>
-                <choice>
-                    <ref name="scenario"/>
-                    <group>
-                        <optional>
-                            <ref name="context"/>
-                        </optional>
-                        <oneOrMore>
-                            <ref name="expect"/>
-                        </oneOrMore>
-                    </group>
-                </choice>
+                <group>
+                    <optional>
+                        <ref name="context"/>
+                    </optional>
+                    <oneOrMore>
+                        <ref name="expect"/>
+                    </oneOrMore>
+                </group>
             </oneOrMore>
         </element>
     </define>
@@ -464,9 +482,7 @@
     <define name="pending-scenario">
         <element name="pending" ns="http://www.daisy.org/ns/xprocspec">
             <ref name="common-attributes"/>
-            <optional>
-                <ref name="label"/>
-            </optional>
+            <ref name="label"/>
             <oneOrMore>
                 <ref name="scenario"/>
             </oneOrMore>
@@ -478,25 +494,12 @@
             <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
                <p>Assertions or scenarios with the <code>pending</code> attribute will remain untested, but will be
                reported as (eventual) desired behaviour. Its semantics is the same as for the
-               <a href="#the-pending-element"><code>pending</code></a> element. If the attribute is not empty;
-               its content describes why the assertion or scenario should not be evaluated.</p>
+               <a href="#the-pending-element"><code>pending</code></a> element.
+               Its content describes why the assertion or scenario should not be evaluated.</p>
            </a:documentation>
+            <data type="string"/>
         </attribute>
     </define>
-
-    <!-- I have my doubts as to how useful the "like" element is for XProc tests. It also assumes that all @label attributes are unique. Commenting out for now. Unless this becomes a requested feature it will be removed completely in the future. -->
-    <!--<define name="like">
-        <element name="like" ns="http://www.daisy.org/ns/xprocspec">
-            <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
-                The `like` element pulls a scenario into this one. Any environment set within
-                the other scenario is merged with this one, and any tests in the other scenario
-                are run in addition to the ones in this scenario. This allows for modular, reusable sets of tests which
-                can be applied in multiple contexts.
-            </a:documentation>
-            <ref name="common-attributes"/>
-            <ref name="label"/>
-        </element>
-    </define>-->
 
     <define name="any-content">
         <interleave>

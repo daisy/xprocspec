@@ -14,7 +14,12 @@
             <xsl:text>
 </xsl:text>
             <p:import href="{resolve-uri(@script,base-uri(.))}"/>
-
+            <xsl:text>
+</xsl:text>
+            <p:variable name="start-time" select="adjust-dateTime-to-timezone(current-dateTime(),xs:dayTimeDuration('PT0H'))"/>
+            <xsl:text>
+</xsl:text>
+            
             <xsl:choose>
                 <xsl:when test="x:scenario[@pending]">
                     <xsl:text>
@@ -186,6 +191,9 @@
                                     </p:add-attribute>
                                     <xsl:text>
 </xsl:text>
+                                    <p:add-attribute match="/*" attribute-name="type" attribute-value="inline"/>
+                                        <xsl:text>
+</xsl:text>
                                 </p:for-each>
                                 <xsl:text>
 </xsl:text>
@@ -310,6 +318,36 @@
                 <xsl:text>
 </xsl:text>
             </p:insert>
+            <xsl:text>
+</xsl:text>
+            <p:add-attribute match="/x:description/x:scenario" attribute-name="start-time">
+                <xsl:text>
+</xsl:text>
+                <p:with-option name="attribute-value" select="$start-time">
+                    <xsl:text>
+</xsl:text>
+                    <p:empty/>
+                    <xsl:text>
+</xsl:text>
+                </p:with-option>
+                <xsl:text>
+</xsl:text>
+            </p:add-attribute>
+            <xsl:text>
+</xsl:text>
+            <p:add-attribute match="/x:description/x:scenario" attribute-name="end-time">
+                <xsl:text>
+</xsl:text>
+                <p:with-option name="attribute-value" select="adjust-dateTime-to-timezone(current-dateTime(),xs:dayTimeDuration('PT0H'))">
+                    <xsl:text>
+</xsl:text>
+                    <p:empty/>
+                    <xsl:text>
+</xsl:text>
+                </p:with-option>
+                <xsl:text>
+</xsl:text>
+            </p:add-attribute>
             <xsl:text>
 </xsl:text>
         </p:declare-step>

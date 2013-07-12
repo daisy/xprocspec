@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-model href="../../main/resources/xml/schema/xprocspec.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="http://www.daisy.org/ns/xprocspec/xprocspec.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
 <x:description xmlns:x="http://www.daisy.org/ns/xprocspec" xmlns:ex="http://example.net/ns" script="steps/identity.xpl">
-    <x:scenario label="Identity">
+    
+    <x:scenario label="identity">
         <x:call step="ex:identity">
             <x:option name="option" select="'option-value'"/>
             <x:option name="option.required" select="'option.required-value'"/>
@@ -12,4 +13,7 @@
         <x:expect type="xpath" label="the option 'option' should have the value 'option-value'" test="/*/*[@name='option']/@value='option-value'"/>
         <x:expect type="xpath" label="the option 'option.required' should have the value 'option-value'" test="/*/*[@name='option.required']/@value='option.required-value'"/>
     </x:scenario>
+    
+    <x:scenario label="with pending attribute" pending=""/>
+    
 </x:description>

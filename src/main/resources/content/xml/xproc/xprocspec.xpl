@@ -21,6 +21,8 @@
     <p:import href="evaluate/evaluate.xpl"/>
     <p:import href="report/report.xpl"/>
     <p:import href="utils/logging-library.xpl"/>
+    
+    <p:variable name="start-time" select="adjust-dateTime-to-timezone(current-dateTime(),xs:dayTimeDuration('PT0H'))"/>
 
     <!--
         * Converts any other XProc test syntaxes (currently supported: XProc Test Suite).
@@ -97,7 +99,14 @@
 
     <!-- make a machine readable report as well as a human readable one -->
     <pxi:message message="reporting..."/>
-    <pxi:test-report name="report"/>
+    <pxi:test-report name="report">
+        <p:with-option name="start-time" select="$start-time">
+            <p:empty/>
+        </p:with-option>
+        <p:with-option name="end-time" select="adjust-dateTime-to-timezone(current-dateTime(),xs:dayTimeDuration('PT0H'))">
+            <p:empty/>
+        </p:with-option>
+    </pxi:test-report>
 
     <p:identity>
         <p:input port="source">

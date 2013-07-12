@@ -1,360 +1,312 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0" xmlns="http://www.w3.org/1999/xhtml" xpath-default-namespace="http://www.w3.org/1999/xhtml" exclude-result-prefixes="#all"
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0" xmlns="http://www.w3.org/1999/xhtml" xmlns:html="http://www.w3.org/1999/xhtml" xpath-default-namespace="http://www.w3.org/1999/xhtml" exclude-result-prefixes="#all"
     xmlns:x="http://www.daisy.org/ns/xprocspec" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:p="http://www.w3.org/ns/xproc">
 
-    <xsl:template match="/*">
+    <xsl:template match="html">
+        <xsl:variable name="descriptions" select="body/x:description[not(x:scenario/@pending)]"/>
+        <xsl:variable name="pending-descriptions" select="body/x:description[x:scenario/@pending]"/>
+        <xsl:variable name="errors" select="body/c:errors"/>
+        <xsl:variable name="test-base-uri" select="string((body/*/@test-base-uri)[1])"/>
+        <xsl:variable name="tests" select="$descriptions/x:test-result"/>
+        <xsl:variable name="scripts" select="distinct-values($descriptions/@script)"/>
+        <xsl:variable name="scripts-short" select="for $uri in ($scripts) return replace($uri,'^.*/','')"/>
+        <xsl:variable name="passed" select="count($tests[@result='passed'])"/>
+        <xsl:variable name="pending" select="count($tests[@result='skipped'] | $pending-descriptions)"/>
+        <xsl:variable name="failed" select="count($tests[@result='failed'])"/>
+        <xsl:variable name="error-count" select="count($errors)"/>
+        <xsl:variable name="total" select="count($tests) + $error-count"/>
+
         <xsl:copy>
             <xsl:copy-of select="@*"/>
             <xsl:for-each select="head">
                 <xsl:copy>
-                    <xsl:copy-of select="@*|node()"/>
+                    <xsl:copy-of select="@*"/>
+                    <title>Test Report for <xsl:value-of select="$test-base-uri"/> (passed:<xsl:value-of select="$passed"/> / pending:<xsl:value-of select="$pending"/> / failed:<xsl:value-of select="$failed"/> / errors:<xsl:value-of
+                            select="$error-count"/> / total:<xsl:value-of select="$total"/>)</title>
+                    <xsl:copy-of select="node()"/>
                 </xsl:copy>
             </xsl:for-each>
             <xsl:for-each select="body">
                 <xsl:copy>
                     <xsl:copy-of select="@*"/>
-                    <xsl:apply-templates select="node()"/>
-                    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet"/>
-                    <script src="http://code.jquery.com/jquery.js"> </script>
-                    <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"> </script>
-                    <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"> </script>
-                </xsl:copy>
-            </xsl:for-each>
-        </xsl:copy>
-    </xsl:template>
-
-    <xsl:template match="x:test-report">
-        <xsl:apply-templates/>
-    </xsl:template>
-
-    <xsl:template match="x:description">
-        <xsl:variable name="declaration" select="x:step-declaration/*"/>
-        <xsl:variable name="scenario" select="x:scenario"/>
-        <xsl:variable name="tests" select="x:test-result"/>
-        <xsl:variable name="test-grammar" select="@test-grammar"/>
-        <xsl:variable name="test-base-uri" select="@test-base-uri"/>
-        <!--<xsl:variable name="scenario-relative-href" select="substring-after($)"></xsl:variable>-->
-        <xsl:text>
-</xsl:text>
-        <section>
-            <!--<xsl:copy-of select="./x:description"/>-->
-            <xsl:choose>
-                <xsl:when test="$test-grammar='XProc Test Suite'">
-                    <h2>XProc Test Suite-test</h2>
-                </xsl:when>
-                <xsl:otherwise>
-                    <h2>Step: <xsl:value-of select="$declaration/@type"/></h2>
-                    <xsl:if test="$declaration/@type and $declaration/@x:type">
-                        <p>
-                            <small><xsl:value-of select="concat(if (contains($declaration/@type,':')) then concat('xmlns:',tokenize($declaration/@type,':')[1],'=&quot;') else 'xmlns=&quot;', replace($declaration/@x:type,'\{(.*)\}.*','$1'))"
-                                />"</small>
-                        </p>
-                    </xsl:if>
-                </xsl:otherwise>
-            </xsl:choose>
-
-            <xsl:if test="not(./x:test-result/@result='true')">
-                <xsl:if test="$scenario/x:call/x:input">
-                    <xsl:text>
-</xsl:text>
-                    <h3>Inputs</h3>
-                    <xsl:text>
-</xsl:text>
-                    <table class="table">
+                    <h1>Test Report</h1>
+                    <p>Script: <a href="{$test-base-uri}"><xsl:value-of select="$test-base-uri"/></a></p>
+                    <p>Tested: <xsl:value-of select="current-dateTime()"/><!-- TODO: prettier time: 10 July 2013 at 18:42 --></p>
+                    <h2>Contents</h2>
+                    <table class="xspec">
+                        <col width="80%"/>
+                        <col width="5%"/>
+                        <col width="5%"/>
+                        <col width="5%"/>
+                        <col width="5%"/>
+                        <col width="5%"/>
                         <thead>
                             <tr>
-                                <th>Port</th>
-                                <th>Content summary</th>
-                                <xsl:if test="$scenario/x:call/x:input/x:document/@xml:base">
-                                    <th>Base URI</th>
-                                </xsl:if>
+                                <th/>
+                                <th class="result">passed:<xsl:value-of select="$passed"/></th>
+                                <th class="result">pending:<xsl:value-of select="$pending"/></th>
+                                <th class="result">failed:<xsl:value-of select="$failed"/></th>
+                                <th class="result">errors:<xsl:value-of select="$error-count"/></th>
+                                <th class="result">total:<xsl:value-of select="$total"/></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <xsl:for-each select="$scenario/x:call/x:input">
-                                <xsl:text>
-</xsl:text>
-                                <tr>
-                                    <xsl:text>
-</xsl:text>
-                                    <td>
-                                        <xsl:value-of select="@port"/>
-                                    </td>
-                                    <xsl:text>
-</xsl:text>
-                                    <td>
-                                        <xsl:for-each select="*[position() &lt; 5]">
-                                            <xsl:value-of
-                                                select="concat(
-                                            '&lt;',*/local-name(),' xmlns=&quot;',*/namespace-uri(),'&quot;',
-                                            if (.[@*]) then ' ...' else '',
-                                            if (*/node()) then concat('&gt;...&lt;/',*/local-name(),'&gt;')
-                                                        else '/&gt;'
-                                            )"/>
-                                            <xsl:if test="following-sibling::*">
+                            <xsl:if test="$errors">
+                                <tr class="error label">
+                                    <th>
+                                        <a href="#errors">Errors</a>
+                                    </th>
+                                    <th class="result">0</th>
+                                    <th class="result">0</th>
+                                    <th class="result">0</th>
+                                    <th class="result">
+                                        <xsl:value-of select="$error-count"/>
+                                    </th>
+                                    <th class="result">
+                                        <xsl:value-of select="$error-count"/>
+                                    </th>
+                                </tr>
+                            </xsl:if>
+
+                            <!-- for each distinct step -->
+                            <xsl:for-each select="distinct-values($descriptions/x:step-declaration/*/@x:type)">
+                                <xsl:variable name="type" select="."/>
+                                <xsl:variable name="stepid" select="concat('step',position())"/>
+                                <xsl:variable name="step-descriptions" select="$descriptions[x:step-declaration/*/@x:type=$type]"/>
+                                <xsl:variable name="step-shortname" select="($step-descriptions/x:step-declaration/*/@type,$type)[1]"/>
+                                <xsl:variable name="passed" select="count($step-descriptions//x:test-result[@result='passed'])"/>
+                                <xsl:variable name="pending" select="count($step-descriptions//x:test-result[@result='skipped'])"/>
+                                <xsl:variable name="failed" select="count($step-descriptions//x:test-result[@result='failed'])"/>
+                                <xsl:variable name="total" select="count($step-descriptions//x:test-result)"/>
+                                <xsl:variable name="scenario-class" select="if ($failed) then 'failed' else if ($pending) then 'pending' else if ($passed) then 'successful' else ''"/>
+                                <tr class="{$scenario-class} label">
+                                    <th>
+                                        <a href="#{$stepid}">
+                                            <xsl:value-of select="$step-shortname"/>
+                                        </a>
+                                    </th>
+                                    <th class="result">
+                                        <xsl:value-of select="$passed"/>
+                                    </th>
+                                    <th class="result">
+                                        <xsl:value-of select="$pending"/>
+                                    </th>
+                                    <th class="result">
+                                        <xsl:value-of select="$failed"/>
+                                    </th>
+                                    <th class="result">0</th>
+                                    <th class="result">
+                                        <xsl:value-of select="$total"/>
+                                    </th>
+                                </tr>
+                            </xsl:for-each>
+
+                            <xsl:for-each select="distinct-values($pending-descriptions/resolve-uri(@script,base-uri()))">
+                                <xsl:variable name="script-base" select="."/>
+                                <tr class="pending label">
+                                    <th>
+                                        <a href="#pending">Pending: <xsl:value-of select="$script-base"/></a>
+                                    </th>
+                                    <th class="result">0</th>
+                                    <th class="result">
+                                        <xsl:value-of select="count($pending-descriptions[resolve-uri(@script,base-uri())=$script-base])"/>
+                                    </th>
+                                    <th class="result">0</th>
+                                    <th class="result">0</th>
+                                    <th class="result">
+                                        <xsl:value-of select="count($pending-descriptions[resolve-uri(@script,base-uri())=$script-base])"/>
+                                    </th>
+                                </tr>
+                            </xsl:for-each>
+                        </tbody>
+                    </table>
+
+                    <xsl:if test="$errors">
+                        <div id="errors">
+                            <h2 class="error">Errors<span class="scenario-totals">passed:0 / pending:0 / failed:0 / errors:<xsl:value-of select="$error-count"/> / total:<xsl:value-of select="$error-count"/></span></h2>
+                            <table class="xspec">
+                                <col width="80%"/>
+                                <col width="20%"/>
+                                <tbody>
+                                    <!-- for each static error group -->
+                                    <xsl:for-each select="$errors">
+                                        <xsl:variable name="error-location" select="@error-location"/>
+                                        <xsl:variable name="test-base-uri" select="@test-base-uri"/>
+                                        <xsl:variable name="test-grammar" select="@test-grammar"/>
+                                        <xsl:variable name="errors" select="c:error"/>
+
+                                        <tr class="error label">
+                                            <th>
+                                                <xsl:value-of select="$error-location"/>
                                                 <br/>
-                                            </xsl:if>
+                                                <br/>
+                                            </th>
+                                            <th class="nobr">Error</th>
+                                        </tr>
+
+                                        <!-- for each step error in current error group -->
+                                        <xsl:for-each select="$errors">
+                                            <xsl:variable name="name" select="@name"/>
+                                            <xsl:variable name="type" select="@type"/>
+                                            <xsl:variable name="code" select="@code"/>
+                                            <xsl:variable name="href" select="@href"/>
+                                            <xsl:variable name="line" select="@line"/>
+                                            <xsl:variable name="column" select="@column"/>
+                                            <xsl:variable name="offset" select="@offset"/>
+                                            <xsl:variable name="content" select="node()"/>
+
+                                            <tr class="error">
+                                                <td colspan="2">
+                                                    <xsl:value-of select="if ($href) then concat($href,' ') else ''"/>
+                                                    <xsl:value-of select="if ($line) then concat('line:',$line,' ') else ''"/>
+                                                    <xsl:value-of select="if ($column) then concat('column:',$column,' ') else ''"/>
+                                                    <xsl:value-of select="if ($offset) then concat('offset:',$offset,' ') else ''"/>
+                                                    <xsl:value-of select="if ($code) then concat('code:',$code,' ') else ''"/>
+                                                    <xsl:value-of select="if ($type) then concat('type:',$type,' ') else ''"/>
+                                                    <xsl:if test="* or normalize-space(string-join(node(),''))">
+                                                        <pre><code><xsl:copy-of select="node()"/></code></pre>
+                                                    </xsl:if>
+                                                </td>
+                                            </tr>
                                         </xsl:for-each>
-                                        <xsl:if test="count(*) &gt; 5">
-                                            <xsl:value-of select="concat('... ',(count(*)-5),' more documents (a total of ',count(*),') ...')"/>
-                                        </xsl:if>
-                                    </td>
-                                    <xsl:if test="$scenario/x:call/x:input/x:document/@xml:base">
-                                        <xsl:text>
-</xsl:text>
-                                        <td>
-                                            <xsl:for-each select="*[position() &lt; 5]">
-                                                <xsl:value-of select="@xml:base"/>
-                                                <xsl:if test="following-sibling::*">
-                                                    <br/>
+                                    </xsl:for-each>
+                                </tbody>
+                            </table>
+                        </div>
+                    </xsl:if>
+
+                    <!-- for each distinct step -->
+                    <xsl:for-each select="distinct-values($descriptions/x:step-declaration/*/@x:type)">
+                        <xsl:variable name="type" select="."/>
+                        <xsl:variable name="stepid" select="concat('step',position())"/>
+                        <xsl:variable name="step-descriptions" select="$descriptions[x:step-declaration/*/@x:type=$type]"/>
+                        <xsl:variable name="step-shortname" select="($step-descriptions/x:step-declaration/*/@type,$type)[1]"/>
+                        <xsl:variable name="passed" select="count($step-descriptions/x:test-result[@result='passed'])"/>
+                        <xsl:variable name="pending" select="count($step-descriptions/x:test-result[@result='skipped'])"/>
+                        <xsl:variable name="failed" select="count($step-descriptions/x:test-result[@result='failed'])"/>
+                        <xsl:variable name="total" select="count($step-descriptions/x:test-result)"/>
+                        <xsl:variable name="step-class" select="if ($failed) then 'failed' else if ($pending) then 'pending' else if ($passed) then 'successful' else ''"/>
+
+                        <div id="{$stepid}">
+                            <h2 class="{$step-class}">Calling <xsl:value-of select="$step-shortname"/><span class="scenario-totals">passed:<xsl:value-of select="$passed"/> / pending:<xsl:value-of select="$pending"/> / failed:<xsl:value-of
+                                        select="$failed"/> / errors:0 / total:<xsl:value-of select="$total"/></span></h2>
+                            <table class="xspec">
+                                <col width="80%"/>
+                                <col width="20%"/>
+                                <tbody>
+                                    <!-- for each step scenario -->
+                                    <xsl:for-each select="$step-descriptions">
+                                        <xsl:variable name="scenario-description" select="."/>
+                                        <xsl:variable name="scenario-contexts" select="x:scenario/x:context"/>
+                                        <xsl:variable name="scenario-tests" select="x:test-result"/>
+                                        <xsl:variable name="scenarioid" select="concat($stepid,'-scenario',position())"/>
+                                        <xsl:variable name="passed" select="count($scenario-description/x:test-result[@result='passed'])"/>
+                                        <xsl:variable name="pending" select="count($scenario-description/x:test-result[@result='skipped'])"/>
+                                        <xsl:variable name="failed" select="count($scenario-description/x:test-result[@result='failed'])"/>
+                                        <xsl:variable name="total" select="count($scenario-description/x:test-result)"/>
+                                        <xsl:variable name="scenario-class" select="if ($failed) then 'failed' else if ($pending) then 'pending' else if ($passed) then 'successful' else ''"/>
+
+                                        <tr class="{$scenario-class} label">
+                                            <th class="scenario-label">
+                                                <xsl:value-of select="$scenario-description/x:scenario/@label"/>
+                                            </th>
+                                            <th class="nobr">passed:<xsl:value-of select="$passed"/> / pending:<xsl:value-of select="$pending"/> / failed:<xsl:value-of select="$failed"/> / errors:0 / total:<xsl:value-of select="$total"/></th>
+                                        </tr>
+
+                                        <!-- for each step scenario context -->
+                                        <xsl:for-each select="$scenario-contexts">
+                                            <xsl:variable name="id" select="@id"/>
+                                            <xsl:variable name="context-tests" select="$scenario-tests[@contextref=$id]"/>
+                                            <xsl:variable name="contextid" select="concat($scenarioid,'-context',position())"/>
+                                            <xsl:variable name="passed" select="count($context-tests[@result='passed'])"/>
+                                            <xsl:variable name="pending" select="count($context-tests[@result='skipped'])"/>
+                                            <xsl:variable name="failed" select="count($context-tests[@result='failed'])"/>
+                                            <xsl:variable name="total" select="count($context-tests)"/>
+                                            <xsl:variable name="context-class" select="if ($failed) then 'failed' else if ($pending) then 'pending' else if ($passed) then 'successful' else ''"/>
+                                            <tr class="{$context-class} label">
+                                                <th class="context-label">
+                                                    <xsl:value-of select="@label"/>
+                                                </th>
+                                                <th class="nobr">passed:<xsl:value-of select="$passed"/> / pending:<xsl:value-of select="$pending"/> / failed:<xsl:value-of select="$failed"/> / errors:0 / total:<xsl:value-of select="$total"/></th>
+                                            </tr>
+                                            <xsl:if test="$context-class='failed'">
+                                                <tr class="was">
+                                                    <td colspan="2">Was:</td>
+                                                </tr>
+                                                <xsl:for-each select="$scenario-description/x:scenario/x:context[@id=$id]/x:document">
+                                                    <tr class="was">
+                                                        <td colspan="2">
+                                                            <pre><code><xsl:copy-of select="node()"/></code></pre>
+                                                        </td>
+                                                    </tr>
+                                                </xsl:for-each>
+                                            </xsl:if>
+
+                                            <!-- for each step scenario context test -->
+                                            <xsl:for-each select="$context-tests">
+                                                <xsl:variable name="test-class" select="if (@result='failed') then 'failed' else if (@result='skipped') then 'pending' else if (@result='passed') then 'successful' else ''"/>
+                                                <xsl:variable name="test-result" select="if (@result='failed') then 'Failed' else if (@result='skipped') then 'Pending' else if (@result='passed') then 'Success' else '[Unknown]'"/>
+                                                <tr class="{$test-class} label">
+                                                    <td class="test-label">
+                                                        <xsl:value-of select="@label"/>
+                                                    </td>
+                                                    <td>
+                                                        <xsl:value-of select="$test-result"/>
+                                                    </td>
+                                                </tr>
+                                                <xsl:if test="$test-class='failed'">
+                                                    <tr class="expected">
+                                                        <td colspan="2">Expected: <pre><code><xsl:copy-of select="x:expected/node()"/></code></pre>
+                                                        </td>
+                                                    </tr>
                                                 </xsl:if>
                                             </xsl:for-each>
-                                            <xsl:if test="count(*) &gt; 5 and parent::*/*/@xml:base">
-                                                <xsl:value-of select="'...'"/>
-                                            </xsl:if>
-                                        </td>
-                                    </xsl:if>
-                                    <xsl:text>
-</xsl:text>
-                                </tr>
-                            </xsl:for-each>
-                            <xsl:text>
-</xsl:text>
-                        </tbody>
-                    </table>
-                </xsl:if>
-
-                <xsl:if test="$scenario/x:call/x:option">
-                    <xsl:text>
-</xsl:text>
-                    <h3>Options</h3>
-                    <xsl:text>
-</xsl:text>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Value</th>
-                            </tr>
-                        </thead>
-                        <xsl:text>
-</xsl:text>
-                        <tbody>
-                            <xsl:for-each select="$scenario/x:call/x:option">
-                                <xsl:text>
-</xsl:text>
-                                <tr>
-                                    <xsl:text>
-</xsl:text>
-                                    <td>
-                                        <xsl:value-of select="@name"/>
-                                    </td>
-                                    <xsl:text>
-</xsl:text>
-                                    <td>
-                                        <xsl:value-of select="@value"/>
-                                    </td>
-                                </tr>
-                            </xsl:for-each>
-                            <xsl:text>
-</xsl:text>
-                        </tbody>
-                    </table>
-                </xsl:if>
-
-                <xsl:if test="$scenario/x:call/x:param">
-                    <xsl:text>
-</xsl:text>
-                    <h3>Parameters</h3>
-                    <xsl:text>
-</xsl:text>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Value</th>
-                            </tr>
-                        </thead>
-                        <xsl:text>
-</xsl:text>
-                        <tbody>
-                            <xsl:for-each select="$scenario/x:call/x:param">
-                                <xsl:text>
-</xsl:text>
-                                <tr>
-                                    <xsl:text>
-</xsl:text>
-                                    <td>
-                                        <xsl:value-of select="@name"/>
-                                    </td>
-                                    <xsl:text>
-</xsl:text>
-                                    <td>
-                                        <xsl:value-of select="@value"/>
-                                    </td>
-                                </tr>
-                            </xsl:for-each>
-                            <xsl:text>
-</xsl:text>
-                        </tbody>
-                    </table>
-                </xsl:if>
-
-                <xsl:text>
-</xsl:text>
-            </xsl:if>
-
-            <h3>Tests</h3>
-            <xsl:if test="not($tests)">
-                <h4>
-                    <img
-                        src="data:image/gif;base64,R0lGODlhGAAYAPf/AP///1XPGFnRF1DNGEvLGCC3G0bIGUHGGV7SFyS4GzG+Gii6Giy8Gvr6+mbZGF7TFy2+GjbAGWLVF2PVF1PNA/X19WPWF9/f32HZGFHPGG/mGCS5G8Hxmii8Gm3hGB3SH2DYAgm7CDLAGrq6ulnSFwa6CCi7Gvz8/DzEGSC4G0vNGBy1G2faGDfCGQK5CGnfGOz64TvDGbjtkez55F7HSD69BSW/HPb98LbrkSizC22/ZVHQGfT87V/XAh28HBy3Gxy2Gzm7DDvCGR/GHrnFuVrVGFLRGPf39zTeJE7JAxy+F3G6cyyzCmDYEjvEGVHRGTS7EjG/Gv39/R29HD28BEvMGEPBBG3gGDLUHRK8CFDbGmneGMbKxh7EHbjDuWPXGGDWGOvr6w25E7fashHGFFbQDSS7GzfTHWbfEsrwsr6+vjW7NDTcHpzoYaa/pjm6PJLWcyTCEEa+JoTOdRrOHND1siC8B1rTF0zZGyrXH6vEqjneIzDgH/v7+6a8p2jYFSi9GtXyx0bkHTjWHV7YFFbRGMDAwM7OzjjCJz/dHG3iGEW5HsvLyyzPHWHYBCLCHSOwBVbTGTHAGkzKIDzVG1bTGFbSGTbCGfL77Si7FtXh1D/PGhe9B0HDFGfgGWziFtfX19Xd1F/UF6rmgrG+sjS5DVzVBCG4D2XbCFDmHQq6DFfVGUa+Pju/FGDXCRfAB6PrZyK7IS++Jiy+KGrhGPDw8GG5ZPv++Wi7aSrZH1vTA1K6VFnSBozNgWfHT7nnoxrKGU7LCRjNGx/OHmnNMuPj4xS9Ch+4BmHDOQ/EEUfaG5PFjijQHi3SHYPRZIzYYjrgHhS6GQ++CWTZGBG6E1/WAjHRHZjjZUHDDkfBCV/VGEbJGVfRA1/EQWfFSGbcGEDiHWfbGFzXGELXG1XQGKnrdmXbGEznHTq8B1bKDjC5NGnbETreHtHzuNX2u17WDEC6HCy9GkfEA6jscCjMHlvXGG7kGSm+G2PbByPGHWjcGMbOxdXyxDzUGyW8HP///yH5BAEAAP8ALAAAAAAYABgAAAj/AP8JHCjwljsO82BxqMODoEOHN8qtA1HNEb4eIFC1gfHQYbs/uj4p8nDFgyJ7Gky5ktFRIA5e717oY+GgJotwW2ih4XatYxoKTcx9sTBBgtEJEyxM++aJwiiHM9KVwaDtwQMEWLM+EAUGA6Ek/Ag+k1fvDgkBaNOmJXGniLhgxAZiylbJErkAePPqBQCgUKRVVgIJ/EVlRwYVAxIrVsyXr5EnNeAIdIZORRUCmDNnbsxXiwpsyAR6C2JgmwEDfCedRs05FR4DnRYJ7FbqgG3OtzmfU2a7FTyBvpjEQLGJs3EAgsahcCIEihyBcyBFuNQv0XG+4Ci1aBEhQg4aAsfYwVGgQNIgdsehnREhIgr5Y70E1kJ0igEDCFjYcN5jDQKEePZlEocmAy3zyj0LLGBCM3zwhUQjgHRgQoIdcKJDAwOFwUoWNiSQwAbM5JIHPWZs4GEC/hgjSygO7TNLCPmkUMCMNM6YwiPSKKHHCQ6dQMQaIQAzxBQ/rLACED50MUwIsbhRQUcNcIELNSUkI8wHH9BBRgmq7OLFky1JcQEpS7wRjQsuiKGOLX6A0kdLBDVQzCGGjDCCGoyAcgScfPb5T0AAOw=="
-                        alt="Success:"/> No errors occured on step invocation. </h4>
-            </xsl:if>
-            <xsl:for-each select="$tests">
-                <xsl:text>
-</xsl:text>
-                <h4>
-                    <xsl:choose>
-                        <xsl:when test="@result='true'">
-                            <img
-                                src="data:image/gif;base64,R0lGODlhGAAYAPf/AP///1XPGFnRF1DNGEvLGCC3G0bIGUHGGV7SFyS4GzG+Gii6Giy8Gvr6+mbZGF7TFy2+GjbAGWLVF2PVF1PNA/X19WPWF9/f32HZGFHPGG/mGCS5G8Hxmii8Gm3hGB3SH2DYAgm7CDLAGrq6ulnSFwa6CCi7Gvz8/DzEGSC4G0vNGBy1G2faGDfCGQK5CGnfGOz64TvDGbjtkez55F7HSD69BSW/HPb98LbrkSizC22/ZVHQGfT87V/XAh28HBy3Gxy2Gzm7DDvCGR/GHrnFuVrVGFLRGPf39zTeJE7JAxy+F3G6cyyzCmDYEjvEGVHRGTS7EjG/Gv39/R29HD28BEvMGEPBBG3gGDLUHRK8CFDbGmneGMbKxh7EHbjDuWPXGGDWGOvr6w25E7fashHGFFbQDSS7GzfTHWbfEsrwsr6+vjW7NDTcHpzoYaa/pjm6PJLWcyTCEEa+JoTOdRrOHND1siC8B1rTF0zZGyrXH6vEqjneIzDgH/v7+6a8p2jYFSi9GtXyx0bkHTjWHV7YFFbRGMDAwM7OzjjCJz/dHG3iGEW5HsvLyyzPHWHYBCLCHSOwBVbTGTHAGkzKIDzVG1bTGFbSGTbCGfL77Si7FtXh1D/PGhe9B0HDFGfgGWziFtfX19Xd1F/UF6rmgrG+sjS5DVzVBCG4D2XbCFDmHQq6DFfVGUa+Pju/FGDXCRfAB6PrZyK7IS++Jiy+KGrhGPDw8GG5ZPv++Wi7aSrZH1vTA1K6VFnSBozNgWfHT7nnoxrKGU7LCRjNGx/OHmnNMuPj4xS9Ch+4BmHDOQ/EEUfaG5PFjijQHi3SHYPRZIzYYjrgHhS6GQ++CWTZGBG6E1/WAjHRHZjjZUHDDkfBCV/VGEbJGVfRA1/EQWfFSGbcGEDiHWfbGFzXGELXG1XQGKnrdmXbGEznHTq8B1bKDjC5NGnbETreHtHzuNX2u17WDEC6HCy9GkfEA6jscCjMHlvXGG7kGSm+G2PbByPGHWjcGMbOxdXyxDzUGyW8HP///yH5BAEAAP8ALAAAAAAYABgAAAj/AP8JHCjwljsO82BxqMODoEOHN8qtA1HNEb4eIFC1gfHQYbs/uj4p8nDFgyJ7Gky5ktFRIA5e717oY+GgJotwW2ih4XatYxoKTcx9sTBBgtEJEyxM++aJwiiHM9KVwaDtwQMEWLM+EAUGA6Ek/Ag+k1fvDgkBaNOmJXGniLhgxAZiylbJErkAePPqBQCgUKRVVgIJ/EVlRwYVAxIrVsyXr5EnNeAIdIZORRUCmDNnbsxXiwpsyAR6C2JgmwEDfCedRs05FR4DnRYJ7FbqgG3OtzmfU2a7FTyBvpjEQLGJs3EAgsahcCIEihyBcyBFuNQv0XG+4Ci1aBEhQg4aAsfYwVGgQNIgdsehnREhIgr5Y70E1kJ0igEDCFjYcN5jDQKEePZlEocmAy3zyj0LLGBCM3zwhUQjgHRgQoIdcKJDAwOFwUoWNiSQwAbM5JIHPWZs4GEC/hgjSygO7TNLCPmkUMCMNM6YwiPSKKHHCQ6dQMQaIQAzxBQ/rLACED50MUwIsbhRQUcNcIELNSUkI8wHH9BBRgmq7OLFky1JcQEpS7wRjQsuiKGOLX6A0kdLBDVQzCGGjDCCGoyAcgScfPb5T0AAOw=="
-                                alt="Success:"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <img
-                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAADoUlEQVR4XrWUX2gcRRzHP7N7t7k0l8Sm0ooFQag0aquoaE1q2xcfGpQUo/UfpFq1IZaUVISCtFAUH3xRKGjR1kqptihKtfokgi+WUopFrVoUCkp8UGtzycVcLrs7Mz83Ow97x23wqR/4HAvH7/udYWZXiQgc3gJKQWFBHyp1+L0CokAR4KlNwI3ALUA7cB74CyuneeNMhcWhAIAI+CR6MDENf/4LvuoG9iIygqEbEVAe+D5oDYpEFbG77wQi+zlwdoIc3A4ODULRhys1+G0KlNoMHMdKD0t7XLCVhikF3oLA5CQgEbCHt84dyC84/ABoCxcugzCOyOsEJZ+OMhjrwgXcjwKF0/Pcrk0MM1WAI7x9/rmcHQzArxWozg8inKKzC/wiGJsFCxkqe8Bf0HNeSRe4nyM/vNJ8BnMhTNZWIhyn1A54cP8wDGwnZWwDubz5DSlfHkt8D8pdMDX1MtvWfM2xn04DICLInruRJ3rfTRQZu09k53ppYbS/yRZ2bXA+dbskOd+muYmuYMeannjrqlBG75XUsX7JZWSdM4/xZGHPJ7M7+yTJEhnu7RMRPADq0eYwNgHGgjakvPooLbxzNrWFFze6udgmGiJjYV4PAq6AWPeJAoxONFAP4e8/YPdG/pcX1kMYuXO0br4YBIRx3JcdstErrRSy1Zu0FKjD03fA0e/I5dk7SdGWRgQPrLkhK/AJTGix2qIULSjykVDTDFiBWBs6FH5WUKISVSO01XiophL/xM8shvrgAubJWxvCBSOgdQwlqTYUyI9LTIjRBhR4roHCR7+QT/MC9GO9iIARQQBTn4NlhYvZe/DM9ffIw8ul9tCq1HDoJsll9DaRHWtFqpMtf9WH0tlUefBaSTJHsmtq4nOUk13Es1hrKGJoYfvNUAthPoJd/TQDJU/S2XYbwTXMYuJPGq6pWfAlyiFlD1Qinx3MpodXw1zMfDVMJTSwbXWW/ulBEKEtURVmwNrXOHq5kn3sHu/CwSm0DBIsB23BU4BALNRDSyPt7e4Dl11TBUxBwV4E1vHhzGxWsLUDB2XgDMJa2lYwNx0RWWFx3Bq6OotgJwH7D9DPx7VLAFnBUBsZ9AAngU0sWwF1D2Y185GlblxZ4Ck6igqWFGBp0b31cAkY4GTowpsKtgQgNBIA48BeoJvOTlLbAlLiGGo1mJoGiIBDwD4+j6oAOQU+CM5meoBHgEHgLuA6HFXge+Ar4H2+MBPk4wquJh5Xmf8AkZZdAsniYaEAAAAASUVORK5CYII="
-                                alt="Failed:"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                    <xsl:value-of select="@label"/>
-                </h4>
-                <xsl:text>
-</xsl:text>
-                <xsl:if test="not(@result='true')">
-                    <xsl:if test="x:expected">
-                        <div>
-                            <h5 style="display:inline;">Expected:</h5>
-                            <pre class="prettyprint"><xsl:value-of select="x:expected"/></pre>
+                                        </xsl:for-each>
+                                    </xsl:for-each>
+                                </tbody>
+                            </table>
                         </div>
-                    </xsl:if>
-                    <xsl:if test="x:was">
-                        <div>
-                            <h5 style="display:inline;">Was: (<xsl:value-of select="concat(count(x:was/*),' elements, ',count(x:was/node()),' nodes')"/>)</h5>
-                            <pre class="prettyprint"><xsl:value-of select="x:was"/></pre>
-                        </div>
-                    </xsl:if>
-                </xsl:if>
-            </xsl:for-each>
-            <xsl:if test="following::x:description | following::c:errors">
-                <hr/>
-            </xsl:if>
-        </section>
-    </xsl:template>
-
-    <xsl:template match="c:errors">
-        <xsl:variable name="xml-base" select="@xml:base"/>
-        <xsl:variable name="error-location" select="@error-location"/>
-        <xsl:variable name="test-base-uri" select="@test-base-uri"/>
-        <xsl:variable name="test-grammar" select="@test-grammar"/>
-        <xsl:text>
-</xsl:text>
-        <section>
-            <h2>Compilation error</h2>
-            <xsl:text>
-</xsl:text>
-            <p>
-                <xsl:if test="@xml:base">
-                    <span>xml:base: <code><xsl:value-of select="@xml:base"/></code>
-                        <br/>
-                    </span>
-                </xsl:if>
-                <xsl:if test="@error-location">
-                    <span>error-location: <code><xsl:value-of select="@error-location"/></code>
-                        <br/>
-                    </span>
-                </xsl:if>
-                <xsl:if test="@test-base-uri">
-                    <span>test-base-uri: <code><xsl:value-of select="@test-base-uri"/></code>
-                        <br/>
-                    </span>
-                </xsl:if>
-                <xsl:if test="@test-grammar">
-                    <span>test-grammar: <code><xsl:value-of select="@test-grammar"/></code>
-                        <br/>
-                    </span>
-                </xsl:if>
-            </p>
-
-            <xsl:for-each select="c:error">
-                <p>
-                    <xsl:if test="@name">
-                        <span>name: <code><xsl:value-of select="@name"/></code>
-                            <br/>
-                        </span>
-                    </xsl:if>
-                    <xsl:if test="@type and not(@type='was')">
-                        <span>type: <code><xsl:value-of select="@type"/></code>
-                            <br/>
-                        </span>
-                    </xsl:if>
-                    <xsl:if test="@code">
-                        <span>code: <code><xsl:value-of select="@code"/></code>
-                            <br/>
-                        </span>
-                    </xsl:if>
-                    <xsl:if test="@href">
-                        <span>href: <code><xsl:value-of select="@href"/></code>
-                            <br/>
-                        </span>
-                    </xsl:if>
-                    <xsl:if test="@line">
-                        <span>line: <code><xsl:value-of select="@line"/></code>
-                            <br/>
-                        </span>
-                    </xsl:if>
-                    <xsl:if test="@column">
-                        <span>column: <code><xsl:value-of select="@column"/></code>
-                            <br/>
-                        </span>
-                    </xsl:if>
-                    <xsl:if test="@offset">
-                        <span>offset: <code><xsl:value-of select="@offset"/></code>
-                            <br/>
-                        </span>
-                    </xsl:if>
-                </p>
-                <xsl:text>
-</xsl:text>
-                <div>
-                    <xsl:if test="./x:was">
-                        <h5 style="display:inline;">Was:</h5>
-                        <xsl:text>
-</xsl:text>
-                    </xsl:if>
-                    <xsl:for-each select="node()">
-                        <pre class="prettyprint"><xsl:value-of select="."/></pre>
                     </xsl:for-each>
-                </div>
+
+                    <!-- for each script with pending scenarios -->
+                    <xsl:for-each select="distinct-values($pending-descriptions/resolve-uri(@script,base-uri()))">
+                        <xsl:variable name="script-base" select="."/>
+                        <xsl:variable name="pending-script-descriptions" select="$pending-descriptions[resolve-uri(@script,base-uri())=$script-base]"/>
+                        <div id="pending">
+                            <h2 class="pending">Pending: <a href="{$script-base}"><xsl:value-of select="$script-base"/></a><span class="scenario-totals">passed:0 / pending:<xsl:value-of select="count($pending-script-descriptions)"/> / failed:0 /
+                                    errors:0 / total:<xsl:value-of select="count($pending-script-descriptions)"/></span></h2>
+                            <table class="xspec">
+                                <col width="80%"/>
+                                <col width="20%"/>
+                                <tbody>
+                                    <!-- for each pending scenario for the current script -->
+                                    <xsl:for-each select="$pending-script-descriptions">
+                                        <tr class="pending label">
+                                            <th class="scenario-label">
+                                                <xsl:value-of select="x:scenario/@label"/>
+                                            </th>
+                                            <th class="nobr">passed:0 / pending:1 / failed:0 / errors:0 / total:1</th>
+                                        </tr>
+                                        <tr class="pending">
+                                            <td>
+                                                <xsl:value-of select="x:scenario/@pending"/>
+                                            </td>
+                                            <td>Pending</td>
+                                        </tr>
+                                    </xsl:for-each>
+                                </tbody>
+                            </table>
+                        </div>
+                    </xsl:for-each>
+
+                    <!--<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js?autoload=true&amp;lang=xml">;</script>-->
+                    <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css"/>
+                    <script type="text/javascript" src="http://yandex.st/highlightjs/7.3/highlight.min.js" xml:space="preserve"> </script>
+                    <script type="text/javascript">hljs.initHighlightingOnLoad();</script>
+                </xsl:copy>
             </xsl:for-each>
 
-            <xsl:text>
-</xsl:text>
-            <xsl:if test="following::x:description | following::c:errors">
-                <hr/>
-            </xsl:if>
-        </section>
-    </xsl:template>
-
-    <xsl:template match="*[namespace-uri()='http://www.w3.org/1999/xhtml']" priority="10">
-        <xsl:copy>
-            <xsl:copy-of select="@*"/>
-            <xsl:apply-templates select="node()"/>
         </xsl:copy>
-    </xsl:template>
-
-    <xsl:template match="*">
-        <xsl:comment select="concat('Unknown element: ',name())"/>
     </xsl:template>
 
 </xsl:stylesheet>

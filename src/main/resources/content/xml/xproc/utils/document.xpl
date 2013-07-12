@@ -137,5 +137,9 @@
             </p:group>
         </p:otherwise>
     </p:choose>
+    
+    <p:for-each>
+        <p:add-attribute match="/*" attribute-name="type" attribute-value="inline"/>
+    </p:for-each>
 
 </p:declare-step>

@@ -20,20 +20,41 @@
             </p:when>
             <p:otherwise>
                 <p:variable name="temp-dir" select="/*/@temp-dir"/>
+                <p:variable name="skip-scenario" select="if (/x:description/x:scenario[@pending]) then 'true' else 'false'"/>
 
                 <p:identity name="try.input"/>
                 <p:try>
                     <p:group>
+                        <p:identity name="description.pre-document-resolution"/>
+                        <p:choose>
+                            <p:when test="$skip-scenario='false'">
+                                <p:viewport match="//x:document">
+                                    <!-- resolve all x:documents in the description -->
+                                    <pxi:document>
+                                        <p:input port="description">
+                                            <p:pipe port="result" step="description.pre-document-resolution"/>
+                                        </p:input>
+                                    </pxi:document>
+                                </p:viewport>
+                            </p:when>
+                            <p:otherwise>
+                                <p:identity/>
+                            </p:otherwise>
+                        </p:choose>
                         <p:identity name="description"/>
-                        <p:viewport match="//x:document">
-                            <!-- resolve all x:documents in the description -->
-                            <pxi:document>
-                                <p:input port="description">
-                                    <p:pipe port="result" step="description"/>
-                                </p:input>
-                            </pxi:document>
-                        </p:viewport>
-
+                        
+                        <!--<p:identity name="dbg"/>
+                        <p:identity>
+                            <p:input port="source" select="//x:context"/>
+                            <p:log port="result" href="file:/tmp/tmp.xml"/>
+                        </p:identity>
+                        <p:sink/>
+                        <p:identity>
+                            <p:input port="source">
+                                <p:pipe port="result" step="dbg"/>
+                            </p:input>
+                        </p:identity>-->
+                        
                         <p:add-attribute match="/*" attribute-name="xml:base">
                             <!-- since it won't be preserved through XSLT transforms (see this thread: http://lists.w3.org/Archives/Public/xproc-dev/2013Mar/0013.html) -->
                             <p:with-option name="attribute-value" select="base-uri(/*)"/>
@@ -63,7 +84,19 @@
 
                                 <p:identity name="assertion"/>
                                 <p:choose>
-
+                                    
+                                    <p:when test="/x:expect[@pending] or $skip-scenario='true'">
+                                        <p:identity>
+                                            <p:input port="source">
+                                                <p:inline>
+                                                    <x:test-result result="skipped">
+                                                        <x:expected/>
+                                                    </x:test-result>
+                                                </p:inline>
+                                            </p:input>
+                                        </p:identity>
+                                    </p:when>
+                                    
                                     <p:when test="/x:expect[@type='xpath']">
                                         <!-- evaluate @test against context -->
                                         <p:variable name="test" select="/*/@test"/>
@@ -80,7 +113,7 @@
                                         </p:for-each>
                                         <p:wrap-sequence wrapper="x:test-result"/>
                                         <p:add-attribute match="/*" attribute-name="result">
-                                            <p:with-option name="attribute-value" select="not(some $result in (/x:test-result/c:result/number(.)) satisfies $result = 0)"/>
+                                            <p:with-option name="attribute-value" select="if (not(some $result in (/x:test-result/c:result/number(.)) satisfies $result = 0)) then 'passed' else 'failed'"/>
                                         </p:add-attribute>
                                         <p:delete match="/x:test-result/c:result"/>
                                         <p:identity name="test-result"/>
@@ -122,6 +155,9 @@
                                             </p:input>
                                         </pxi:compare>
                                         <p:rename match="/*" new-name="x:test-result"/>
+                                        <p:add-attribute match="/*" attribute-name="result">
+                                            <p:with-option name="attribute-value" select="if (/*/@result='true') then 'passed' else 'failed'"/>
+                                        </p:add-attribute>
                                     </p:when>
 
                                     <p:when test="/x:expect[@type='validate' and @grammar='relax-ng']">
@@ -133,7 +169,7 @@
                                         <p:identity>
                                             <p:input port="source">
                                                 <p:inline>
-                                                    <x:test-result result="false">
+                                                    <x:test-result result="skipped">
                                                         <x:expected>Relax NG validation is not implemented yet.</x:expected>
                                                     </x:test-result>
                                                 </p:inline>
@@ -150,7 +186,7 @@
                                         <p:identity>
                                             <p:input port="source">
                                                 <p:inline>
-                                                    <x:test-result result="false">
+                                                    <x:test-result result="skipped">
                                                         <x:expected>Schematron validation is not implemented yet.</x:expected>
                                                     </x:test-result>
                                                 </p:inline>
@@ -167,7 +203,7 @@
                                         <p:identity>
                                             <p:input port="source">
                                                 <p:inline>
-                                                    <x:test-result result="false">
+                                                    <x:test-result result="skipped">
                                                         <x:expected>XML Schema validation is not implemented yet.</x:expected>
                                                     </x:test-result>
                                                 </p:inline>
@@ -180,7 +216,7 @@
                                             <!-- this should not happen since the description document is already validated; XProc requires a p:otherwise though... -->
                                             <p:input port="source">
                                                 <p:inline>
-                                                    <x:test-result result="false">
+                                                    <x:test-result result="failed">
                                                         <x:expected>Unknown assertion type.</x:expected>
                                                     </x:test-result>
                                                 </p:inline>
@@ -194,18 +230,11 @@
                                         <p:pipe port="current" step="assertions"/>
                                     </p:input>
                                 </p:set-attributes>
-                                <p:insert match="/*" position="last-child">
-                                    <p:input port="insertion">
-                                        <p:inline>
-                                            <x:was/>
-                                        </p:inline>
-                                    </p:input>
-                                </p:insert>
-                                <p:insert match="/*/x:was" position="last-child">
-                                    <p:input port="insertion">
-                                        <p:pipe port="result" step="context"/>
-                                    </p:input>
-                                </p:insert>
+                                <p:add-attribute match="/*" attribute-name="contextref">
+                                    <p:with-option name="attribute-value" select="/*/@contextref">
+                                        <p:pipe port="result" step="assertion"/>
+                                    </p:with-option>
+                                </p:add-attribute>
                             </p:for-each>
                         </p:for-each>
                         <p:identity name="test-results"/>
@@ -335,7 +364,7 @@
                 <p:identity/>
             </p:for-each>
         </p:group>
-
+        
     </p:for-each>
 
 </p:declare-step>

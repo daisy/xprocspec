@@ -7,29 +7,54 @@
         https://svn.jenkins-ci.org/trunk/hudson/dtkit/dtkit-format/dtkit-junit-model/src/main/resources/com/thalesgroup/dtkit/junit/model/xsd/junit-4.xsd
     -->
 
+    <xsl:param name="start-time" required="yes"/>
+    <xsl:param name="end-time" required="yes"/>
+
     <xsl:output method="xml" indent="yes" omit-xml-declaration="yes"/>
 
     <xsl:template match="/*">
         <xsl:choose>
             <xsl:when test="self::c:errors">
-                <testsuite name="compilation error" package="no.josteinaj.xprocspec" timestamp="{x:now()}" hostname="localhost" tests="1" errors="1" failures="0" skipped="false" disabled="false" id="{generate-id()}" time="0">
+                <testsuite name="compilationError" package="org.daisy.xprocspec" timestamp="{x:now()}" hostname="localhost" tests="1" errors="1" failures="0" skipped="0" disabled="0" id="{generate-id()}"
+                    temp-global-duration="{x:duration($start-time,$end-time)}" temp-global-name="{x:camelCase(replace(replace(@test-base-uri,'\.xprocspec$','','i'),'^.*/([^/]*)$','$1'))}">
                     <properties>
                         <xsl:for-each select="@*">
-                            <property name="name()" value="."/>
+                            <property name="{name()}" value="{.}"/>
                         </xsl:for-each>
                     </properties>
+                    <!-- static error -->
+                    <error message="{@error-location}" type="static"/>
+                    <system-out>
+                        <xsl:value-of select="concat(replace(@test-base-uri,'^.*/([^/]*)$','$1'),': ERROR')"/>
+                    </system-out>
+                    <xsl:for-each select="c:error">
+                        <system-err>
+                            <xsl:if test="@line">
+                                <xsl:value-of select="concat('line: ',@line)"/>
+                                <xsl:text>
+</xsl:text>
+                            </xsl:if>
+                            <xsl:if test="@column">
+                                <xsl:value-of select="concat('column: ',@column)"/>
+                                <xsl:text>
+</xsl:text>
+                            </xsl:if>
+                            <xsl:copy-of select="./text()"/>
+                        </system-err>
+                    </xsl:for-each>
                 </testsuite>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:variable name="declaration" select="x:description/x:step-declaration/*"/>
-                <xsl:variable name="scenario" select="x:description/x:scenario"/>
-                <xsl:variable name="tests" select="x:test-result"/>
+                <xsl:variable name="declaration" select="/x:description/x:step-declaration/*"/>
+                <xsl:variable name="scenario" select="/x:description/x:scenario"/>
+                <xsl:variable name="tests" select="/x:description/x:test-result"/>
 
                 <testsuite name="{x:camelCase($scenario/@label)}" package="{replace($declaration/@x:type,'^\{(.*)\}.*','$1')}" timestamp="{x:now()}" hostname="localhost" tests="{count($tests)}" errors="0"
-                    failures="{count($tests[not(@result='true')])}" skipped="false" disabled="false" id="{generate-id()}" time="0">
-                    <!--
-                TODO: @time: Time taken (in seconds) to execute the tests in the suite
-            -->
+                    failures="{count($tests[@result='failed'])}" skipped="{count($tests[@result='skipped'])}" disabled="{if ($scenario[@pending]) then count($tests) else count($tests[@pending])}" id="{generate-id()}"
+                    temp-global-duration="{x:duration($start-time,$end-time)}" temp-global-name="{x:camelCase(replace(replace(/x:description/@test-base-uri,'\.xprocspec$','','i'),'^.*/([^/]*)$','$1'))}">
+                    <xsl:if test="$scenario[@start-time and @end-time]">
+                        <xsl:attribute name="time" select="x:duration($scenario/@start-time,$scenario/@end-time)"/>
+                    </xsl:if>
 
                     <xsl:text>
 </xsl:text>
@@ -64,7 +89,7 @@
                             <xsl:for-each select="$scenario/x:call/x:option">
                                 <xsl:text>
 </xsl:text>
-                                <property name="option: {@name}" value="{@select}"/>
+                                <property name="option: {@name}" value="{@value}"/>
                             </xsl:for-each>
                         </xsl:if>
                         <xsl:text>
@@ -73,7 +98,7 @@
                             <xsl:for-each select="$scenario/x:call/x:param">
                                 <xsl:text>
 </xsl:text>
-                                <property name="parameter: {@name}" value="{@select}"/>
+                                <property name="parameter: {@name}" value="{@value}"/>
                             </xsl:for-each>
                         </xsl:if>
                         <xsl:text>
@@ -83,35 +108,40 @@
 </xsl:text>
 
                     <xsl:for-each select="$tests">
-                        <testcase name="{x:camelCase(@label)}" classname="{tokenize($declaration/@type,':')[last()]}" assertions="1" status="{if (@result='true') then 'SUCCESS' else 'FAILED'}" time="0">
+                        <testcase name="{x:camelCase(@label)}" classname="{tokenize($declaration/@type,':')[last()]}" assertions="1" time="0">
                             <!--
                         TODO: @time: Time taken (in seconds) to execute the test
                     -->
 
-                            <xsl:if test="false()">
-                                <skipped><!-- TODO (string describing why it was skipped?) --></skipped>
-                            </xsl:if>
+                            <xsl:choose>
+                                <xsl:when test="@result='skipped'">
+                                    <skipped>
+                                        <xsl:value-of select="@pending"/>
+                                    </skipped>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="status" select="if (@result='passed') then 'SUCCESS' else 'FAILED'"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
 
                             <xsl:variable name="message" select="concat($scenario/@label,' ',@label)"/>
 
                             <xsl:choose>
-                                <xsl:when test="@result='true'">
-                                    <!-- success -->
+                                <xsl:when test="@result='passed'">
+                                    <!-- successful assertion -->
                                     <system-out>
                                         <xsl:value-of select="concat($message,': SUCCESS')"/>
                                     </system-out>
                                 </xsl:when>
-                                <xsl:when test="false()">
-                                    <!-- TODO: not implemented -->
-                                    <!-- static error -->
-                                    <error message="{$message}" type="TODO string optional"/>
+                                <xsl:when test="@result='skipped'">
+                                    <!-- skipped assertion -->
                                     <system-out>
-                                        <xsl:value-of select="concat($message,': ERROR')"/>
+                                        <xsl:value-of select="concat($message,': SKIPPED')"/>
                                     </system-out>
                                 </xsl:when>
                                 <xsl:otherwise>
-                                    <!-- unexpected dynamic error -->
-                                    <failure message="{$message}" type="TODO string optional"/>
+                                    <!-- failed assertion -->
+                                    <failure message="{$message}" type="{(@type,'unknown')[1]}"/>
                                     <system-out>
                                         <xsl:value-of select="concat($message,': FAILED')"/>
                                     </system-out>
@@ -121,7 +151,7 @@
 </xsl:text>
 
                             <system-err>
-                                <xsl:if test="not(@result='true')">
+                                <xsl:if test="@result='failed'">
                                     <xsl:if test="./c:expected">
                                         <xsl:text>Expected:
 </xsl:text>
@@ -150,9 +180,21 @@
         <xsl:value-of select="adjust-dateTime-to-timezone(current-dateTime(),xs:dayTimeDuration('PT0H'))"/>
     </xsl:function>
 
+    <xsl:function name="x:duration" as="xs:decimal">
+        <xsl:param name="from"/>
+        <xsl:param name="to"/>
+        <xsl:variable name="duration" select="xs:dateTime($to) - xs:dateTime($from)"/>
+        <xsl:variable name="seconds" select="days-from-duration($duration) * 3600 * 24 + 
+            hours-from-duration($duration) * 3600 + 
+            minutes-from-duration($duration) * 60 + 
+            seconds-from-duration($duration)"/>
+        <xsl:value-of select="$seconds"/>
+        <!--<xsl:value-of select="adjust-dateTime-to-timezone(current-dateTime(),xs:dayTimeDuration('PT0H'))"/>-->
+    </xsl:function>
+
     <xsl:function name="x:camelCase" as="xs:string">
         <xsl:param name="string"/>
-        <xsl:variable name="string" select="replace(replace($string,'\s+',' '),'[^\w ]','')"/>
+        <xsl:variable name="string" select="replace(replace($string,'[\s\.]+',' '),'[^\w ]','')"/>
         <xsl:value-of
             select="string-join(
                             (for $i in 1 to count(tokenize($string,' ')),

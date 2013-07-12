@@ -6,31 +6,47 @@
     <xsl:template match="/x:description">
         <x:descriptions>
             <xsl:for-each select="//x:scenario">
-                <xsl:variable name="like" select="x:like"/>
-                <xsl:variable name="scenarios" select="ancestor::x:scenario | (for $label in ($like/(@label,normalize-space(x:label))) return //x:scenario[@shared='yes' and (@label,normalize-space(x:label))=$label]) | self::x:scenario"/>
-                <x:description>
-                    <xsl:copy-of select="/*/@*"/>
-                    <xsl:copy>
-                        <xsl:copy-of select="$scenarios/@*"/>
-                        <xsl:if test="$scenarios[@pending or ancestor::x:pending]">
-                            <xsl:attribute name="pending" select="($scenarios[@pending or ancestor::x:pending]/(if (@pending) then @pending else ancestor::x:pending[last()]/@label))[last()]"/>
-                        </xsl:if>
-                        <xsl:choose>
-                            <xsl:when test="@implementation"><!-- TODO --></xsl:when>
-                            <xsl:otherwise>
+                <xsl:variable name="scenarios" select="ancestor-or-self::x:scenario"/>
+                <xsl:if test="not(descendant::x:scenario)">
+                    <x:description>
+                        <xsl:copy-of select="/*/@*"/>
+                        <xsl:copy>
+                            <xsl:copy-of select="$scenarios/@*"/>
+                            <xsl:variable name="pending" select="($scenarios/@pending,ancestor::x:pending/@label)[1]"/>
+                            <xsl:variable name="pending" select="if ($pending='') then 'Not implemented' else $pending"/>
+                            <xsl:if test="$pending">
+                                <xsl:attribute name="pending" select="$pending"/>
+                            </xsl:if>
+                            <xsl:if test="$scenarios/x:call or not($pending)">
                                 <x:call>
                                     <xsl:copy-of select="$scenarios/x:call/@*"/>
                                     <xsl:copy-of select="x:resolve-options($scenarios/x:call/x:option)"/>
-                                    <xsl:copy-of select="x:resolve-params($scenarios/x:call/(x:param,document(x:params/resolve-uri(@href,base-uri(/*)))/c:param-set/c:param))"/>
+                                    <xsl:copy-of select="x:resolve-params($scenarios/x:call/x:param)"/>
                                     <xsl:copy-of select="x:resolve-inputs($scenarios/x:call/x:input)"/>
                                 </x:call>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                        <xsl:copy-of select="$scenarios/(x:context|x:expect)"/>
-                    </xsl:copy>
-                </x:description>
+                            </xsl:if>
+                            <xsl:apply-templates select="*"/>
+                        </xsl:copy>
+                    </x:description>
+                </xsl:if>
             </xsl:for-each>
         </x:descriptions>
+    </xsl:template>
+
+    <xsl:template match="x:expect">
+        <xsl:copy>
+            <xsl:copy-of select="@*"/>
+            <xsl:attribute name="contextref" select="concat('context',count(preceding-sibling::x:context[1]/preceding::x:context))"/>
+            <xsl:copy-of select="node()"/>
+        </xsl:copy>
+    </xsl:template>
+
+    <xsl:template match="x:context">
+        <xsl:copy>
+            <xsl:copy-of select="@*"/>
+            <xsl:attribute name="id" select="concat('context',count(preceding::x:context))"/>
+            <xsl:copy-of select="node()"/>
+        </xsl:copy>
     </xsl:template>
 
     <xsl:function name="x:resolve-options">
