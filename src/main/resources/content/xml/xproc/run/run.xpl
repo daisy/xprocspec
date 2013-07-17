@@ -1,5 +1,5 @@
 <p:declare-step xmlns:p="http://www.w3.org/ns/xproc" type="pxi:test-run" name="main" xmlns:cx="http://xmlcalabash.com/ns/extensions" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:pxi="http://www.daisy.org/ns/xprocspec/xproc-internal/"
-    exclude-inline-prefixes="#all" version="1.0" xpath-version="2.0" xmlns:x="http://www.daisy.org/ns/xprocspec">
+    version="1.0" xpath-version="2.0" xmlns:x="http://www.daisy.org/ns/xprocspec">
 
     <p:input port="source" sequence="true"/>
     <p:output port="result" sequence="true"/>
@@ -14,6 +14,16 @@
         <p:load name="test">
             <p:with-option name="href" select="/*"/>
         </p:load>
+        <p:choose>
+            <p:when test="ends-with(base-uri(/*),'xprocspec.xpl')">
+                <p:identity>
+                    <p:log port="result" href="file:/tmp/tmp.xml"/>
+                </p:identity>
+            </p:when>
+            <p:otherwise>
+                <p:identity/>
+            </p:otherwise>
+        </p:choose>
         <p:choose>
             <p:when test="/*[self::c:errors]">
                 <pxi:message message=" * error document; skipping"/>

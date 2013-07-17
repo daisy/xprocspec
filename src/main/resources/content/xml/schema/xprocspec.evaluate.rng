@@ -37,6 +37,9 @@
                 </a:documentation>
                 <ref name="common-attributes"/>
                 <ref name="label"/>
+                <optional>
+                    <ref name="pending-attribute"/>
+                </optional>
                 <attribute name="contextref">
                     <data type="IDREF"/>
                 </attribute>

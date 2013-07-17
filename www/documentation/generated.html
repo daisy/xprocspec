@@ -96,8 +96,8 @@
 
 <p id="attr-description-pending">Assertions or scenarios with the <a href="#attr-description-pending"><code>pending</code></a> attribute will remain untested, but will be
                reported as (eventual) desired behaviour. Its semantics is the same as for the
-               <a href="#the-pending-element"><code>pending</code></a> element. If the attribute is not empty;
-               its content describes why the assertion or scenario should not be evaluated.</p>
+               <a href="#the-pending-element"><code>pending</code></a> element.
+               Its content describes why the assertion or scenario should not be evaluated.</p>
 <p id="attr-description-script">The <a href="#attr-description-script"><code>script</code></a> attribute is a URI that points to the XProc script you want to test.</p>
 <p id="attr-description-version">The <a href="#attr-description-version"><code>version</code></a> attribute can be used to aid development over time.</p>
 </section>
@@ -116,7 +116,7 @@
 </section>
 
 <section id="the-scenario-element">
-<h2>The <code>scenario</code> element</h2><dl class="element"><dt>Content model:</dt><dd><a href="#the-call-element"><code>call</code></a></dd><dd><a href="#the-scenario-element"><code>scenario</code></a><small title="zero or more">*</small></dd><dd><a href="#the-context-element"><code>context</code></a><small title="zero or more">*</small></dd><dd><a href="#the-expect-element"><code>expect</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-scenario-label"><code>label</code></a></dd><dd><a href="#attr-scenario-pending"><code>pending</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
+<h2>The <code>scenario</code> element</h2><dl class="element"><dt>Content model:</dt><dd><a href="#the-call-element"><code>call</code></a><small title="optional">?</small></dd><dd><a href="#the-scenario-element"><code>scenario</code></a><small title="zero or more">*</small></dd><dd><a href="#the-pending-element"><code>pending</code></a><small title="zero or more">*</small></dd><dd><a href="#the-context-element"><code>context</code></a><small title="zero or more">*</small></dd><dd><a href="#the-expect-element"><code>expect</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-scenario-label"><code>label</code></a></dd><dd><a href="#attr-scenario-pending"><code>pending</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p>
                 A scenario groups together the definition of the script environment
                 (the <a href="#the-call-element"><code>call</code></a> element) and the script assertions (the <a href="#the-context-element"><code>context</code></a> and
@@ -131,8 +131,8 @@
 <p id="attr-scenario-label">The <a href="#attr-scenario-label"><code>label</code></a> attribute is used to describe the current element in human-readable words.</p>
 <p id="attr-scenario-pending">Assertions or scenarios with the <a href="#attr-scenario-pending"><code>pending</code></a> attribute will remain untested, but will be
                reported as (eventual) desired behaviour. Its semantics is the same as for the
-               <a href="#the-pending-element"><code>pending</code></a> element. If the attribute is not empty;
-               its content describes why the assertion or scenario should not be evaluated.</p>
+               <a href="#the-pending-element"><code>pending</code></a> element.
+               Its content describes why the assertion or scenario should not be evaluated.</p>
 </section>
 
 <section id="the-call-element">
@@ -145,14 +145,62 @@
 <p id="attr-call-step">
                         The <a href="#attr-call-step"><code>step</code></a> attribute is the name of the step (as declared in XProc scripts by the <code>p:declare-step/@type</code> attribute).
                         For instance <code>step="example:mystep"</code>.
-                        The <a href="#attr-call-step"><code>step</code></a> attribute is a QName so remember to declare the namespace for its namespace prefix.
+                        The <a href="#attr-call-step"><code>step</code></a> attribute must be specified on either the <a href="#the-call-element"><code>call</code></a> element or one of the ancestor <a href="#the-call-element"><code>call</code></a> elements.
                     </p>
 </section>
 
+
+
+<section id="the-pending-element">
+<h2>The <code>pending</code> element</h2><dl class="element"><dt>Content model:</dt><dd><a href="#the-scenario-element"><code>scenario</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-pending-label"><code>label</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
+<p><em>TODO</em>: the element <code>pending</code> has not been documented yet.</p>
+
+<p id="attr-pending-label">The <a href="#attr-pending-label"><code>label</code></a> attribute is used to describe the current element in human-readable words.</p>
+</section>
+
+<section id="the-context-element">
+<h2>The <code>context</code> element</h2><dl class="element"><dt>Content model:</dt><dd><a href="#the-document-element"><code>document</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-context-label"><code>label</code></a><small title="optional">?</small></dd><dd><a href="#attr-context-pending"><code>pending</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
+<p>Defines the context against which assertions are made.</p>
+
+<p id="attr-context-label">The <a href="#attr-context-label"><code>label</code></a> attribute is used to describe the current element in human-readable words.</p>
+<p id="attr-context-pending">Assertions or scenarios with the <a href="#attr-context-pending"><code>pending</code></a> attribute will remain untested, but will be
+               reported as (eventual) desired behaviour. Its semantics is the same as for the
+               <a href="#the-pending-element"><code>pending</code></a> element.
+               Its content describes why the assertion or scenario should not be evaluated.</p>
+</section>
+
+<section id="the-expect-element">
+<h2>The <code>expect</code> element</h2><dl class="element"><dt>Content model:</dt><dd><a href="#the-document-element"><code>document</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-expect-grammar"><code>grammar</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-label"><code>label</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-pending"><code>pending</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-test"><code>test</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-type"><code>type</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
+<p>
+                Defines what is expected from the context document(s).
+            </p>
+
+<p id="attr-expect-grammar">
+                            The <a href="#attr-expect-grammar"><code>grammar</code></a> attribute is used to set the grammar of the <code>x:document</code> element (used when <code>type</code> is <code>validate</code>).
+                            The assertion succeeds if all of the documents in context validates against the schema given by the child <code>x:document</code> element.
+                        </p>
+<p id="attr-expect-label">The <a href="#attr-expect-label"><code>label</code></a> attribute is used to describe the current element in human-readable words.</p>
+<p id="attr-expect-pending">Assertions or scenarios with the <a href="#attr-expect-pending"><code>pending</code></a> attribute will remain untested, but will be
+               reported as (eventual) desired behaviour. Its semantics is the same as for the
+               <a href="#the-pending-element"><code>pending</code></a> element.
+               Its content describes why the assertion or scenario should not be evaluated.</p>
+<p id="attr-expect-test">
+                            When <code>type</code> is <code>xpath</code>, you can use the <a href="#attr-expect-test"><code>test</code></a> attribute to define a XPath expression.
+                            The expression will be evaluated to either true or false, representing a successful and a failed test respectively.
+                        </p>
+<p id="attr-expect-type">The <a href="#attr-expect-type"><code>type</code></a> attribute is used to define the type of assertion you want to make.</p><p>
+                            When <code>type</code> is <a href="#the-compare-element"><code>compare</code></a>, you can put a sequence of <code>x:document</code> elements inside the <code>x:expect</code> element.
+                            The assertion succeeds if the document sequence in context equals the document sequence inside the <code>x:expect</code> element.
+                        </p><p>When <code>type</code> is <a href="#the-validate-element"><code>validate</code></a>, the documents in context is validated against the schema provided in the <code>x:document</code> element inside the <code>x:expect</code> element.</p>
+</section>
+
+
+
 <section id="the-input-element">
-<h2>The <code>input</code> element</h2><dl class="element"><dt>Content model:</dt><dd><a href="#the-document-element"><code>document</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd>Zero or more attributes from any namespace.</dd></dl>
+<h2>The <code>input</code> element</h2><dl class="element"><dt>Content model:</dt><dd><a href="#the-document-element"><code>document</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-input-port"><code>port</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p>The input element is used to provide documents on the input ports of the XProc step you are testing.</p>
 
+<p id="attr-input-port"/>
 </section>
 
 <section id="the-option-element">
@@ -193,41 +241,14 @@
 
 
 
-<section id="the-context-element">
-<h2>The <code>context</code> element</h2><dl class="element"><dt>Content model:</dt><dd><a href="#the-document-element"><code>document</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-context-label"><code>label</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
-<p>Defines the context against which assertions are made.</p>
 
-<p id="attr-context-label">The <a href="#attr-context-label"><code>label</code></a> attribute is used to describe the current element in human-readable words.</p>
-</section>
 
-<section id="the-expect-element">
-<h2>The <code>expect</code> element</h2><dl class="element"><dt>Content model:</dt><dd><a href="#the-document-element"><code>document</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-expect-grammar"><code>grammar</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-label"><code>label</code></a></dd><dd><a href="#attr-expect-pending"><code>pending</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-test"><code>test</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-type"><code>type</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
-<p>
-                Defines what is expected from the context document(s).
-            </p>
 
-<p id="attr-expect-grammar">
-                            The <a href="#attr-expect-grammar"><code>grammar</code></a> attribute is used to set the grammar of the <code>x:document</code> element (used when <code>type</code> is <code>validate</code>).
-                            The assertion succeeds if all of the documents in context validates against the schema given by the child <code>x:document</code> element.
-                        </p>
-<p id="attr-expect-label">The <a href="#attr-expect-label"><code>label</code></a> attribute is used to describe the current element in human-readable words.</p>
-<p id="attr-expect-pending">Assertions or scenarios with the <a href="#attr-expect-pending"><code>pending</code></a> attribute will remain untested, but will be
-               reported as (eventual) desired behaviour. Its semantics is the same as for the
-               <a href="#the-pending-element"><code>pending</code></a> element. If the attribute is not empty;
-               its content describes why the assertion or scenario should not be evaluated.</p>
-<p id="attr-expect-test">
-                            When <code>type</code> is <code>xpath</code>, you can use the <a href="#attr-expect-test"><code>test</code></a> attribute to define a XPath expression.
-                            The expression will be evaluated to either true or false, representing a successful and a failed test respectively.
-                        </p>
-<p id="attr-expect-type">The <a href="#attr-expect-type"><code>type</code></a> attribute is used to define the type of assertion you want to make.</p><p>
-                            When <code>type</code> is <a href="#the-compare-element"><code>compare</code></a>, you can put a sequence of <code>x:document</code> elements inside the <code>x:expect</code> element.
-                            The assertion succeeds if the document sequence in context equals the document sequence inside the <code>x:expect</code> element.
-                        </p><p>When <code>type</code> is <a href="#the-validate-element"><code>validate</code></a>, the documents in context is validated against the schema provided in the <code>x:document</code> element inside the <code>x:expect</code> element.</p>
-</section>
 
 <section id="the-document-element">
 <h2>The <code>document</code> element</h2><dl class="element"><dt>Content model:</dt><dd>One element from any namespace. (optional)</dd><dt>Content attributes:</dt><dd><a href="#attr-document-base-uri"><code>base-uri</code></a><small title="optional">?</small></dd><dd><a href="#attr-document-href"><code>href</code></a><small title="optional">?</small></dd><dd><a href="#attr-document-method"><code>method</code></a><small title="optional">?</small></dd><dd><a href="#attr-document-port"><code>port</code></a><small title="optional">?</small></dd><dd><a href="#attr-document-position"><code>position</code></a><small title="optional">?</small></dd><dd><a href="#attr-document-recursive"><code>recursive</code></a><small title="optional">?</small></dd><dd><a href="#attr-document-type"><code>type</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
-<p>The <a href="#the-document-element"><code>document</code></a> element is used to define which documents are provided on a steps input ports, what the context is when making assertions, and for assertions when making comparisons or performing validations. It can be used in a number of ways:</p>
+<p>The <a href="#the-document-element"><code>document</code></a> element is used to define which documents are provided on a steps input ports, what the context is when making assertions, and for assertions when making comparisons or performing validations. It can be used in a
+                    number of ways:</p>
 
 <p id="attr-document-base-uri">If the <code>base-uri</code> attribute is <code>temp-dir</code>, then the URI in the <a href="#attr-document-href"><code>href</code></a> attribute will be resolved against the temporary directory used for the test, instead of the base
                                 URI of the xprocspec document.</p><!-- documented in the "file" group -->
@@ -264,18 +285,7 @@
                         </p>
 </section>
 
-<section id="the-pending-element">
-<h2>The <code>pending</code> element</h2><dl class="element"><dt>Content model:</dt><dd><a href="#the-scenario-element"><code>scenario</code></a><small title="oen or more">+</small></dd><dd><a href="#the-context-element"><code>context</code></a><small title="oen or more">+</small></dd><dd><a href="#the-expect-element"><code>expect</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-pending-label"><code>label</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
-<p>Assertions and scenarios that is within a <a href="#the-pending-element"><code>pending</code></a> element will remain untested, but will be
-                reported as (eventual) desired behaviour. This is a good way of commenting out
-                a set of behaviours that haven't been implemented yet, or scenarios whose
-                desired behaviour hasn't been determined, or tests for code that you're not
-                currently working on, to make the testing process faster, while still showing
-                the pending assertions and scenarios in the resulting reports.</p><p id="attr-pending-label">An optional <a href="#attr-pending-label"><code>label</code></a> attribute can be used to describe why the scenario or
-                assertion should not be evaluated.</p>
 
-
-</section>
 
 
 

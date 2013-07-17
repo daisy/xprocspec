@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.daisy.org/ns/xprocspec/xprocspec.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<x:description xmlns:x="http://www.daisy.org/ns/xprocspec" script="../../main/resources/content/xml/xproc/xprocspec.xpl">
+
+    <x:scenario label="the description element">
+        <x:call step="x:xprocspec">
+            <x:option name="temp-dir" base-uri="temp-dir" select="base-uri(/*)"/>
+            <x:input port="source">
+                <x:document type="file" href="tests/description-1.xprocspec"/>
+            </x:input>
+        </x:call>
+        <x:context label="the junit output port">
+            <x:document type="port" port="junit"/>
+        </x:context>
+        <x:expect label="there should be 3 tests" type="xpath" test="/*/@tests='3'"/>
+        <x:expect label="one of the tests should be pending" type="xpath" test="sum(/*/testsuite/number(@skipped))=1"/>
+    </x:scenario>
+
+
+    <x:scenario label="the import element" pending="">
+        <x:call step="x:xprocspec">
+            <x:option name="temp-dir" base-uri="temp-dir" select="base-uri(/*)"/>
+        </x:call>
+
+        <x:scenario label="- two imports" pending="">
+            <x:call>
+                <x:input port="source">
+                    <x:document type="file" href="tests/import-1.xprocspec"/>
+                </x:input>
+            </x:call>
+        </x:scenario>
+
+        <x:scenario label="- one import with one import" pending="">
+            <x:call>
+                <x:input port="source">
+                    <x:document type="file" href="tests/import-2.xprocspec"/>
+                </x:input>
+            </x:call>
+        </x:scenario>
+
+        <x:scenario label="- circular imports" pending="">
+            <x:call>
+                <x:input port="source">
+                    <x:document type="file" href="tests/import-3.xprocspec"/>
+                </x:input>
+            </x:call>
+        </x:scenario>
+    </x:scenario>
+
+
+    <x:scenario label="the scenario element" pending="">
+        <x:call step="x:xprocspec">
+            <x:option name="temp-dir" base-uri="temp-dir" select="base-uri(/*)"/>
+        </x:call>
+
+        <x:scenario label="- with pending attribute" pending="">
+            <x:call>
+                <x:input port="source">
+                    <x:document type="file" href="tests/scenario-1.xprocspec"/>
+                </x:input>
+            </x:call>
+        </x:scenario>
+
+        <x:scenario label="- with two child scenarios, one of which has another child scenario" pending="">
+            <x:call>
+                <x:input port="source">
+                    <x:document type="file" href="tests/scenario-2.xprocspec"/>
+                </x:input>
+            </x:call>
+        </x:scenario>
+    </x:scenario>
+
+
+    <x:scenario label="the call element" pending="">
+        <x:call step="x:xprocspec">
+            <x:option name="temp-dir" base-uri="temp-dir" select="base-uri(/*)"/>
+        </x:call>
+
+        <x:scenario label="- inherit from call elements in ancestor scenarios" pending="">
+            <x:call>
+                <x:input port="source">
+                    <x:document type="file" href="tests/call-1.xprocspec"/>
+                </x:input>
+            </x:call>
+        </x:scenario>
+
+        <x:scenario label="- step attribute pointing to step declared in XProc library" pending="">
+            <x:call>
+                <x:input port="source">
+                    <x:document type="file" href="tests/call-2.xprocspec"/>
+                </x:input>
+            </x:call>
+        </x:scenario>
+
+        <x:scenario label="- two different scenarios testing different steps" pending="">
+            <x:call>
+                <x:input port="source">
+                    <x:document type="file" href="tests/call-3.xprocspec"/>
+                </x:input>
+            </x:call>
+        </x:scenario>
+    </x:scenario>
+
+
+    <x:scenario label="the input element" pending="">
+        <x:call step="x:xprocspec">
+            <x:option name="temp-dir" base-uri="temp-dir" select="base-uri(/*)"/>
+        </x:call>
+
+        <x:scenario label="- empty sequence" pending="">
+            <x:call>
+                <x:input port="source">
+                    <x:document type="file" href="tests/input-1.xprocspec"/>
+                </x:input>
+            </x:call>
+        </x:scenario>
+
+        <x:scenario label="- sequence of two documents" pending="">
+            <x:call>
+                <x:input port="source">
+                    <x:document type="file" href="tests/input-2.xprocspec"/>
+                </x:input>
+            </x:call>
+        </x:scenario>
+    </x:scenario>
+
+
+    <x:scenario label="the option element" pending="">
+        <x:call step="x:xprocspec">
+            <x:option name="temp-dir" base-uri="temp-dir" select="base-uri(/*)"/>
+            <x:input port="source">
+                <x:document type="file" href="tests/option-1.xprocspec"/>
+            </x:input>
+        </x:call>
+        
+        <x:context label="the result document">
+            <x:document type="port" port="result"/>
+        </x:context>
+        
+        <x:expect type="xpath" label="base-uri(.) should be either the xprocspec document or the test directory depending on the base-uri attribute" test="false()" pending=""/>
+        <x:expect type="xpath" label="base-uri(/*) should be either the xprocspec document or the test directory depending on the base-uri attribute" test="false()" pending=""/>
+        <x:expect type="xpath" label="the context document (/) should be the xprocspec document" test="false()" pending=""/>
+        <x:expect type="xpath" label="the context element (.) should be the x:option element" test="false()" pending=""/>
+    </x:scenario>
+    
+    
+    <x:scenario label="the param element" pending="">
+        <x:call step="x:xprocspec">
+            <x:option name="temp-dir" base-uri="temp-dir" select="base-uri(/*)"/>
+            <x:input port="source">
+                <x:document type="file" href="tests/option-1.xprocspec"/>
+            </x:input>
+        </x:call>
+        
+        <x:context label="the result document">
+            <x:document type="port" port="result"/>
+        </x:context>
+        
+        <x:expect type="xpath" label="base-uri(.) should be either the xprocspec document or the test directory depending on the base-uri attribute" test="false()" pending=""/>
+        <x:expect type="xpath" label="base-uri(/*) should be either the xprocspec document or the test directory depending on the base-uri attribute" test="false()" pending=""/>
+        <x:expect type="xpath" label="the context document (/) should be the xprocspec document" test="false()" pending=""/>
+        <x:expect type="xpath" label="the context element (.) should be the x:option element" test="false()" pending=""/>
+        <x:expect type="xpath" label="test that x:document with port='name of primary or secondary parameter port' returns a single c:param-set" test="false()" pending=""/>
+    </x:scenario>
+
+
+    <x:scenario label="the context element" pending="">
+        <x:call step="x:xprocspec">
+            <x:option name="temp-dir" base-uri="temp-dir" select="base-uri(/*)"/>
+        </x:call>
+        
+        <!--change the context a couple of times and check that the context changes in the expect assertions-->
+    </x:scenario>
+
+
+    <x:scenario label="the expect element" pending="">
+        <x:call step="x:xprocspec">
+            <x:option name="temp-dir" base-uri="temp-dir" select="base-uri(/*)"/>
+        </x:call>
+
+        <!--
+        type=xpath
+            test="false()" against a empty sequence should succeed
+            test="false()" against a single document should fail
+            test="/*" against a sequence of two documents should succeed
+            test="base-uri(/*)='base uri'" should succeed (tests that the correct base uri is used)
+        type=compare
+            compare two empty sequences (success)
+            compare two identical documents (success)
+            compare two identical sequences of two documents (success)
+            compare two different documents (fail)
+            compare a document against an empty sequence (fail)
+            compare two documents against two other documents; the last in each sequence being different (fail)
+            compare two document against two documents; the only difference being the ordering (fail)
+        type=validate
+            grammar=relax-ng
+                very basic relax-ng validation (should not be tested in C.I. as relax-ng is not supported by default)
+            grammar=schematron
+                very basic schematron validation (should not be tested in C.I. as schematron is not supported by default)
+            grammar=xmlschema
+                very basic xmlschema validation (should not be tested in C.I. as xmlschema is not supported by default)
+        -->
+    </x:scenario>
+
+
+    <x:scenario label="the document element" pending="">
+        <x:call step="x:xprocspec">
+            <x:option name="temp-dir" base-uri="temp-dir" select="base-uri(/*)"/>
+        </x:call>
+        
+        <!--
+        test using inline document
+        test="local-name(/*)='doc1'" position="1" against a sequence of two documents (doc1 and doc2) should succeed
+        test="local-name(/*)='doc1'" position="2" against a sequence of two documents (doc1 and doc2) should fail
+        use base-uri=temp-dir and relative xml:base to set implicit base URI.
+        test flat directory listing
+        test recursive directory listing
+        test loading of text file
+        test loading of binary file
+        test loading of html file
+        test getting input port
+        test getting output port
+        test getting errors document
+            empty when no errors
+            c:errors when errors
+        -->
+    </x:scenario>
+
+
+    <x:scenario label="the pending element" pending="">
+        <x:call step="x:xprocspec">
+            <x:option name="temp-dir" base-uri="temp-dir" select="base-uri(/*)"/>
+        </x:call>
+        
+        <!--
+        skip assertions wrapped in the pending element
+        skip scenarios wrapped in the pending element
+        skip scenarios inside scenarios which is wrapped in the pending element
+        -->
+    </x:scenario>
+
+
+</x:description>

@@ -314,7 +314,7 @@
 
                             <p:for-each>
                                 <p:iteration-source select="//x:call"/>
-                                <p:add-attribute match="/*" attribute-name="step">
+                                <p:add-attribute match="/*" attribute-name="x:type">
                                     <p:with-option name="attribute-value" select="concat('{',namespace-uri-from-QName(resolve-QName(/*/@step,/*)),'}',tokenize(/*/@step,':')[last()])"/>
                                 </p:add-attribute>
                                 <p:delete match="/*/*"/>
@@ -350,27 +350,35 @@
                                     </pxi:error>
                                 </p:catch>
                             </p:try>
-                            <p:viewport match="//p:declare-step | //p:pipeline">
+                            <p:xslt>
+                                <p:input port="parameters">
+                                    <p:empty/>
+                                </p:input>
+                                <p:input port="stylesheet">
+                                    <p:document href="explicit-type-namespace.xsl"/>
+                                </p:input>
+                            </p:xslt>
+                            <!--<p:viewport match="//p:declare-step | //p:pipeline">
                                 <p:add-attribute match="/*" attribute-name="x:type">
                                     <p:with-option name="attribute-value" select="concat('{',namespace-uri-from-QName(resolve-QName(/*/@type,/*)),'}',tokenize(/*/@type,':')[last()])"/>
                                 </p:add-attribute>
-                            </p:viewport>
+                            </p:viewport>-->
                             <p:identity name="script"/>
 
                             <p:for-each>
                                 <p:iteration-source>
                                     <p:pipe port="result" step="calls"/>
                                 </p:iteration-source>
-                                <p:variable name="step" select="/*/@step"/>
+                                <p:variable name="type" select="/*/@x:type"/>
                                 <pxi:message message=" * trying to extract the step declaration for $1 from $2">
-                                    <p:with-option name="param1" select="$step"/>
+                                    <p:with-option name="param1" select="$type"/>
                                     <p:with-option name="param2" select="$script-uri"/>
                                 </pxi:message>
                                 <p:for-each>
-                                    <p:iteration-source select="(//p:declare-step | //p:pipeline)[@x:type=$step]">
+                                    <p:iteration-source select="(//p:declare-step | //p:pipeline)[@x:type=$type]">
                                         <p:pipe port="result" step="script"/>
                                     </p:iteration-source>
-                                    <p:identity/>
+                                    <p:delete match="//@exclude-inline-prefixes"/>
                                 </p:for-each>
                                 <p:identity name="step-declaration"/>
                                 <p:count/>
@@ -378,7 +386,7 @@
                                     <p:when test="number(.)=0">
                                         <!-- TODO: step not found; throw error? -->
                                         <pxi:error message=" * the step $1 was not found in $2" code="XPS01">
-                                            <p:with-option name="param1" select="$step"/>
+                                            <p:with-option name="param1" select="$type"/>
                                             <p:with-option name="param2" select="$script-uri"/>
                                         </pxi:error>
                                     </p:when>
@@ -441,7 +449,7 @@
                             <p:with-option name="attribute-value" select="resolve-uri(/*/@script,base-uri(/*))"/>
                         </p:add-attribute>
                         <p:viewport match="//x:call[@step]">
-                            <p:add-attribute match="/*" attribute-name="x:step">
+                            <p:add-attribute match="/*" attribute-name="x:type">
                                 <p:with-option name="attribute-value" select="concat('{',namespace-uri-from-QName(resolve-QName(/*/@step,/*)),'}',tokenize(/*/@step,':')[last()])"/>
                             </p:add-attribute>
                         </p:viewport>
@@ -455,14 +463,14 @@
                         </p:xslt>
                         <p:for-each>
                             <p:iteration-source select="/*/*"/>
-                            <p:variable name="step" select="(//x:call/@x:step)[1]"/>
+                            <p:variable name="type" select="(//x:call/@x:type)[1]"/>
                             <p:insert match="/*" position="first-child">
                                 <p:input port="insertion">
                                     <p:pipe port="result" step="step-declarations"/>
                                 </p:input>
                             </p:insert>
                             <p:delete>
-                                <p:with-option name="match" select="concat('/*/x:script-declaration/*[not(@x:type=&quot;',$step,'&quot;)]')"/>
+                                <p:with-option name="match" select="concat('/*/x:script-declaration/*[not(@x:type=&quot;',$type,'&quot;)]')"/>
                             </p:delete>
                         </p:for-each>
                     </p:otherwise>

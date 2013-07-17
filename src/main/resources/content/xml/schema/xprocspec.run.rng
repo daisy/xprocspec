@@ -35,6 +35,9 @@
                     </group>
                     <group>
                         <ref name="pending-attribute"/>
+                        <optional>
+                            <ref name="call"/>
+                        </optional>
                     </group>
                 </choice>
                 <attribute name="start-time">

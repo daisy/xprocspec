@@ -31,6 +31,9 @@
     <pxi:message message="#### $1 ####">
         <p:with-option name="param1" select="base-uri(/*)"/>
     </pxi:message>
+    <pxi:message message=" * temporary directory: $1">
+        <p:with-option name="param1" select="$temp-dir"/>
+    </pxi:message>
     <pxi:message message="preprocessing..."/>
     <pxi:test-preprocess name="preprocess">
         <p:with-option name="temp-dir" select="$temp-dir"/>

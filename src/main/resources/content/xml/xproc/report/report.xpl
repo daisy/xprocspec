@@ -116,12 +116,10 @@
     </p:for-each>
     <p:wrap-sequence wrapper="testsuites"/>
     <p:add-attribute match="/*" attribute-name="time">
-        <p:with-option name="attribute-value" select="/*/*[1]/@temp-global-duration"/>
+        <p:with-option name="attribute-value" select="(/*/*/@temp-global-duration)[1]"/>
     </p:add-attribute>
     <p:delete match="/*/*/@temp-global-duration"/>
-    <p:add-attribute match="/*" attribute-name="disabled">
-        <p:with-option name="attribute-value" select="sum(/*/*/number(@disabled))"/>
-    </p:add-attribute>
+    <!-- attribue @disabled is not used; don't know what it does compared to @skipped... -->
     <p:add-attribute match="/*" attribute-name="errors">
         <p:with-option name="attribute-value" select="sum(/*/*/number(@errors))"/>
     </p:add-attribute>
@@ -129,7 +127,7 @@
         <p:with-option name="attribute-value" select="sum(/*/*/number(@failures))"/>
     </p:add-attribute>
     <p:add-attribute match="/*" attribute-name="name">
-        <p:with-option name="attribute-value" select="/*[1]/@temp-global-name"/>
+        <p:with-option name="attribute-value" select="(/*/*/@temp-global-name)[1]"/>
     </p:add-attribute>
     <p:delete match="/*/*/@temp-global-name"/>
     <p:add-attribute match="/*" attribute-name="tests">

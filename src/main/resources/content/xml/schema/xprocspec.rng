@@ -108,6 +108,9 @@
                 </group>
                 <group>
                     <ref name="pending-attribute"/>
+                    <optional>
+                        <ref name="call"/>
+                    </optional>
                 </group>
             </choice>
         </element>
@@ -117,7 +120,7 @@
         <ref name="common-attributes"/>
         <ref name="label"/>
     </define>
-    
+
     <define name="scenario.common-children">
         <ref name="call"/>
         <choice>
@@ -164,7 +167,7 @@
                     <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
                         The `step` attribute is the name of the step (as declared in XProc scripts by the `p:declare-step/@type` attribute).
                         For instance `step="example:mystep"`.
-                        The `step` attribute is a QName so remember to declare the namespace for its namespace prefix.
+                        The `step` attribute must be specified on either the `call` element or one of the ancestor `call` elements.
                     </a:documentation>
                     <data type="QName"/>
                 </attribute>
@@ -232,6 +235,11 @@
         <element name="input" ns="http://www.daisy.org/ns/xprocspec">
             <a:documentation xmlns="http://www.w3.org/1999/xhtml">The input element is used to provide documents on the input ports of the XProc step you are testing.</a:documentation>
             <ref name="common-attributes"/>
+            <attribute name="port">
+                <data type="string">
+                    <param name="pattern">.+</param>
+                </data>
+            </attribute>
             <zeroOrMore>
                 <ref name="document"/>
             </zeroOrMore>
@@ -249,6 +257,9 @@
 
     <define name="context.attributes">
         <ref name="common-attributes"/>
+        <optional>
+            <ref name="pending-attribute"/>
+        </optional>
         <ref name="label"/>
     </define>
 
@@ -465,7 +476,9 @@
                 the pending assertions and scenarios in the resulting reports.</p>
             </a:documentation>
             <ref name="common-attributes"/>
-            <ref name="label"/>
+            <optional>
+                <ref name="label"/>
+            </optional>
             <oneOrMore>
                 <group>
                     <optional>
@@ -482,7 +495,9 @@
     <define name="pending-scenario">
         <element name="pending" ns="http://www.daisy.org/ns/xprocspec">
             <ref name="common-attributes"/>
-            <ref name="label"/>
+            <optional>
+                <ref name="label"/>
+            </optional>
             <oneOrMore>
                 <ref name="scenario"/>
             </oneOrMore>

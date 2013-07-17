@@ -26,35 +26,17 @@
                 <p:try>
                     <p:group>
                         <p:identity name="description.pre-document-resolution"/>
-                        <p:choose>
-                            <p:when test="$skip-scenario='false'">
-                                <p:viewport match="//x:document">
-                                    <!-- resolve all x:documents in the description -->
-                                    <pxi:document>
-                                        <p:input port="description">
-                                            <p:pipe port="result" step="description.pre-document-resolution"/>
-                                        </p:input>
-                                    </pxi:document>
-                                </p:viewport>
-                            </p:when>
-                            <p:otherwise>
-                                <p:identity/>
-                            </p:otherwise>
-                        </p:choose>
+                        <p:delete match="//x:document[ancestor::*[@pending]]"/>
+                        <p:viewport match="//x:document">
+                            <!-- resolve all x:documents in the description -->
+                            <pxi:document>
+                                <p:input port="description">
+                                    <p:pipe port="result" step="description.pre-document-resolution"/>
+                                </p:input>
+                            </pxi:document>
+                        </p:viewport>
                         <p:identity name="description"/>
-                        
-                        <!--<p:identity name="dbg"/>
-                        <p:identity>
-                            <p:input port="source" select="//x:context"/>
-                            <p:log port="result" href="file:/tmp/tmp.xml"/>
-                        </p:identity>
-                        <p:sink/>
-                        <p:identity>
-                            <p:input port="source">
-                                <p:pipe port="result" step="dbg"/>
-                            </p:input>
-                        </p:identity>-->
-                        
+
                         <p:add-attribute match="/*" attribute-name="xml:base">
                             <!-- since it won't be preserved through XSLT transforms (see this thread: http://lists.w3.org/Archives/Public/xproc-dev/2013Mar/0013.html) -->
                             <p:with-option name="attribute-value" select="base-uri(/*)"/>
@@ -84,7 +66,7 @@
 
                                 <p:identity name="assertion"/>
                                 <p:choose>
-                                    
+
                                     <p:when test="/x:expect[@pending] or $skip-scenario='true'">
                                         <p:identity>
                                             <p:input port="source">
@@ -96,7 +78,7 @@
                                             </p:input>
                                         </p:identity>
                                     </p:when>
-                                    
+
                                     <p:when test="/x:expect[@type='xpath']">
                                         <!-- evaluate @test against context -->
                                         <p:variable name="test" select="/*/@test"/>
@@ -364,7 +346,7 @@
                 <p:identity/>
             </p:for-each>
         </p:group>
-        
+
     </p:for-each>
 
 </p:declare-step>

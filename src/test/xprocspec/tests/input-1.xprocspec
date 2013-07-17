@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.daisy.org/ns/xprocspec/xprocspec.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<x:description xmlns:x="http://www.daisy.org/ns/xprocspec" xmlns:e="http://example.net/ns" script="../steps/identity.xpl">
+    
+    <x:scenario label="TODO" pending=""/>
+    
+</x:description>

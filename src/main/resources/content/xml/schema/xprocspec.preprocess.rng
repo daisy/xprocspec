@@ -32,6 +32,9 @@
 
         <define name="context.attributes">
             <ref name="common-attributes"/>
+            <optional>
+                <ref name="pending-attribute"/>
+            </optional>
             <ref name="label"/>
             <attribute name="id">
                 <data type="ID"/>
@@ -55,7 +58,7 @@
                 <attribute name="step">
                     <data type="QName"/>
                 </attribute>
-                <attribute name="step" ns="http://www.daisy.org/ns/xprocspec"/>
+                <attribute name="type" ns="http://www.daisy.org/ns/xprocspec"/>
             </element>
         </define>
         
@@ -179,6 +182,7 @@
                 <data type="string"/>
             </attribute>
         </optional>
+        <ref name="common-attributes"/>
     </define>
 
     <define name="xproc.declare-step">

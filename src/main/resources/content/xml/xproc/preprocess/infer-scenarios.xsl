@@ -12,12 +12,12 @@
                         <xsl:copy-of select="/*/@*"/>
                         <xsl:copy>
                             <xsl:copy-of select="$scenarios/@*"/>
-                            <xsl:variable name="pending" select="($scenarios/@pending,ancestor::x:pending/@label)[1]"/>
-                            <xsl:variable name="pending" select="if ($pending='') then 'Not implemented' else $pending"/>
+                            <xsl:attribute name="label" select="string-join($scenarios/@label,' ')"/>
+                            <xsl:variable name="pending" select="x:is-pending(.)"/>
                             <xsl:if test="$pending">
                                 <xsl:attribute name="pending" select="$pending"/>
                             </xsl:if>
-                            <xsl:if test="$scenarios/x:call or not($pending)">
+                            <xsl:if test="$scenarios/x:call">
                                 <x:call>
                                     <xsl:copy-of select="$scenarios/x:call/@*"/>
                                     <xsl:copy-of select="x:resolve-options($scenarios/x:call/x:option)"/>
@@ -25,29 +25,66 @@
                                     <xsl:copy-of select="x:resolve-inputs($scenarios/x:call/x:input)"/>
                                 </x:call>
                             </xsl:if>
-                            <xsl:apply-templates select="*"/>
+                            <xsl:apply-templates select="*">
+                                <xsl:with-param name="pending-scenario" select="$pending" tunnel="yes"/>
+                            </xsl:apply-templates>
                         </xsl:copy>
                     </x:description>
                 </xsl:if>
             </xsl:for-each>
         </x:descriptions>
     </xsl:template>
-
+    
     <xsl:template match="x:expect">
+        <xsl:param name="pending-scenario" tunnel="yes" required="yes"/>
         <xsl:copy>
             <xsl:copy-of select="@*"/>
+            <xsl:variable name="pending" select="if ($pending-scenario) then $pending-scenario else x:is-pending(.)"/>
+            <xsl:if test="$pending">
+                <xsl:attribute name="pending" select="$pending"/>
+            </xsl:if>
             <xsl:attribute name="contextref" select="concat('context',count(preceding-sibling::x:context[1]/preceding::x:context))"/>
             <xsl:copy-of select="node()"/>
         </xsl:copy>
     </xsl:template>
 
     <xsl:template match="x:context">
+        <xsl:param name="pending-scenario" tunnel="yes" required="yes"/>
         <xsl:copy>
             <xsl:copy-of select="@*"/>
+            <xsl:variable name="pending" select="if ($pending-scenario) then $pending-scenario else x:is-pending(.)"/>
+            <xsl:if test="$pending">
+                <xsl:attribute name="pending" select="$pending"/>
+            </xsl:if>
             <xsl:attribute name="id" select="concat('context',count(preceding::x:context))"/>
             <xsl:copy-of select="node()"/>
         </xsl:copy>
     </xsl:template>
+    
+    <xsl:function name="x:is-pending">
+        <xsl:param name="this"/>
+        <xsl:choose>
+            <xsl:when test="$this/ancestor-or-self::*[@pending or self::x:pending]">
+                <xsl:variable name="pending" select="($this/ancestor-or-self::*[@pending or self::x:pending])[1]/string(if (self::x:pending) then @label else @pending)"/>
+                <xsl:sequence select="if ($pending='') then 'Not implemented' else string($pending)"/>
+            </xsl:when>
+            <xsl:when test="$this/self::x:expect">
+                <xsl:variable name="context" select="($this/preceding::x:context)[last()]"/>
+                <xsl:variable name="pending" select="x:is-pending($context)"/>
+                <xsl:choose>
+                    <xsl:when test="$pending">
+                        <xsl:sequence select="concat($pending, ' (because context is pending)')"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:sequence select="()"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="()"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
 
     <xsl:function name="x:resolve-options">
         <xsl:param name="options"/>

@@ -34,7 +34,7 @@
                     <p>Tested: <xsl:value-of select="current-dateTime()"/><!-- TODO: prettier time: 10 July 2013 at 18:42 --></p>
                     <h2>Contents</h2>
                     <table class="xspec">
-                        <col width="80%"/>
+                        <col width="75%"/>
                         <col width="5%"/>
                         <col width="5%"/>
                         <col width="5%"/>
@@ -101,20 +101,22 @@
                                 </tr>
                             </xsl:for-each>
 
-                            <xsl:for-each select="distinct-values($pending-descriptions/resolve-uri(@script,base-uri()))">
-                                <xsl:variable name="script-base" select="."/>
+                            <xsl:for-each select="distinct-values($pending-descriptions/(x:step-declaration/*/@type,resolve-uri(@script,base-uri()))[1])">
+                                <xsl:variable name="title" select="."/>
+                                <xsl:variable name="pending-script-descriptions" select="$pending-descriptions[(x:step-declaration/*/@type,resolve-uri(@script,base-uri()))[1] = $title]"/>
+                                <xsl:variable name="script-base" select="($pending-script-descriptions/resolve-uri(@script,base-uri()))[1]"/>
                                 <tr class="pending label">
                                     <th>
-                                        <a href="#pending">Pending: <xsl:value-of select="$script-base"/></a>
+                                        <a href="#pending-{count($pending-script-descriptions[1]/preceding::x:description)}">Not calling: <xsl:value-of select="$title"/></a>
                                     </th>
                                     <th class="result">0</th>
                                     <th class="result">
-                                        <xsl:value-of select="count($pending-descriptions[resolve-uri(@script,base-uri())=$script-base])"/>
+                                        <xsl:value-of select="count($pending-script-descriptions)"/>
                                     </th>
                                     <th class="result">0</th>
                                     <th class="result">0</th>
                                     <th class="result">
-                                        <xsl:value-of select="count($pending-descriptions[resolve-uri(@script,base-uri())=$script-base])"/>
+                                        <xsl:value-of select="count($pending-script-descriptions)"/>
                                     </th>
                                 </tr>
                             </xsl:for-each>
@@ -186,9 +188,10 @@
                         <xsl:variable name="failed" select="count($step-descriptions/x:test-result[@result='failed'])"/>
                         <xsl:variable name="total" select="count($step-descriptions/x:test-result)"/>
                         <xsl:variable name="step-class" select="if ($failed) then 'failed' else if ($pending) then 'pending' else if ($passed) then 'successful' else ''"/>
+                        <xsl:variable name="script-base" select="($step-descriptions/resolve-uri(@script,base-uri()))[1]"/>
 
                         <div id="{$stepid}">
-                            <h2 class="{$step-class}">Calling <xsl:value-of select="$step-shortname"/><span class="scenario-totals">passed:<xsl:value-of select="$passed"/> / pending:<xsl:value-of select="$pending"/> / failed:<xsl:value-of
+                            <h2 class="{$step-class}">Calling: <a href="{$script-base}"><xsl:value-of select="$step-shortname"/></a><span class="scenario-totals">passed:<xsl:value-of select="$passed"/> / pending:<xsl:value-of select="$pending"/> / failed:<xsl:value-of
                                         select="$failed"/> / errors:0 / total:<xsl:value-of select="$total"/></span></h2>
                             <table class="xspec">
                                 <col width="80%"/>
@@ -254,6 +257,12 @@
                                                         <xsl:value-of select="$test-result"/>
                                                     </td>
                                                 </tr>
+                                                <xsl:if test="$test-class='pending'">
+                                                    <tr class="pending">
+                                                        <td class="pending-label"><xsl:value-of select="@pending"/></td>
+                                                        <td> </td>
+                                                    </tr>
+                                                </xsl:if>
                                                 <xsl:if test="$test-class='failed'">
                                                     <tr class="expected">
                                                         <td colspan="2">Expected: <pre><code><xsl:copy-of select="x:expected/node()"/></code></pre>
@@ -269,11 +278,13 @@
                     </xsl:for-each>
 
                     <!-- for each script with pending scenarios -->
-                    <xsl:for-each select="distinct-values($pending-descriptions/resolve-uri(@script,base-uri()))">
-                        <xsl:variable name="script-base" select="."/>
-                        <xsl:variable name="pending-script-descriptions" select="$pending-descriptions[resolve-uri(@script,base-uri())=$script-base]"/>
-                        <div id="pending">
-                            <h2 class="pending">Pending: <a href="{$script-base}"><xsl:value-of select="$script-base"/></a><span class="scenario-totals">passed:0 / pending:<xsl:value-of select="count($pending-script-descriptions)"/> / failed:0 /
+                    <!--<xsl:for-each select="distinct-values($pending-descriptions/resolve-uri(@script,base-uri()))">-->
+                    <xsl:for-each select="distinct-values($pending-descriptions/(x:step-declaration/*/@type,resolve-uri(@script,base-uri()))[1])">
+                        <xsl:variable name="title" select="."/>
+                        <xsl:variable name="pending-script-descriptions" select="$pending-descriptions[(x:step-declaration/*/@type,resolve-uri(@script,base-uri()))[1] = $title]"/>
+                        <xsl:variable name="script-base" select="($pending-script-descriptions/resolve-uri(@script,base-uri()))[1]"/>
+                        <div id="pending-{count($pending-script-descriptions[1]/preceding::x:description)}">
+                            <h2 class="pending">Not calling: <a href="{$script-base}"><xsl:value-of select="$title"/></a><span class="scenario-totals">passed:0 / pending:<xsl:value-of select="count($pending-script-descriptions)"/> / failed:0 /
                                     errors:0 / total:<xsl:value-of select="count($pending-script-descriptions)"/></span></h2>
                             <table class="xspec">
                                 <col width="80%"/>
