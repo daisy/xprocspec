@@ -76,7 +76,36 @@
    </properties>
 
    <build>
+     <resources>
+       <resource>
+         <directory>src/main/resources</directory>
+       </resource>
+       <resource>
+         <directory>target/generated-resources</directory>
+         <includes>
+           <include>content/xml/schema/*.rnc</include>
+         </includes>
+       </resource>
+     </resources>
       <plugins>
+         <plugin>
+           <groupId>us.bryon</groupId>
+           <artifactId>relaxng-maven-plugin</artifactId>
+           <version>1.1</version>
+           <executions>
+             <execution>
+               <id>generate-relaxng</id>
+               <phase>generate-resources</phase>
+               <goals>
+                 <goal>trang</goal>
+               </goals>
+               <configuration>
+                 <src>src/main/resources/content/xml/schema</src>
+                 <dest>target/generated-resources/content/xml/schema</dest>
+               </configuration>
+             </execution>
+           </executions>
+         </plugin>
          <!--<plugin>
             <groupId>org.daisy.maven</groupId>
             <artifactId>xproc-maven-plugin</artifactId>
