@@ -11,19 +11,12 @@
     <p:import href="../utils/logging-library.xpl"/>
 
     <p:for-each>
+        <pxi:message message="   * loading '$1'">
+            <p:with-option name="param1" select="/*"/>
+        </pxi:message>
         <p:load name="test">
             <p:with-option name="href" select="/*"/>
         </p:load>
-        <p:choose>
-            <p:when test="ends-with(base-uri(/*),'xprocspec.xpl')">
-                <p:identity>
-                    <p:log port="result" href="file:/tmp/tmp.xml"/>
-                </p:identity>
-            </p:when>
-            <p:otherwise>
-                <p:identity/>
-            </p:otherwise>
-        </p:choose>
         <p:choose>
             <p:when test="/*[self::c:errors]">
                 <pxi:message message=" * error document; skipping"/>

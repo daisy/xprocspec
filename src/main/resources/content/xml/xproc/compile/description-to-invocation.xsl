@@ -19,7 +19,7 @@
             <p:variable name="start-time" select="adjust-dateTime-to-timezone(current-dateTime(),xs:dayTimeDuration('PT0H'))"/>
             <xsl:text>
     </xsl:text>
-            
+
             <xsl:choose>
                 <xsl:when test="x:scenario[@pending]">
                     <xsl:text>
@@ -91,12 +91,14 @@
                                             <xsl:text>
         </xsl:text>
                                             <p:with-param name="{@name}" select="{@select}">
-                                                <context>
-                                                    <xsl:if test="@base-uri='temp-dir'">
-                                                        <xsl:attribute name="xml:base" select="$temp-dir"/>
-                                                    </xsl:if>
-                                                    <xsl:text>TODO</xsl:text>
-                                                </context>
+                                                <p:inline>
+                                                    <context>
+                                                        <xsl:if test="@base-uri='temp-dir'">
+                                                            <xsl:attribute name="xml:base" select="$temp-dir"/>
+                                                        </xsl:if>
+                                                        <xsl:text>TODO</xsl:text>
+                                                    </context>
+                                                </p:inline>
                                             </p:with-param>
                                             <!-- TODO: set context for p:with-param -->
                                         </xsl:for-each>
@@ -192,7 +194,7 @@
                                     <xsl:text>
         </xsl:text>
                                     <p:add-attribute match="/*" attribute-name="type" attribute-value="inline"/>
-                                        <xsl:text>
+                                    <xsl:text>
         </xsl:text>
                                 </p:for-each>
                                 <xsl:text>

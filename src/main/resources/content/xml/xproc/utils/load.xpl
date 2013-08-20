@@ -7,7 +7,7 @@
     <p:option name="href" required="true"/>
     <p:option name="method" select="'xml'"/>
 
-    <p:import href="http://xmlcalabash.com/extension/steps/library-1.0.xpl"/>
+    <p:import href="logging-library.xpl"/>
 
     <p:declare-step type="pxi:load-text">
         <p:output port="result"/>
@@ -41,14 +41,14 @@
         <p:http-request/>
     </p:declare-step>
 
-    <cx:message>
+    <pxi:message>
         <p:input port="source">
             <p:inline>
                 <doc/>
             </p:inline>
         </p:input>
-        <p:with-option name="message" select="concat('loading ',$href)"/>
-    </cx:message>
+        <p:with-option name="message" select="concat('loading &quot;',$href,'&quot;')"/>
+    </pxi:message>
     <p:sink/>
 
     <p:choose>
@@ -68,12 +68,12 @@
                     </p:load>
                 </p:group>
                 <p:catch>
-                    <cx:message>
+                    <pxi:message>
                         <p:input port="source">
                             <p:empty/>
                         </p:input>
                         <p:with-option name="message" select="concat('unable to load ',$href,' as XML')"/>
-                    </cx:message>
+                    </pxi:message>
                 </p:catch>
             </p:try>
         </p:when>

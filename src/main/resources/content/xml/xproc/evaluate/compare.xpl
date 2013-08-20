@@ -1,4 +1,4 @@
-<p:declare-step type="pxi:compare" name="main" version="1.0" xmlns:p="http://www.w3.org/ns/xproc" xmlns:pxi="http://www.daisy.org/ns/xprocspec/xproc-internal/" xmlns:c="http://www.w3.org/ns/xproc-step">
+<p:declare-step type="pxi:compare" name="main" version="1.0" xmlns:p="http://www.w3.org/ns/xproc" xmlns:pxi="http://www.daisy.org/ns/xprocspec/xproc-internal/" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:x="http://www.daisy.org/ns/xprocspec">
 
     <!-- TODO: implement "ignore-ordering" option -->
 
@@ -45,14 +45,14 @@
             <p:identity/>
         </p:when>
         <p:otherwise>
-            <p:rename match="/*" new-name="c:was" name="was">
-                <p:input port="source">
-                    <p:pipe port="result" step="wrapped-source"/>
-                </p:input>
-            </p:rename>
-            <p:rename match="/*" new-name="c:expected" name="expected">
+            <p:rename match="/*" new-name="x:expected" name="expected">
                 <p:input port="source">
                     <p:pipe port="result" step="wrapped-alternate"/>
+                </p:input>
+            </p:rename>
+            <p:rename match="/*" new-name="x:was" name="was">
+                <p:input port="source">
+                    <p:pipe port="result" step="wrapped-source"/>
                 </p:input>
             </p:rename>
             <p:insert match="/*" position="last-child">
@@ -60,8 +60,8 @@
                     <p:pipe port="result" step="result"/>
                 </p:input>
                 <p:input port="insertion">
-                    <p:pipe port="result" step="was"/>
                     <p:pipe port="result" step="expected"/>
+                    <p:pipe port="result" step="was"/>
                 </p:input>
             </p:insert>
         </p:otherwise>

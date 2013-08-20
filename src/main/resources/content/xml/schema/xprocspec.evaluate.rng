@@ -22,7 +22,7 @@
                 <ref name="scenario-results"/>
             </element>
         </define>
-        
+
     </include>
 
     <define name="scenario-results">
@@ -78,9 +78,16 @@
                         <value>skipped</value>
                     </choice>
                 </attribute>
-                <element name="expected" ns="http://www.daisy.org/ns/xprocspec">
-                    <ref name="any-content"/>
-                </element>
+                <optional>
+                    <element name="expected" ns="http://www.daisy.org/ns/xprocspec">
+                        <ref name="any-content"/>
+                    </element>
+                </optional>
+                <optional>
+                    <element name="was" ns="http://www.daisy.org/ns/xprocspec">
+                        <ref name="any-content"/>
+                    </element>
+                </optional>
             </element>
         </zeroOrMore>
     </define>

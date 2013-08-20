@@ -7,7 +7,7 @@
     <p:import href="compare.xpl"/>
     <p:import href="../utils/logging-library.xpl"/>
     <p:import href="../utils/document.xpl"/>
-
+    
     <p:for-each name="current-test">
         <!-- for each scenario -->
 
@@ -71,9 +71,7 @@
                                         <p:identity>
                                             <p:input port="source">
                                                 <p:inline>
-                                                    <x:test-result result="skipped">
-                                                        <x:expected/>
-                                                    </x:test-result>
+                                                    <x:test-result result="skipped"/>
                                                 </p:inline>
                                             </p:input>
                                         </p:identity>
@@ -152,7 +150,7 @@
                                             <p:input port="source">
                                                 <p:inline>
                                                     <x:test-result result="skipped">
-                                                        <x:expected>Relax NG validation is not implemented yet.</x:expected>
+                                                        <x:was>Relax NG validation is not implemented yet.</x:was>
                                                     </x:test-result>
                                                 </p:inline>
                                             </p:input>
@@ -169,7 +167,7 @@
                                             <p:input port="source">
                                                 <p:inline>
                                                     <x:test-result result="skipped">
-                                                        <x:expected>Schematron validation is not implemented yet.</x:expected>
+                                                        <x:was>Schematron validation is not implemented yet.</x:was>
                                                     </x:test-result>
                                                 </p:inline>
                                             </p:input>
@@ -186,7 +184,7 @@
                                             <p:input port="source">
                                                 <p:inline>
                                                     <x:test-result result="skipped">
-                                                        <x:expected>XML Schema validation is not implemented yet.</x:expected>
+                                                        <x:was>XML Schema validation is not implemented yet.</x:was>
                                                     </x:test-result>
                                                 </p:inline>
                                             </p:input>
@@ -199,7 +197,7 @@
                                             <p:input port="source">
                                                 <p:inline>
                                                     <x:test-result result="failed">
-                                                        <x:expected>Unknown assertion type.</x:expected>
+                                                        <x:was>Unknown assertion type.</x:was>
                                                     </x:test-result>
                                                 </p:inline>
                                             </p:input>

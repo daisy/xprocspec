@@ -186,18 +186,18 @@
 
                             <system-err>
                                 <xsl:if test="@result='failed'">
-                                    <xsl:if test="./c:expected">
+                                    <xsl:if test="./x:expected">
                                         <xsl:text>Expected:
 </xsl:text>
-                                        <xsl:value-of select="./c:expected"/>
+                                        <xsl:value-of select="./x:expected"/>
                                     </xsl:if>
                                     <xsl:text>
 
 </xsl:text>
-                                    <xsl:if test="./c:was">
+                                    <xsl:if test="./x:was">
                                         <xsl:text>Was:
 </xsl:text>
-                                        <xsl:value-of select="./c:was"/>
+                                        <xsl:value-of select="./x:was"/>
                                     </xsl:if>
                                 </xsl:if>
                             </system-err>

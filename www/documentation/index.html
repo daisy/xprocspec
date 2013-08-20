@@ -180,7 +180,7 @@ table.simple {
     margin-bottom:  0;
 }
 </style><link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/w3c-unofficial"></head>
-    <body class="h-entry"><div class="head">
+    <body class="h-entry" role="document" id="respecDocument"><div class="head" role="contentinfo" id="respecHeader">
   <p>
     
   </p>
@@ -188,7 +188,7 @@ table.simple {
   
     <h2 property="bibo:subtitle" id="subtitle">A tool for testing XProc scripts</h2>
   
-  <h2 property="dcterms:issued" datatype="xsd:dateTime" content="2013-07-17T13:35:31.000Z" id="unofficial-draft-17-july-2013">Unofficial Draft <time class="dt-published" datetime="2013-07-17">17 July 2013</time></h2>
+  <h2 property="dcterms:issued" datatype="xsd:dateTime" content="2013-08-20T12:31:13.000Z" id="unofficial-draft-20-august-2013">Unofficial Draft <time class="dt-published" datetime="2013-08-20">20 August 2013</time></h2>
   <dl>
     
     
@@ -223,8 +223,8 @@ table.simple {
   
   <hr>
 </div>
-        <section id="abstract" class="introductory" property="dcterms:abstract" datatype="" typeof="bibo:Chapter" resource="#abstract" rel="bibo:chapter"><h2>Abstract</h2><p><a href="http://josteinaj.github.io/xprocspec/">xprocspec</a> is a tool for testing XProc scripts. This specification defines the grammar used to define XProc tests for use with xprocspec. This document is automatically
-            generated based on the <a href="../../src/main/resources/xml/schema/xprocspec.rng">Relax NG schema for the xprocspec grammar</a>.</p></section><section id="sotd" class="introductory" typeof="bibo:Chapter" resource="#sotd" rel="bibo:chapter"><h2>Status of This Document</h2>
+        <section id="abstract" class="introductory" property="dcterms:abstract" datatype="" typeof="bibo:Chapter" resource="#abstract" rel="bibo:chapter"><h2 aria-level="1" role="heading" id="h2_abstract">Abstract</h2><p><a href="http://josteinaj.github.io/xprocspec/">xprocspec</a> is a tool for testing XProc scripts. This specification defines the grammar used to define XProc tests for use with xprocspec. This document is automatically
+            generated based on the <a href="../../src/main/resources/xml/schema/xprocspec.rng">Relax NG schema for the xprocspec grammar</a>.</p></section><section id="sotd" class="introductory" typeof="bibo:Chapter" resource="#sotd" rel="bibo:chapter"><h2 aria-level="1" role="heading" id="h2_sotd">Status of This Document</h2>
   
     <p>
       This document is merely a public working draft of a potential specification. It has
@@ -233,12 +233,12 @@ table.simple {
     </p>
     
   
-</section><section id="toc"><h2 class="introductory">Table of Contents</h2><ul class="toc"><li class="tocline"><a href="#definitions" class="tocxref"><span class="secno">1. </span>Definitions</a><ul class="toc"><li class="tocline"><a href="#the-description-element" class="tocxref"><span class="secno">1.1 </span>The <code>description</code> element</a></li><li class="tocline"><a href="#the-import-element" class="tocxref"><span class="secno">1.2 </span>The <code>import</code> element</a></li><li class="tocline"><a href="#the-scenario-element" class="tocxref"><span class="secno">1.3 </span>The <code>scenario</code> element</a></li><li class="tocline"><a href="#the-call-element" class="tocxref"><span class="secno">1.4 </span>The <code>call</code> element</a></li><li class="tocline"><a href="#the-pending-element" class="tocxref"><span class="secno">1.5 </span>The <code>pending</code> element</a></li><li class="tocline"><a href="#the-context-element" class="tocxref"><span class="secno">1.6 </span>The <code>context</code> element</a></li><li class="tocline"><a href="#the-expect-element" class="tocxref"><span class="secno">1.7 </span>The <code>expect</code> element</a></li><li class="tocline"><a href="#the-input-element" class="tocxref"><span class="secno">1.8 </span>The <code>input</code> element</a></li><li class="tocline"><a href="#the-option-element" class="tocxref"><span class="secno">1.9 </span>The <code>option</code> element</a></li><li class="tocline"><a href="#the-param-element" class="tocxref"><span class="secno">1.10 </span>The <code>param</code> element</a></li><li class="tocline"><a href="#the-document-element" class="tocxref"><span class="secno">1.11 </span>The <code>document</code> element</a></li></ul></li><li class="tocline"><a href="#acknowledgements" class="tocxref"><span class="secno">A. </span>Acknowledgements</a></li></ul></section>
+</section><section id="toc"><h2 class="introductory" aria-level="1" role="heading" id="h2_toc">Table of Contents</h2><ul class="toc" role="directory" id="respecContents"><li class="tocline"><a href="#definitions" class="tocxref"><span class="secno">1. </span>Definitions</a><ul class="toc"><li class="tocline"><a href="#the-description-element" class="tocxref"><span class="secno">1.1 </span>The <code>description</code> element</a></li><li class="tocline"><a href="#the-import-element" class="tocxref"><span class="secno">1.2 </span>The <code>import</code> element</a></li><li class="tocline"><a href="#the-scenario-element" class="tocxref"><span class="secno">1.3 </span>The <code>scenario</code> element</a></li><li class="tocline"><a href="#the-call-element" class="tocxref"><span class="secno">1.4 </span>The <code>call</code> element</a></li><li class="tocline"><a href="#the-pending-element" class="tocxref"><span class="secno">1.5 </span>The <code>pending</code> element</a></li><li class="tocline"><a href="#the-context-element" class="tocxref"><span class="secno">1.6 </span>The <code>context</code> element</a></li><li class="tocline"><a href="#the-expect-element" class="tocxref"><span class="secno">1.7 </span>The <code>expect</code> element</a></li><li class="tocline"><a href="#the-input-element" class="tocxref"><span class="secno">1.8 </span>The <code>input</code> element</a></li><li class="tocline"><a href="#the-option-element" class="tocxref"><span class="secno">1.9 </span>The <code>option</code> element</a></li><li class="tocline"><a href="#the-param-element" class="tocxref"><span class="secno">1.10 </span>The <code>param</code> element</a></li><li class="tocline"><a href="#the-document-element" class="tocxref"><span class="secno">1.11 </span>The <code>document</code> element</a></li></ul></li><li class="tocline"><a href="#acknowledgements" class="tocxref"><span class="secno">A. </span>Acknowledgements</a></li></ul></section>
         
 <section xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test" xmlns:f="http://www.daisy.org/ns/pipeline/xproc/test/internal-functions" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" id="definitions">
-<!--OddPage--><h2><span class="secno">1. </span>Definitions</h2>
+<!--OddPage--><h2 aria-level="1" role="heading" id="h2_definitions"><span class="secno">1. </span>Definitions</h2>
 <section id="the-description-element" typeof="bibo:Chapter" resource="#the-description-element" rel="bibo:chapter">
-<h3><span class="secno">1.1 </span>The <code>description</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-import-element"><code>import</code></a><small title="zero or more">*</small></dd><dd><a href="#the-scenario-element"><code>scenario</code></a><small title="zero or more">*</small></dd><dd><a href="#the-pending-element"><code>pending</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-description-pending"><code>pending</code></a><small title="optional">?</small></dd><dd><a href="#attr-description-script"><code>script</code></a></dd><dd><a href="#attr-description-version"><code>version</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
+<h3 aria-level="2" role="heading" id="h3_the-description-element"><span class="secno">1.1 </span>The <code>description</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-import-element"><code>import</code></a><small title="zero or more">*</small></dd><dd><a href="#the-scenario-element"><code>scenario</code></a><small title="zero or more">*</small></dd><dd><a href="#the-pending-element"><code>pending</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-description-pending"><code>pending</code></a><small title="optional">?</small></dd><dd><a href="#attr-description-script"><code>script</code></a></dd><dd><a href="#attr-description-version"><code>version</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p>The <a href="#the-description-element"><code>description</code></a> element is the root element of an xprocspec test and describes the functionality of a specific XProc script.</p>
 
 <p id="attr-description-pending">Assertions or scenarios with the <a href="#attr-description-pending"><code>pending</code></a> attribute will remain untested, but will be
@@ -250,7 +250,7 @@ table.simple {
 </section>
 
 <section id="the-import-element" typeof="bibo:Chapter" resource="#the-import-element" rel="bibo:chapter">
-<h3><span class="secno">1.2 </span>The <code>import</code> element</h3><dl class="element"><dt>Content model:</dt><dd>Empty.</dd><dt>Content attributes:</dt><dd><a href="#attr-import-href"><code>href</code></a></dd><dd>Zero or more attributes from any namespace.</dd></dl>
+<h3 aria-level="2" role="heading" id="h3_the-import-element"><span class="secno">1.2 </span>The <code>import</code> element</h3><dl class="element"><dt>Content model:</dt><dd>Empty.</dd><dt>Content attributes:</dt><dd><a href="#attr-import-href"><code>href</code></a></dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p>
                 An import runs the xprocspec description in the referenced file. It has no
                 effect on the scenarios in the current document, but can be a useful method
@@ -263,7 +263,7 @@ table.simple {
 </section>
 
 <section id="the-scenario-element" typeof="bibo:Chapter" resource="#the-scenario-element" rel="bibo:chapter">
-<h3><span class="secno">1.3 </span>The <code>scenario</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-call-element"><code>call</code></a><small title="optional">?</small></dd><dd><a href="#the-scenario-element"><code>scenario</code></a><small title="zero or more">*</small></dd><dd><a href="#the-pending-element"><code>pending</code></a><small title="zero or more">*</small></dd><dd><a href="#the-context-element"><code>context</code></a><small title="zero or more">*</small></dd><dd><a href="#the-expect-element"><code>expect</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-scenario-label"><code>label</code></a></dd><dd><a href="#attr-scenario-pending"><code>pending</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
+<h3 aria-level="2" role="heading" id="h3_the-scenario-element"><span class="secno">1.3 </span>The <code>scenario</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-call-element"><code>call</code></a><small title="optional">?</small></dd><dd><a href="#the-scenario-element"><code>scenario</code></a><small title="zero or more">*</small></dd><dd><a href="#the-pending-element"><code>pending</code></a><small title="zero or more">*</small></dd><dd><a href="#the-context-element"><code>context</code></a><small title="zero or more">*</small></dd><dd><a href="#the-expect-element"><code>expect</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-scenario-label"><code>label</code></a></dd><dd><a href="#attr-scenario-pending"><code>pending</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p>
                 A scenario groups together the definition of the script environment
                 (the <a href="#the-call-element"><code>call</code></a> element) and the script assertions (the <a href="#the-context-element"><code>context</code></a> and
@@ -283,7 +283,7 @@ table.simple {
 </section>
 
 <section id="the-call-element" typeof="bibo:Chapter" resource="#the-call-element" rel="bibo:chapter">
-<h3><span class="secno">1.4 </span>The <code>call</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-input-element"><code>input</code></a><small title="zero or more">*</small></dd><dd><a href="#the-option-element"><code>option</code></a><small title="zero or more">*</small></dd><dd><a href="#the-param-element"><code>param</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-call-step"><code>step</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
+<h3 aria-level="2" role="heading" id="h3_the-call-element"><span class="secno">1.4 </span>The <code>call</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-input-element"><code>input</code></a><small title="zero or more">*</small></dd><dd><a href="#the-option-element"><code>option</code></a><small title="zero or more">*</small></dd><dd><a href="#the-param-element"><code>param</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-call-step"><code>step</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p>
                 A <a href="#the-call-element"><code>call</code></a> element defines a step call and the
                 inputs, options and parameters passed to it.
@@ -299,14 +299,14 @@ table.simple {
 
 
 <section id="the-pending-element" typeof="bibo:Chapter" resource="#the-pending-element" rel="bibo:chapter">
-<h3><span class="secno">1.5 </span>The <code>pending</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-scenario-element"><code>scenario</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-pending-label"><code>label</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
+<h3 aria-level="2" role="heading" id="h3_the-pending-element"><span class="secno">1.5 </span>The <code>pending</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-scenario-element"><code>scenario</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-pending-label"><code>label</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p><em>TODO</em>: the element <code>pending</code> has not been documented yet.</p>
 
 <p id="attr-pending-label">The <a href="#attr-pending-label"><code>label</code></a> attribute is used to describe the current element in human-readable words.</p>
 </section>
 
 <section id="the-context-element" typeof="bibo:Chapter" resource="#the-context-element" rel="bibo:chapter">
-<h3><span class="secno">1.6 </span>The <code>context</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-document-element"><code>document</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-context-label"><code>label</code></a><small title="optional">?</small></dd><dd><a href="#attr-context-pending"><code>pending</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
+<h3 aria-level="2" role="heading" id="h3_the-context-element"><span class="secno">1.6 </span>The <code>context</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-document-element"><code>document</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-context-label"><code>label</code></a><small title="optional">?</small></dd><dd><a href="#attr-context-pending"><code>pending</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p>Defines the context against which assertions are made.</p>
 
 <p id="attr-context-label">The <a href="#attr-context-label"><code>label</code></a> attribute is used to describe the current element in human-readable words.</p>
@@ -317,7 +317,7 @@ table.simple {
 </section>
 
 <section id="the-expect-element" typeof="bibo:Chapter" resource="#the-expect-element" rel="bibo:chapter">
-<h3><span class="secno">1.7 </span>The <code>expect</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-document-element"><code>document</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-expect-grammar"><code>grammar</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-label"><code>label</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-pending"><code>pending</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-test"><code>test</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-type"><code>type</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
+<h3 aria-level="2" role="heading" id="h3_the-expect-element"><span class="secno">1.7 </span>The <code>expect</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-document-element"><code>document</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-expect-grammar"><code>grammar</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-label"><code>label</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-pending"><code>pending</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-test"><code>test</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-type"><code>type</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p>
                 Defines what is expected from the context document(s).
             </p>
@@ -344,14 +344,14 @@ table.simple {
 
 
 <section id="the-input-element" typeof="bibo:Chapter" resource="#the-input-element" rel="bibo:chapter">
-<h3><span class="secno">1.8 </span>The <code>input</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-document-element"><code>document</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-input-port"><code>port</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
+<h3 aria-level="2" role="heading" id="h3_the-input-element"><span class="secno">1.8 </span>The <code>input</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-document-element"><code>document</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-input-port"><code>port</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p>The input element is used to provide documents on the input ports of the XProc step you are testing.</p>
 
 <p id="attr-input-port">
 </p></section>
 
 <section id="the-option-element" typeof="bibo:Chapter" resource="#the-option-element" rel="bibo:chapter">
-<h3><span class="secno">1.9 </span>The <code>option</code> element</h3><dl class="element"><dt>Content model:</dt><dd>Empty.</dd><dt>Content attributes:</dt><dd><a href="#attr-option-base-uri"><code>base-uri</code></a><small title="optional">?</small></dd><dd><a href="#attr-option-name"><code>name</code></a><small title="optional">?</small></dd><dd><a href="#attr-option-select"><code>select</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
+<h3 aria-level="2" role="heading" id="h3_the-option-element"><span class="secno">1.9 </span>The <code>option</code> element</h3><dl class="element"><dt>Content model:</dt><dd>Empty.</dd><dt>Content attributes:</dt><dd><a href="#attr-option-base-uri"><code>base-uri</code></a><small title="optional">?</small></dd><dd><a href="#attr-option-name"><code>name</code></a><small title="optional">?</small></dd><dd><a href="#attr-option-select"><code>select</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p>The option element is used to provide values to XProc options on the XProc step you are testing.</p>
 
 <p id="attr-option-base-uri">
@@ -369,7 +369,7 @@ table.simple {
 </section>
 
 <section id="the-param-element" typeof="bibo:Chapter" resource="#the-param-element" rel="bibo:chapter">
-<h3><span class="secno">1.10 </span>The <code>param</code> element</h3><dl class="element"><dt>Content model:</dt><dd>Empty.</dd><dt>Content attributes:</dt><dd><a href="#attr-param-base-uri"><code>base-uri</code></a><small title="optional">?</small></dd><dd><a href="#attr-param-name"><code>name</code></a><small title="optional">?</small></dd><dd><a href="#attr-param-select"><code>select</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
+<h3 aria-level="2" role="heading" id="h3_the-param-element"><span class="secno">1.10 </span>The <code>param</code> element</h3><dl class="element"><dt>Content model:</dt><dd>Empty.</dd><dt>Content attributes:</dt><dd><a href="#attr-param-base-uri"><code>base-uri</code></a><small title="optional">?</small></dd><dd><a href="#attr-param-name"><code>name</code></a><small title="optional">?</small></dd><dd><a href="#attr-param-select"><code>select</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p>The param element is used to provide values to XProc paramaters on the XProc step you are testing.</p>
 
 <p id="attr-param-base-uri">
@@ -393,7 +393,7 @@ table.simple {
 
 
 <section id="the-document-element" typeof="bibo:Chapter" resource="#the-document-element" rel="bibo:chapter">
-<h3><span class="secno">1.11 </span>The <code>document</code> element</h3><dl class="element"><dt>Content model:</dt><dd>One element from any namespace. (optional)</dd><dt>Content attributes:</dt><dd><a href="#attr-document-base-uri"><code>base-uri</code></a><small title="optional">?</small></dd><dd><a href="#attr-document-href"><code>href</code></a><small title="optional">?</small></dd><dd><a href="#attr-document-method"><code>method</code></a><small title="optional">?</small></dd><dd><a href="#attr-document-port"><code>port</code></a><small title="optional">?</small></dd><dd><a href="#attr-document-position"><code>position</code></a><small title="optional">?</small></dd><dd><a href="#attr-document-recursive"><code>recursive</code></a><small title="optional">?</small></dd><dd><a href="#attr-document-type"><code>type</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
+<h3 aria-level="2" role="heading" id="h3_the-document-element"><span class="secno">1.11 </span>The <code>document</code> element</h3><dl class="element"><dt>Content model:</dt><dd>One element from any namespace. (optional)</dd><dt>Content attributes:</dt><dd><a href="#attr-document-base-uri"><code>base-uri</code></a><small title="optional">?</small></dd><dd><a href="#attr-document-href"><code>href</code></a><small title="optional">?</small></dd><dd><a href="#attr-document-method"><code>method</code></a><small title="optional">?</small></dd><dd><a href="#attr-document-port"><code>port</code></a><small title="optional">?</small></dd><dd><a href="#attr-document-position"><code>position</code></a><small title="optional">?</small></dd><dd><a href="#attr-document-recursive"><code>recursive</code></a><small title="optional">?</small></dd><dd><a href="#attr-document-type"><code>type</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p>The <a href="#the-document-element"><code>document</code></a> element is used to define which documents are provided on a steps input ports, what the context is when making assertions, and for assertions when making comparisons or performing validations. It can be used in a
                     number of ways:</p>
 
@@ -438,7 +438,7 @@ table.simple {
 
 </section>
         <section class="appendix" id="acknowledgements">
-            <!--OddPage--><h2><span class="secno">A. </span>Acknowledgements</h2>
+            <!--OddPage--><h2 aria-level="1" role="heading" id="h2_acknowledgements"><span class="secno">A. </span>Acknowledgements</h2>
             <p>This specification is based on the work done by the developers of <a href="https://code.google.com/p/xspec/">XSpec</a>.</p>
             <p>The structure of this specification is generated with the help of <a href="https://github.com/darobin/respec" target="_blank">respec</a> (for the W3C-style specification).</p>
             <p>The xprocspec implementation itself currently depends on the XProc processor <a href="http://xmlcalabash.com/" target="_blank">XML Calabash</a> for its implementation of dynamic pipeline evaluation (<a href="http://xmlcalabash.com/docs/reference/cx-eval.html">cx:eval</a>).</p>
