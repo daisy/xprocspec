@@ -3,8 +3,11 @@ language: java
 # clone "travis" branch from DAISYs maven-parents repository containing deployment settings
 before_install: git clone -b travis https://github.com/daisy-consortium/maven-parents.git target/travis
 
-# main build command with "mvn deploy"
-script: mvn deploy --settings target/travis/settings.xml
+# main task, run the verify goal
+script: mvn verify
+
+# if the build succeeds, deploy the artifact (tests are skipped)
+after_success: mvn deploy -DskipTests -Dinvoker.skip=true --settings target/travis/settings.xml
 
 env:
   matrix:
