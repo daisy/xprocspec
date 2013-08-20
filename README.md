@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/josteinaj/xprocspec.png?branch=master)](https://travis-ci.org/josteinaj/xprocspec)
+
 xprocspec - XProc testing tool
 ==============================
 
