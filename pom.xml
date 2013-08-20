@@ -134,11 +134,11 @@
                </execution>
             </executions>
             <dependencies>
-               <dependency>
+                <!--<dependency>
                   <groupId>org.daisy.libs</groupId>
                   <artifactId>com.xmlcalabash</artifactId>
                   <version>1.0.10-SNAPSHOT</version>
-               </dependency>
+               </dependency>-->
                <dependency>
                   <groupId>com.thaiopensource</groupId>
                   <artifactId>jing</artifactId>
