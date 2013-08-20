@@ -9,6 +9,11 @@ script: mvn verify
 # if the build succeeds, deploy the artifact (tests are skipped)
 after_success: mvn deploy -DskipTests -Dinvoker.skip=true --settings target/travis/settings.xml
 
+# whitelist; only deploy master branch
+branches:
+  only:
+  - master
+
 env:
   matrix:
   - secure: ! 'RpnGDXxMS1WenuTxM3IeoB/GnJZLheVnf71I6S1Fp3genqUtTHeDw6HIOVHt
