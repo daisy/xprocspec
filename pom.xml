@@ -46,7 +46,9 @@
          <name>Maven Central</name>
          <url>http://repo.maven.apache.org/maven2/</url>
       </repository>
-      <repository>
+   </repositories>
+   <pluginRepositories>
+      <pluginRepository>
          <id>sonatype-nexus-snapshots</id>
          <name>oss.sonatype.org github Release Repository Snapshot Repository</name>
          <releases>
@@ -56,8 +58,8 @@
             <enabled>true</enabled>
          </snapshots>
          <url>http://oss.sonatype.org/content/repositories/snapshots/</url>
-      </repository>
-   </repositories>
+      </pluginRepository>
+   </pluginRepositories>
    <distributionManagement>
       <repository>
          <id>sonatype-nexus-staging</id>
@@ -76,35 +78,35 @@
    </properties>
 
    <build>
-     <resources>
-       <resource>
-         <directory>src/main/resources</directory>
-       </resource>
-       <resource>
-         <directory>target/generated-resources</directory>
-         <includes>
-           <include>content/xml/schema/*.rnc</include>
-         </includes>
-       </resource>
-     </resources>
+      <resources>
+         <resource>
+            <directory>src/main/resources</directory>
+         </resource>
+         <resource>
+            <directory>target/generated-resources</directory>
+            <includes>
+               <include>content/xml/schema/*.rnc</include>
+            </includes>
+         </resource>
+      </resources>
       <plugins>
          <plugin>
-           <groupId>us.bryon</groupId>
-           <artifactId>relaxng-maven-plugin</artifactId>
-           <version>1.1</version>
-           <executions>
-             <execution>
-               <id>generate-relaxng</id>
-               <phase>generate-resources</phase>
-               <goals>
-                 <goal>trang</goal>
-               </goals>
-               <configuration>
-                 <src>src/main/resources/content/xml/schema</src>
-                 <dest>target/generated-resources/content/xml/schema</dest>
-               </configuration>
-             </execution>
-           </executions>
+            <groupId>us.bryon</groupId>
+            <artifactId>relaxng-maven-plugin</artifactId>
+            <version>1.1</version>
+            <executions>
+               <execution>
+                  <id>generate-relaxng</id>
+                  <phase>generate-resources</phase>
+                  <goals>
+                     <goal>trang</goal>
+                  </goals>
+                  <configuration>
+                     <src>src/main/resources/content/xml/schema</src>
+                     <dest>target/generated-resources/content/xml/schema</dest>
+                  </configuration>
+               </execution>
+            </executions>
          </plugin>
          <plugin>
             <groupId>org.daisy.maven</groupId>
@@ -117,17 +119,17 @@
                      <goal>xproc</goal>
                   </goals>
                   <configuration>
-                    <pipeline>${project.build.directory}/classes/content/xml/xproc/xprocspec.xpl</pipeline>
-                    <inputs>
-                      <source>${project.basedir}/src/test/xprocspec/test.xprocspec</source>
-                    </inputs>
-                    <outputs>
-                      <result>${project.build.directory}/xprocspec-reports/test.xml</result>
-                      <junit>${project.build.directory}/surefire-reports/test.xml</junit>
-                    </outputs>
-                    <options>
-                      <temp-dir>${project.build.directory}/xprocspec/tmp/</temp-dir>
-                    </options>
+                     <pipeline>${project.build.directory}/classes/content/xml/xproc/xprocspec.xpl</pipeline>
+                     <inputs>
+                        <source>${project.basedir}/src/test/xprocspec/test.xprocspec</source>
+                     </inputs>
+                     <outputs>
+                        <result>${project.build.directory}/xprocspec-reports/test.xml</result>
+                        <junit>${project.build.directory}/surefire-reports/test.xml</junit>
+                     </outputs>
+                     <options>
+                        <temp-dir>${project.build.directory}/xprocspec/tmp/</temp-dir>
+                     </options>
                   </configuration>
                </execution>
             </executions>

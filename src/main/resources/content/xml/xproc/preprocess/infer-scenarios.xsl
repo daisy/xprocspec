@@ -25,7 +25,7 @@
                                     <xsl:copy-of select="x:resolve-inputs($scenarios/x:call/x:input)"/>
                                 </x:call>
                             </xsl:if>
-                            <xsl:apply-templates select="*">
+                            <xsl:apply-templates select="* except x:call">
                                 <xsl:with-param name="pending-scenario" select="$pending" tunnel="yes"/>
                             </xsl:apply-templates>
                         </xsl:copy>
@@ -90,7 +90,7 @@
         <xsl:param name="options"/>
         <xsl:for-each select="distinct-values($options/@name)">
             <xsl:variable name="name" select="."/>
-            <xsl:copy-of select="($options[@name=$name])[last()]"/>
+            <xsl:sequence select="($options[@name=$name])[last()]"/>
         </xsl:for-each>
     </xsl:function>
 
@@ -101,7 +101,7 @@
             <xsl:variable name="param" select="($params[@name=$name])[last()]"/>
             <xsl:choose>
                 <xsl:when test="$param[self::x:param]">
-                    <xsl:copy-of select="$param"/>
+                    <xsl:sequence select="$param"/>
                 </xsl:when>
                 <xsl:otherwise>
                     <x:param name="{$param/@name}" select="concat('&apos;',replace(replace(replace($param/@value,'&amp;','&amp;amp;'),&quot;'&quot;,&quot;&amp;apos;&quot;),'&quot;','&amp;quot;'),'&apos;')">
@@ -118,7 +118,7 @@
         <xsl:param name="inputs"/>
         <xsl:for-each select="distinct-values($inputs/@port)">
             <xsl:variable name="port" select="."/>
-            <xsl:copy-of select="($inputs[@port=$port])[last()]"/>
+            <xsl:sequence select="($inputs[@port=$port])[last()]"/>
         </xsl:for-each>
     </xsl:function>
 

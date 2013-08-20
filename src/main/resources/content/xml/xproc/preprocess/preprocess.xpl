@@ -453,7 +453,11 @@
                                 <p:with-option name="attribute-value" select="concat('{',namespace-uri-from-QName(resolve-QName(/*/@step,/*)),'}',tokenize(/*/@step,':')[last()])"/>
                             </p:add-attribute>
                         </p:viewport>
+                        <p:identity>
+                            <p:log port="result" href="file:/tmp/infer.in.xml"/>
+                        </p:identity>
                         <p:xslt>
+                            <p:log port="result" href="file:/tmp/infer.out.xml"/>
                             <p:input port="parameters">
                                 <p:empty/>
                             </p:input>
