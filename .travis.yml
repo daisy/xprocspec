@@ -15,7 +15,7 @@ branches:
   - master
 
 env:
-  matrix:
+  global:
   - secure: ! 'RpnGDXxMS1WenuTxM3IeoB/GnJZLheVnf71I6S1Fp3genqUtTHeDw6HIOVHt
 
       kmUfsMmY+mXy/CndRUlC+TXqYwiknxLDBkbO00kRbM/SY1dqCJulZCppnvDi
