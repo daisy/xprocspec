@@ -1,7 +1,5 @@
 language: java
 
-# clone "travis" branch from DAISYs maven-parents repository containing deployment settings
-
 # main task, run the verify goal
 script: mvn verify
 
