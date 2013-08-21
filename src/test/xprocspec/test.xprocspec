@@ -4,7 +4,7 @@
 
     <x:scenario label="the description element">
         <x:call step="x:xprocspec">
-            <x:option name="temp-dir" base-uri="temp-dir" select="base-uri(/*)"/>
+            <x:option name="temp-dir" select="$temp-dir"/>
             <x:input port="source">
                 <x:document type="file" href="tests/description-1.xprocspec"/>
             </x:input>
@@ -19,7 +19,7 @@
 
     <x:scenario label="the import element" pending="">
         <x:call step="x:xprocspec">
-            <x:option name="temp-dir" base-uri="temp-dir" select="base-uri(/*)"/>
+            <x:option name="temp-dir" select="$temp-dir"/>
         </x:call>
 
         <x:scenario label="- two imports" pending="">
@@ -50,7 +50,7 @@
 
     <x:scenario label="the scenario element" pending="">
         <x:call step="x:xprocspec">
-            <x:option name="temp-dir" base-uri="temp-dir" select="base-uri(/*)"/>
+            <x:option name="temp-dir" select="$temp-dir"/>
         </x:call>
 
         <x:scenario label="- with pending attribute" pending="">
@@ -73,7 +73,7 @@
 
     <x:scenario label="the call element" pending="">
         <x:call step="x:xprocspec">
-            <x:option name="temp-dir" base-uri="temp-dir" select="base-uri(/*)"/>
+            <x:option name="temp-dir" select="$temp-dir"/>
         </x:call>
 
         <x:scenario label="- inherit from call elements in ancestor scenarios" pending="">
@@ -104,7 +104,7 @@
 
     <x:scenario label="the input element" pending="">
         <x:call step="x:xprocspec">
-            <x:option name="temp-dir" base-uri="temp-dir" select="base-uri(/*)"/>
+            <x:option name="temp-dir" select="$temp-dir"/>
         </x:call>
 
         <x:scenario label="- empty sequence" pending="">
@@ -127,7 +127,7 @@
 
     <x:scenario label="the option element" pending="">
         <x:call step="x:xprocspec">
-            <x:option name="temp-dir" base-uri="temp-dir" select="base-uri(/*)"/>
+            <x:option name="temp-dir" select="$temp-dir"/>
             <x:input port="source">
                 <x:document type="file" href="tests/option-1.xprocspec"/>
             </x:input>
@@ -146,7 +146,7 @@
     
     <x:scenario label="the param element" pending="">
         <x:call step="x:xprocspec">
-            <x:option name="temp-dir" base-uri="temp-dir" select="base-uri(/*)"/>
+            <x:option name="temp-dir" select="$temp-dir"/>
             <x:input port="source">
                 <x:document type="file" href="tests/option-1.xprocspec"/>
             </x:input>
@@ -166,7 +166,7 @@
 
     <x:scenario label="the context element" pending="">
         <x:call step="x:xprocspec">
-            <x:option name="temp-dir" base-uri="temp-dir" select="base-uri(/*)"/>
+            <x:option name="temp-dir" select="$temp-dir"/>
         </x:call>
         
         <!--change the context a couple of times and check that the context changes in the expect assertions-->
@@ -175,7 +175,7 @@
 
     <x:scenario label="the expect element" pending="">
         <x:call step="x:xprocspec">
-            <x:option name="temp-dir" base-uri="temp-dir" select="base-uri(/*)"/>
+            <x:option name="temp-dir" select="$temp-dir"/>
         </x:call>
 
         <!--
@@ -205,7 +205,7 @@
 
     <x:scenario label="the document element" pending="">
         <x:call step="x:xprocspec">
-            <x:option name="temp-dir" base-uri="temp-dir" select="base-uri(/*)"/>
+            <x:option name="temp-dir" select="$temp-dir"/>
         </x:call>
         
         <!--
@@ -229,7 +229,7 @@
 
     <x:scenario label="the pending element" pending="">
         <x:call step="x:xprocspec">
-            <x:option name="temp-dir" base-uri="temp-dir" select="base-uri(/*)"/>
+            <x:option name="temp-dir" select="$temp-dir"/>
         </x:call>
         
         <!--

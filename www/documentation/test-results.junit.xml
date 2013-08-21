@@ -1,87 +1,87 @@
-<testsuites tests="18" failures="0" time="6.246" errors="0" name="test"><testsuite timestamp="2013-08-20T11:17:52.572Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d3923e1" name="theDescriptionElement" package="http://www.daisy.org/ns/xprocspec" time="0.702">
+<testsuites tests="18" failures="0" time="4.864" errors="0" name="test"><testsuite timestamp="2013-08-21T08:52:23.882Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d4113e1" name="theDescriptionElement" package="http://www.daisy.org/ns/xprocspec" time="0.395">
 <properties><property name="input: source" value="&lt;declare-step xmlns=&#34;http://www.w3.org/ns/xproc&#34; ...&gt;...&lt;/declare-step&gt; (Base URI: file:/home/jostein/xprocspec/src/test/xprocspec/test.xprocspec)"/>
 
-<property name="option: temp-dir" value="file:/tmp/xprocspec-20130820131746654/"/>
+<property name="option: temp-dir" value="file:/tmp/xprocspec-20130821105219224/"/>
 
 </properties>
 <testcase name="thereShouldBe3Tests" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>there should be 3 tests: SUCCESS</system-out>
 <system-err/></testcase><testcase name="oneOfTheTestsShouldBePending" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>one of the tests should be pending: SUCCESS</system-out>
-<system-err/></testcase></testsuite><testsuite timestamp="2013-08-20T11:17:52.588Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d3935e1" name="theImportElementTwoImports" time="0.001">
+<system-err/></testcase></testsuite><testsuite timestamp="2013-08-21T08:52:23.891Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d4125e1" name="theImportElementTwoImports" time="0.001">
 <properties>
 
 
 </properties>
-<testcase name="pendingScenario-theImportElementTwoImports" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the import element - two imports: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-20T11:17:52.603Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d3938e1" name="theImportElementOneImportWithOneImport" time="0.001">
+<testcase name="pendingScenario-theImportElementTwoImports" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the import element - two imports: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-21T08:52:23.9Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d4128e1" name="theImportElementOneImportWithOneImport" time="0.001">
 <properties>
 
 
 </properties>
-<testcase name="pendingScenario-theImportElementOneImportWithOneImport" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the import element - one import with one import: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-20T11:17:52.618Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d3941e1" name="theImportElementCircularImports" time="0.001">
+<testcase name="pendingScenario-theImportElementOneImportWithOneImport" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the import element - one import with one import: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-21T08:52:23.909Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d4131e1" name="theImportElementCircularImports" time="0.001">
 <properties>
 
 
 </properties>
-<testcase name="pendingScenario-theImportElementCircularImports" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the import element - circular imports: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-20T11:17:52.633Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d3944e1" name="theScenarioElementWithPendingAttribute" time="0.001">
+<testcase name="pendingScenario-theImportElementCircularImports" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the import element - circular imports: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-21T08:52:23.918Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d4134e1" name="theScenarioElementWithPendingAttribute" time="0.001">
 <properties>
 
 
 </properties>
-<testcase name="pendingScenario-theScenarioElementWithPendingAttribute" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the scenario element - with pending attribute: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-20T11:17:52.647Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d3947e1" name="theScenarioElementWithTwoChildScenariosOneOfWhichHasAnotherChildScenario" time="0.002">
+<testcase name="pendingScenario-theScenarioElementWithPendingAttribute" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the scenario element - with pending attribute: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-21T08:52:23.927Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d4137e1" name="theScenarioElementWithTwoChildScenariosOneOfWhichHasAnotherChildScenario" time="0.001">
 <properties>
 
 
 </properties>
-<testcase name="pendingScenario-theScenarioElementWithTwoChildScenariosOneOfWhichHasAnotherChildScenario" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the scenario element - with two child scenarios, one of which has another child scenario: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-20T11:17:52.663Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d3950e1" name="theCallElementInheritFromCallElementsInAncestorScenarios" time="0.001">
+<testcase name="pendingScenario-theScenarioElementWithTwoChildScenariosOneOfWhichHasAnotherChildScenario" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the scenario element - with two child scenarios, one of which has another child scenario: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-21T08:52:23.938Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d4140e1" name="theCallElementInheritFromCallElementsInAncestorScenarios" time="0.001">
 <properties>
 
 
 </properties>
-<testcase name="pendingScenario-theCallElementInheritFromCallElementsInAncestorScenarios" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the call element - inherit from call elements in ancestor scenarios: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-20T11:17:52.678Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d3953e1" name="theCallElementStepAttributePointingToStepDeclaredInXProcLibrary" time="0.001">
+<testcase name="pendingScenario-theCallElementInheritFromCallElementsInAncestorScenarios" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the call element - inherit from call elements in ancestor scenarios: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-21T08:52:23.947Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d4143e1" name="theCallElementStepAttributePointingToStepDeclaredInXProcLibrary" time="0.001">
 <properties>
 
 
 </properties>
-<testcase name="pendingScenario-theCallElementStepAttributePointingToStepDeclaredInXProcLibrary" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the call element - step attribute pointing to step declared in XProc library: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-20T11:17:52.694Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d3956e1" name="theCallElementTwoDifferentScenariosTestingDifferentSteps" time="0.001">
+<testcase name="pendingScenario-theCallElementStepAttributePointingToStepDeclaredInXProcLibrary" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the call element - step attribute pointing to step declared in XProc library: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-21T08:52:23.958Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d4146e1" name="theCallElementTwoDifferentScenariosTestingDifferentSteps" time="0.001">
 <properties>
 
 
 </properties>
-<testcase name="pendingScenario-theCallElementTwoDifferentScenariosTestingDifferentSteps" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the call element - two different scenarios testing different steps: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-20T11:17:52.709Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d3959e1" name="theInputElementEmptySequence" time="0.001">
+<testcase name="pendingScenario-theCallElementTwoDifferentScenariosTestingDifferentSteps" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the call element - two different scenarios testing different steps: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-21T08:52:23.968Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d4149e1" name="theInputElementEmptySequence" time="0.001">
 <properties>
 
 
 </properties>
-<testcase name="pendingScenario-theInputElementEmptySequence" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the input element - empty sequence: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-20T11:17:52.724Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d3962e1" name="theInputElementSequenceOfTwoDocuments" time="0.001">
+<testcase name="pendingScenario-theInputElementEmptySequence" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the input element - empty sequence: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-21T08:52:23.976Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d4152e1" name="theInputElementSequenceOfTwoDocuments" time="0">
 <properties>
 
 
 </properties>
-<testcase name="pendingScenario-theInputElementSequenceOfTwoDocuments" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the input element - sequence of two documents: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-20T11:17:52.741Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d3965e1" name="theOptionElement" time="0.001">
+<testcase name="pendingScenario-theInputElementSequenceOfTwoDocuments" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the input element - sequence of two documents: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-21T08:52:23.986Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d4155e1" name="theOptionElement" time="0.001">
 <properties>
 
 
 </properties>
-<testcase name="pendingScenario-theOptionElement" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the option element: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-20T11:17:52.756Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d3976e1" name="theParamElement" time="0.002">
+<testcase name="pendingScenario-theOptionElement" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the option element: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-21T08:52:23.994Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d4158e1" name="theParamElement" time="0.002">
 <properties>
 
 
 </properties>
-<testcase name="pendingScenario-theParamElement" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the param element: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-20T11:17:52.769Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d3989e1" name="theContextElement" time="0.001">
+<testcase name="pendingScenario-theParamElement" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the param element: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-21T08:52:24.003Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d4161e1" name="theContextElement" time="0.001">
 <properties>
 
 
 </properties>
-<testcase name="pendingScenario-theContextElement" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the context element: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-20T11:17:52.782Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d3992e1" name="theExpectElement" time="0.001">
+<testcase name="pendingScenario-theContextElement" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the context element: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-21T08:52:24.011Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d4164e1" name="theExpectElement" time="0.001">
 <properties>
 
 
 </properties>
-<testcase name="pendingScenario-theExpectElement" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the expect element: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-20T11:17:52.794Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d3995e1" name="theDocumentElement" time="0.001">
+<testcase name="pendingScenario-theExpectElement" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the expect element: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-21T08:52:24.019Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d4167e1" name="theDocumentElement" time="0.001">
 <properties>
 
 
 </properties>
-<testcase name="pendingScenario-theDocumentElement" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the document element: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-20T11:17:52.809Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d3998e1" name="thePendingElement" time="0.001">
+<testcase name="pendingScenario-theDocumentElement" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the document element: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-21T08:52:24.027Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d4170e1" name="thePendingElement" time="0.001">
 <properties>
 
 

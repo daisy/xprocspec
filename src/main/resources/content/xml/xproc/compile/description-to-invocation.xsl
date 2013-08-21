@@ -19,7 +19,10 @@
             <p:variable name="start-time" select="adjust-dateTime-to-timezone(current-dateTime(),xs:dayTimeDuration('PT0H'))"/>
             <xsl:text>
     </xsl:text>
-
+            <p:variable name="temp-dir" select="'{$temp-dir}'"/>
+            <xsl:text>
+    </xsl:text>
+            
             <xsl:choose>
                 <xsl:when test="x:scenario[@pending]">
                     <xsl:text>
@@ -58,12 +61,7 @@
         </xsl:text>
                                     <p:with-option name="{@name}" select="{@select}">
                                         <p:inline>
-                                            <context>
-                                                <xsl:if test="@base-uri='temp-dir'">
-                                                    <xsl:attribute name="xml:base" select="$temp-dir"/>
-                                                </xsl:if>
-                                                <xsl:text>TODO</xsl:text>
-                                            </context>
+                                            <context xml:base="{base-uri(/*)}"/>
                                         </p:inline>
                                     </p:with-option>
                                 </xsl:for-each>
@@ -92,12 +90,7 @@
         </xsl:text>
                                             <p:with-param name="{@name}" select="{@select}">
                                                 <p:inline>
-                                                    <context>
-                                                        <xsl:if test="@base-uri='temp-dir'">
-                                                            <xsl:attribute name="xml:base" select="$temp-dir"/>
-                                                        </xsl:if>
-                                                        <xsl:text>TODO</xsl:text>
-                                                    </context>
+                                                    <context xml:base="{base-uri(/*)}"/>
                                                 </p:inline>
                                             </p:with-param>
                                             <!-- TODO: set context for p:with-param -->

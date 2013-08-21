@@ -4,6 +4,7 @@
         <xsl:copy>
             <xsl:copy-of select="@*"/>
             <p:output port="result"/>
+            <xsl:copy-of select="p:variable"/>
             <p:identity>
                 <p:input port="source">
                     <p:inline>

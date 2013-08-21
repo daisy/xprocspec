@@ -14,7 +14,7 @@
         <xsl:variable name="pending" select="count($tests[@result='skipped'] | $pending-descriptions)"/>
         <xsl:variable name="failed" select="count($tests[@result='failed'])"/>
         <xsl:variable name="error-count" select="count($errors)"/>
-        <xsl:variable name="total" select="count($tests) + $error-count"/>
+        <xsl:variable name="total" select="count($tests) + count($pending-descriptions) + $error-count"/>
 
         <xsl:copy>
             <xsl:copy-of select="@*"/>

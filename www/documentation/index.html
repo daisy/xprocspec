@@ -188,7 +188,7 @@ table.simple {
   
     <h2 property="bibo:subtitle" id="subtitle">A tool for testing XProc scripts</h2>
   
-  <h2 property="dcterms:issued" datatype="xsd:dateTime" content="2013-08-20T12:31:13.000Z" id="unofficial-draft-20-august-2013">Unofficial Draft <time class="dt-published" datetime="2013-08-20">20 August 2013</time></h2>
+  <h2 property="dcterms:issued" datatype="xsd:dateTime" content="2013-08-21T06:54:21.000Z" id="unofficial-draft-21-august-2013">Unofficial Draft <time class="dt-published" datetime="2013-08-21">21 August 2013</time></h2>
   <dl>
     
     
@@ -351,33 +351,25 @@ table.simple {
 </p></section>
 
 <section id="the-option-element" typeof="bibo:Chapter" resource="#the-option-element" rel="bibo:chapter">
-<h3 aria-level="2" role="heading" id="h3_the-option-element"><span class="secno">1.9 </span>The <code>option</code> element</h3><dl class="element"><dt>Content model:</dt><dd>Empty.</dd><dt>Content attributes:</dt><dd><a href="#attr-option-base-uri"><code>base-uri</code></a><small title="optional">?</small></dd><dd><a href="#attr-option-name"><code>name</code></a><small title="optional">?</small></dd><dd><a href="#attr-option-select"><code>select</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
+<h3 aria-level="2" role="heading" id="h3_the-option-element"><span class="secno">1.9 </span>The <code>option</code> element</h3><dl class="element"><dt>Content model:</dt><dd>Empty.</dd><dt>Content attributes:</dt><dd><a href="#attr-option-name"><code>name</code></a><small title="optional">?</small></dd><dd><a href="#attr-option-select"><code>select</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p>The option element is used to provide values to XProc options on the XProc step you are testing.</p>
 
-<p id="attr-option-base-uri">
-                        If the <code>base-uri</code> attribute is set to <code>temp-dir</code>, then the base URI of the context element when evaluating
-                        the XPath expression will be the temporary directory used for the test. This is useful if the value of
+<p id="attr-option-name">The <a href="#attr-option-name"><code>name</code></a> attribute is the name of the option used in the XProc step.</p>
+<p id="attr-option-select">The <a href="#attr-option-select"><code>select</code></a> attribute is a XPath expression used to select a value for the XProc option
+                        (equivalent of the <code>p:with-option/@select</code> attribute in XProc).</p><p>The variable "<code>$temp-dir</code>" is available for use in the select expression. The variable refers to the temporary
+                        directory used for the test. This is useful (for instance) if the value of
                         the option is a URI pointing to a directory where the XProc steps will store files. Every xprocspec
                         scenario is assigned its own temporary directory so that subsequent evaluations of the step does not conflict
-                        with eachother.
-                    </p>
-<p id="attr-option-name">The <a href="#attr-option-name"><code>name</code></a> attribute is the name of the option used in the XProc step.</p>
-<p id="attr-option-select">
-                    The <a href="#attr-option-select"><code>select</code></a> attribute is a XPath expression used to select a value for the XProc option
-                    (equivalent of the <code>p:with-option/@select</code> attribute in XProc).
-                </p>
+                        with eachother.</p>
 </section>
 
 <section id="the-param-element" typeof="bibo:Chapter" resource="#the-param-element" rel="bibo:chapter">
-<h3 aria-level="2" role="heading" id="h3_the-param-element"><span class="secno">1.10 </span>The <code>param</code> element</h3><dl class="element"><dt>Content model:</dt><dd>Empty.</dd><dt>Content attributes:</dt><dd><a href="#attr-param-base-uri"><code>base-uri</code></a><small title="optional">?</small></dd><dd><a href="#attr-param-name"><code>name</code></a><small title="optional">?</small></dd><dd><a href="#attr-param-select"><code>select</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
+<h3 aria-level="2" role="heading" id="h3_the-param-element"><span class="secno">1.10 </span>The <code>param</code> element</h3><dl class="element"><dt>Content model:</dt><dd>Empty.</dd><dt>Content attributes:</dt><dd><a href="#attr-param-name"><code>name</code></a><small title="optional">?</small></dd><dd><a href="#attr-param-select"><code>select</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p>The param element is used to provide values to XProc paramaters on the XProc step you are testing.</p>
 
-<p id="attr-param-base-uri">
-                        If the <code>base-uri</code> attribute is set to <code>temp-dir</code>, then the base URI of the context element when evaluating
-                        the XPath expression will be the temporary directory used for the test.
-                    </p>
 <p id="attr-param-name">The <a href="#attr-param-name"><code>name</code></a> attribute is the name of the parameter to be provided on the XProc steps primary parameter input port.</p>
-<p id="attr-param-select"> The <a href="#attr-param-select"><code>select</code></a> attribute is a XPath expression used to select a value for the XProc parameter (equivalent of the <code>p:with-param/@select</code> attribute in XProc). </p>
+<p id="attr-param-select">The <a href="#attr-param-select"><code>select</code></a> attribute is a XPath expression used to select a value for the XProc parameter (equivalent of the <code>p:with-param/@select</code> attribute in XProc).</p><p>The variable "<code>$temp-dir</code>" is available for use in the select expression. The variable refers to the temporary directory used for the test. This is useful (for instance) if the value of the parameter is a URI pointing to a
+                        directory where the XProc steps will store files. Every xprocspec scenario is assigned its own temporary directory so that subsequent evaluations of the step does not conflict with eachother.</p>
 </section>
 
 
@@ -397,8 +389,8 @@ table.simple {
 <p>The <a href="#the-document-element"><code>document</code></a> element is used to define which documents are provided on a steps input ports, what the context is when making assertions, and for assertions when making comparisons or performing validations. It can be used in a
                     number of ways:</p>
 
-<p id="attr-document-base-uri">If the <code>base-uri</code> attribute is <code>temp-dir</code>, then the URI in the <a href="#attr-document-href"><code>href</code></a> attribute will be resolved against the temporary directory used for the test, instead of the base
-                                URI of the xprocspec document.</p><!-- documented in the "file" group -->
+<p id="attr-document-base-uri">If the <code>base-uri</code> attribute is <code>temp-dir</code>, then the URI in the <a href="#attr-document-href"><code>href</code></a> attribute (or the xml:base attribute of the <code>document</code> or inline element in the case of inline
+                                documents) will be resolved against the temporary directory used for the test, instead of the base URI of the xprocspec document.</p><!-- documented in the "inline" group --><!-- documented in the "inline" group -->
 <p id="attr-document-href">When <code>type</code> is <code>file</code>; the <a href="#attr-document-href"><code>href</code></a> attribute is a URI pointing to the file you want the contents of.</p><p>When <code>type</code> is <code>directory</code>; the <a href="#attr-document-href"><code>href</code></a> attribute is a URI pointing to the directory you want listed.</p>
 <p id="attr-document-method">By default, files loaded by using <code>method="file"</code> will be loaded as XML files. Non-XML files can be loaded by specifying another <code>method</code>.</p>
 <p id="attr-document-port">
@@ -412,19 +404,17 @@ table.simple {
                             </p>
 <p id="attr-document-type">
                             If the <a href="#attr-document-type"><code>type</code></a> attribute is <a href="#the-inline-element"><code>inline</code></a>, then the <a href="#the-document-element"><code>document</code></a> element is replaced by its content. There must be exactly one element inside the <a href="#the-document-element"><code>document</code></a> element. To specify the base URI of the document, you can specify a
-                            <code>xml:base</code> on either the <a href="#the-document-element"><code>document</code></a> element (implicit base URI) or the child element itself (explicit base URI). The <code>xml:base</code> on <a href="#the-document-element"><code>document</code></a> element is resolved against the base URI of the xprocspec test document, or if the
-                            <code>base-uri</code> attribute has the value <code>temp-dir</code>, it will be resolved against the temporary directory used for the test. If the <code>base-uri</code> attribute has the value <code>temp-dir</code> without specifying a <code>xml:base</code> attribute on the
-                            <a href="#the-document-element"><code>document</code></a> element, then the <a href="#the-document-element"><code>document</code></a> element will have the temporary directory used for the test as its base URI.
+                            <code>xml:base</code> on either the <a href="#the-document-element"><code>document</code></a> element (implicit base URI) or the child element itself (explicit base URI).
                         </p><p>
                             If the <a href="#attr-document-type"><code>type</code></a> attribute is <a href="#the-port-element"><code>port</code></a>, then the <a href="#the-document-element"><code>document</code></a> element will be replaced with the documents on that port. The <a href="#attr-document-position"><code>position</code></a> attribute can be used to select only part of the sequence of documents appearing on that
                             port.
                         </p><p>
-                            If the <a href="#attr-document-type"><code>type</code></a> attribute is <a href="#the-file-element"><code>file</code></a>, then the <a href="#the-document-element"><code>document</code></a> element will be replaced by the contents of the file located at the location pointed to by the <a href="#attr-document-file"><code>file</code></a> attribute. The default method for reading files is <code>xml</code>, but using
-                            the <a href="#attr-document-method"><code>method</code></a> attribute you can also choose <code>html</code>, <code>text</code> and <code>binary</code> as methods for loading the file. The <code>file</code> URI is by default resolved against the base URI of the xprocspec test document. However, if you provide the
-                            <code>base-uri</code> attribute with a value of <code>temp-dir</code>, then the <code>file</code> URI will be resolved against the temporary directory used for the test instead.
+                            If the <a href="#attr-document-type"><code>type</code></a> attribute is <a href="#the-file-element"><code>file</code></a>, then the <a href="#the-document-element"><code>document</code></a> element will be replaced by the contents of the file located at the location pointed to by the <a href="#attr-document-href"><code>href</code></a> attribute. The default method for reading files is <code>xml</code>, but by using
+                            the <a href="#attr-document-method"><code>method</code></a> attribute you can also choose <code>html</code>, <code>text</code> and <code>binary</code> as methods for loading the file. The <code>href</code> URI is by default resolved against the base URI of the xprocspec test document. However, if you provide the
+                            <code>base-uri</code> attribute with a value of <code>temp-dir</code>, then the <code>href</code> URI will be resolved against the temporary directory used for the test instead.
                         </p><p>
-                            If the <a href="#attr-document-type"><code>type</code></a> attribute is <a href="#the-directory-element"><code>directory</code></a>, then the <a href="#the-document-element"><code>document</code></a> element will be replaced with a directory listing of the directory pointed to by the <a href="#attr-document-directory"><code>directory</code></a> attribute. The <code>directory</code> URI is
-                            by default resolved against the base URI of the xprocspec test document. However, if you provide the <code>base-uri</code> attribute with a value of <code>temp-dir</code>, then the <code>directory</code> URI will be resolved against the temporary directory
+                            If the <a href="#attr-document-type"><code>type</code></a> attribute is <a href="#the-directory-element"><code>directory</code></a>, then the <a href="#the-document-element"><code>document</code></a> element will be replaced with a directory listing of the directory pointed to by the <a href="#attr-document-href"><code>href</code></a> attribute. The <code>href</code> URI is
+                            by default resolved against the base URI of the xprocspec test document. However, if you provide the <code>base-uri</code> attribute with a value of <code>temp-dir</code>, then the <code>href</code> URI will be resolved against the temporary directory
                             used for the test instead.
                         </p><p>
                             If the <a href="#attr-document-type"><code>type</code></a> attribute is <code>errors</code>, then a <code>c:errors</code> document (as defined in the XProc spec) will be made available if any errors occur during step execution.

@@ -185,24 +185,15 @@
             </attribute>
             <attribute name="select" xml:space="preserve">
                 <a:documentation xmlns="http://www.w3.org/1999/xhtml">
-                    The `select` attribute is a XPath expression used to select a value for the XProc option
-                    (equivalent of the `p:with-option/@select` attribute in XProc).
-                </a:documentation>
-            </attribute>
-            <optional>
-                <attribute name="base-uri">
-                    <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
-                        If the `base-uri` attribute is set to `temp-dir`, then the base URI of the context element when evaluating
-                        the XPath expression will be the temporary directory used for the test. This is useful if the value of
+                    <p>The `select` attribute is a XPath expression used to select a value for the XProc option
+                        (equivalent of the `p:with-option/@select` attribute in XProc).</p>
+                    <p>The variable "`$temp-dir`" is available for use in the select expression. The variable refers to the temporary
+                        directory used for the test. This is useful (for instance) if the value of
                         the option is a URI pointing to a directory where the XProc steps will store files. Every xprocspec
                         scenario is assigned its own temporary directory so that subsequent evaluations of the step does not conflict
-                        with eachother.
-                    </a:documentation>
-                    <choice>
-                        <value>temp-dir</value>
-                    </choice>
-                </attribute>
-            </optional>
+                        with eachother.</p>
+                </a:documentation>
+            </attribute>
         </element>
     </define>
 
@@ -215,19 +206,12 @@
                 <data type="QName"/>
             </attribute>
             <attribute name="select">
-                <a:documentation xmlns="http://www.w3.org/1999/xhtml"> The `select` attribute is a XPath expression used to select a value for the XProc parameter (equivalent of the `p:with-param/@select` attribute in XProc). </a:documentation>
+                <a:documentation xmlns="http://www.w3.org/1999/xhtml">
+                    <p>The `select` attribute is a XPath expression used to select a value for the XProc parameter (equivalent of the `p:with-param/@select` attribute in XProc).</p>
+                    <p>The variable "`$temp-dir`" is available for use in the select expression. The variable refers to the temporary directory used for the test. This is useful (for instance) if the value of the parameter is a URI pointing to a
+                        directory where the XProc steps will store files. Every xprocspec scenario is assigned its own temporary directory so that subsequent evaluations of the step does not conflict with eachother.</p>
+                </a:documentation>
             </attribute>
-            <optional>
-                <attribute name="base-uri">
-                    <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
-                        If the `base-uri` attribute is set to `temp-dir`, then the base URI of the context element when evaluating
-                        the XPath expression will be the temporary directory used for the test.
-                    </a:documentation>
-                    <choice>
-                        <value>temp-dir</value>
-                    </choice>
-                </attribute>
-            </optional>
         </element>
     </define>
 
@@ -349,12 +333,19 @@
                     <attribute name="type">
                         <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
                             If the `type` attribute is `inline`, then the `document` element is replaced by its content. There must be exactly one element inside the `document` element. To specify the base URI of the document, you can specify a
-                            `xml:base` on either the `document` element (implicit base URI) or the child element itself (explicit base URI). The `xml:base` on `document` element is resolved against the base URI of the xprocspec test document, or if the
-                            `base-uri` attribute has the value `temp-dir`, it will be resolved against the temporary directory used for the test. If the `base-uri` attribute has the value `temp-dir` without specifying a `xml:base` attribute on the
-                            `document` element, then the `document` element will have the temporary directory used for the test as its base URI.
+                            `xml:base` on either the `document` element (implicit base URI) or the child element itself (explicit base URI).
                         </a:documentation>
                         <value>inline</value>
                     </attribute>
+                    <optional>
+                        <attribute name="base-uri">
+                            <a:documentation xmlns="http://www.w3.org/1999/xhtml">If the `base-uri` attribute is `temp-dir`, then the URI in the `href` attribute (or the xml:base attribute of the `document` or inline element in the case of inline
+                                documents) will be resolved against the temporary directory used for the test, instead of the base URI of the xprocspec document.</a:documentation>
+                            <choice>
+                                <value>temp-dir</value>
+                            </choice>
+                        </attribute>
+                    </optional>
                     <ref name="any-element"/>
                 </group>
                 <group>
@@ -388,9 +379,9 @@
                     <!-- file -->
                     <attribute name="type">
                         <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
-                            If the `type` attribute is `file`, then the `document` element will be replaced by the contents of the file located at the location pointed to by the `file` attribute. The default method for reading files is `xml`, but using
-                            the `method` attribute you can also choose `html`, `text` and `binary` as methods for loading the file. The `file` URI is by default resolved against the base URI of the xprocspec test document. However, if you provide the
-                            `base-uri` attribute with a value of `temp-dir`, then the `file` URI will be resolved against the temporary directory used for the test instead.
+                            If the `type` attribute is `file`, then the `document` element will be replaced by the contents of the file located at the location pointed to by the `href` attribute. The default method for reading files is `xml`, but by using
+                            the `method` attribute you can also choose `html`, `text` and `binary` as methods for loading the file. The `href` URI is by default resolved against the base URI of the xprocspec test document. However, if you provide the
+                            `base-uri` attribute with a value of `temp-dir`, then the `href` URI will be resolved against the temporary directory used for the test instead.
                         </a:documentation>
                         <value>file</value>
                     </attribute>
@@ -411,8 +402,7 @@
                     </optional>
                     <optional>
                         <attribute name="base-uri">
-                            <a:documentation xmlns="http://www.w3.org/1999/xhtml">If the `base-uri` attribute is `temp-dir`, then the URI in the `href` attribute will be resolved against the temporary directory used for the test, instead of the base
-                                URI of the xprocspec document.</a:documentation>
+                            <a:documentation xmlns="http://www.w3.org/1999/xhtml"><!-- documented in the "inline" group --></a:documentation>
                             <choice>
                                 <value>temp-dir</value>
                             </choice>
@@ -423,8 +413,8 @@
                     <!-- directory -->
                     <attribute name="type">
                         <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
-                            If the `type` attribute is `directory`, then the `document` element will be replaced with a directory listing of the directory pointed to by the `directory` attribute. The `directory` URI is
-                            by default resolved against the base URI of the xprocspec test document. However, if you provide the `base-uri` attribute with a value of `temp-dir`, then the `directory` URI will be resolved against the temporary directory
+                            If the `type` attribute is `directory`, then the `document` element will be replaced with a directory listing of the directory pointed to by the `href` attribute. The `href` URI is
+                            by default resolved against the base URI of the xprocspec test document. However, if you provide the `base-uri` attribute with a value of `temp-dir`, then the `href` URI will be resolved against the temporary directory
                             used for the test instead.
                         </a:documentation>
                         <value>directory</value>
@@ -444,7 +434,7 @@
                     </optional>
                     <optional>
                         <attribute name="base-uri">
-                            <a:documentation xmlns="http://www.w3.org/1999/xhtml"><!-- documented in the "file" group --></a:documentation>
+                            <a:documentation xmlns="http://www.w3.org/1999/xhtml"><!-- documented in the "inline" group --></a:documentation>
                             <choice>
                                 <value>temp-dir</value>
                             </choice>
