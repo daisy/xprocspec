@@ -9,16 +9,29 @@
                 <ref name="description.common"/>
                 <attribute name="test-base-uri"/>
                 <attribute name="test-grammar"/>
-                <attribute name="temp-dir"/>
-                <ref name="step-declaration"/>
-                <ref name="scenario"/>
-                <zeroOrMore>
-                    <ref name="output"/>
-                </zeroOrMore>
-                <optional>
-                    <!-- if an error occurs during step execution, then it is stored here -->
-                    <ref name="errors"/>
-                </optional>
+                <choice>
+                    <group>
+                        <attribute name="temp-dir"/>
+                        <ref name="step-declaration"/>
+                        <ref name="scenario"/>
+                        <zeroOrMore>
+                            <ref name="output"/>
+                        </zeroOrMore>
+                        <optional>
+                            <!-- if an error occurs during step execution, then it is stored here -->
+                            <ref name="errors"/>
+                        </optional>
+                    </group>
+                    <group>
+                        <optional>
+                            <attribute name="temp-dir"/>
+                        </optional>
+                        <optional>
+                            <ref name="step-declaration"/>
+                        </optional>
+                        <ref name="pending-scenario"/>
+                    </group>
+                </choice>
                 <ref name="scenario-results"/>
             </element>
         </define>

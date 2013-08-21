@@ -99,20 +99,15 @@
                 own `call` element.
             </a:documentation>
             <ref name="scenario.common"/>
-            <choice>
-                <group>
-                    <optional>
-                        <ref name="pending-attribute"/>
-                    </optional>
+            <optional>
+                <ref name="focus-attribute"/>
+            </optional>
+            <optional>
+                <choice>
                     <ref name="scenario.common-children"/>
-                </group>
-                <group>
-                    <ref name="pending-attribute"/>
-                    <optional>
-                        <ref name="call"/>
-                    </optional>
-                </group>
-            </choice>
+                    <ref name="call"/>
+                </choice>
+            </optional>
         </element>
     </define>
 
@@ -260,7 +255,10 @@
     <define name="expect.attributes">
         <ref name="common-attributes"/>
         <optional>
-            <ref name="pending-attribute"/>
+            <choice>
+                <ref name="pending-attribute"/>
+                <ref name="focus-attribute"/>
+            </choice>
         </optional>
         <ref name="label"/>
     </define>
@@ -483,6 +481,13 @@
     </define>
 
     <define name="pending-scenario">
+        <choice>
+            <ref name="pending-scenario-wrapped"/>
+            <ref name="pending-scenario-attribute"/>
+        </choice>
+    </define>
+    
+    <define name="pending-scenario-wrapped">
         <element name="pending" ns="http://www.daisy.org/ns/xprocspec">
             <ref name="common-attributes"/>
             <optional>
@@ -490,7 +495,23 @@
             </optional>
             <oneOrMore>
                 <ref name="scenario"/>
+                <ref name="pending-scenario"/>
             </oneOrMore>
+        </element>
+    </define>
+    
+    <define name="pending-scenario-attribute">
+        <element name="scenario" ns="http://www.daisy.org/ns/xprocspec">
+            <ref name="pending-attribute"/>
+            <optional>
+                <ref name="scenario.common"/>
+            </optional>
+            <optional>
+                <choice>
+                    <ref name="scenario.common-children"/>
+                    <ref name="call"/>
+                </choice>
+            </optional>
         </element>
     </define>
 
@@ -501,6 +522,17 @@
                reported as (eventual) desired behaviour. Its semantics is the same as for the
                <a href="#the-pending-element"><code>pending</code></a> element.
                Its content describes why the assertion or scenario should not be evaluated.</p>
+           </a:documentation>
+            <data type="string"/>
+        </attribute>
+    </define>
+
+    <define name="focus-attribute">
+        <attribute name="focus">
+            <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+               <p>Assertions or scenarios with the <code>focus</code> attribute will be the only ones tested and
+               reported. When present, only that assertion or scenario will be evaluated.
+               Its content describes why you are focusing on this particular assertion or scenario.</p>
            </a:documentation>
             <data type="string"/>
         </attribute>

@@ -7,7 +7,7 @@
     </p:output>
 
     <p:option name="temp-dir" required="true"/>
-    
+
     <p:import href="../utils/logging-library.xpl"/>
 
     <p:declare-step type="pxi:debug">
@@ -17,26 +17,137 @@
     </p:declare-step>
 
     <p:declare-step type="pxi:perform-imports" name="perform-imports">
-        <p:input port="source"/>
+        <p:input port="source" primary="true"/>
+        <p:input port="previous-imports">
+            <p:inline>
+                <x:imports/>
+            </p:inline>
+        </p:input>
         <p:output port="result"/>
+
+        <p:add-attribute match="/*" attribute-name="href" name="this-import">
+            <p:input port="source">
+                <p:inline>
+                    <x:import/>
+                </p:inline>
+            </p:input>
+            <p:with-option name="attribute-value" select="base-uri(/*)">
+                <p:pipe port="source" step="perform-imports"/>
+            </p:with-option>
+        </p:add-attribute>
+        <p:insert match="/*" position="last-child">
+            <p:input port="source">
+                <p:pipe port="previous-imports" step="perform-imports"/>
+            </p:input>
+            <p:input port="insertion">
+                <p:pipe port="result" step="this-import"/>
+            </p:input>
+        </p:insert>
+        <p:identity name="previous-imports"/>
+
+        <p:identity>
+            <p:input port="source">
+                <p:pipe port="source" step="perform-imports"/>
+            </p:input>
+        </p:identity>
         <pxi:message message=" * checking $1 for imports">
             <p:with-option name="param1" select="base-uri(/*)"/>
         </pxi:message>
         <p:viewport match="/*/x:import">
             <p:variable name="import-href" select="resolve-uri(/*/@href,base-uri(/*))"/>
-            <pxi:message message=" * importing $1">
-                <p:with-option name="param1" select="$import-href"/>
-            </pxi:message>
-            <p:load>
-                <p:with-option name="href" select="$import-href"/>
-            </p:load>
-            <!-- TODO: validate loaded grammar -->
-            <pxi:perform-imports/>
-            <p:for-each>
-                <p:iteration-source select="/*/x:scenario"/>
-                <p:identity/>
-            </p:for-each>
+            <p:choose>
+                <p:xpath-context>
+                    <p:pipe port="result" step="previous-imports"/>
+                </p:xpath-context>
+                <p:when test="$import-href=/*/x:import/@href">
+                    <pxi:message message=" * skipping circular import: $1">
+                        <p:with-option name="param1" select="$import-href"/>
+                    </pxi:message>
+                </p:when>
+                <p:otherwise>
+                    <pxi:message message=" * importing: $1">
+                        <p:with-option name="param1" select="$import-href"/>
+                    </pxi:message>
+                    <p:load>
+                        <p:with-option name="href" select="$import-href"/>
+                    </p:load>
+                    <pxi:validate-if-xprocspec>
+                        <p:with-option name="test-base-uri" select="$import-href"/>
+                    </pxi:validate-if-xprocspec>
+                    <pxi:perform-imports>
+                        <p:input port="previous-imports">
+                            <p:pipe port="result" step="previous-imports"/>
+                        </p:input>
+                    </pxi:perform-imports>
+                    <p:for-each>
+                        <p:iteration-source select="/*/x:scenario"/>
+                        <p:identity/>
+                    </p:for-each>
+                </p:otherwise>
+            </p:choose>
+
         </p:viewport>
+    </p:declare-step>
+    
+    <p:declare-step type="pxi:validate-if-xprocspec">
+        <p:input port="source"/>
+        <p:output port="result"/>
+        <p:option name="test-base-uri" required="true"/>
+        
+        <!-- if xprocspec grammar is used in the input document; validate it -->
+        <p:identity name="try.input"/>
+        <p:try>
+            <p:group>
+                <p:validate-with-relax-ng>
+                    <p:input port="schema">
+                        <p:document href="../../schema/xprocspec.rng"/>
+                    </p:input>
+                </p:validate-with-relax-ng>
+                <p:wrap-sequence wrapper="calabash-issue-102"/>
+            </p:group>
+            <p:catch name="catch">
+                <p:identity>
+                    <p:input port="source">
+                        <p:pipe port="error" step="catch"/>
+                    </p:input>
+                </p:identity>
+                <pxi:message message=" * xprocspec grammar is not valid: $1">
+                    <p:with-option name="param1" select="$test-base-uri"/>
+                </pxi:message>
+                <p:add-attribute match="/*" attribute-name="xml:base">
+                    <p:with-option name="attribute-value" select="$test-base-uri"/>
+                </p:add-attribute>
+                <p:add-attribute match="/*" attribute-name="error-location" attribute-value="preprocess.xpl - input document validation"/>
+                
+                <p:identity name="errors-without-was"/>
+                <p:wrap-sequence wrapper="x:was">
+                    <p:input port="source">
+                        <p:pipe port="result" step="try.input"/>
+                    </p:input>
+                </p:wrap-sequence>
+                <p:add-attribute match="/*" attribute-name="xml:base">
+                    <p:with-option name="attribute-value" select="base-uri(/*/*)"/>
+                </p:add-attribute>
+                <p:wrap-sequence wrapper="c:error"/>
+                <p:add-attribute match="/*" attribute-name="type" attribute-value="was"/>
+                <p:identity name="was"/>
+                <p:insert match="/*" position="last-child">
+                    <p:input port="source">
+                        <p:pipe port="result" step="errors-without-was"/>
+                    </p:input>
+                    <p:input port="insertion">
+                        <p:pipe port="result" step="was"/>
+                    </p:input>
+                </p:insert>
+                
+                <p:wrap-sequence wrapper="calabash-issue-102"/>
+            </p:catch>
+        </p:try>
+        <p:for-each>
+            <!-- temporary fix for https://github.com/ndw/xmlcalabash1/issues/102 -->
+            <p:iteration-source select="/calabash-issue-102/*"/>
+            <p:identity/>
+        </p:for-each>
     </p:declare-step>
 
     <p:variable name="test-base-uri" select="base-uri(/*)"/>
@@ -46,60 +157,9 @@
         <p:when test="/*/namespace-uri()='http://www.daisy.org/ns/xprocspec'">
             <p:output port="result" primary="true" sequence="true"/>
 
-            <!-- if xprocspec grammar is used in the input document; validate it -->
-            <p:identity name="try.input"/>
-            <p:try>
-                <p:group>
-                    <p:validate-with-relax-ng>
-                        <p:input port="schema">
-                            <p:document href="../../schema/xprocspec.rng"/>
-                        </p:input>
-                    </p:validate-with-relax-ng>
-                    <p:wrap-sequence wrapper="calabash-issue-102"/>
-                </p:group>
-                <p:catch name="catch">
-                    <p:identity>
-                        <p:input port="source">
-                            <p:pipe port="error" step="catch"/>
-                        </p:input>
-                    </p:identity>
-                    <pxi:message message=" * xprocspec grammar is not valid: $1">
-                        <p:with-option name="param1" select="$test-base-uri"/>
-                    </pxi:message>
-                    <p:add-attribute match="/*" attribute-name="xml:base">
-                        <p:with-option name="attribute-value" select="$test-base-uri"/>
-                    </p:add-attribute>
-                    <p:add-attribute match="/*" attribute-name="error-location" attribute-value="preprocess.xpl - input document validation"/>
-
-                    <p:identity name="errors-without-was"/>
-                    <p:wrap-sequence wrapper="x:was">
-                        <p:input port="source">
-                            <p:pipe port="result" step="try.input"/>
-                        </p:input>
-                    </p:wrap-sequence>
-                    <p:add-attribute match="/*" attribute-name="xml:base">
-                        <p:with-option name="attribute-value" select="base-uri(/*/*)"/>
-                    </p:add-attribute>
-                    <p:wrap-sequence wrapper="c:error"/>
-                    <p:add-attribute match="/*" attribute-name="type" attribute-value="was"/>
-                    <p:identity name="was"/>
-                    <p:insert match="/*" position="last-child">
-                        <p:input port="source">
-                            <p:pipe port="result" step="errors-without-was"/>
-                        </p:input>
-                        <p:input port="insertion">
-                            <p:pipe port="result" step="was"/>
-                        </p:input>
-                    </p:insert>
-
-                    <p:wrap-sequence wrapper="calabash-issue-102"/>
-                </p:catch>
-            </p:try>
-            <p:for-each>
-                <!-- temporary fix for https://github.com/ndw/xmlcalabash1/issues/102 -->
-                <p:iteration-source select="/calabash-issue-102/*"/>
-                <p:identity/>
-            </p:for-each>
+            <pxi:validate-if-xprocspec>
+                <p:with-option name="test-base-uri" select="$test-base-uri"/>
+            </pxi:validate-if-xprocspec>
 
             <p:add-attribute match="/*" attribute-name="test-grammar" attribute-value="xprocspec"/>
         </p:when>
@@ -305,21 +365,25 @@
                     <p:otherwise>
                         <p:output port="result" sequence="true"/>
 
+                        <pxi:message message=" * checking for imports"/>
+                        <pxi:perform-imports/>
                         <p:identity name="main-document"/>
 
                         <p:group>
                             <p:variable name="script-uri" select="resolve-uri(/*/@script,base-uri(/*))"/>
-                            <pxi:message message=" * extracting step declarations"/>
+                            <pxi:message message=" * extracting step declarations from $1">
+                                <p:with-option name="param1" select="$script-uri"/>
+                            </pxi:message>
 
                             <p:for-each>
-                                <p:iteration-source select="//x:call"/>
+                                <p:iteration-source select="//x:call[@step and not(ancestor::*/@pending)]"/>
                                 <p:add-attribute match="/*" attribute-name="x:type">
                                     <p:with-option name="attribute-value" select="concat('{',namespace-uri-from-QName(resolve-QName(/*/@step,/*)),'}',tokenize(/*/@step,':')[last()])"/>
                                 </p:add-attribute>
                                 <p:delete match="/*/*"/>
                             </p:for-each>
                             <p:wrap-sequence wrapper="wrapper"/>
-                            <p:delete match="x:call[concat('{',@step-namespace,'}',@step-name)=preceding::x:call/concat('{',@step-namespace,'}',@step-name)]"/>
+                            <p:delete match="x:call[@x:type=preceding::x:call/@x:type]"/>
                             <pxi:message message=" * tests reference $1 step$2">
                                 <p:with-option name="param1" select="count(/*/*)"/>
                                 <p:with-option name="param2" select="if (count(/*/*)=1) then '' else 's'"/>
@@ -336,10 +400,18 @@
                             <p:try>
                                 <p:group>
                                     <pxi:message message=" * trying to load: $1">
-                                        <p:with-option name="param1" select="$script-uri"/>
+                                        <p:with-option name="param1" select="$script-uri">
+                                            <p:inline>
+                                                <irrelevant/>
+                                            </p:inline>
+                                        </p:with-option>
                                     </pxi:message>
                                     <p:load>
-                                        <p:with-option name="href" select="$script-uri"/>
+                                        <p:with-option name="href" select="$script-uri">
+                                            <p:inline>
+                                                <irrelevant/>
+                                            </p:inline>
+                                        </p:with-option>
                                     </p:load>
                                     <pxi:message message="   * success!"/>
                                 </p:group>
@@ -357,13 +429,8 @@
                                     <p:document href="explicit-type-namespace.xsl"/>
                                 </p:input>
                             </p:xslt>
-                            <!--<p:viewport match="//p:declare-step | //p:pipeline">
-                                <p:add-attribute match="/*" attribute-name="x:type">
-                                    <p:with-option name="attribute-value" select="concat('{',namespace-uri-from-QName(resolve-QName(/*/@type,/*)),'}',tokenize(/*/@type,':')[last()])"/>
-                                </p:add-attribute>
-                            </p:viewport>-->
                             <p:identity name="script"/>
-
+                            
                             <p:for-each>
                                 <p:iteration-source>
                                     <p:pipe port="result" step="calls"/>
@@ -374,7 +441,7 @@
                                     <p:with-option name="param2" select="$script-uri"/>
                                 </pxi:message>
                                 <p:for-each>
-                                    <p:iteration-source select="(//p:declare-step | //p:pipeline)[@x:type=$type]">
+                                    <p:iteration-source select="(//p:declare-step | //p:pipeline)[string(@x:type)=$type]">
                                         <p:pipe port="result" step="script"/>
                                     </p:iteration-source>
                                     <p:delete match="//@exclude-inline-prefixes"/>
@@ -439,8 +506,28 @@
                                 <p:pipe port="result" step="main-document"/>
                             </p:input>
                         </p:identity>
-                        <pxi:message message=" * checking for imports"/>
-                        <pxi:perform-imports/>
+                        
+                        <p:choose>
+                            <p:when test="//x:expect[@focus]">
+                                <pxi:message message=" * focusing on the assertion '$1'">
+                                    <p:with-option name="param1" select="(//x:expect[@focus]/@label)[1]"/>
+                                </pxi:message>
+                                <p:delete match="//x:expect[not(@focus)]"/>
+                                <p:delete match="//x:scenario[not(.//x:expect[@focus])]"/>
+                                <p:delete match="//x:context[preceding::x:expect[@focus]]"/>
+                                <p:delete match="//x:context[following::x:context[following::x:expect[@focus]]]"/>
+                            </p:when>
+                            <p:when test="//x:scenario[@focus]">
+                                <pxi:message message=" * focusing on the scenario '$1'">
+                                    <p:with-option name="param1" select="(//x:scenario[@focus]/@label)[1]"/>
+                                </pxi:message>
+                                <p:delete match="//x:scenario[not((ancestor::x:scenario | descendant-or-self::x:scenario)[@focus])]"/>
+                            </p:when>
+                            <p:otherwise>
+                                <p:identity/>
+                            </p:otherwise>
+                        </p:choose>
+                        <p:delete match="//@focus"/>
 
                         <!-- create a new x:description document for each x:scenario element with inferred inputs, options and parameters -->
                         <pxi:message message=" * creating a new x:description document for each x:scenario element with inferred inputs, options and parameters"/>
@@ -463,14 +550,16 @@
                         <p:for-each>
                             <p:iteration-source select="/*/*"/>
                             <p:variable name="type" select="(//x:call/@x:type)[1]"/>
+                            
                             <p:insert match="/*" position="first-child">
                                 <p:input port="insertion">
                                     <p:pipe port="result" step="step-declarations"/>
                                 </p:input>
                             </p:insert>
                             <p:delete>
-                                <p:with-option name="match" select="concat('/*/x:script-declaration/*[not(@x:type=&quot;',$type,'&quot;)]')"/>
+                                <p:with-option name="match" select="concat('/*/x:step-declaration/*[not(string(@x:type)=&quot;',$type,'&quot;)]')"/>
                             </p:delete>
+                            <p:delete match="/*/x:step-declaration[not(*)]"/>
                         </p:for-each>
                     </p:otherwise>
                 </p:choose>

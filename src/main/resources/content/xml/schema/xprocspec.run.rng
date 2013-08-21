@@ -9,16 +9,29 @@
                 <ref name="description.common"/>
                 <attribute name="test-base-uri"/>
                 <attribute name="test-grammar"/>
-                <attribute name="temp-dir"/>
-                <ref name="step-declaration"/>
-                <ref name="scenario"/>
-                <zeroOrMore>
-                    <ref name="output"/>
-                </zeroOrMore>
-                <optional>
-                    <!-- if an error occurs during step execution, then it is stored here -->
-                    <ref name="errors"/>
-                </optional>
+                <choice>
+                    <group>
+                        <attribute name="temp-dir"/>
+                        <ref name="step-declaration"/>
+                        <ref name="scenario"/>
+                        <zeroOrMore>
+                            <ref name="output"/>
+                        </zeroOrMore>
+                        <optional>
+                            <!-- if an error occurs during step execution, then it is stored here -->
+                            <ref name="errors"/>
+                        </optional>
+                    </group>
+                    <group>
+                        <optional>
+                            <attribute name="temp-dir"/>
+                        </optional>
+                        <optional>
+                            <ref name="step-declaration"/>
+                        </optional>
+                        <ref name="pending-scenario"/>
+                    </group>
+                </choice>
             </element>
         </define>
         
@@ -26,26 +39,36 @@
             <element name="scenario" ns="http://www.daisy.org/ns/xprocspec">
                 <a:documentation>after execution, the scenario will contain the start-time and end-time attributes</a:documentation>
                 <ref name="scenario.common"/>
-                <choice>
-                    <group>
-                        <optional>
-                            <ref name="pending-attribute"/>
-                        </optional>
-                        <ref name="scenario.common-children"/>
-                    </group>
-                    <group>
-                        <ref name="pending-attribute"/>
-                        <optional>
-                            <ref name="call"/>
-                        </optional>
-                    </group>
-                </choice>
+                <ref name="scenario.common-children"/>
                 <attribute name="start-time">
                     <data type="dateTime"/>
                 </attribute>
                 <attribute name="end-time">
                     <data type="dateTime"/>
                 </attribute>
+            </element>
+        </define>
+        
+        <define name="pending-scenario-attribute">
+            <element name="scenario" ns="http://www.daisy.org/ns/xprocspec">
+                <ref name="pending-attribute"/>
+                <optional>
+                    <ref name="scenario.common"/>
+                </optional>
+                <optional>
+                    <choice>
+                        <ref name="scenario.common-children"/>
+                        <ref name="call"/>
+                    </choice>
+                </optional>
+                <optional>
+                    <attribute name="start-time">
+                        <data type="dateTime"/>
+                    </attribute>
+                    <attribute name="end-time">
+                        <data type="dateTime"/>
+                    </attribute>
+                </optional>
             </element>
         </define>
 

@@ -11,13 +11,27 @@
 
         <define name="description">
             <element name="description" ns="http://www.daisy.org/ns/xprocspec">
-                <a:documentation>after preprocessing, each description has a new step-declaration element, no imports and only one scenario</a:documentation>
+                <a:documentation>after preprocessing, each description (that is not pending) has a new step-declaration element, no imports and only one scenario</a:documentation>
                 <ref name="description.common"/>
                 <attribute name="test-base-uri"/>
                 <attribute name="test-grammar"/>
-                <ref name="step-declaration"/>
-                <ref name="scenario"/>
+                <choice>
+                    <group>
+                        <ref name="step-declaration"/>
+                        <ref name="scenario"/>
+                    </group>
+                    <group>
+                        <optional>
+                            <ref name="step-declaration"/>
+                        </optional>
+                        <ref name="pending-scenario"/>
+                    </group>
+                </choice>
             </element>
+        </define>
+
+        <define name="pending-scenario">
+            <ref name="pending-scenario-attribute"/>
         </define>
 
         <define name="scenario.common-children">
@@ -37,7 +51,7 @@
             </optional>
             <ref name="label"/>
             <attribute name="id">
-                <data type="ID"/>
+                <!--<data type="ID"/>-->
             </attribute>
         </define>
 
@@ -48,7 +62,7 @@
             </optional>
             <ref name="label"/>
             <attribute name="contextref">
-                <data type="IDREF"/>
+                <!--<data type="IDREF"/>-->
             </attribute>
         </define>
 
@@ -61,7 +75,7 @@
                 <attribute name="type" ns="http://www.daisy.org/ns/xprocspec"/>
             </element>
         </define>
-        
+
         <define name="pending-attribute">
             <a:documentation>after preprocessing, the pending attribute must have a non-empty value</a:documentation>
             <attribute name="pending">
