@@ -139,6 +139,49 @@
                                             <p:with-option name="attribute-value" select="if (/*/@result='true') then 'passed' else 'failed'"/>
                                         </p:add-attribute>
                                     </p:when>
+                                    
+                                    <p:when test="/x:expect[@type='count']">
+                                        <!-- the minimum amount of documents -->
+                                        <p:variable name="min" select="/*/@min"/>
+                                        
+                                        <!-- the maximum amount of documents -->
+                                        <p:variable name="max" select="/*/@max"/>
+                                        
+                                        <p:count name="count">
+                                            <p:input port="source">
+                                                <p:pipe port="result" step="context"/>
+                                            </p:input>
+                                        </p:count>
+                                        <p:wrap-sequence wrapper="x:test-result"/>
+                                        <p:add-attribute match="/*" attribute-name="result">
+                                            <p:with-option name="attribute-value" select="if (($min='' or number($min) &lt;= number(.)) and ($max='' or number($max) &gt;= number(.))) then 'passed' else 'failed'"/>
+                                        </p:add-attribute>
+                                        <p:rename match="/x:test-result/c:result" new-name="x:was"/>
+                                        <p:identity name="test-result"/>
+                                        
+                                        
+                                        <p:group>
+                                            
+                                            <p:string-replace match="/*/text()" name="expected">
+                                                <p:with-option name="replace" select="concat('&quot;',if ($min and $max) then concat('At least ',$min,' and at most ',$max,' documents.') else if ($min) then concat('At least ',$min,' documents.') else if ($max) then concat('At most ',$max,' documents.') else 'Any number of documents','&quot;')"/>
+                                                <p:input port="source">
+                                                    <p:inline>
+                                                        <x:expected>EXPECTED</x:expected>
+                                                    </p:inline>
+                                                </p:input>
+                                            </p:string-replace>
+                                            
+                                            <p:insert match="/*" position="first-child">
+                                                <p:input port="source">
+                                                    <p:pipe port="result" step="test-result"/>
+                                                </p:input>
+                                                <p:input port="insertion">
+                                                    <p:pipe port="result" step="expected"/>
+                                                </p:input>
+                                            </p:insert>
+                                        </p:group>
+                                        
+                                    </p:when>
 
                                     <p:when test="/x:expect[@type='validate' and @grammar='relax-ng']">
                                         <!--

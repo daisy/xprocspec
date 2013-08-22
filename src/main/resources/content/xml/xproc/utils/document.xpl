@@ -36,7 +36,7 @@
                 <p:pipe port="document" step="main"/>
             </p:variable>
             <p:filter name="port">
-                <p:with-option name="select" select="concat('/x:description/x:output[@port=&quot;',$port,'&quot;]/x:document')"/>
+                <p:with-option name="select" select="concat('/x:description/(x:output, x:scenario/x:call/x:input)[@port=&quot;',$port,'&quot;]/x:document')"/>
             </p:filter>
             <p:count/>
             <pxi:assert>

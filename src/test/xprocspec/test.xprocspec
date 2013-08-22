@@ -18,11 +18,12 @@
 
 
     <x:scenario label="the import element">
-        <x:call step="x:xprocspec"/>
+        <x:call step="x:xprocspec">
+            <x:option name="temp-dir" select="$temp-dir"/>
+        </x:call>
         
         <x:scenario label="- two imports">
             <x:call>
-                <x:option name="temp-dir" select="$temp-dir"/>
                 <x:input port="source">
                     <x:document type="file" href="tests/import-1.xprocspec"/>
                 </x:input>
@@ -35,7 +36,6 @@
 
         <x:scenario label="- one import with one import">
             <x:call>
-                <x:option name="temp-dir" select="$temp-dir"/>
                 <x:input port="source">
                     <x:document type="file" href="tests/import-2.xprocspec"/>
                 </x:input>
@@ -48,7 +48,6 @@
 
         <x:scenario label="- circular imports">
             <x:call>
-                <x:option name="temp-dir" select="$temp-dir"/>
                 <x:input port="source">
                     <x:document type="file" href="tests/import-3.xprocspec"/>
                 </x:input>
@@ -62,11 +61,12 @@
 
 
     <x:scenario label="the scenario element">
-        <x:call step="x:xprocspec"/>
+        <x:call step="x:xprocspec">
+            <x:option name="temp-dir" select="$temp-dir"/>
+        </x:call>
 
         <x:scenario label="- with pending attribute">
             <x:call>
-                <x:option name="temp-dir" select="$temp-dir"/>
                 <x:input port="source">
                     <x:document type="file" href="tests/scenario-1.xprocspec"/>
                 </x:input>
@@ -80,7 +80,6 @@
 
         <x:scenario label="- with two child scenarios, one of which has another child scenario">
             <x:call>
-                <x:option name="temp-dir" select="$temp-dir"/>
                 <x:input port="source">
                     <x:document type="file" href="tests/scenario-2.xprocspec"/>
                 </x:input>
@@ -94,11 +93,12 @@
 
 
     <x:scenario label="the call element">
-        <x:call step="x:xprocspec"/>
+        <x:call step="x:xprocspec">
+            <x:option name="temp-dir" select="$temp-dir"/>
+        </x:call>
 
         <x:scenario label="- inherit from call elements in ancestor scenarios">
             <x:call>
-                <x:option name="temp-dir" select="$temp-dir"/>
                 <x:input port="source">
                     <x:document type="file" href="tests/call-1.xprocspec"/>
                 </x:input>
@@ -111,7 +111,6 @@
 
         <x:scenario label="- step attribute pointing to step declared in an XProc library">
             <x:call>
-                <x:option name="temp-dir" select="$temp-dir"/>
                 <x:input port="source">
                     <x:document type="file" href="tests/call-2.xprocspec"/>
                 </x:input>
@@ -125,7 +124,6 @@
 
         <x:scenario label="- two different scenarios testing different steps in the same library">
             <x:call>
-                <x:option name="temp-dir" select="$temp-dir"/>
                 <x:input port="source">
                     <x:document type="file" href="tests/call-3.xprocspec"/>
                 </x:input>
@@ -139,25 +137,33 @@
     </x:scenario>
 
 
-    <x:scenario label="the input element" pending="">
+    <x:scenario label="the input element">
         <x:call step="x:xprocspec">
             <x:option name="temp-dir" select="$temp-dir"/>
         </x:call>
 
-        <x:scenario label="- empty sequence" pending="">
+        <x:scenario label="- empty sequence">
             <x:call>
                 <x:input port="source">
                     <x:document type="file" href="tests/input-1.xprocspec"/>
                 </x:input>
             </x:call>
+            <x:context label="the junit output port">
+                <x:document type="port" port="junit"/>
+            </x:context>
+            <x:expect label="all tests should succeed" type="xpath" test="not(/*/@tests='0') and /*/@failures='0' and /*/@errors='0'"/>
         </x:scenario>
 
-        <x:scenario label="- sequence of two documents" pending="">
+        <x:scenario label="- sequence of two documents">
             <x:call>
                 <x:input port="source">
                     <x:document type="file" href="tests/input-2.xprocspec"/>
                 </x:input>
             </x:call>
+            <x:context label="the junit output port">
+                <x:document type="port" port="junit"/>
+            </x:context>
+            <x:expect label="all tests should succeed" type="xpath" test="not(/*/@tests='0') and /*/@failures='0' and /*/@errors='0'"/>
         </x:scenario>
     </x:scenario>
 

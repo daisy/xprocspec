@@ -131,12 +131,8 @@
                                             <!-- TODO: @select won't resolve namespaces correctly in this dynamically evaluated xpath context -->
                                         </xsl:copy-of>
 
-                                        <xsl:if test="not(x:document) and $primary">
-                                            <!-- "A default connection does not satisfy the requirement that a primary input port is automatically connected by the processor, nor is it used when no default readable port is defined. In other words, a p:declare-step or a p:pipeline can define defaults for all of its inputs, whether they are primary or not, but defining a default for a primary input usually has no effect. It's never used by an atomic step since the step, when it's called, will always connect the primary input port to the default readable port (or cause a static error). The only case where it has value is on a p:pipeline when that pipeline is invoked directly by the processor. In that case, the processor must use the default connection if no external connection is provided for the port." (http://www.w3.org/TR/xproc/#document-inputs)
-                                    
-                                    If no input has been given to the primary port; use the default connection.
-                                    -->
-                                            <xsl:copy-of select="$declaration/*"/>
+                                        <xsl:if test="not(x:document)">
+                                            <p:empty/>
                                         </xsl:if>
                                         <xsl:for-each select="x:document">
                                             <xsl:choose>

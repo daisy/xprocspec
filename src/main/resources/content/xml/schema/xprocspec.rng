@@ -314,6 +314,33 @@
                         </choice>
                     </attribute>
                 </group>
+                <group>
+                    <!-- Document count -->
+                    <attribute name="type">
+                        <a:documentation xmlns="http://www.w3.org/1999/xhtml">When `type` is `count`, the number of documents in context is compared with the `min` and `max` attributes.</a:documentation>
+                        <value>count</value>
+                    </attribute>
+                    <choice>
+                        <attribute name="min">
+                            <a:documentation xmlns="http://www.w3.org/1999/xhtml">If `min` is specified, then there must be at least this many documents in context for the assertion to succeed.</a:documentation>
+                            <data type="integer"/>
+                        </attribute>
+                        <attribute name="max">
+                            <a:documentation xmlns="http://www.w3.org/1999/xhtml">If `max` is specified, then there must be at most this many documents in context for the assertion to succeed.</a:documentation>
+                            <data type="integer"/>
+                        </attribute>
+                        <group>
+                            <attribute name="min">
+                                <!-- documented above -->
+                                <data type="integer"/>
+                            </attribute>
+                            <attribute name="max">
+                                <!-- documented above -->
+                                <data type="integer"/>
+                            </attribute>
+                        </group>
+                    </choice>
+                </group>
             </choice>
         </element>
     </define>

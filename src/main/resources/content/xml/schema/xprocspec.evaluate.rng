@@ -54,7 +54,7 @@
                     <ref name="pending-attribute"/>
                 </optional>
                 <attribute name="contextref">
-                    <data type="IDREF"/>
+                    <!--<data type="IDREF"/>-->
                 </attribute>
                 <choice>
                     <group>
@@ -69,6 +69,28 @@
                         <attribute name="type">
                             <value>compare</value>
                         </attribute>
+                    </group>
+                    <group>
+                        <!-- Document count -->
+                        <attribute name="type">
+                            <value>count</value>
+                        </attribute>
+                        <choice>
+                            <attribute name="min">
+                                <data type="integer"/>
+                            </attribute>
+                            <attribute name="max">
+                                <data type="integer"/>
+                            </attribute>
+                            <group>
+                                <attribute name="min">
+                                    <data type="integer"/>
+                                </attribute>
+                                <attribute name="max">
+                                    <data type="integer"/>
+                                </attribute>
+                            </group>
+                        </choice>
                     </group>
                     <group>
                         <!-- Document validation -->
