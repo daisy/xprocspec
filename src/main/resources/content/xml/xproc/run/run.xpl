@@ -4,6 +4,7 @@
     <p:input port="source" sequence="true"/>
     <p:output port="result" sequence="true"/>
     <p:option name="depend-on-stored-files" select="''"/>
+    <p:option name="logfile" select="''"/>
 
     <!-- This version of run.xpl depends on Calabash and its cx:eval. Hopefully dynamic evaluation of pipelines will be included in XProc v2. -->
 
@@ -13,13 +14,20 @@
     <p:for-each>
         <pxi:message message="   * loading '$1'">
             <p:with-option name="param1" select="/*"/>
+            <p:with-option name="logfile" select="$logfile">
+                <p:empty/>
+            </p:with-option>
         </pxi:message>
         <p:load name="test">
             <p:with-option name="href" select="/*"/>
         </p:load>
         <p:choose>
             <p:when test="/*[self::c:errors]">
-                <pxi:message message=" * error document; skipping"/>
+                <pxi:message message=" * error document; skipping">
+                    <p:with-option name="logfile" select="$logfile">
+                        <p:empty/>
+                    </p:with-option>
+                </pxi:message>
                 <p:identity/>
             </p:when>
             <p:otherwise>

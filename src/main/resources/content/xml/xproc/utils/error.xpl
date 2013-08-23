@@ -41,6 +41,9 @@
     <p:option name="param8" select="''"/>
     <p:option name="param9" select="''"/>
     <!-- in the unlikely event that you need more parameters you'll have to format the message string yourself -->
+    <p:option name="logfile" select="''"/>
+    
+    <p:import href="log.xpl"/>
 
     <p:string-replace match="/*/text()" name="message">
         <p:input port="source">
@@ -70,6 +73,12 @@
             )"/>
         <p:variable name="code-localName" use-when="not(p:system-property('p:xpath-version')='1.0')" select="if (contains($code,':')) then substring-after($code,':') else $code"/>
         <p:variable name="prefix" select="concat(substring-before($code,':'),$code-prefix)"/>
+        <pxi:log severity="ERROR">
+            <p:with-option name="logfile" select="$logfile"/>
+            <p:with-option name="message" select="concat(if ($code-prefix) then concat($code-prefix,':') else '', $code-localName, if ($code-namespace) then concat('{',$code-namespace,'}') else '', ': ', /*/text())">
+                <p:pipe port="result" step="message"/>
+            </p:with-option>
+        </pxi:log>
         <p:choose>
             <p:when test="not($code-namespace='') and not($prefix='')">
                 <p:error>

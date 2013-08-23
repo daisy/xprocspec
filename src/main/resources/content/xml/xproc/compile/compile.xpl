@@ -7,6 +7,7 @@
     </p:output>
 
     <p:option name="temp-dir" required="true"/>
+    <p:option name="logfile" select="''"/>
     <p:variable name="test-temp-dir" select="concat($temp-dir,'xprocspec-',replace(replace(concat(current-dateTime(),''),'\+.*',''),'[^\d]',''),'/')">
         <p:inline>
             <doc/>
@@ -22,9 +23,16 @@
             </p:inline>
         </p:with-option>
     </cxf:mkdir>
-    <pxi:message message=" * created directory using Calabash's cxf:mkdir" cx:depends-on="mkdir" p:use-when="p:system-property('p:product-name') = 'XML Calabash'"/>
+    <pxi:message message=" * created directory using Calabash's cxf:mkdir" cx:depends-on="mkdir" p:use-when="p:system-property('p:product-name') = 'XML Calabash'">
+        <p:with-option name="logfile" select="$logfile">
+            <p:empty/>
+        </p:with-option>
+    </pxi:message>
     <pxi:message message=" * using as temporary directory: $1">
         <p:with-option name="param1" select="$test-temp-dir"/>
+        <p:with-option name="logfile" select="$logfile">
+            <p:empty/>
+        </p:with-option>
     </pxi:message>
     <p:sink/>
 
@@ -35,7 +43,11 @@
         </p:iteration-source>
         <p:choose>
             <p:when test="/*[self::c:errors]">
-                <pxi:message message=" * error document; skipping"/>
+                <pxi:message message=" * error document; skipping">
+                    <p:with-option name="logfile" select="$logfile">
+                        <p:empty/>
+                    </p:with-option>
+                </pxi:message>
                 <p:identity/>
             </p:when>
             <p:otherwise>
@@ -47,6 +59,9 @@
                         <p:variable name="test-name" select="concat('test',p:iteration-position())"/>
                         <pxi:message message=" * converting test '$1' to XProc">
                             <p:with-option name="param1" select="$test-name"/>
+                            <p:with-option name="logfile" select="$logfile">
+                                <p:empty/>
+                            </p:with-option>
                         </pxi:message>
                         <p:add-attribute match="/*" attribute-name="temp-dir">
                             <p:with-option name="attribute-value" select="$test-temp-dir"/>
@@ -58,7 +73,11 @@
                                 <p:document href="description-to-invocation.xsl"/>
                             </p:input>
                         </p:xslt>
-                        <pxi:message message="   * done"/>
+                        <pxi:message message="   * done">
+                            <p:with-option name="logfile" select="$logfile">
+                                <p:empty/>
+                            </p:with-option>
+                        </pxi:message>
 
                         <p:wrap-sequence wrapper="calabash-issue-102"/>
                     </p:group>
@@ -112,13 +131,20 @@
                         <!-- validate output grammar -->
                         <pxi:message message=" * validating output grammar for $1">
                             <p:with-option name="param1" select="$base"/>
+                            <p:with-option name="logfile" select="$logfile">
+                                <p:empty/>
+                            </p:with-option>
                         </pxi:message>
                         <p:validate-with-relax-ng>
                             <p:input port="schema">
                                 <p:document href="../../schema/xprocspec.compile.rng"/>
                             </p:input>
                         </p:validate-with-relax-ng>
-                        <pxi:message message="   * done!"/>
+                        <pxi:message message="   * done!">
+                            <p:with-option name="logfile" select="$logfile">
+                                <p:empty/>
+                            </p:with-option>
+                        </pxi:message>
 
                         <p:wrap-sequence wrapper="calabash-issue-102"/>
                     </p:group>

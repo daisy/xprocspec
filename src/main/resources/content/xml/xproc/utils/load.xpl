@@ -6,6 +6,7 @@
 
     <p:option name="href" required="true"/>
     <p:option name="method" select="'xml'"/>
+    <p:option name="logfile" select="''"/>
 
     <p:import href="logging-library.xpl"/>
 
@@ -48,6 +49,9 @@
             </p:inline>
         </p:input>
         <p:with-option name="message" select="concat('loading &quot;',$href,'&quot;')"/>
+        <p:with-option name="logfile" select="$logfile">
+            <p:empty/>
+        </p:with-option>
     </pxi:message>
     <p:sink/>
 
@@ -73,6 +77,9 @@
                             <p:empty/>
                         </p:input>
                         <p:with-option name="message" select="concat('unable to load ',$href,' as XML')"/>
+                        <p:with-option name="logfile" select="$logfile">
+                            <p:empty/>
+                        </p:with-option>
                     </pxi:message>
                 </p:catch>
             </p:try>

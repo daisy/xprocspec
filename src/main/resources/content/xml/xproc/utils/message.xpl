@@ -34,9 +34,10 @@
     <p:option name="param8" select="''"/>
     <p:option name="param9" select="''"/>
     <!-- in the unlikely event that you need more parameters you'll have to format the message string yourself -->
+    <p:option name="logfile" select="''"/>
 
     <p:import href="http://xmlcalabash.com/extension/steps/library-1.0.xpl" use-when="p:system-property('p:product-name') = 'XML Calabash'"/>
-    <p:import href="error.xpl"/>
+    <p:import href="log.xpl"/>
 
     <!--
         Calabash:
@@ -113,7 +114,22 @@
                 <irrelevant/>
             </p:inline>
         </p:xpath-context>
-
+        
+        <!-- Message to logfile instead of console -->
+        <p:when test="$logfile">
+            <pxi:log>
+                <p:with-option name="severity" select="$validSeverity">
+                    <p:empty/>
+                </p:with-option>
+                <p:with-option name="logfile" select="$logfile">
+                    <p:empty/>
+                </p:with-option>
+                <p:with-option name="message" select="/*/@message">
+                    <p:pipe port="result" step="message"/>
+                </p:with-option>
+            </pxi:log>
+        </p:when>
+        
         <!-- Pipeline 2 -->
         <p:when test="p:step-available('dp2i:message')">
             <dp2i:message>
@@ -160,6 +176,7 @@
 
         </p:otherwise>
     </p:choose>
+    
     <p:identity name="result"/>
 
 </p:declare-step>

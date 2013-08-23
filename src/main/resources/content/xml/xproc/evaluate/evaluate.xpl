@@ -3,6 +3,7 @@
 
     <p:input port="source" sequence="true"/>
     <p:output port="result" sequence="true"/>
+    <p:option name="logfile" select="''"/>
 
     <p:import href="compare.xpl"/>
     <p:import href="../utils/logging-library.xpl"/>
@@ -15,7 +16,11 @@
 
         <p:choose>
             <p:when test="/*[self::c:errors]">
-                <pxi:message message=" * error document; skipping"/>
+                <pxi:message message=" * error document; skipping">
+                    <p:with-option name="logfile" select="$logfile">
+                        <p:empty/>
+                    </p:with-option>
+                </pxi:message>
                 <p:identity name="c-error"/>
             </p:when>
             <p:otherwise>
@@ -33,6 +38,9 @@
                                 <p:input port="description">
                                     <p:pipe port="result" step="description.pre-document-resolution"/>
                                 </p:input>
+                                <p:with-option name="logfile" select="$logfile">
+                                    <p:empty/>
+                                </p:with-option>
                             </pxi:document>
                         </p:viewport>
                         <p:identity name="description"/>
@@ -133,6 +141,9 @@
                                             <p:input port="alternate">
                                                 <p:pipe port="result" step="expect"/>
                                             </p:input>
+                                            <p:with-option name="logfile" select="$logfile">
+                                                <p:empty/>
+                                            </p:with-option>
                                         </pxi:compare>
                                         <p:rename match="/*" new-name="x:test-result"/>
                                         <p:add-attribute match="/*" attribute-name="result">

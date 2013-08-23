@@ -23,34 +23,51 @@
     <p:import href="utils/logging-library.xpl"/>
     
     <p:variable name="start-time" select="adjust-dateTime-to-timezone(current-dateTime(),xs:dayTimeDuration('PT0H'))"/>
+    <p:variable name="logfile" select="concat($temp-dir,'xprocspec-log-',replace($start-time,'[^\d]',''),'.xml')"/>
 
     <!--
         * Converts any other XProc test syntaxes (currently supported: XProc Test Suite).
         * Splits the x:description documents into multiple documents; one for each x:scenario with no dependencies between them.
     -->
     <pxi:message message="#### $1 ####">
+        <p:with-option name="logfile" select="$logfile"/>
         <p:with-option name="param1" select="base-uri(/*)"/>
     </pxi:message>
     <pxi:message message=" * temporary directory: $1">
+        <p:with-option name="logfile" select="$logfile"/>
         <p:with-option name="param1" select="$temp-dir"/>
     </pxi:message>
-    <pxi:message message="preprocessing..."/>
+    <pxi:message message="preprocessing...">
+        <p:with-option name="logfile" select="$logfile"/>
+    </pxi:message>
     <pxi:test-preprocess name="preprocess">
         <p:with-option name="temp-dir" select="$temp-dir"/>
+        <p:with-option name="logfile" select="$logfile">
+            <p:empty/>
+        </p:with-option>
     </pxi:test-preprocess>
 
     <!-- make XProc scripts out of each scenario -->
-    <pxi:message message="compiling..."/>
+    <pxi:message message="compiling...">
+        <p:with-option name="logfile" select="$logfile">
+            <p:empty/>
+        </p:with-option>
+    </pxi:message>
     <pxi:test-compile name="compile">
         <p:with-option name="temp-dir" select="$temp-dir">
-            <p:inline>
-                <doc/>
-            </p:inline>
+            <p:empty/>
+        </p:with-option>
+        <p:with-option name="logfile" select="$logfile">
+            <p:empty/>
         </p:with-option>
     </pxi:test-compile>
 
     <!-- store the XProc scripts (just in case there is a lot of tests - it could optionally be done in-memory) -->
-    <pxi:message message="storing..."/>
+    <pxi:message message="storing...">
+        <p:with-option name="logfile" select="$logfile">
+            <p:empty/>
+        </p:with-option>
+    </pxi:message>
     <p:for-each name="test-store">
         <p:output port="result">
             <p:pipe port="result" step="store"/>
@@ -89,24 +106,46 @@
     </p:identity>
 
     <!-- run the XProc scripts -->
-    <pxi:message message="running..."/>
+    <pxi:message message="running...">
+        <p:with-option name="logfile" select="$logfile">
+            <p:empty/>
+        </p:with-option>
+    </pxi:message>
     <pxi:test-run name="run">
+        <p:with-option name="logfile" select="$logfile">
+            <p:empty/>
+        </p:with-option>
         <p:with-option name="depend-on-stored-files" select="''">
             <p:pipe port="result" step="depend-on-me"/>
         </p:with-option>
     </pxi:test-run>
 
     <!-- compare the results with the expected results -->
-    <pxi:message message="evaluating..."/>
-    <pxi:test-evaluate/>
+    <pxi:message message="evaluating...">
+        <p:with-option name="logfile" select="$logfile">
+            <p:empty/>
+        </p:with-option>
+    </pxi:message>
+    <pxi:test-evaluate>
+        <p:with-option name="logfile" select="$logfile">
+            <p:empty/>
+        </p:with-option>
+    </pxi:test-evaluate>
 
     <!-- make a machine readable report as well as a human readable one -->
-    <pxi:message message="reporting..."/>
+    <pxi:message message="reporting...">
+        <p:with-option name="logfile" select="$logfile">
+            <p:empty/>
+        </p:with-option>
+    </pxi:message>
     <pxi:test-report name="report">
         <p:with-option name="start-time" select="$start-time">
             <p:empty/>
         </p:with-option>
         <p:with-option name="end-time" select="adjust-dateTime-to-timezone(current-dateTime(),xs:dayTimeDuration('PT0H'))">
+            <p:empty/>
+        </p:with-option>
+        <p:with-option name="logfile" select="$logfile">
             <p:empty/>
         </p:with-option>
     </pxi:test-report>
@@ -117,6 +156,7 @@
         </p:input>
     </p:identity>
     <pxi:message message="Results: tests: $1, failures: $2, errors: $3">
+        <p:with-option name="logfile" select="$logfile"/>
         <p:with-option name="param1" select="/*/@tests"/>
         <p:with-option name="param2" select="/*/@failures"/>
         <p:with-option name="param3" select="/*/@errors"/>

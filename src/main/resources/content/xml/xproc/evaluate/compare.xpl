@@ -5,6 +5,7 @@
     <p:input port="source" primary="true" sequence="true"/>
     <p:input port="alternate" sequence="true"/>
     <p:output port="result" primary="true"/>
+    <p:option name="logfile" select="''"/>
 
     <p:serialization port="result" indent="true"/>
 

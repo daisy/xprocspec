@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0" xmlns="http://www.w3.org/1999/xhtml" xmlns:html="http://www.w3.org/1999/xhtml" xpath-default-namespace="http://www.w3.org/1999/xhtml" exclude-result-prefixes="#all"
-    xmlns:x="http://www.daisy.org/ns/xprocspec" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:p="http://www.w3.org/ns/xproc">
+    xmlns:x="http://www.daisy.org/ns/xprocspec" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:p="http://www.w3.org/ns/xproc" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
     <xsl:template match="html">
         <xsl:variable name="descriptions" select="body/x:description[not(x:scenario/@pending)]"/>
@@ -15,6 +15,7 @@
         <xsl:variable name="failed" select="count($tests[@result='failed'])"/>
         <xsl:variable name="error-count" select="count($errors)"/>
         <xsl:variable name="total" select="count($tests) + count($pending-descriptions) + $error-count"/>
+        <xsl:variable name="log" select="body/c:log"/>
 
         <xsl:copy>
             <xsl:copy-of select="@*"/>
@@ -191,8 +192,8 @@
                         <xsl:variable name="script-base" select="($step-descriptions/resolve-uri(@script,base-uri()))[1]"/>
 
                         <div id="{$stepid}">
-                            <h2 class="{$step-class}">Calling: <a href="{$script-base}"><xsl:value-of select="$step-shortname"/></a><span class="scenario-totals">passed:<xsl:value-of select="$passed"/> / pending:<xsl:value-of select="$pending"/> / failed:<xsl:value-of
-                                        select="$failed"/> / errors:0 / total:<xsl:value-of select="$total"/></span></h2>
+                            <h2 class="{$step-class}">Calling: <a href="{$script-base}"><xsl:value-of select="$step-shortname"/></a><span class="scenario-totals">passed:<xsl:value-of select="$passed"/> / pending:<xsl:value-of select="$pending"/> /
+                                        failed:<xsl:value-of select="$failed"/> / errors:0 / total:<xsl:value-of select="$total"/></span></h2>
                             <table class="xspec">
                                 <col width="80%"/>
                                 <col width="20%"/>
@@ -259,7 +260,9 @@
                                                 </tr>
                                                 <xsl:if test="$test-class='pending'">
                                                     <tr class="pending">
-                                                        <td class="pending-label"><xsl:value-of select="@pending"/></td>
+                                                        <td class="pending-label">
+                                                            <xsl:value-of select="@pending"/>
+                                                        </td>
                                                         <td> </td>
                                                     </tr>
                                                 </xsl:if>
@@ -309,6 +312,38 @@
                             </table>
                         </div>
                     </xsl:for-each>
+
+                    <xsl:if test="$log">
+                        <h2>Execution log</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Severity</th>
+                                    <th>Message</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <xsl:for-each select="$log/c:line">
+                                    <tr
+                                        style="{if (@severity='DEBUG') then 'color:#696969;' else if (@severity='INFO') then '' else if (@severity='WARN') then 'background-color:#FFD700;' else if (@severity='ERROR') then 'background-color:#FF6347;' else ''}">
+                                        <td>
+                                            <xsl:variable name="t" select="replace(string(xs:dateTime(@time)-xs:dateTime($log/c:line[1]/@time)),'[^\d\.]','')"/>
+                                            <xsl:variable name="t" select="tokenize($t,'\.')"/>
+                                            <xsl:variable name="t" select="if (count($t)=1) then concat($t,'.000') else concat($t[1],'.',$t[2], string-join(for $pad in (string-length($t[2]) to 2) return '0', ''))"/>
+                                            <xsl:value-of select="$t"/>
+                                        </td>
+                                        <td style="padding-left:0%;">
+                                            <xsl:value-of select="@severity"/>
+                                        </td>
+                                        <td>
+                                            <code><pre><xsl:value-of select="./text()"/></pre></code>
+                                        </td>
+                                    </tr>
+                                </xsl:for-each>
+                            </tbody>
+                        </table>
+                    </xsl:if>
 
                     <!--<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js?autoload=true&amp;lang=xml">;</script>-->
                     <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css"/>

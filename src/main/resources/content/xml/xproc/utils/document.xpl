@@ -5,6 +5,7 @@
     <p:input port="document" primary="true"/>
     <p:input port="description"/>
     <p:output port="result" sequence="true"/>
+    <p:option name="logfile" select="''"/>
 
     <p:import href="../utils/load.xpl"/>
     <p:import href="../utils/recursive-directory-list.xpl"/>
@@ -42,6 +43,9 @@
             <pxi:assert>
                 <p:with-option name="test" select="number(/*) &gt; 0"/>
                 <p:with-option name="message" select="concat('   * port not found: &quot;',$port,'&quot;')"/>
+                <p:with-option name="logfile" select="$logfile">
+                    <p:empty/>
+                </p:with-option>
             </pxi:assert>
             
             <p:identity>
@@ -114,6 +118,9 @@
                 <p:wrap-sequence wrapper="x:document"/>
                 <pxi:assert message="   * no errors occured">
                     <p:with-option name="test" select="count(/*/*) &gt; 0"/>
+                    <p:with-option name="logfile" select="$logfile">
+                        <p:empty/>
+                    </p:with-option>
                 </pxi:assert>
                 <p:add-attribute match="/*" attribute-name="xml:base">
                     <p:with-option name="attribute-value" select="if (/*/*/@xml:base) then resolve-uri(/*/*/@xml:base,$base) else $base"/>

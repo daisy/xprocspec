@@ -7,14 +7,9 @@
     </p:output>
 
     <p:option name="temp-dir" required="true"/>
+    <p:option name="logfile" select="''"/>
 
     <p:import href="../utils/logging-library.xpl"/>
-
-    <p:declare-step type="pxi:debug">
-        <p:input port="source"/>
-        <p:output port="result"/>
-        <p:identity/>
-    </p:declare-step>
 
     <p:declare-step type="pxi:perform-imports" name="perform-imports">
         <p:input port="source" primary="true"/>
@@ -24,6 +19,7 @@
             </p:inline>
         </p:input>
         <p:output port="result"/>
+        <p:option name="logfile" required="true"/>
 
         <p:add-attribute match="/*" attribute-name="href" name="this-import">
             <p:input port="source">
@@ -52,6 +48,7 @@
         </p:identity>
         <pxi:message message=" * checking $1 for imports">
             <p:with-option name="param1" select="base-uri(/*)"/>
+            <p:with-option name="logfile" select="$logfile"/>
         </pxi:message>
         <p:viewport match="/*/x:import">
             <p:variable name="import-href" select="resolve-uri(/*/@href,base-uri(/*))"/>
@@ -62,22 +59,30 @@
                 <p:when test="$import-href=/*/x:import/@href">
                     <pxi:message message=" * skipping circular import: $1">
                         <p:with-option name="param1" select="$import-href"/>
+                        <p:with-option name="logfile" select="$logfile">
+                            <p:empty/>
+                        </p:with-option>
                     </pxi:message>
                 </p:when>
                 <p:otherwise>
                     <pxi:message message=" * importing: $1">
                         <p:with-option name="param1" select="$import-href"/>
+                        <p:with-option name="logfile" select="$logfile">
+                            <p:empty/>
+                        </p:with-option>
                     </pxi:message>
                     <p:load>
                         <p:with-option name="href" select="$import-href"/>
                     </p:load>
                     <pxi:validate-if-xprocspec>
                         <p:with-option name="test-base-uri" select="$import-href"/>
+                        <p:with-option name="logfile" select="logfile"/>
                     </pxi:validate-if-xprocspec>
                     <pxi:perform-imports>
                         <p:input port="previous-imports">
                             <p:pipe port="result" step="previous-imports"/>
                         </p:input>
+                        <p:with-option name="logfile" select="$logfile"/>
                     </pxi:perform-imports>
                     <p:for-each>
                         <p:iteration-source select="/*/x:scenario"/>
@@ -93,6 +98,7 @@
         <p:input port="source"/>
         <p:output port="result"/>
         <p:option name="test-base-uri" required="true"/>
+        <p:option name="logfile" required="true"/>
         
         <!-- if xprocspec grammar is used in the input document; validate it -->
         <p:identity name="try.input"/>
@@ -113,6 +119,9 @@
                 </p:identity>
                 <pxi:message message=" * xprocspec grammar is not valid: $1">
                     <p:with-option name="param1" select="$test-base-uri"/>
+                    <p:with-option name="logfile" select="$logfile">
+                        <p:empty/>
+                    </p:with-option>
                 </pxi:message>
                 <p:add-attribute match="/*" attribute-name="xml:base">
                     <p:with-option name="attribute-value" select="$test-base-uri"/>
@@ -159,6 +168,7 @@
 
             <pxi:validate-if-xprocspec>
                 <p:with-option name="test-base-uri" select="$test-base-uri"/>
+                <p:with-option name="logfile" select="logfile"/>
             </pxi:validate-if-xprocspec>
 
             <p:add-attribute match="/*" attribute-name="test-grammar" attribute-value="xprocspec"/>
@@ -166,7 +176,11 @@
         <p:when test="/*/namespace-uri()='http://xproc.org/ns/testsuite'">
             <p:output port="result" primary="true" sequence="true"/>
             <p:variable name="href" select="concat($temp-dir,replace(replace(base-uri(/*),'^.*/([^/]*)$','$1'),'\.[^\.]*',''),'.xpl')"/>
-            <pxi:message message=" * input grammar is XProc Test Suite"/>
+            <pxi:message message=" * input grammar is XProc Test Suite">
+                <p:with-option name="logfile" select="$logfile">
+                    <p:empty/>
+                </p:with-option>
+            </pxi:message>
             <p:choose>
                 <p:when test="/t:test-suite">
                     <p:output port="result" primary="true" sequence="true"/>
@@ -192,6 +206,9 @@
                                 </p:identity>
                                 <pxi:message message="An error occured while reading XProc Test Suite test: $1">
                                     <p:with-option name="param1" select="$href"/>
+                                    <p:with-option name="logfile" select="$logfile">
+                                        <p:empty/>
+                                    </p:with-option>
                                 </pxi:message>
                                 <p:add-attribute match="/*" attribute-name="xml:base">
                                     <p:with-option name="attribute-value" select="$href"/>
@@ -245,7 +262,11 @@
                     <p:group>
                         <p:choose>
                             <p:when test="/*[self::c:errors]">
-                                <pxi:message message=" * error document; skipping"/>
+                                <pxi:message message=" * error document; skipping">
+                                    <p:with-option name="logfile" select="$logfile">
+                                        <p:empty/>
+                                    </p:with-option>
+                                </pxi:message>
                                 <p:identity/>
                             </p:when>
                             <p:otherwise>
@@ -255,7 +276,11 @@
                                         <p:with-option name="attribute-value" select="resolve-uri(/*/@href,base-uri(/*))"/>
                                     </p:add-attribute>
                                 </p:viewport>
-                                <pxi:message message=" * converting grammar from xproc test suite to xprocspec"/>
+                                <pxi:message message=" * converting grammar from xproc test suite to xprocspec">
+                                    <p:with-option name="logfile" select="$logfile">
+                                        <p:empty/>
+                                    </p:with-option>
+                                </pxi:message>
                                 <p:xslt>
                                     <p:input port="parameters">
                                         <p:empty/>
@@ -268,7 +293,11 @@
                                     <p:with-option name="attribute-value" select="$href"/>
                                 </p:add-attribute>
 
-                                <pxi:message message=" * storing inlined XProc script"/>
+                                <pxi:message message=" * storing inlined XProc script">
+                                    <p:with-option name="logfile" select="$logfile">
+                                        <p:empty/>
+                                    </p:with-option>
+                                </pxi:message>
                                 <p:store>
                                     <p:input port="source" select="/*/x:script/*"/>
                                     <p:with-option name="href" select="$href"/>
@@ -289,7 +318,11 @@
                                 <p:pipe port="error" step="catch"/>
                             </p:input>
                         </p:identity>
-                        <pxi:message message=" * an error occured while converting from xproc test suite to xprocspec"/>
+                        <pxi:message message=" * an error occured while converting from xproc test suite to xprocspec">
+                            <p:with-option name="logfile" select="$logfile">
+                                <p:empty/>
+                            </p:with-option>
+                        </pxi:message>
                         <p:add-attribute match="/*" attribute-name="xml:base">
                             <p:with-option name="attribute-value" select="$href"/>
                         </p:add-attribute>
@@ -332,6 +365,9 @@
             <p:output port="result" primary="true" sequence="true"/>
             <pxi:message message=" * unknown test grammar: $1">
                 <p:with-option name="param1" select="namespace-uri(/*)"/>
+                <p:with-option name="logfile" select="$logfile">
+                    <p:empty/>
+                </p:with-option>
             </pxi:message>
             <p:delete match="/*/node()"/>
             <p:wrap-sequence wrapper="c:error"/>
@@ -359,20 +395,33 @@
                 <p:choose>
                     <p:when test="/*[self::c:errors]">
                         <p:output port="result" sequence="true"/>
-                        <pxi:message message=" * error document; skipping"/>
+                        <pxi:message message=" * error document; skipping">
+                            <p:with-option name="logfile" select="$logfile">
+                                <p:empty/>
+                            </p:with-option>
+                        </pxi:message>
                         <p:identity/>
                     </p:when>
                     <p:otherwise>
                         <p:output port="result" sequence="true"/>
 
-                        <pxi:message message=" * checking for imports"/>
-                        <pxi:perform-imports/>
+                        <pxi:message message=" * checking for imports">
+                            <p:with-option name="logfile" select="$logfile">
+                                <p:empty/>
+                            </p:with-option>
+                        </pxi:message>
+                        <pxi:perform-imports>
+                            <p:with-option name="logfile" select="$logfile"/>
+                        </pxi:perform-imports>
                         <p:identity name="main-document"/>
 
                         <p:group>
                             <p:variable name="script-uri" select="resolve-uri(/*/@script,base-uri(/*))"/>
                             <pxi:message message=" * extracting step declarations from $1">
                                 <p:with-option name="param1" select="$script-uri"/>
+                                <p:with-option name="logfile" select="$logfile">
+                                    <p:empty/>
+                                </p:with-option>
                             </pxi:message>
 
                             <p:for-each>
@@ -387,11 +436,17 @@
                             <pxi:message message=" * tests reference $1 step$2">
                                 <p:with-option name="param1" select="count(/*/*)"/>
                                 <p:with-option name="param2" select="if (count(/*/*)=1) then '' else 's'"/>
+                                <p:with-option name="logfile" select="$logfile">
+                                    <p:empty/>
+                                </p:with-option>
                             </pxi:message>
                             <p:for-each>
                                 <p:iteration-source select="/*/*"/>
                                 <pxi:message message="   * step: $1">
                                     <p:with-option name="param1" select="/*/@step"/>
+                                    <p:with-option name="logfile" select="$logfile">
+                                        <p:empty/>
+                                    </p:with-option>
                                 </pxi:message>
                                 <p:identity/>
                             </p:for-each>
@@ -405,6 +460,9 @@
                                                 <irrelevant/>
                                             </p:inline>
                                         </p:with-option>
+                                        <p:with-option name="logfile" select="$logfile">
+                                            <p:empty/>
+                                        </p:with-option>
                                     </pxi:message>
                                     <p:load>
                                         <p:with-option name="href" select="$script-uri">
@@ -413,11 +471,18 @@
                                             </p:inline>
                                         </p:with-option>
                                     </p:load>
-                                    <pxi:message message="   * success!"/>
+                                    <pxi:message message="   * success!">
+                                        <p:with-option name="logfile" select="$logfile">
+                                            <p:empty/>
+                                        </p:with-option>
+                                    </pxi:message>
                                 </p:group>
                                 <p:catch>
                                     <pxi:error code="XPS02" message=" * unable to load script: $1">
                                         <p:with-option name="param1" select="$script-uri"/>
+                                        <p:with-option name="logfile" select="$logfile">
+                                            <p:empty/>
+                                        </p:with-option>
                                     </pxi:error>
                                 </p:catch>
                             </p:try>
@@ -439,6 +504,9 @@
                                 <pxi:message message=" * trying to extract the step declaration for $1 from $2">
                                     <p:with-option name="param1" select="$type"/>
                                     <p:with-option name="param2" select="$script-uri"/>
+                                    <p:with-option name="logfile" select="$logfile">
+                                        <p:empty/>
+                                    </p:with-option>
                                 </pxi:message>
                                 <p:for-each>
                                     <p:iteration-source select="(//p:declare-step | //p:pipeline)[string(@x:type)=$type]">
@@ -454,6 +522,9 @@
                                         <pxi:error message=" * the step $1 was not found in $2" code="XPS01">
                                             <p:with-option name="param1" select="$type"/>
                                             <p:with-option name="param2" select="$script-uri"/>
+                                            <p:with-option name="logfile" select="$logfile">
+                                                <p:empty/>
+                                            </p:with-option>
                                         </pxi:error>
                                     </p:when>
                                     <p:otherwise>
@@ -511,6 +582,9 @@
                             <p:when test="//x:expect[@focus]">
                                 <pxi:message message=" * focusing on the assertion '$1'">
                                     <p:with-option name="param1" select="(//x:expect[@focus]/@label)[1]"/>
+                                    <p:with-option name="logfile" select="$logfile">
+                                        <p:empty/>
+                                    </p:with-option>
                                 </pxi:message>
                                 <p:delete match="//x:expect[not(@focus)]"/>
                                 <p:delete match="//x:scenario[not(.//x:expect[@focus])]"/>
@@ -520,6 +594,9 @@
                             <p:when test="//x:scenario[@focus]">
                                 <pxi:message message=" * focusing on the scenario '$1'">
                                     <p:with-option name="param1" select="(//x:scenario[@focus]/@label)[1]"/>
+                                    <p:with-option name="logfile" select="$logfile">
+                                        <p:empty/>
+                                    </p:with-option>
                                 </pxi:message>
                                 <p:delete match="//x:scenario[not((ancestor::x:scenario | descendant-or-self::x:scenario)[@focus])]"/>
                             </p:when>
@@ -530,7 +607,11 @@
                         <p:delete match="//@focus"/>
 
                         <!-- create a new x:description document for each x:scenario element with inferred inputs, options and parameters -->
-                        <pxi:message message=" * creating a new x:description document for each x:scenario element with inferred inputs, options and parameters"/>
+                        <pxi:message message=" * creating a new x:description document for each x:scenario element with inferred inputs, options and parameters">
+                            <p:with-option name="logfile" select="$logfile">
+                                <p:empty/>
+                            </p:with-option>
+                        </pxi:message>
                         <p:add-attribute match="/*" attribute-name="script">
                             <p:with-option name="attribute-value" select="resolve-uri(/*/@script,base-uri(/*))"/>
                         </p:add-attribute>
@@ -572,7 +653,11 @@
                         <p:pipe port="error" step="catch"/>
                     </p:input>
                 </p:identity>
-                <pxi:message message=" * an error occured while flattening scenario(s)"/>
+                <pxi:message message=" * an error occured while flattening scenario(s)">
+                    <p:with-option name="logfile" select="$logfile">
+                        <p:empty/>
+                    </p:with-option>
+                </pxi:message>
                 <p:add-attribute match="/*" attribute-name="xml:base">
                     <p:with-option name="attribute-value" select="$base"/>
                 </p:add-attribute>
@@ -620,7 +705,11 @@
     <!-- validate output grammar -->
     <p:for-each>
         <p:identity name="try.input"/>
-        <pxi:message message=" * validating output grammar"/>
+        <pxi:message message=" * validating output grammar">
+            <p:with-option name="logfile" select="$logfile">
+                <p:empty/>
+            </p:with-option>
+        </pxi:message>
         <p:try>
             <p:group>
                 <p:validate-with-relax-ng>
@@ -636,7 +725,11 @@
                         <p:pipe port="error" step="catch"/>
                     </p:input>
                 </p:identity>
-                <pxi:message message=" * an error occured while validating output grammar"/>
+                <pxi:message message=" * an error occured while validating output grammar">
+                    <p:with-option name="logfile" select="$logfile">
+                        <p:empty/>
+                    </p:with-option>
+                </pxi:message>
                 <p:add-attribute match="/*" attribute-name="xml:base">
                     <p:with-option name="attribute-value" select="$test-base-uri"/>
                 </p:add-attribute>

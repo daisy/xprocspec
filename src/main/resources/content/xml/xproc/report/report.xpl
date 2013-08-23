@@ -16,15 +16,33 @@
 
     <p:option name="start-time" required="true"/>
     <p:option name="end-time" required="true"/>
+    <p:option name="logfile" select="''"/>
 
     <p:import href="../utils/logging-library.xpl"/>
-
+    
+    <p:try>
+        <p:group>
+            <p:load>
+                <p:with-option name="href" select="$logfile"/>
+            </p:load>
+        </p:group>
+        <p:catch>
+            <p:identity>
+                <p:input port="source">
+                    <p:empty/>
+                </p:input>
+            </p:identity>
+        </p:catch>
+    </p:try>
+    <p:identity name="logfile"/>
+    
     <p:insert match="/html:html/html:body" position="last-child">
         <p:input port="source">
             <p:document href="report-template.xhtml"/>
         </p:input>
         <p:input port="insertion">
             <p:pipe port="source" step="main"/>
+            <p:pipe port="result" step="logfile"/>
         </p:input>
     </p:insert>
     <p:viewport match="c:error | x:expected | x:document">

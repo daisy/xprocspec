@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-model href="http://www.daisy.org/ns/xprocspec/xprocspec.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
-<x:description xmlns:x="http://www.daisy.org/ns/xprocspec" xmlns:e="http://example.net/ns" script="../steps/identity.xpl">
+<x:description xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:x="http://www.daisy.org/ns/xprocspec" xmlns:e="http://example.net/ns" script="../steps/identity.xpl">
     
-    <x:scenario label="TODO" pending=""/>
+    <x:scenario label="identity">
+        <x:call step="e:identity">
+            <x:option name="option" select="base-uri(.)"/>
+            <x:option name="option.required" select="base-uri(/*)"/>
+            <x:option name="option.default" select="base-uri()"/>
+        </x:call>
+        
+        <x:context label="the output">
+            <x:document type="port" port="options"/>
+        </x:context>
+        <x:expect label="true" type="xpath" test="true()"/>
+        <!--<x:expect type="xpath" label="base-uri(.) should be the same in both x:option/@select and x:expect/@test" test="/c:options/c:option[@name='option']=base-uri(.)"/>
+        <x:expect type="xpath" label="base-uri(/*) should be the same in both x:option/@select and x:expect/@test" test="/c:options/c:option[@name='option']=base-uri(/*)" pending=""/>
+        <x:expect type="xpath" label="base-uri() should be the same in both x:option/@select and x:expect/@test" test="/c:options/c:option[@name='option']=base-uri()" pending=""/>
+        <x:expect type="xpath" label="the context document (/) should be the xprocspec document" test="false()" pending=""/>
+        <x:expect type="xpath" label="the context element (.) should be the x:option element" test="false()" pending=""/>
+        <x:expect type="xpath" label="the variable $temp-dir should point to the temporary directory (test checks for different directory than base-uri())" test="false()" pending=""/>-->
+        
+    </x:scenario>
     
 </x:description>

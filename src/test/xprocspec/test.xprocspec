@@ -168,7 +168,7 @@
     </x:scenario>
 
 
-    <x:scenario label="the option element" pending="">
+    <x:scenario label="the option element">
         <x:call step="x:xprocspec">
             <x:option name="temp-dir" select="$temp-dir"/>
             <x:input port="source">
@@ -176,14 +176,10 @@
             </x:input>
         </x:call>
         
-        <x:context label="the result document">
-            <x:document type="port" port="result"/>
+        <x:context label="the junit output port">
+            <x:document type="port" port="junit"/>
         </x:context>
-        
-        <x:expect type="xpath" label="base-uri(.) should be either the xprocspec document or the test directory depending on the base-uri attribute" test="false()" pending=""/>
-        <x:expect type="xpath" label="base-uri(/*) should be either the xprocspec document or the test directory depending on the base-uri attribute" test="false()" pending=""/>
-        <x:expect type="xpath" label="the context document (/) should be the xprocspec document" test="false()" pending=""/>
-        <x:expect type="xpath" label="the context element (.) should be the x:option element" test="false()" pending=""/>
+        <x:expect label="all tests should succeed" type="xpath" test="not(/*/@tests='0') and /*/@failures='0' and /*/@errors='0'"/>
     </x:scenario>
     
     

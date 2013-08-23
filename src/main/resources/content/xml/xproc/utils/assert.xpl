@@ -36,6 +36,7 @@
     <p:option name="param8" select="''"/>
     <p:option name="param9" select="''"/>
     <!-- in the unlikely event that you need more parameters you'll have to format the message string yourself -->
+    <p:option name="logfile" select="''"/>
     
     <p:import href="message.xpl"/>
     <p:import href="error.xpl"/>
@@ -66,6 +67,9 @@
                 <p:when test="$test-count-min or $test-count-max">
                     <pxi:message message="the 'test' option and the 'test-count-*' options cannot be specified at the same time; only 'test' will be evaluated">
                         <p:with-option name="severity" select="'WARN'"/>
+                        <p:with-option name="logfile" select="$logfile">
+                            <p:empty/>
+                        </p:with-option>
                     </pxi:message>
                 </p:when>
                 <p:otherwise>
@@ -117,6 +121,9 @@
         <p:otherwise>
             <pxi:message message="either the 'test' option or at least one of the 'test-count-*' options must be specified; assertion failed">
                 <p:with-option name="severity" select="'WARN'"/>
+                <p:with-option name="logfile" select="$logfile">
+                    <p:empty/>
+                </p:with-option>
             </pxi:message>
             <p:add-attribute match="/*" attribute-name="result" attribute-value="false"/>
         </p:otherwise>
@@ -139,6 +146,9 @@
                 <p:with-option name="code" select="$error-code"/>
                 <p:with-option name="code-namespace" select="$error-code-namespace"/>
                 <p:with-option name="code-prefix" select="$error-code-prefix"/>
+                <p:with-option name="logfile" select="$logfile">
+                    <p:empty/>
+                </p:with-option>
             </pxi:error>
         </p:when>
         
@@ -150,6 +160,9 @@
                 <p:input port="source">
                     <p:pipe port="source" step="main"/>
                 </p:input>
+                <p:with-option name="logfile" select="$logfile">
+                    <p:empty/>
+                </p:with-option>
             </pxi:message>
         </p:otherwise>
     </p:choose>
