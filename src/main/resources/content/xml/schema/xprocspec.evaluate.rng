@@ -63,6 +63,9 @@
                             <value>xpath</value>
                         </attribute>
                         <attribute name="test"/>
+                        <optional>
+                            <attribute name="equals"/>
+                        </optional>
                     </group>
                     <group>
                         <!-- Document comparison -->

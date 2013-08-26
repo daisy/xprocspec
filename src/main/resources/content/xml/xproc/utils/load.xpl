@@ -48,7 +48,9 @@
                 <doc/>
             </p:inline>
         </p:input>
-        <p:with-option name="message" select="concat('loading &quot;',$href,'&quot;')"/>
+        <p:with-option name="message" select="concat('loading &quot;',$href,'&quot;')">
+            <p:empty/>
+        </p:with-option>
         <p:with-option name="logfile" select="$logfile">
             <p:empty/>
         </p:with-option>
@@ -93,11 +95,11 @@
         </p:when>
 
         <!--<!-\- HTML -\->
-                <p:when test="$media-type='text/html' or $media-type='application/xhtml+xml'">
-                    <px:html-load>
-                        <p:with-option name="href" select="$href"/>
-                    </px:html-load>
-                </p:when>-->
+        <p:when test="$media-type='text/html' or $media-type='application/xhtml+xml'">
+            <px:html-load>
+                <p:with-option name="href" select="$href"/>
+            </px:html-load>
+        </p:when>-->
 
         <!-- default to 'binary' -->
         <p:otherwise>

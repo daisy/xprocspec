@@ -279,9 +279,18 @@
                     <attribute name="test">
                         <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
                             When `type` is `xpath`, you can use the `test` attribute to define a XPath expression.
-                            The expression will be evaluated to either true or false, representing a successful and a failed test respectively.
+                            By default, the expression must evaluate to `true()` for the test to succeed.
                         </a:documentation>
                     </attribute>
+                    <optional>
+                        <attribute name="equals">
+                            <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+                                When `type` is `xpath`, the `equals` attribute defines the value that the `test` expression must evaluate to for the test to succeed.
+                                By default, `true()` is used. For example, `&lt;x:expect test="/*/@result='value'" .../&gt;` is equivalent to `&lt;x:expect test="/*/@result" equals="'value'" .../&gt;`.
+                                It is recommended that you use this attribute when possible, since it will give you better error messages if it fails (you will see the actual value as well as the expected).
+                            </a:documentation>
+                        </attribute>
+                    </optional>
                 </group>
                 <group>
                     <!-- Document comparison -->
@@ -513,7 +522,7 @@
             <ref name="pending-scenario-attribute"/>
         </choice>
     </define>
-    
+
     <define name="pending-scenario-wrapped">
         <element name="pending" ns="http://www.daisy.org/ns/xprocspec">
             <ref name="common-attributes"/>
@@ -526,7 +535,7 @@
             </oneOrMore>
         </element>
     </define>
-    
+
     <define name="pending-scenario-attribute">
         <element name="scenario" ns="http://www.daisy.org/ns/xprocspec">
             <ref name="pending-attribute"/>

@@ -13,7 +13,7 @@
     
     <p:for-each>
         <pxi:message message="   * loading '$1'">
-            <p:with-option name="param1" select="/*"/>
+            <p:with-option name="param1" select="string(/*)"/>
             <p:with-option name="logfile" select="$logfile">
                 <p:empty/>
             </p:with-option>

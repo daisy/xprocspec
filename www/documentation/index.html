@@ -188,7 +188,7 @@ table.simple {
   
     <h2 property="bibo:subtitle" id="subtitle">A tool for testing XProc scripts</h2>
   
-  <h2 property="dcterms:issued" datatype="xsd:dateTime" content="2013-08-22T12:04:58.000Z" id="unofficial-draft-22-august-2013">Unofficial Draft <time class="dt-published" datetime="2013-08-22">22 August 2013</time></h2>
+  <h2 property="dcterms:issued" datatype="xsd:dateTime" content="2013-08-26T11:00:06.000Z" id="unofficial-draft-26-august-2013">Unofficial Draft <time class="dt-published" datetime="2013-08-26">26 August 2013</time></h2>
   <dl>
     
     
@@ -318,11 +318,16 @@ table.simple {
 </section>
 
 <section id="the-expect-element" typeof="bibo:Chapter" resource="#the-expect-element" rel="bibo:chapter">
-<h3 aria-level="2" role="heading" id="h3_the-expect-element"><span class="secno">1.7 </span>The <code>expect</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-document-element"><code>document</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-expect-focus"><code>focus</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-grammar"><code>grammar</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-label"><code>label</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-max"><code>max</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-min"><code>min</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-pending"><code>pending</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-test"><code>test</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-type"><code>type</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
+<h3 aria-level="2" role="heading" id="h3_the-expect-element"><span class="secno">1.7 </span>The <code>expect</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-document-element"><code>document</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-expect-equals"><code>equals</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-focus"><code>focus</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-grammar"><code>grammar</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-label"><code>label</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-max"><code>max</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-min"><code>min</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-pending"><code>pending</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-test"><code>test</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-type"><code>type</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p>
                 Defines what is expected from the context document(s).
             </p>
 
+<p id="attr-expect-equals">
+                                When <code>type</code> is <code>xpath</code>, the <a href="#attr-expect-equals"><code>equals</code></a> attribute defines the value that the <code>test</code> expression must evaluate to for the test to succeed.
+                                By default, <code>true()</code> is used. For example, <code>&lt;x:expect test="/*/@result='value'" .../&gt;</code> is equivalent to <code>&lt;x:expect test="/*/@result" equals="'value'" .../&gt;</code>.
+                                It is recommended that you use this attribute when possible, since it will give you better error messages if it fails (you will see the actual value as well as the expected).
+                            </p>
 <p id="attr-expect-focus">Assertions or scenarios with the <a href="#attr-expect-focus"><code>focus</code></a> attribute will be the only ones tested and
                reported. When present, only that assertion or scenario will be evaluated.
                Its content describes why you are focusing on this particular assertion or scenario.</p>
@@ -339,7 +344,7 @@ table.simple {
                Its content describes why the assertion or scenario should not be evaluated.</p>
 <p id="attr-expect-test">
                             When <code>type</code> is <code>xpath</code>, you can use the <a href="#attr-expect-test"><code>test</code></a> attribute to define a XPath expression.
-                            The expression will be evaluated to either true or false, representing a successful and a failed test respectively.
+                            By default, the expression must evaluate to <code>true()</code> for the test to succeed.
                         </p>
 <p id="attr-expect-type">The <a href="#attr-expect-type"><code>type</code></a> attribute is used to define the type of assertion you want to make.</p><p>
                             When <code>type</code> is <a href="#the-compare-element"><code>compare</code></a>, you can put a sequence of <code>x:document</code> elements inside the <code>x:expect</code> element.

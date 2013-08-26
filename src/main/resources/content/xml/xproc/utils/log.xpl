@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<p:declare-step name="main" xmlns:p="http://www.w3.org/ns/xproc" xmlns:c="http://www.w3.org/ns/xproc-step" version="1.0" exclude-inline-prefixes="#all" type="pxi:log" xmlns:pxi="http://www.daisy.org/ns/xprocspec/xproc-internal/">
+<p:declare-step name="main" xmlns:p="http://www.w3.org/ns/xproc" xmlns:c="http://www.w3.org/ns/xproc-step" version="1.0" exclude-inline-prefixes="#all" type="pxi:log" xmlns:pxi="http://www.daisy.org/ns/xprocspec/xproc-internal/"
+    xmlns:cx="http://xmlcalabash.com/ns/extensions">
 
     <p:input port="source" sequence="true"/>
     <p:output port="result" sequence="true"/>
 
-    <p:option name="logfile"/>
-    <p:option name="message"/>
-    <p:option name="severity"/>
+    <p:option name="logfile" select="''"/>
+    <p:option name="message" required="true"/>
+    <p:option name="severity" select="'INFO'"/>
 
     <!-- the log is loaded and stored for each log message -->
     <!-- this will certainly be slow if there's a lot of log statements; use with care! -->
     <!-- I would love to find a way to append to a file without loading it (something like "echo 'message' >> 'logfile'") -->
+
+    <p:import href="message.xpl"/>
 
     <p:choose>
         <p:xpath-context>
@@ -20,10 +23,12 @@
             <p:try>
                 <p:group>
                     <p:load>
-                        <p:with-option name="href" select="$logfile"/>
+                        <p:with-option name="href" select="$logfile">
+                            <p:empty/>
+                        </p:with-option>
                     </p:load>
                 </p:group>
-                <p:catch>
+                <p:catch name="catch">
                     <p:identity>
                         <p:input port="source">
                             <p:inline>
@@ -33,7 +38,7 @@
                     </p:identity>
                 </p:catch>
             </p:try>
-            
+
             <p:insert match="/*" position="last-child">
                 <p:input port="insertion">
                     <p:inline>

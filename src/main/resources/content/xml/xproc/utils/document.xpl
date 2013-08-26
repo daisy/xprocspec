@@ -20,9 +20,8 @@
     <p:variable name="base-dir" select="if ($base-uri='temp-dir') then $temp-dir else replace(base-uri(/*),'^(.*/)[^/]*$','$1')"/>
 
     <p:variable name="port" select="/*/@port"/>
-    <p:variable name="file" select="resolve-uri(/*/@file, $base-dir)"/>
+    <p:variable name="href" select="resolve-uri(/*/@href, $base-dir)"/>
     <p:variable name="method" select="if (/*/@method=('xml','html','text','binary')) then /*/@method else 'xml'"/>
-    <p:variable name="directory" select="resolve-uri(/*/@directory, $base-dir)"/>
     <p:variable name="recursive" select="if (/*/@recursive=('true','false')) then /*/@recursive else 'false'"/>
     
     
@@ -86,8 +85,9 @@
             <p:group>
                 <p:variable name="base" select="resolve-uri((/*/@xml:base,/*/base-uri())[1],$base-dir)"/>
                 <pxi:load>
-                    <p:with-option name="href" select="$file"/>
+                    <p:with-option name="href" select="$href"/>
                     <p:with-option name="method" select="$method"/>
+                    <p:with-option name="logfile" select="$logfile"/>
                 </pxi:load>
                 <p:wrap-sequence wrapper="x:document"/>
                 <p:add-attribute match="/*" attribute-name="xml:base">
@@ -98,13 +98,13 @@
 
         <p:when test="$type='directory'">
             <pxi:directory-list>
-                <p:with-option name="path" select="$directory"/>
+                <p:with-option name="path" select="$href"/>
                 <p:with-option name="depth" select="if ($recursive='true') then '-1' else '0'"/>
             </pxi:directory-list>
             <p:delete match="//*/@xml:base"/>
             <p:wrap-sequence wrapper="x:document"/>
             <p:add-attribute match="/*" attribute-name="xml:base">
-                <p:with-option name="attribute-value" select="$directory"/>
+                <p:with-option name="attribute-value" select="$href"/>
             </p:add-attribute>
         </p:when>
 

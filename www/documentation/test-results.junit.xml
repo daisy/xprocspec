@@ -1,115 +1,112 @@
-<?xml version="1.0" encoding="UTF-8"?><testsuites tests="21" failures="1" time="14.186" errors="0" name="test"><testsuite timestamp="2013-08-23T10:09:00.229Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d19501e1" name="theDescriptionElement" package="http://www.daisy.org/ns/xprocspec" time="0.807">
-<properties><property name="input: source" value="&lt;declare-step xmlns=&#34;http://www.w3.org/ns/xproc&#34; ...&gt;...&lt;/declare-step&gt; (Base URI: file:/home/jostein/xprocspec/src/test/xprocspec/test.xprocspec)"/>
+<testsuites tests="21" failures="0" time="16.89" errors="0" name="test"><testsuite timestamp="2013-08-26T13:23:57.601Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d27026e1" name="theDescriptionElement" package="http://www.daisy.org/ns/xprocspec" time="0.578">
+<properties><property name="input: source" value="&lt;description xmlns=&#34;http://www.daisy.org/ns/xprocspec&#34; ...&gt;...&lt;/description&gt; (Base URI: file:/home/jostein/xprocspec/src/test/xprocspec/test.xprocspec)"/>
 
-<property name="option: temp-dir" value="file:/tmp/xprocspec-20130823120846587/"/>
+<property name="option: temp-dir" value="file:/tmp/xprocspec-20130826152340986/"/>
 
 </properties>
 <testcase name="thereShouldBe3Tests" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>there should be 3 tests: SUCCESS</system-out>
 <system-err/></testcase><testcase name="oneOfTheTestsShouldBePending" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>one of the tests should be pending: SUCCESS</system-out>
-<system-err/></testcase></testsuite><testsuite timestamp="2013-08-23T10:09:00.245Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="0" id="d19513e1" name="theImportElementTwoImports" package="http://www.daisy.org/ns/xprocspec" time="1.168">
-<properties><property name="input: source" value="&lt;declare-step xmlns=&#34;http://www.w3.org/ns/xproc&#34; ...&gt;...&lt;/declare-step&gt; (Base URI: file:/home/jostein/xprocspec/src/test/xprocspec/test.xprocspec)"/>
+<system-err/></testcase></testsuite><testsuite timestamp="2013-08-26T13:23:57.615Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="0" id="d27038e1" name="theImportElementTwoImports" package="http://www.daisy.org/ns/xprocspec" time="0.941">
+<properties><property name="input: source" value="&lt;description xmlns=&#34;http://www.daisy.org/ns/xprocspec&#34; ...&gt;...&lt;/description&gt; (Base URI: file:/home/jostein/xprocspec/src/test/xprocspec/test.xprocspec)"/>
 
-<property name="option: temp-dir" value="file:/tmp/xprocspec-20130823120846587/"/>
-
-</properties>
-<testcase name="thereShouldBe3Tests" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>there should be 3 tests: SUCCESS</system-out>
-<system-err/></testcase></testsuite><testsuite timestamp="2013-08-23T10:09:00.259Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="0" id="d19524e1" name="theImportElementOneImportWithOneImport" package="http://www.daisy.org/ns/xprocspec" time="0.9">
-<properties><property name="input: source" value="&lt;declare-step xmlns=&#34;http://www.w3.org/ns/xproc&#34; ...&gt;...&lt;/declare-step&gt; (Base URI: file:/home/jostein/xprocspec/src/test/xprocspec/test.xprocspec)"/>
-
-<property name="option: temp-dir" value="file:/tmp/xprocspec-20130823120846587/"/>
+<property name="option: temp-dir" value="file:/tmp/xprocspec-20130826152340986/"/>
 
 </properties>
 <testcase name="thereShouldBe3Tests" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>there should be 3 tests: SUCCESS</system-out>
-<system-err/></testcase></testsuite><testsuite timestamp="2013-08-23T10:09:00.272Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="0" id="d19535e1" name="theImportElementCircularImports" package="http://www.daisy.org/ns/xprocspec" time="0.693">
-<properties><property name="input: source" value="&lt;declare-step xmlns=&#34;http://www.w3.org/ns/xproc&#34; ...&gt;...&lt;/declare-step&gt; (Base URI: file:/home/jostein/xprocspec/src/test/xprocspec/test.xprocspec)"/>
+<system-err/></testcase></testsuite><testsuite timestamp="2013-08-26T13:23:57.628Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="0" id="d27049e1" name="theImportElementOneImportWithOneImport" package="http://www.daisy.org/ns/xprocspec" time="0.941">
+<properties><property name="input: source" value="&lt;description xmlns=&#34;http://www.daisy.org/ns/xprocspec&#34; ...&gt;...&lt;/description&gt; (Base URI: file:/home/jostein/xprocspec/src/test/xprocspec/test.xprocspec)"/>
 
-<property name="option: temp-dir" value="file:/tmp/xprocspec-20130823120846587/"/>
+<property name="option: temp-dir" value="file:/tmp/xprocspec-20130826152340986/"/>
+
+</properties>
+<testcase name="thereShouldBe3Tests" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>there should be 3 tests: SUCCESS</system-out>
+<system-err/></testcase></testsuite><testsuite timestamp="2013-08-26T13:23:57.64Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="0" id="d27060e1" name="theImportElementCircularImports" package="http://www.daisy.org/ns/xprocspec" time="0.704">
+<properties><property name="input: source" value="&lt;description xmlns=&#34;http://www.daisy.org/ns/xprocspec&#34; ...&gt;...&lt;/description&gt; (Base URI: file:/home/jostein/xprocspec/src/test/xprocspec/test.xprocspec)"/>
+
+<property name="option: temp-dir" value="file:/tmp/xprocspec-20130826152340986/"/>
 
 </properties>
 <testcase name="thereShouldBe2Tests" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>there should be 2 tests: SUCCESS</system-out>
-<system-err/></testcase></testsuite><testsuite timestamp="2013-08-23T10:09:00.286Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d19544e1" name="theScenarioElementWithPendingAttribute" package="http://www.daisy.org/ns/xprocspec" time="0.503">
-<properties><property name="input: source" value="&lt;declare-step xmlns=&#34;http://www.w3.org/ns/xproc&#34; ...&gt;...&lt;/declare-step&gt; (Base URI: file:/home/jostein/xprocspec/src/test/xprocspec/test.xprocspec)"/>
+<system-err/></testcase></testsuite><testsuite timestamp="2013-08-26T13:23:57.652Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d27069e1" name="theScenarioElementWithPendingAttribute" package="http://www.daisy.org/ns/xprocspec" time="0.606">
+<properties><property name="input: source" value="&lt;description xmlns=&#34;http://www.daisy.org/ns/xprocspec&#34; ...&gt;...&lt;/description&gt; (Base URI: file:/home/jostein/xprocspec/src/test/xprocspec/test.xprocspec)"/>
 
-<property name="option: temp-dir" value="file:/tmp/xprocspec-20130823120846587/"/>
+<property name="option: temp-dir" value="file:/tmp/xprocspec-20130826152340986/"/>
 
 </properties>
 <testcase name="thereShouldBe2Tests" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>there should be 2 tests: SUCCESS</system-out>
 <system-err/></testcase><testcase name="thereShouldBeASkippedTest" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>there should be a skipped test: SUCCESS</system-out>
-<system-err/></testcase></testsuite><testsuite timestamp="2013-08-23T10:09:00.307Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="0" id="d19553e1" name="theScenarioElementWithTwoChildScenariosOneOfWhichHasAnotherChildScenario" package="http://www.daisy.org/ns/xprocspec" time="0.805">
-<properties><property name="input: source" value="&lt;declare-step xmlns=&#34;http://www.w3.org/ns/xproc&#34; ...&gt;...&lt;/declare-step&gt; (Base URI: file:/home/jostein/xprocspec/src/test/xprocspec/test.xprocspec)"/>
+<system-err/></testcase></testsuite><testsuite timestamp="2013-08-26T13:23:57.666Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="0" id="d27078e1" name="theScenarioElementWithTwoChildScenariosOneOfWhichHasAnotherChildScenario" package="http://www.daisy.org/ns/xprocspec" time="0.956">
+<properties><property name="input: source" value="&lt;description xmlns=&#34;http://www.daisy.org/ns/xprocspec&#34; ...&gt;...&lt;/description&gt; (Base URI: file:/home/jostein/xprocspec/src/test/xprocspec/test.xprocspec)"/>
 
-<property name="option: temp-dir" value="file:/tmp/xprocspec-20130823120846587/"/>
+<property name="option: temp-dir" value="file:/tmp/xprocspec-20130826152340986/"/>
 
 </properties>
 <testcase name="thereShouldBe3Tests" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>there should be 3 tests: SUCCESS</system-out>
-<system-err/></testcase></testsuite><testsuite timestamp="2013-08-23T10:09:00.322Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="0" id="d19564e1" name="theCallElementInheritFromCallElementsInAncestorScenarios" package="http://www.daisy.org/ns/xprocspec" time="0.448">
-<properties><property name="input: source" value="&lt;declare-step xmlns=&#34;http://www.w3.org/ns/xproc&#34; ...&gt;...&lt;/declare-step&gt; (Base URI: file:/home/jostein/xprocspec/src/test/xprocspec/test.xprocspec)"/>
+<system-err/></testcase></testsuite><testsuite timestamp="2013-08-26T13:23:57.677Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="0" id="d27089e1" name="theCallElementInheritFromCallElementsInAncestorScenarios" package="http://www.daisy.org/ns/xprocspec" time="0.445">
+<properties><property name="input: source" value="&lt;description xmlns=&#34;http://www.daisy.org/ns/xprocspec&#34; ...&gt;...&lt;/description&gt; (Base URI: file:/home/jostein/xprocspec/src/test/xprocspec/test.xprocspec)"/>
 
-<property name="option: temp-dir" value="file:/tmp/xprocspec-20130823120846587/"/>
+<property name="option: temp-dir" value="file:/tmp/xprocspec-20130826152340986/"/>
 
 </properties>
 <testcase name="thereShouldBe2Tests" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>there should be 2 tests: SUCCESS</system-out>
-<system-err/></testcase></testsuite><testsuite timestamp="2013-08-23T10:09:00.335Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d19573e1" name="theCallElementStepAttributePointingToStepDeclaredInAnXProcLibrary" package="http://www.daisy.org/ns/xprocspec" time="0.338">
-<properties><property name="input: source" value="&lt;declare-step xmlns=&#34;http://www.w3.org/ns/xproc&#34; ...&gt;...&lt;/declare-step&gt; (Base URI: file:/home/jostein/xprocspec/src/test/xprocspec/test.xprocspec)"/>
+<system-err/></testcase></testsuite><testsuite timestamp="2013-08-26T13:23:57.687Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d27098e1" name="theCallElementStepAttributePointingToStepDeclaredInAnXProcLibrary" package="http://www.daisy.org/ns/xprocspec" time="0.433">
+<properties><property name="input: source" value="&lt;description xmlns=&#34;http://www.daisy.org/ns/xprocspec&#34; ...&gt;...&lt;/description&gt; (Base URI: file:/home/jostein/xprocspec/src/test/xprocspec/test.xprocspec)"/>
 
-<property name="option: temp-dir" value="file:/tmp/xprocspec-20130823120846587/"/>
+<property name="option: temp-dir" value="file:/tmp/xprocspec-20130826152340986/"/>
 
 </properties>
 <testcase name="thereShouldBe1Test" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>there should be 1 test: SUCCESS</system-out>
 <system-err/></testcase><testcase name="theTestShouldSucceed" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>the test should succeed: SUCCESS</system-out>
-<system-err/></testcase></testsuite><testsuite timestamp="2013-08-23T10:09:00.35Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d19582e1" name="theCallElementTwoDifferentScenariosTestingDifferentStepsInTheSameLibrary" package="http://www.daisy.org/ns/xprocspec" time="0.495">
-<properties><property name="input: source" value="&lt;declare-step xmlns=&#34;http://www.w3.org/ns/xproc&#34; ...&gt;...&lt;/declare-step&gt; (Base URI: file:/home/jostein/xprocspec/src/test/xprocspec/test.xprocspec)"/>
+<system-err/></testcase></testsuite><testsuite timestamp="2013-08-26T13:23:57.699Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d27107e1" name="theCallElementTwoDifferentScenariosTestingDifferentStepsInTheSameLibrary" package="http://www.daisy.org/ns/xprocspec" time="0.596">
+<properties><property name="input: source" value="&lt;description xmlns=&#34;http://www.daisy.org/ns/xprocspec&#34; ...&gt;...&lt;/description&gt; (Base URI: file:/home/jostein/xprocspec/src/test/xprocspec/test.xprocspec)"/>
 
-<property name="option: temp-dir" value="file:/tmp/xprocspec-20130823120846587/"/>
+<property name="option: temp-dir" value="file:/tmp/xprocspec-20130826152340986/"/>
 
 </properties>
 <testcase name="thereShouldBe2Tests" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>there should be 2 tests: SUCCESS</system-out>
 <system-err/></testcase><testcase name="theTestsShouldSucceed" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>the tests should succeed: SUCCESS</system-out>
-<system-err/></testcase></testsuite><testsuite timestamp="2013-08-23T10:09:00.363Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="0" id="d19593e1" name="theInputElementEmptySequence" package="http://www.daisy.org/ns/xprocspec" time="0.417">
-<properties><property name="input: source" value="&lt;declare-step xmlns=&#34;http://www.w3.org/ns/xproc&#34; ...&gt;...&lt;/declare-step&gt; (Base URI: file:/home/jostein/xprocspec/src/test/xprocspec/test.xprocspec)"/>
+<system-err/></testcase></testsuite><testsuite timestamp="2013-08-26T13:23:57.711Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="0" id="d27118e1" name="theInputElementEmptySequence" package="http://www.daisy.org/ns/xprocspec" time="0.467">
+<properties><property name="input: source" value="&lt;description xmlns=&#34;http://www.daisy.org/ns/xprocspec&#34; ...&gt;...&lt;/description&gt; (Base URI: file:/home/jostein/xprocspec/src/test/xprocspec/test.xprocspec)"/>
 
-<property name="option: temp-dir" value="file:/tmp/xprocspec-20130823120846587/"/>
-
-</properties>
-<testcase name="allTestsShouldSucceed" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>all tests should succeed: SUCCESS</system-out>
-<system-err/></testcase></testsuite><testsuite timestamp="2013-08-23T10:09:00.376Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="0" id="d19602e1" name="theInputElementSequenceOfTwoDocuments" package="http://www.daisy.org/ns/xprocspec" time="0.478">
-<properties><property name="input: source" value="&lt;declare-step xmlns=&#34;http://www.w3.org/ns/xproc&#34; ...&gt;...&lt;/declare-step&gt; (Base URI: file:/home/jostein/xprocspec/src/test/xprocspec/test.xprocspec)"/>
-
-<property name="option: temp-dir" value="file:/tmp/xprocspec-20130823120846587/"/>
+<property name="option: temp-dir" value="file:/tmp/xprocspec-20130826152340986/"/>
 
 </properties>
 <testcase name="allTestsShouldSucceed" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>all tests should succeed: SUCCESS</system-out>
-<system-err/></testcase></testsuite><testsuite timestamp="2013-08-23T10:09:00.388Z" hostname="localhost" tests="1" errors="0" failures="1" skipped="0" id="d19611e1" name="theOptionElement" package="http://www.daisy.org/ns/xprocspec" time="0.209">
-<properties><property name="input: source" value="&lt;declare-step xmlns=&#34;http://www.w3.org/ns/xproc&#34; ...&gt;...&lt;/declare-step&gt; (Base URI: file:/home/jostein/xprocspec/src/test/xprocspec/test.xprocspec)"/>
+<system-err/></testcase></testsuite><testsuite timestamp="2013-08-26T13:23:57.721Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="0" id="d27127e1" name="theInputElementSequenceOfTwoDocuments" package="http://www.daisy.org/ns/xprocspec" time="0.497">
+<properties><property name="input: source" value="&lt;description xmlns=&#34;http://www.daisy.org/ns/xprocspec&#34; ...&gt;...&lt;/description&gt; (Base URI: file:/home/jostein/xprocspec/src/test/xprocspec/test.xprocspec)"/>
 
-<property name="option: temp-dir" value="file:/tmp/xprocspec-20130823120846587/"/>
+<property name="option: temp-dir" value="file:/tmp/xprocspec-20130826152340986/"/>
 
 </properties>
-<testcase name="allTestsShouldSucceed" classname="xprocspec" assertions="1" time="0" status="FAILED"><failure message="all tests should succeed" type="xpath"/><system-out>all tests should succeed: FAILED</system-out>
-<system-err>Expected:
-not(/*/@tests='0') and /*/@failures='0' and /*/@errors='0'
+<testcase name="allTestsShouldSucceed" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>all tests should succeed: SUCCESS</system-out>
+<system-err/></testcase></testsuite><testsuite timestamp="2013-08-26T13:23:57.732Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="0" id="d27136e1" name="theOptionElement" package="http://www.daisy.org/ns/xprocspec" time="0.411">
+<properties><property name="input: source" value="&lt;description xmlns=&#34;http://www.daisy.org/ns/xprocspec&#34; ...&gt;...&lt;/description&gt; (Base URI: file:/home/jostein/xprocspec/src/test/xprocspec/test.xprocspec)"/>
 
-</system-err></testcase></testsuite><testsuite timestamp="2013-08-23T10:09:00.398Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d19620e1" name="theParamElement" time="0.001">
+<property name="option: temp-dir" value="file:/tmp/xprocspec-20130826152340986/"/>
+
+</properties>
+<testcase name="allTestsShouldSucceed" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>all tests should succeed: SUCCESS</system-out>
+<system-err/></testcase></testsuite><testsuite timestamp="2013-08-26T13:23:57.738Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d27143e1" name="theParamElement" time="0.001">
 <properties>
 
 
 </properties>
-<testcase name="pendingScenario-theParamElement" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the param element: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-23T10:09:00.407Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d19623e1" name="theContextElement" time="0.001">
+<testcase name="pendingScenario-theParamElement" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the param element: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-26T13:23:57.745Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d27146e1" name="theContextElement" time="0.001">
 <properties>
 
 
 </properties>
-<testcase name="pendingScenario-theContextElement" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the context element: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-23T10:09:00.416Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d19626e1" name="theExpectElement" time="0.001">
+<testcase name="pendingScenario-theContextElement" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the context element: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-26T13:23:57.751Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d27149e1" name="theExpectElement" time="0">
 <properties>
 
 
 </properties>
-<testcase name="pendingScenario-theExpectElement" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the expect element: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-23T10:09:00.425Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d19629e1" name="theDocumentElement" time="0.001">
+<testcase name="pendingScenario-theExpectElement" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the expect element: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-26T13:23:57.757Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d27152e1" name="theDocumentElement" time="0.001">
 <properties>
 
 
 </properties>
-<testcase name="pendingScenario-theDocumentElement" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the document element: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-23T10:09:00.434Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d19632e1" name="thePendingElement" time="0.001">
+<testcase name="pendingScenario-theDocumentElement" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the document element: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-08-26T13:23:57.763Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d27155e1" name="thePendingElement" time="0.001">
 <properties>
 
 

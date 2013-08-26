@@ -128,6 +128,7 @@
                     <p:pipe port="result" step="message"/>
                 </p:with-option>
             </pxi:log>
+            
         </p:when>
         
         <!-- Pipeline 2 -->

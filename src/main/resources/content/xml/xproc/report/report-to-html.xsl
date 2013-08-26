@@ -268,7 +268,9 @@
                                                 </xsl:if>
                                                 <xsl:if test="$test-class='failed'">
                                                     <tr class="expected">
-                                                        <td colspan="2">Expected: <pre><code><xsl:copy-of select="x:expected/node()"/></code></pre>
+                                                        <td colspan="2">
+                                                            <div>Test: <pre><code><xsl:copy-of select="x:expected/node()"/></code></pre></div>
+                                                            <div>Equals: <pre><code><xsl:copy-of select="x:was/node()"/></code></pre></div>
                                                         </td>
                                                     </tr>
                                                 </xsl:if>

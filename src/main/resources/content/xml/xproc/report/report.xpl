@@ -23,7 +23,9 @@
     <p:try>
         <p:group>
             <p:load>
-                <p:with-option name="href" select="$logfile"/>
+                <p:with-option name="href" select="$logfile">
+                    <p:empty/>
+                </p:with-option>
             </p:load>
         </p:group>
         <p:catch>
