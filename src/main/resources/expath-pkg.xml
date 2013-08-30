@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package xmlns="http://expath.org/ns/pkg" xml:base="http://www.daisy.org/ns/xprocspec/expath-pkg.xml" spec="1.0" abbrev="xprocspec" version="1.0.0-SNAPSHOT" name="http://www.daisy.org/ns/xprocspec">
+<package xmlns="http://expath.org/ns/pkg" xml:base="http://www.daisy.org/ns/xprocspec/expath-pkg.xml" spec="1.0" abbrev="xprocspec" version="${project.version}" name="http://www.daisy.org/ns/xprocspec">
     <title>xprocspec</title>
     <home>http://josteinaj.github.io/xprocspec/</home>
     <xproc>
