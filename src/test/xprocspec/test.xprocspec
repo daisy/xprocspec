@@ -12,7 +12,7 @@
         <x:context label="the junit output port">
             <x:document type="port" port="junit"/>
         </x:context>
-        <x:expect label="there should be 3 tests" type="xpath" test="/*/@tests='3'"/>
+        <x:expect label="there should be at least one test, and none of the tests should fail" type="xpath" test="not(/*/@tests='0') and /*/@failures='0' and /*/@errors='0'"/>
         <x:expect label="one of the tests should be pending" type="xpath" test="sum(/*/testsuite/number(@skipped))=1"/>
     </x:scenario>
 
@@ -31,7 +31,7 @@
             <x:context label="the junit output port">
                 <x:document type="port" port="junit"/>
             </x:context>
-            <x:expect label="there should be 3 tests" type="xpath" test="/*/@tests='3'"/>
+            <x:expect label="there should be at least one test, and none of the tests should fail" type="xpath" test="not(/*/@tests='0') and /*/@failures='0' and /*/@errors='0'"/>
         </x:scenario>
 
         <x:scenario label="- one import with one import">
@@ -43,7 +43,7 @@
             <x:context label="the junit output port">
                 <x:document type="port" port="junit"/>
             </x:context>
-            <x:expect label="there should be 3 tests" type="xpath" test="/*/@tests='3'"/>
+            <x:expect label="there should be at least one test, and none of the tests should fail" type="xpath" test="not(/*/@tests='0') and /*/@failures='0' and /*/@errors='0'"/>
         </x:scenario>
 
         <x:scenario label="- circular imports">
@@ -55,7 +55,7 @@
             <x:context label="the junit output port">
                 <x:document type="port" port="junit"/>
             </x:context>
-            <x:expect label="there should be 2 tests" type="xpath" test="/*/@tests='2'"/>
+            <x:expect label="there should be at least one test, and none of the tests should fail" type="xpath" test="not(/*/@tests='0') and /*/@failures='0' and /*/@errors='0'"/>
         </x:scenario>
     </x:scenario>
 
@@ -74,7 +74,7 @@
             <x:context label="the junit output port">
                 <x:document type="port" port="junit"/>
             </x:context>
-            <x:expect label="there should be 2 tests" type="xpath" test="/*/@tests='2'"/>
+            <x:expect label="there should be at least one test, and none of the tests should fail" type="xpath" test="not(/*/@tests='0') and /*/@failures='0' and /*/@errors='0'"/>
             <x:expect label="there should be a skipped test" type="xpath" test="/*/*/@skipped='1'"/>
         </x:scenario>
 
@@ -87,7 +87,7 @@
             <x:context label="the junit output port">
                 <x:document type="port" port="junit"/>
             </x:context>
-            <x:expect label="there should be 3 tests" type="xpath" test="/*/@tests='3'"/>
+            <x:expect label="there should be at least one test, and none of the tests should fail" type="xpath" test="not(/*/@tests='0') and /*/@failures='0' and /*/@errors='0'"/>
         </x:scenario>
     </x:scenario>
 
@@ -106,7 +106,7 @@
             <x:context label="the junit output port">
                 <x:document type="port" port="junit"/>
             </x:context>
-            <x:expect label="there should be 2 tests" type="xpath" test="/*/@tests='2'"/>
+            <x:expect label="there should be at least one test, and none of the tests should fail" type="xpath" test="not(/*/@tests='0') and /*/@failures='0' and /*/@errors='0'"/>
         </x:scenario>
 
         <x:scenario label="- step attribute pointing to step declared in an XProc library">
@@ -118,8 +118,7 @@
             <x:context label="the junit output port">
                 <x:document type="port" port="junit"/>
             </x:context>
-            <x:expect label="there should be 1 test" type="xpath" test="/*/@tests='1'"/>
-            <x:expect label="the test should succeed" type="xpath" test="/*/@tests='1' and /*/@failures='0' and /*/@errors='0'"/>
+            <x:expect label="there should be at least one test, and none of the tests should fail" type="xpath" test="not(/*/@tests='0') and /*/@failures='0' and /*/@errors='0'"/>
         </x:scenario>
 
         <x:scenario label="- two different scenarios testing different steps in the same library">
@@ -131,8 +130,7 @@
             <x:context label="the junit output port">
                 <x:document type="port" port="junit"/>
             </x:context>
-            <x:expect label="there should be 2 tests" type="xpath" test="/*/@tests='2'"/>
-            <x:expect label="the tests should succeed" type="xpath" test="/*/@tests='2' and /*/@failures='0' and /*/@errors='0'"/>
+            <x:expect label="there should be at least one test, and none of the tests should fail" type="xpath" test="not(/*/@tests='0') and /*/@failures='0' and /*/@errors='0'"/>
         </x:scenario>
     </x:scenario>
 
@@ -151,7 +149,7 @@
             <x:context label="the junit output port">
                 <x:document type="port" port="junit"/>
             </x:context>
-            <x:expect label="all tests should succeed" type="xpath" test="not(/*/@tests='0') and /*/@failures='0' and /*/@errors='0'"/>
+            <x:expect label="there should be at least one test, and none of the tests should fail" type="xpath" test="not(/*/@tests='0') and /*/@failures='0' and /*/@errors='0'"/>
         </x:scenario>
 
         <x:scenario label="- sequence of two documents">
@@ -163,7 +161,7 @@
             <x:context label="the junit output port">
                 <x:document type="port" port="junit"/>
             </x:context>
-            <x:expect label="all tests should succeed" type="xpath" test="not(/*/@tests='0') and /*/@failures='0' and /*/@errors='0'"/>
+            <x:expect label="there should be at least one test, and none of the tests should fail" type="xpath" test="not(/*/@tests='0') and /*/@failures='0' and /*/@errors='0'"/>
         </x:scenario>
     </x:scenario>
 
@@ -179,27 +177,21 @@
         <x:context label="the junit output port">
             <x:document type="port" port="junit"/>
         </x:context>
-        <x:expect label="all tests should succeed" type="xpath" test="not(/*/@tests='0') and /*/@failures='0' and /*/@errors='0'"/>
+        <x:expect label="there should be at least one test, and none of the tests should fail" type="xpath" test="not(/*/@tests='0') and /*/@failures='0' and /*/@errors='0'"/>
     </x:scenario>
     
-    
-    <x:scenario label="the param element" pending="">
+    <x:scenario label="the param element">
         <x:call step="x:xprocspec">
             <x:option name="temp-dir" select="$temp-dir"/>
             <x:input port="source">
-                <x:document type="file" href="tests/option-1.xprocspec"/>
+                <x:document type="file" href="tests/param-1.xprocspec"/>
             </x:input>
         </x:call>
         
-        <x:context label="the result document">
-            <x:document type="port" port="result"/>
+        <x:context label="the junit output port">
+            <x:document type="port" port="junit"/>
         </x:context>
-        
-        <x:expect type="xpath" label="base-uri(.) should be either the xprocspec document or the test directory depending on the base-uri attribute" test="false()" pending=""/>
-        <x:expect type="xpath" label="base-uri(/*) should be either the xprocspec document or the test directory depending on the base-uri attribute" test="false()" pending=""/>
-        <x:expect type="xpath" label="the context document (/) should be the xprocspec document" test="false()" pending=""/>
-        <x:expect type="xpath" label="the context element (.) should be the x:option element" test="false()" pending=""/>
-        <x:expect type="xpath" label="test that x:document with port='name of primary or secondary parameter port' returns a single c:param-set" test="false()" pending=""/>
+        <x:expect label="there should be at least one test, and none of the tests should fail" type="xpath" test="not(/*/@tests='0') and /*/@failures='0' and /*/@errors='0'"/>
     </x:scenario>
 
 

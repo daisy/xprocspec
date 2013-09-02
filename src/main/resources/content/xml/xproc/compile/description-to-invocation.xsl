@@ -2,6 +2,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0" xmlns:p="http://www.w3.org/ns/xproc" xmlns:x="http://www.daisy.org/ns/xprocspec" xmlns:c="http://www.w3.org/ns/xproc-step">
 
     <xsl:output indent="yes" method="xml"/>
+    <xsl:param name="test-base-uri" required="yes"/>
     <xsl:param name="name" required="yes"/>
     <xsl:param name="temp-dir" required="yes"/>
 
@@ -17,6 +18,9 @@
             <xsl:text>
     </xsl:text>
             <p:variable name="start-time" select="adjust-dateTime-to-timezone(current-dateTime(),xs:dayTimeDuration('PT0H'))"/>
+            <xsl:text>
+    </xsl:text>
+            <p:variable name="test-base-uri" select="'{$test-base-uri}'"/>
             <xsl:text>
     </xsl:text>
             <p:variable name="temp-dir" select="'{$temp-dir}'"/>
@@ -61,9 +65,10 @@
         </xsl:text>
                                     <p:with-option name="{@name}" select="{@select}">
                                         <p:inline>
-                                            <context xml:base="{base-uri(/*)}"/>
+                                            <context xml:base="{$test-base-uri}"/>
                                         </p:inline>
                                     </p:with-option>
+                                    <!-- TODO: ability to set custom context for p:with-option ? -->
                                 </xsl:for-each>
 
                                 <xsl:variable name="parameter-ports" select="/*/x:step-declaration/*/p:input[@kind='parameter']"/>
@@ -86,14 +91,15 @@
                                     </xsl:when>
                                     <xsl:otherwise>
                                         <xsl:for-each select="/*/x:scenario/x:call/x:param">
+                                            <xsl:variable name="parameter-port" select="(@port,$primary-parameter-port/@port)[1]"/>
                                             <xsl:text>
         </xsl:text>
-                                            <p:with-param name="{@name}" select="{@select}">
+                                            <p:with-param name="{@name}" select="{@select}" port="{$parameter-port}">
                                                 <p:inline>
-                                                    <context xml:base="{base-uri(/*)}"/>
+                                                    <context xml:base="{$test-base-uri}"/>
                                                 </p:inline>
                                             </p:with-param>
-                                            <!-- TODO: set context for p:with-param -->
+                                            <!-- TODO: ability to set custom context for p:with-param ? -->
                                         </xsl:for-each>
                                     </xsl:otherwise>
                                 </xsl:choose>
@@ -236,17 +242,29 @@
         </xsl:text>
                             <p:identity>
                                 <xsl:text>
-        </xsl:text>
+            </xsl:text>
                                 <p:input port="source">
                                     <xsl:text>
-        </xsl:text>
+                </xsl:text>
                                     <p:pipe step="catch" port="error"/>
                                     <xsl:text>
-        </xsl:text>
+            </xsl:text>
                                 </p:input>
                                 <xsl:text>
         </xsl:text>
                             </p:identity>
+                            <xsl:text>
+        </xsl:text>
+                            <p:add-attribute match="/*" attribute-name="test-base-uri">
+                                <xsl:text>
+            </xsl:text>
+                                <p:with-option name="attribute-value" select="$test-base-uri"/>
+                                <xsl:text>
+        </xsl:text>
+                            </p:add-attribute>
+                            <xsl:text>
+        </xsl:text>
+                            <p:add-attribute match="/*" attribute-name="error-location" attribute-value="running the script"/>
                             <xsl:text>
         </xsl:text>
                             <p:wrap-sequence wrapper="try-catch-wrapper"/>

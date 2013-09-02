@@ -113,19 +113,43 @@
                 <p:iteration-source select="(/x:description/c:errors)[1]"/>
                 <p:identity/>
             </p:for-each>
-            <p:group>
-                <p:variable name="base" select="base-uri(/*)"/>
-                <p:wrap-sequence wrapper="x:document"/>
-                <pxi:assert message="   * no errors occured">
-                    <p:with-option name="test" select="count(/*/*) &gt; 0"/>
-                    <p:with-option name="logfile" select="$logfile">
-                        <p:empty/>
-                    </p:with-option>
-                </pxi:assert>
-                <p:add-attribute match="/*" attribute-name="xml:base">
-                    <p:with-option name="attribute-value" select="if (/*/*/@xml:base) then resolve-uri(/*/*/@xml:base,$base) else $base"/>
-                </p:add-attribute>
-            </p:group>
+            <p:identity name="errors"/>
+            <p:count name="errors.count"/>
+            <p:choose>
+                <p:when test=".='0'">
+                    <p:identity>
+                        <p:input port="source">
+                            <p:pipe port="result" step="errors"/>
+                        </p:input>
+                    </p:identity>
+                    <pxi:message message="    * no errors occured">
+                        <p:with-option name="logfile" select="$logfile">
+                            <p:empty/>
+                        </p:with-option>
+                    </pxi:message>
+                </p:when>
+                <p:otherwise>
+                    <p:identity>
+                        <p:input port="source">
+                            <p:pipe port="result" step="errors"/>
+                        </p:input>
+                    </p:identity>
+                    
+                    <p:group>
+                        <p:variable name="base" select="base-uri(/*)"/>
+                        <p:wrap-sequence wrapper="x:document"/>
+                        <pxi:assert message="   * error document contains no errors">
+                            <p:with-option name="test" select="count(/*/*) &gt; 0"/>
+                            <p:with-option name="logfile" select="$logfile">
+                                <p:empty/>
+                            </p:with-option>
+                        </pxi:assert>
+                        <p:add-attribute match="/*" attribute-name="xml:base">
+                            <p:with-option name="attribute-value" select="if (/*/*/@xml:base) then resolve-uri(/*/*/@xml:base,$base) else $base"/>
+                        </p:add-attribute>
+                    </p:group>
+                </p:otherwise>
+            </p:choose>
         </p:when>
         
         <p:otherwise>

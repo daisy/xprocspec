@@ -67,6 +67,7 @@
                             <p:with-option name="attribute-value" select="$test-temp-dir"/>
                         </p:add-attribute>
                         <p:xslt>
+                            <p:with-param name="test-base-uri" select="$base"/>
                             <p:with-param name="name" select="$test-name"/>
                             <p:with-param name="temp-dir" select="$test-temp-dir"/>
                             <p:input port="stylesheet">

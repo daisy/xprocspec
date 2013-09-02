@@ -578,6 +578,7 @@
                             </p:input>
                         </p:identity>
                         
+                        <!-- the focus attribute -->
                         <p:choose>
                             <p:when test="//x:expect[@focus]">
                                 <pxi:message message=" * focusing on the assertion '$1'">
@@ -641,6 +642,26 @@
                                 <p:with-option name="match" select="concat('/*/x:step-declaration/*[not(string(@x:type)=&quot;',$type,'&quot;)]')"/>
                             </p:delete>
                             <p:delete match="/*/x:step-declaration[not(*)]"/>
+                            
+                            <p:choose>
+                                <p:when test="/*/x:scenario/x:context[@label='errors']/x:document/c:errors">
+                                    <p:identity/>
+                                </p:when>
+                                <p:otherwise>
+                                    <p:insert match="/*/x:scenario[not(@pending)]/x:call" position="after">
+                                        <p:input port="insertion">
+                                            <p:inline>
+                                                <x:context label="errors" id="errors">
+                                                    <x:document type="errors"/>
+                                                </x:context>
+                                            </p:inline>
+                                            <p:inline>
+                                                <x:expect type="count" label="the step should execute successfully without throwing any errors" max="0" contextref="errors"/>
+                                            </p:inline>
+                                        </p:input>
+                                    </p:insert>
+                                </p:otherwise>
+                            </p:choose>
                         </p:for-each>
                     </p:otherwise>
                 </p:choose>
