@@ -644,7 +644,7 @@
                             <p:delete match="/*/x:step-declaration[not(*)]"/>
                             
                             <p:choose>
-                                <p:when test="/*/x:scenario/x:context[@label='errors']/x:document/c:errors">
+                                <p:when test="/*/x:scenario/x:context/x:document[@type='errors']">
                                     <p:identity/>
                                 </p:when>
                                 <p:otherwise>

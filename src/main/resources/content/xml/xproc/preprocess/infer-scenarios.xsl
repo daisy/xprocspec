@@ -44,7 +44,20 @@
                 <xsl:attribute name="pending" select="$pending"/>
             </xsl:if>
             <xsl:attribute name="contextref" select="concat('context',count(preceding-sibling::x:context[1]/preceding::x:context))"/>
-            <xsl:copy-of select="node()"/>
+            <xsl:for-each select="node()">
+                <xsl:choose>
+                    <xsl:when test="self::x:document">
+                        <xsl:copy>
+                            <xsl:copy-of select="@*"/>
+                            <xsl:attribute name="xml:space" select="'preserve'"/>
+                            <xsl:copy-of select="node()"/>
+                        </xsl:copy>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:copy-of select="."/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:for-each>
         </xsl:copy>
     </xsl:template>
 
@@ -57,7 +70,20 @@
                 <xsl:attribute name="pending" select="$pending"/>
             </xsl:if>
             <xsl:attribute name="id" select="concat('context',count(preceding::x:context))"/>
-            <xsl:copy-of select="node()"/>
+            <xsl:for-each select="node()">
+                <xsl:choose>
+                    <xsl:when test="self::x:document">
+                        <xsl:copy>
+                            <xsl:copy-of select="@*"/>
+                            <xsl:attribute name="xml:space" select="'preserve'"/>
+                            <xsl:copy-of select="node()"/>
+                        </xsl:copy>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:copy-of select="."/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:for-each>
         </xsl:copy>
     </xsl:template>
     

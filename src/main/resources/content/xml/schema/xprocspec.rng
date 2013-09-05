@@ -253,14 +253,14 @@
     </define>
 
     <define name="expect.attributes">
-        <ref name="common-attributes"/>
+        <ref name="label"/>
         <optional>
             <choice>
                 <ref name="pending-attribute"/>
                 <ref name="focus-attribute"/>
             </choice>
         </optional>
-        <ref name="label"/>
+        <ref name="common-attributes"/>
     </define>
 
     <define name="expect">
@@ -268,7 +268,6 @@
             <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
                 Defines what is expected from the context document(s).
             </a:documentation>
-            <ref name="expect.attributes"/>
             <choice>
                 <group>
                     <!-- XPath assertion -->
@@ -351,6 +350,7 @@
                     </choice>
                 </group>
             </choice>
+            <ref name="expect.attributes"/>
         </element>
     </define>
 

@@ -95,9 +95,7 @@
                         </pxi:message>
                         <p:for-each>
                             <p:iteration-source select="/x:description/x:scenario/x:context-group"/>
-                            <p:identity name="context-group">
-                                <p:log port="result" href="file:/tmp/context-group.xml"/>
-                            </p:identity>
+                            <p:identity name="context-group"/>
                             <pxi:message message="     * setting context to '$1'">
                                 <p:with-option name="param1" select="(/x:context-group/x:context/@label)[1]"/>
                                 <p:with-option name="logfile" select="$logfile">
@@ -170,167 +168,40 @@
                                                 <p:identity/>
                                             </p:otherwise>
                                         </p:choose>
-                                        <p:for-each name="this.xpath-context">
-                                            <pxi:message message="           * evaluating against context item #$1">
-                                                <p:with-option name="param1" select="p:iteration-position()"/>
-                                                <p:with-option name="logfile" select="$logfile">
-                                                    <p:empty/>
-                                                </p:with-option>
-                                            </pxi:message>
-                                            <p:group>
-                                                <p:variable name="temp-dir" select="$temp-dir"/>
-                                                <p:variable name="test-base-uri" select="$base"/>
-                                                <p:variable name="test-replaced"
-                                                    select="replace(replace(
-                                                    $test, '\$temp-dir', concat('&quot;',$temp-dir,'&quot;'))
-                                                    , '\$test-base-uri', concat('&quot;',$test-base-uri,'&quot;'))"/>
-                                                <p:variable name="equals-replaced"
-                                                    select="replace(replace(
-                                                    $equals, '\$temp-dir', concat('&quot;',$temp-dir,'&quot;'))
-                                                    , '\$test-base-uri', concat('&quot;',$test-base-uri,'&quot;'))"/>
-                                                <p:filter>
-                                                    <p:with-option name="select" select="concat('if (',$test-replaced,'=',$equals-replaced,') then /* else /*[false()]')"/>
-                                                </p:filter>
-                                            </p:group>
-                                            <p:count name="this.count"/>
-                                            <pxi:message message="             * $1">
-                                                <p:with-option name="param1" select="if (/*='0') then 'failed' else 'success'"/>
-                                                <p:with-option name="logfile" select="$logfile">
-                                                    <p:empty/>
-                                                </p:with-option>
-                                            </pxi:message>
-                                            <p:choose>
-                                                <p:when test="/*='0'">
+                                        <p:identity name="assertion.context"/>
 
-                                                    <pxi:message message="             * $1" severity="DEBUG">
-                                                        <p:with-option name="param1" select="base-uri()">
-                                                            <p:pipe port="current" step="this.xpath-context"/>
-                                                        </p:with-option>
-                                                        <p:with-option name="logfile" select="$logfile">
-                                                            <p:empty/>
-                                                        </p:with-option>
-                                                    </pxi:message>
-
-                                                    <!-- TODO: this does not work properly. should be evaluated in the right context etc. -->
-                                                    <!--<p:string-replace match="/*/text()" name="this.test">-->
-                                                    <!--<p:with-option name="replace" select="$test"/>-->
-                                                    <p:identity name="this.test">
-                                                        <p:input port="source">
-                                                            <p:inline>
-                                                                <x:test>TODO: test value</x:test>
-                                                            </p:inline>
-                                                        </p:input>
-                                                    </p:identity>
-                                                    <!--</p:string-replace>-->
-
-                                                    <!-- TODO: this does not work properly. should be evaluated in the right context etc. -->
-                                                    <!--<p:string-replace match="/*/text()" name="this.equals">-->
-                                                    <!--<p:with-option name="replace" select="$equals"/>-->
-                                                    <p:identity name="this.equals">
-                                                        <p:input port="source">
-                                                            <p:inline>
-                                                                <x:equals>TODO: equals value</x:equals>
-                                                            </p:inline>
-                                                        </p:input>
-                                                    </p:identity>
-                                                    <!--</p:string-replace>-->
-
-                                                    <p:add-attribute match="/*" attribute-name="test">
-                                                        <p:input port="source">
-                                                            <p:pipe port="result" step="this.count"/>
-                                                        </p:input>
-                                                        <p:with-option name="attribute-value" select="/*/text()">
-                                                            <p:pipe port="result" step="this.test"/>
-                                                        </p:with-option>
-                                                    </p:add-attribute>
-                                                    <p:add-attribute match="/*" attribute-name="equals">
-                                                        <p:with-option name="attribute-value" select="/*/text()">
-                                                            <p:pipe port="result" step="this.equals"/>
-                                                        </p:with-option>
-                                                    </p:add-attribute>
-                                                </p:when>
-                                                <p:otherwise>
-                                                    <p:identity/>
-                                                </p:otherwise>
-                                            </p:choose>
-                                        </p:for-each>
-                                        <p:identity name="raw-test-result"/>
-                                        <p:wrap-sequence wrapper="x:test-result"/>
-                                        <p:add-attribute match="/*" attribute-name="result">
-                                            <p:with-option name="attribute-value" select="if (not(some $result in (/x:test-result/c:result/number(.)) satisfies $result = 0)) then 'passed' else 'failed'"/>
-                                        </p:add-attribute>
-                                        <pxi:message message="         * assertion $1">
-                                            <p:with-option name="param1" select="/*/@result"/>
-                                            <p:with-option name="logfile" select="$logfile">
+                                        <p:xslt name="xpath-xslt">
+                                            <p:input port="parameters">
                                                 <p:empty/>
-                                            </p:with-option>
-                                        </pxi:message>
-                                        <p:delete match="/x:test-result/c:result"/>
-                                        <p:identity name="test-result"/>
-
+                                            </p:input>
+                                            <p:input port="source">
+                                                <p:pipe port="result" step="assertion"/>
+                                            </p:input>
+                                            <p:input port="stylesheet">
+                                                <p:document href="assertion-to-xslt.xsl"/>
+                                            </p:input>
+                                        </p:xslt>
                                         <p:for-each>
-                                            <p:iteration-source select="/*[text()='0']">
-                                                <p:pipe port="result" step="raw-test-result"/>
+                                            <p:iteration-source>
+                                                <p:pipe port="result" step="assertion.context"/>
                                             </p:iteration-source>
-                                            <p:string-replace match="/*/text()" replace="/*/@test"/>
-                                            <p:rename match="/*" new-name="x:was"/>
+                                            <p:xslt>
+                                                <p:with-param name="temp-dir" select="$temp-dir"/>
+                                                <p:with-param name="test-base-uri" select="$base"/>
+                                                <p:input port="stylesheet">
+                                                    <p:pipe port="result" step="xpath-xslt"/>
+                                                </p:input>
+                                            </p:xslt>
                                         </p:for-each>
-                                        <p:identity name="evaluated-was-sequence"/>
-
-                                        <p:for-each>
-                                            <p:iteration-source select="/*[text()='0']">
-                                                <p:pipe port="result" step="raw-test-result"/>
-                                            </p:iteration-source>
-                                            <p:string-replace match="/*/text()" replace="/*/@equals"/>
-                                            <p:rename match="/*" new-name="x:expected"/>
-                                        </p:for-each>
-                                        <p:identity name="evaluated-expected-sequence"/>
-
-                                        <p:group>
-                                            <p:string-replace match="/*/*/text()">
-                                                <p:with-option name="replace" select="concat('&quot;',$equals,'&quot;')"/>
-                                                <p:input port="source">
-                                                    <p:inline>
-                                                        <x:expected><![CDATA[XPath: ]]><x:expected>EXPECTED</x:expected><![CDATA[
-Value: ]]></x:expected>
-                                                    </p:inline>
-                                                </p:input>
-                                            </p:string-replace>
-                                            <p:insert match="/*" position="last-child">
-                                                <p:input port="insertion">
-                                                    <p:pipe port="result" step="evaluated-expected-sequence"/>
-                                                </p:input>
-                                            </p:insert>
-                                            <p:unwrap match="/*/*"/>
-                                            <p:identity name="expected"/>
-
-                                            <p:string-replace match="/*/*/text()">
-                                                <p:with-option name="replace" select="concat('&quot;',$test,'&quot;')"/>
-                                                <p:input port="source">
-                                                    <p:inline>
-                                                        <x:was><![CDATA[XPath: ]]><x:was>WAS</x:was><![CDATA[
-Value: ]]></x:was>
-                                                    </p:inline>
-                                                </p:input>
-                                            </p:string-replace>
-                                            <p:insert match="/*" position="last-child">
-                                                <p:input port="insertion">
-                                                    <p:pipe port="result" step="evaluated-was-sequence"/>
-                                                </p:input>
-                                            </p:insert>
-                                            <p:unwrap match="/*/*"/>
-                                            <p:identity name="was"/>
-
-                                            <p:insert match="/*" position="last-child">
-                                                <p:input port="source">
-                                                    <p:pipe port="result" step="test-result"/>
-                                                </p:input>
-                                                <p:input port="insertion">
-                                                    <p:pipe port="result" step="expected"/>
-                                                    <p:pipe port="result" step="was"/>
-                                                </p:input>
-                                            </p:insert>
-                                        </p:group>
+                                        
+                                        <p:wrap-sequence wrapper="x:test-result"/>
+                                        <p:xslt>
+                                            <p:with-param name="test" select="$test"/>
+                                            <p:with-param name="equals" select="$equals"/>
+                                            <p:input port="stylesheet">
+                                                <p:document href="format-test-result.xsl"/>
+                                            </p:input>
+                                        </p:xslt>
                                     </p:when>
 
                                     <p:when test="/x:expect[@type='compare']">
@@ -344,7 +215,7 @@ Value: ]]></x:was>
                                             <p:iteration-source select="/x:expect/x:document/*"/>
                                             <p:identity/>
                                         </p:for-each>
-
+                                        
                                         <pxi:compare>
                                             <p:input port="source">
                                                 <p:pipe port="result" step="context"/>
@@ -357,6 +228,7 @@ Value: ]]></x:was>
                                             </p:with-option>
                                         </pxi:compare>
                                         <p:rename match="/*" new-name="x:test-result"/>
+                                        <p:delete match="/*/x:was"/>
                                         <p:add-attribute match="/*" attribute-name="result">
                                             <p:with-option name="attribute-value" select="if (/*/@result='true') then 'passed' else 'failed'"/>
                                         </p:add-attribute>

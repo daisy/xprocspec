@@ -237,13 +237,23 @@
                                                 <tr class="was">
                                                     <td colspan="2">Was:</td>
                                                 </tr>
-                                                <xsl:for-each select="$scenario-description/x:scenario/x:context[@id=$id]/x:document">
-                                                    <tr class="was">
-                                                        <td colspan="2">
-                                                            <pre><code><xsl:copy-of select="node()"/></code></pre>
-                                                        </td>
-                                                    </tr>
-                                                </xsl:for-each>
+                                                <xsl:variable name="context-documents" select="$scenario-description/x:scenario/x:context[@id=$id]/x:document"/>
+                                                <xsl:choose>
+                                                    <xsl:when test="count($context-documents)=0">
+                                                        <tr class="was">
+                                                            <td colspan="2">
+                                                                <pre><code>(empty sequence)</code></pre>
+                                                            </td>
+                                                        </tr>
+                                                    </xsl:when>
+                                                    <xsl:otherwise>
+                                                        <tr class="was">
+                                                            <td colspan="2">
+                                                                <pre><code><xsl:copy-of select="node()"/></code></pre>
+                                                            </td>
+                                                        </tr>
+                                                    </xsl:otherwise>
+                                                </xsl:choose>
                                             </xsl:if>
 
                                             <!-- for each step scenario context test -->
@@ -269,8 +279,12 @@
                                                 <xsl:if test="$test-class='failed'">
                                                     <tr class="expected">
                                                         <td colspan="2">
-                                                            <div>Test: <pre><code><xsl:copy-of select="x:was/node()"/></code></pre></div>
-                                                            <div>Equals: <pre><code><xsl:copy-of select="x:expected/node()"/></code></pre></div>
+                                                            <xsl:if test="x:was">
+                                                                <div>Test: <pre><code><xsl:copy-of select="x:was/node()"/></code></pre></div>
+                                                            </xsl:if>
+                                                            <xsl:if test="x:expected">
+                                                                <div>Equals: <pre><code><xsl:copy-of select="x:expected/node()"/></code></pre></div>
+                                                            </xsl:if>
                                                         </td>
                                                     </tr>
                                                 </xsl:if>
@@ -339,7 +353,9 @@
                                             <xsl:value-of select="@severity"/>
                                         </td>
                                         <td>
-                                            <code><pre><xsl:value-of select="./text()"/></pre></code>
+                                            <code>
+                                                <pre><xsl:value-of select="./text()"/></pre>
+                                            </code>
                                         </td>
                                     </tr>
                                 </xsl:for-each>

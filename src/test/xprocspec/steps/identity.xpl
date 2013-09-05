@@ -44,8 +44,8 @@
     </p:output>
     
     <p:option name="option"/>
-<!--    <p:option name="option.required" required="true"/>-->
-    <p:option name="option.required" select="'required'"/>
+    <p:option name="option.required" required="true"/>
+    <!--<p:option name="option.required" select="'required'"/>-->
     <p:option name="option.default" select="'default'"/>
     
     <p:identity>

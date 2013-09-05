@@ -64,6 +64,7 @@
                                     <xsl:text>
         </xsl:text>
                                     <p:with-option name="{@name}" select="{@select}">
+                                        <xsl:copy-of select="namespace::*"/>
                                         <p:inline>
                                             <context xml:base="{$test-base-uri}"/>
                                         </p:inline>

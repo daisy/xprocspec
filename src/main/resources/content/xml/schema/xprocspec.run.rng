@@ -145,6 +145,9 @@
                 <element name="document" ns="http://www.daisy.org/ns/xprocspec">
                     <a:documentation>A document appearing on the output port. The xml:base attribute contains the base URI of the document.</a:documentation>
                     <attribute name="xml:base"/>
+                    <optional>
+                        <attribute name="xml:space"/>
+                    </optional>
                     <attribute name="type">
                         <value>inline</value>
                     </attribute>

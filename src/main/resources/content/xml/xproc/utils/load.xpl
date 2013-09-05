@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<p:declare-step xmlns:p="http://www.w3.org/ns/xproc" xmlns:c="http://www.w3.org/ns/xproc-step" name="main" type="pxi:load" xmlns:cx="http://xmlcalabash.com/ns/extensions" version="1.0"
-    xmlns:pxi="http://www.daisy.org/ns/xprocspec/xproc-internal/">
+<p:declare-step xmlns:p="http://www.w3.org/ns/xproc" xmlns:c="http://www.w3.org/ns/xproc-step" name="main" type="pxi:load" xmlns:cx="http://xmlcalabash.com/ns/extensions" version="1.0" xmlns:pxi="http://www.daisy.org/ns/xprocspec/xproc-internal/">
 
     <p:output port="result"/>
 
@@ -9,6 +8,7 @@
     <p:option name="logfile" select="''"/>
 
     <p:import href="logging-library.xpl"/>
+    <p:import href="html-load.xpl"/>
 
     <p:declare-step type="pxi:load-text">
         <p:output port="result"/>
@@ -24,6 +24,7 @@
             <p:with-option name="attribute-value" select="$href"/>
         </p:add-attribute>
         <p:http-request/>
+        <p:add-attribute match="/*" attribute-name="xml:space" attribute-value="preserve"/>
     </p:declare-step>
 
     <p:declare-step type="pxi:load-binary">
@@ -58,12 +59,12 @@
     <p:sink/>
 
     <p:choose>
-        <!--<!-\- Force HTML -\->
-    <p:when test="$method='html'">
-        <px:html-load>
-            <p:with-option name="href" select="$href"/>
-        </px:html-load>
-    </p:when>-->
+        <!-- Force HTML -->
+        <p:when test="$method='html'">
+            <pxi:html-load>
+                <p:with-option name="href" select="$href"/>
+            </pxi:html-load>
+        </p:when>
 
         <!-- XML -->
         <p:when test="$method='xml'">
@@ -94,12 +95,12 @@
             </pxi:load-text>
         </p:when>
 
-        <!--<!-\- HTML -\->
-        <p:when test="$media-type='text/html' or $media-type='application/xhtml+xml'">
-            <px:html-load>
+        <!-- HTML -->
+        <p:when test="matches(lower-case($href),'\.x?html?$')">
+            <pxi:html-load>
                 <p:with-option name="href" select="$href"/>
-            </px:html-load>
-        </p:when>-->
+            </pxi:html-load>
+        </p:when>
 
         <!-- default to 'binary' -->
         <p:otherwise>

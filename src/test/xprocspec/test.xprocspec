@@ -198,16 +198,30 @@
     <x:scenario label="the context element" pending="">
         <x:call step="x:xprocspec">
             <x:option name="temp-dir" select="$temp-dir"/>
+            <x:input port="source">
+                <x:document type="file" href="tests/context-1.xprocspec"/>
+            </x:input>
         </x:call>
         
-        <!--change the context a couple of times and check that the context changes in the expect assertions-->
+        <x:context label="the junit output port">
+            <x:document type="port" port="junit"/>
+        </x:context>
+        <x:expect label="there should be at least one test, and none of the tests should fail" type="xpath" test="not(/*/@tests='0') and /*/@failures='0' and /*/@errors='0'"/>
     </x:scenario>
 
 
     <x:scenario label="the expect element" pending="">
         <x:call step="x:xprocspec">
             <x:option name="temp-dir" select="$temp-dir"/>
+            <x:input port="source">
+                <x:document type="file" href="tests/expect-1.xprocspec"/>
+            </x:input>
         </x:call>
+        
+        <x:context label="the junit output port">
+            <x:document type="port" port="junit"/>
+        </x:context>
+        <x:expect label="there should be at least one test, and none of the tests should fail" type="xpath" test="not(/*/@tests='0') and /*/@failures='0' and /*/@errors='0'"/>
 
         <!--
         type=xpath
@@ -234,34 +248,51 @@
     </x:scenario>
 
 
-    <x:scenario label="the document element" pending="">
+    <x:scenario label="the document element">
         <x:call step="x:xprocspec">
             <x:option name="temp-dir" select="$temp-dir"/>
         </x:call>
         
-        <!--
-        test using inline document
-        test="local-name(/*)='doc1'" position="1" against a sequence of two documents (doc1 and doc2) should succeed
-        test="local-name(/*)='doc1'" position="2" against a sequence of two documents (doc1 and doc2) should fail
-        use base-uri=temp-dir and relative xml:base to set implicit base URI.
-        test flat directory listing
-        test recursive directory listing
-        test loading of text file
-        test loading of binary file
-        test loading of html file
-        test getting input port
-        test getting output port
-        test getting errors document
-            empty when no errors
-            c:errors when errors
-        -->
+        <x:scenario label="- all the different types except 'errors'">
+            <x:call>
+                <x:input port="source">
+                    <x:document type="file" href="tests/document-1.xprocspec"/>
+                </x:input>
+            </x:call>
+            
+            <x:context label="the junit output port">
+                <x:document type="port" port="junit"/>
+            </x:context>
+            <x:expect label="there should be at least one test, and none of the tests should fail" type="xpath" test="not(/*/@tests='0') and /*/@failures='0' and /*/@errors='0'"/>
+        </x:scenario>
+        
+        <x:scenario label="- the 'errors' type">
+            <x:call>
+                <x:input port="source">
+                    <x:document type="file" href="tests/document-2.xprocspec"/>
+                </x:input>
+            </x:call>
+            
+            <x:context label="the junit output port">
+                <x:document type="port" port="junit"/>
+            </x:context>
+            <x:expect label="there should be at least one test, and none of the tests should fail" type="xpath" test="not(/*/@tests='0') and /*/@failures='0' and /*/@errors='0'"/>
+        </x:scenario>
     </x:scenario>
 
 
     <x:scenario label="the pending element" pending="">
         <x:call step="x:xprocspec">
             <x:option name="temp-dir" select="$temp-dir"/>
+            <x:input port="source">
+                <x:document type="file" href="tests/pending-1.xprocspec"/>
+            </x:input>
         </x:call>
+        
+        <x:context label="the junit output port">
+            <x:document type="port" port="junit"/>
+        </x:context>
+        <x:expect label="there should be at least one test, and none of the tests should fail" type="xpath" test="not(/*/@tests='0') and /*/@failures='0' and /*/@errors='0'"/>
         
         <!--
         skip assertions wrapped in the pending element

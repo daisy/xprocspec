@@ -12,6 +12,7 @@
     <p:option name="fail-if-not-equal" select="'false'"/>
 
     <p:wrap-sequence name="wrapped-source" wrapper="wrapper"/>
+    <p:delete match="/*/*/@xml:space"/>
     <p:string-replace match="text()" replace="normalize-space(replace(.,'&#x00a0;',' '))" name="source"/>
 
     <p:wrap-sequence name="wrapped-alternate" wrapper="wrapper">
@@ -19,6 +20,7 @@
             <p:pipe port="alternate" step="main"/>
         </p:input>
     </p:wrap-sequence>
+    <p:delete match="/*/*/@xml:space"/>
     <p:string-replace match="text()" replace="normalize-space(replace(.,'&#x00a0;',' '))" name="alternate"/>
 
     <p:compare name="compare">
@@ -65,6 +67,7 @@
                     <p:pipe port="result" step="was"/>
                 </p:input>
             </p:insert>
+            <p:add-attribute match="/*/*" attribute-name="xml:space" attribute-value="preserve"/>
         </p:otherwise>
     </p:choose>
 
