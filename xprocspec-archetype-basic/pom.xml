@@ -3,16 +3,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.daisy</groupId>
-    <artifactId>xprocspec-parent</artifactId>
+    <artifactId>xprocspec-archetype-basic</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
-
-    <name>xprocspec-parent</name>
-    <description>Parent project for xprocspec</description>
+    <packaging>jar</packaging>
     
-    <modules>
-        <module>xprocspec</module>
-        <module>xprocspec-archetype-basic</module>
-    </modules>
-
 </project>
