@@ -40,26 +40,6 @@
         <developerConnection>scm:git:git@github.com:josteinaj/xprocspec.git</developerConnection>
     </scm>
 
-    <!--<repositories>
-        <repository>
-            <id>central</id>
-            <name>Maven Central</name>
-            <url>http://repo.maven.apache.org/maven2/</url>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>sonatype-nexus-snapshots</id>
-            <name>oss.sonatype.org github Release Repository Snapshot Repository</name>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <url>http://oss.sonatype.org/content/repositories/snapshots/</url>
-        </pluginRepository>
-    </pluginRepositories>-->
     <distributionManagement>
         <repository>
             <id>sonatype-nexus-staging</id>
