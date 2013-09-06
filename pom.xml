@@ -59,7 +59,7 @@
             </snapshots>
             <url>http://oss.sonatype.org/content/repositories/snapshots/</url>
         </pluginRepository>
-    </pluginRepositories>
+    </pluginRepositories>-->
     <distributionManagement>
         <repository>
             <id>sonatype-nexus-staging</id>
@@ -71,11 +71,11 @@
             <name>Sonatype Nexus Snapshots</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
         </snapshotRepository>
-    </distributionManagement>-->
+    </distributionManagement>
     
     <modules>
         <module>xprocspec</module>
-        <!--<module>xprocspec-archetype-basic</module>-->
+        <module>xprocspec-archetype-basic</module>
     </modules>
 
 </project>
