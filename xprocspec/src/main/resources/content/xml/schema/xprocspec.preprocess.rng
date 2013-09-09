@@ -335,6 +335,7 @@
             <data type="boolean"/>
         </attribute>
         <ref name="xproc.common"/>
+        <ref name="common-attributes"/>
     </define>
 
     <define name="xproc.document-inline-data">
@@ -344,13 +345,25 @@
                     <data type="anyURI"/>
                 </attribute>
                 <zeroOrMore>
-                    <attribute ns="">
-                        <anyName>
-                            <except>
-                                <name>href</name>
-                            </except>
-                        </anyName>
-                    </attribute>
+                    <choice>
+                        <attribute ns="">
+                            <anyName>
+                                <except>
+                                    <name>href</name>
+                                </except>
+                            </anyName>
+                        </attribute>
+                        <attribute>
+                            <anyName>
+                                <except>
+                                    <nsName ns=""/>
+                                    <nsName ns="http://www.daisy.org/ns/xprocspec"/>
+                                    <nsName ns="http://www.w3.org/ns/xproc-step"/>
+                                    <nsName ns="http://www.w3.org/ns/xproc"/>
+                                </except>
+                            </anyName>
+                        </attribute>
+                    </choice>
                 </zeroOrMore>
             </element>
             <element name="inline" ns="http://www.w3.org/ns/xproc">
@@ -362,13 +375,25 @@
                     <data type="anyURI"/>
                 </attribute>
                 <zeroOrMore>
-                    <attribute ns="">
-                        <anyName>
-                            <except>
-                                <name>href</name>
-                            </except>
-                        </anyName>
-                    </attribute>
+                    <choice>
+                        <attribute ns="">
+                            <anyName>
+                                <except>
+                                    <name>href</name>
+                                </except>
+                            </anyName>
+                        </attribute>
+                        <attribute>
+                            <anyName>
+                                <except>
+                                    <nsName ns=""/>
+                                    <nsName ns="http://www.daisy.org/ns/xprocspec"/>
+                                    <nsName ns="http://www.w3.org/ns/xproc-step"/>
+                                    <nsName ns="http://www.w3.org/ns/xproc"/>
+                                </except>
+                            </anyName>
+                        </attribute>
+                    </choice>
                 </zeroOrMore>
             </element>
         </choice>
