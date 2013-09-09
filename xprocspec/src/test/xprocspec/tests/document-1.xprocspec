@@ -14,31 +14,31 @@
                 </x:document>
             </x:input>
         </x:call>
-        
+
         <!-- output port -->
         <x:context label="the options">
             <x:document type="port" port="options"/>
         </x:context>
         <x:expect type="count" label="There should be a single document on the options port" min="1" max="1"/>
-        
+
         <!-- input port -->
         <x:context label="the primary input port">
             <x:document type="port" port="source.document.primary"/>
         </x:context>
         <x:expect type="count" label="There should be a single document on the primary input port" min="1" max="1"/>
-        
+
         <!-- errors -->
         <x:context label="the errors">
             <x:document type="errors"/>
         </x:context>
         <x:expect type="count" label="There should be no errors" max="0"/>
-        
+
         <!-- external document -->
         <x:context label="the xprocspec test document">
             <x:document type="file" href="document-1.xprocspec"/>
         </x:context>
         <x:expect type="xpath" label="The loaded document should be itself (x:description as root element)" test="local-name(/*)" equals="'description'"/>
-        
+
         <!-- inline document -->
         <x:context label="an inline 'test' element">
             <x:document type="inline">
@@ -48,7 +48,7 @@
         <x:expect type="count" label="There should be one inline document" min="1" max="1"/>
         <x:expect type="xpath" label="The inline document should have a 'test' root element" test="local-name(/*)" equals="'test'"/>
         <x:expect type="xpath" label="The base URI should be that of the xprocspec test document" test="base-uri(/*)" equals="$test-base-uri"/>
-        
+
         <!-- inline document with base uri -->
         <x:context label="an inline 'test' element with base-uri set to 'temp-dir'">
             <x:document type="inline" base-uri="temp-dir">
@@ -56,7 +56,7 @@
             </x:document>
         </x:context>
         <x:expect type="xpath" label="The base URI should be that of the temporary directory" test="base-uri(/*)" equals="$temp-dir"/>
-        
+
         <!-- inline document with base uri and relative xml:base and a relative xml:base on the inline document -->
         <x:context label="an inline 'test' element with base-uri set to 'temp-dir' and the document element having a relative xml:base">
             <x:document type="inline" base-uri="temp-dir">
@@ -64,7 +64,7 @@
             </x:document>
         </x:context>
         <x:expect type="xpath" label="The base URI should be that of the temporary directory" test="base-uri(/*)" equals="resolve-uri('file.xml',$temp-dir)"/>
-        
+
         <!-- directory listing -->
         <x:context label="the './document-1.resources/' directory; non-recursive">
             <x:document type="directory" href="document-1.resources"/>
@@ -82,7 +82,7 @@
                 </c:directory>
             </x:document>
         </x:expect>
-        
+
         <!-- directory listing (recursive) -->
         <x:context label="the './document-1.resources/' directory; recursive">
             <x:document type="directory" href="document-1.resources" recursive="true"/>
@@ -113,7 +113,7 @@
                 </c:directory>
             </x:document>
         </x:expect>
-        
+
         <!-- the position attribute (position=1) -->
         <x:context label="The [doc1,doc2] sequence: position=1">
             <x:document type="port" port="result.document.secondary.sequence" position="1"/>
@@ -123,7 +123,7 @@
                 <doc1/>
             </x:document>
         </x:expect>
-        
+
         <!-- the position attribute (position=2) -->
         <x:context label="The [doc1,doc2] sequence: position=2">
             <x:document type="port" port="result.document.secondary.sequence" position="2"/>
@@ -133,7 +133,7 @@
                 <doc2/>
             </x:document>
         </x:expect>
-        
+
         <!-- the position attribute (position=all) -->
         <x:context label="The [doc1,doc2] sequence: position=all">
             <x:document type="port" port="result.document.secondary.sequence" position="all"/>
@@ -146,7 +146,7 @@
                 <doc2/>
             </x:document>
         </x:expect>
-        
+
         <!-- the position attribute (position=last) -->
         <x:context label="The [doc1,doc2] sequence: position=last">
             <x:document type="port" port="result.document.secondary.sequence" position="last"/>
@@ -156,7 +156,7 @@
                 <doc2/>
             </x:document>
         </x:expect>
-        
+
         <!-- test loading of text file -->
         <x:context label="A text file">
             <x:document type="file" method="text" href="document-1.resources/text.txt"/>
@@ -167,7 +167,7 @@
 It has two lines.]]></c:body>
             </x:document>
         </x:expect>
-        
+
         <!-- test loading of binary file -->
         <x:context label="A binary file (image file)">
             <x:document type="file" method="binary" href="document-1.resources/image.png"/>
@@ -198,7 +198,7 @@ Znp6OjUaDXt6euj1ej9FrtPpJACmpaXR4/H8p+SS5NbWFk0mE3U6HVUqFZOSkmgwGDg8PMyTkxP+
 1Wr9sRj/AOniXBAMU5s4AAAAAElFTkSuQmCC]]></c:body>
             </x:document>
         </x:expect>
-        
+
         <!-- test loading of xhtml5 file -->
         <x:context label="An XHTML5 file (well-formed XML)">
             <x:document type="file" method="html" href="document-1.resources/xhtml5.html"/>
@@ -216,7 +216,7 @@ Znp6OjUaDXt6euj1ej9FrtPpJACmpaXR4/H8p+SS5NbWFk0mE3U6HVUqFZOSkmgwGDg8PMyTkxP+
                 </html>
             </x:document>
         </x:expect>
-        
+
         <!-- test loading of html5 file -->
         <x:context label="An HTML5 file (not well-formed XML)">
             <x:document type="file" method="html" href="document-1.resources/html5.html"/>
@@ -232,6 +232,41 @@ Znp6OjUaDXt6euj1ej9FrtPpJACmpaXR4/H8p+SS5NbWFk0mE3U6HVUqFZOSkmgwGDg8PMyTkxP+
                         <p>This is a <b><i>HTML5</i></b><i>-file</i> which is *not* well-formed XML.</p>
                     </body>
                 </html>
+            </x:document>
+        </x:expect>
+
+        <!-- test using select expression -->
+        <x:context label="Portions of an XML document selected using the select attribute">
+            <x:document type="inline" select="//span">
+                <doc>
+                    <span id="1"/>
+                    <p>
+                        <span id="2"/>
+                        <span id="3"/>
+                    </p>
+                    <span id="4">
+                        <span id="5"/>
+                    </span>
+                </doc>
+            </x:document>
+        </x:context>
+        <x:expect label="There should be a sequence of five spans (id=1,2,3,4,5)" type="compare">
+            <x:document type="inline">
+                <span xmlns="" id="1"/>
+            </x:document>
+            <x:document type="inline">
+                <span xmlns="" id="2"/>
+            </x:document>
+            <x:document type="inline">
+                <span xmlns="" id="3"/>
+            </x:document>
+            <x:document type="inline">
+                <span xmlns="" id="4">
+                    <span id="5"/>
+                </span>
+            </x:document>
+            <x:document type="inline">
+                <span xmlns="" id="5"/>
             </x:document>
         </x:expect>
     </x:scenario>

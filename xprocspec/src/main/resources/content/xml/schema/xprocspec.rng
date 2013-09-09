@@ -370,6 +370,13 @@
                     number of ways:</p>
             </a:documentation>
             <ref name="common-attributes"/>
+            <optional>
+                <attribute name="select">
+                    <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+                        The `select` attribute can be used to select portions of the document(s). The matching elements will be provided as a sequence of documents. It is equivalent to the XProc step `p:filter`.
+                    </a:documentation>
+                </attribute>
+            </optional>
             <choice>
                 <group>
                     <!-- inline document -->

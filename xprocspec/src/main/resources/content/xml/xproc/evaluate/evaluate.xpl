@@ -219,13 +219,15 @@
                                         </p:for-each>
                                         
                                         <pxi:compare>
-                                            <p:with-option name="normalize-space" select="$normalize-space"/>
                                             <p:input port="source">
                                                 <p:pipe port="result" step="context"/>
                                             </p:input>
                                             <p:input port="alternate">
                                                 <p:pipe port="result" step="expect"/>
                                             </p:input>
+                                            <p:with-option name="normalize-space" select="$normalize-space">
+                                                <p:empty/>
+                                            </p:with-option>
                                             <p:with-option name="logfile" select="$logfile">
                                                 <p:empty/>
                                             </p:with-option>

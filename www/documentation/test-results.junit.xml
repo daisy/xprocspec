@@ -1,149 +1,149 @@
-<testsuites tests="38" failures="0" time="36.279" errors="0" name="test"><testsuite timestamp="2013-09-09T12:29:35.917Z" hostname="localhost" tests="3" errors="0" failures="0" skipped="0" id="d42625e1" name="theDescriptionElement" package="http://www.daisy.org/ns/xprocspec" time="1.338">
+<testsuites tests="38" failures="0" time="31.932" errors="0" name="test"><testsuite timestamp="2013-09-09T14:12:19.852Z" hostname="localhost" tests="3" errors="0" failures="0" skipped="0" id="d42866e1" name="theDescriptionElement" package="http://www.daisy.org/ns/xprocspec" time="1.021">
 <properties><property name="input: source" value="&lt;description xmlns=&#34;http://www.daisy.org/ns/xprocspec&#34; ...&gt;...&lt;/description&gt; (Base URI: file:/home/jostein/xprocspec/xprocspec/src/test/xprocspec/test.xprocspec)"/>
 
-<property name="option: temp-dir" value="file:/tmp/xprocspec-20130909142900644/"/>
+<property name="option: temp-dir" value="file:/tmp/xprocspec-20130909161148629/"/>
 
 </properties>
 <testcase name="theStepShouldExecuteSuccessfullyWithoutThrowingAnyErrors" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>the step should execute successfully without throwing any errors: SUCCESS</system-out>
 <system-err/></testcase><testcase name="thereShouldBeAtLeastOneTestAndNoneOfTheTestsShouldFail" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>there should be at least one test, and none of the tests should fail: SUCCESS</system-out>
 <system-err/></testcase><testcase name="oneOfTheTestsShouldBePending" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>one of the tests should be pending: SUCCESS</system-out>
-<system-err/></testcase></testsuite><testsuite timestamp="2013-09-09T12:29:35.939Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d42641e1" name="theImportElementTwoImports" package="http://www.daisy.org/ns/xprocspec" time="1.983">
+<system-err/></testcase></testsuite><testsuite timestamp="2013-09-09T14:12:19.872Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d42882e1" name="theImportElementTwoImports" package="http://www.daisy.org/ns/xprocspec" time="1.614">
 <properties><property name="input: source" value="&lt;description xmlns=&#34;http://www.daisy.org/ns/xprocspec&#34; ...&gt;...&lt;/description&gt; (Base URI: file:/home/jostein/xprocspec/xprocspec/src/test/xprocspec/test.xprocspec)"/>
 
-<property name="option: temp-dir" value="file:/tmp/xprocspec-20130909142900644/"/>
+<property name="option: temp-dir" value="file:/tmp/xprocspec-20130909161148629/"/>
 
 </properties>
 <testcase name="theStepShouldExecuteSuccessfullyWithoutThrowingAnyErrors" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>the step should execute successfully without throwing any errors: SUCCESS</system-out>
 <system-err/></testcase><testcase name="thereShouldBeAtLeastOneTestAndNoneOfTheTestsShouldFail" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>there should be at least one test, and none of the tests should fail: SUCCESS</system-out>
-<system-err/></testcase></testsuite><testsuite timestamp="2013-09-09T12:29:35.961Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d42660e1" name="theImportElementOneImportWithOneImport" package="http://www.daisy.org/ns/xprocspec" time="2.133">
+<system-err/></testcase></testsuite><testsuite timestamp="2013-09-09T14:12:19.892Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d42901e1" name="theImportElementOneImportWithOneImport" package="http://www.daisy.org/ns/xprocspec" time="1.308">
 <properties><property name="input: source" value="&lt;description xmlns=&#34;http://www.daisy.org/ns/xprocspec&#34; ...&gt;...&lt;/description&gt; (Base URI: file:/home/jostein/xprocspec/xprocspec/src/test/xprocspec/test.xprocspec)"/>
 
-<property name="option: temp-dir" value="file:/tmp/xprocspec-20130909142900644/"/>
+<property name="option: temp-dir" value="file:/tmp/xprocspec-20130909161148629/"/>
 
 </properties>
 <testcase name="theStepShouldExecuteSuccessfullyWithoutThrowingAnyErrors" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>the step should execute successfully without throwing any errors: SUCCESS</system-out>
 <system-err/></testcase><testcase name="thereShouldBeAtLeastOneTestAndNoneOfTheTestsShouldFail" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>there should be at least one test, and none of the tests should fail: SUCCESS</system-out>
-<system-err/></testcase></testsuite><testsuite timestamp="2013-09-09T12:29:35.98Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d42679e1" name="theImportElementCircularImports" package="http://www.daisy.org/ns/xprocspec" time="1.049">
+<system-err/></testcase></testsuite><testsuite timestamp="2013-09-09T14:12:19.91Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d42920e1" name="theImportElementCircularImports" package="http://www.daisy.org/ns/xprocspec" time="0.922">
 <properties><property name="input: source" value="&lt;description xmlns=&#34;http://www.daisy.org/ns/xprocspec&#34; ...&gt;...&lt;/description&gt; (Base URI: file:/home/jostein/xprocspec/xprocspec/src/test/xprocspec/test.xprocspec)"/>
 
-<property name="option: temp-dir" value="file:/tmp/xprocspec-20130909142900644/"/>
+<property name="option: temp-dir" value="file:/tmp/xprocspec-20130909161148629/"/>
 
 </properties>
 <testcase name="theStepShouldExecuteSuccessfullyWithoutThrowingAnyErrors" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>the step should execute successfully without throwing any errors: SUCCESS</system-out>
 <system-err/></testcase><testcase name="thereShouldBeAtLeastOneTestAndNoneOfTheTestsShouldFail" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>there should be at least one test, and none of the tests should fail: SUCCESS</system-out>
-<system-err/></testcase></testsuite><testsuite timestamp="2013-09-09T12:29:35.998Z" hostname="localhost" tests="3" errors="0" failures="0" skipped="0" id="d42694e1" name="theScenarioElementWithPendingAttribute" package="http://www.daisy.org/ns/xprocspec" time="0.82">
+<system-err/></testcase></testsuite><testsuite timestamp="2013-09-09T14:12:19.927Z" hostname="localhost" tests="3" errors="0" failures="0" skipped="0" id="d42935e1" name="theScenarioElementWithPendingAttribute" package="http://www.daisy.org/ns/xprocspec" time="0.701">
 <properties><property name="input: source" value="&lt;description xmlns=&#34;http://www.daisy.org/ns/xprocspec&#34; ...&gt;...&lt;/description&gt; (Base URI: file:/home/jostein/xprocspec/xprocspec/src/test/xprocspec/test.xprocspec)"/>
 
-<property name="option: temp-dir" value="file:/tmp/xprocspec-20130909142900644/"/>
+<property name="option: temp-dir" value="file:/tmp/xprocspec-20130909161148629/"/>
 
 </properties>
 <testcase name="theStepShouldExecuteSuccessfullyWithoutThrowingAnyErrors" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>the step should execute successfully without throwing any errors: SUCCESS</system-out>
 <system-err/></testcase><testcase name="thereShouldBeAtLeastOneTestAndNoneOfTheTestsShouldFail" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>there should be at least one test, and none of the tests should fail: SUCCESS</system-out>
 <system-err/></testcase><testcase name="thereShouldBeASkippedTest" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>there should be a skipped test: SUCCESS</system-out>
-<system-err/></testcase></testsuite><testsuite timestamp="2013-09-09T12:29:36.021Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d42707e1" name="theScenarioElementWithTwoChildScenariosOneOfWhichHasAnotherChildScenario" package="http://www.daisy.org/ns/xprocspec" time="1.452">
+<system-err/></testcase></testsuite><testsuite timestamp="2013-09-09T14:12:19.949Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d42948e1" name="theScenarioElementWithTwoChildScenariosOneOfWhichHasAnotherChildScenario" package="http://www.daisy.org/ns/xprocspec" time="1.274">
 <properties><property name="input: source" value="&lt;description xmlns=&#34;http://www.daisy.org/ns/xprocspec&#34; ...&gt;...&lt;/description&gt; (Base URI: file:/home/jostein/xprocspec/xprocspec/src/test/xprocspec/test.xprocspec)"/>
 
-<property name="option: temp-dir" value="file:/tmp/xprocspec-20130909142900644/"/>
+<property name="option: temp-dir" value="file:/tmp/xprocspec-20130909161148629/"/>
 
 </properties>
 <testcase name="theStepShouldExecuteSuccessfullyWithoutThrowingAnyErrors" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>the step should execute successfully without throwing any errors: SUCCESS</system-out>
 <system-err/></testcase><testcase name="thereShouldBeAtLeastOneTestAndNoneOfTheTestsShouldFail" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>there should be at least one test, and none of the tests should fail: SUCCESS</system-out>
-<system-err/></testcase></testsuite><testsuite timestamp="2013-09-09T12:29:36.039Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d42726e1" name="theCallElementInheritFromCallElementsInAncestorScenarios" package="http://www.daisy.org/ns/xprocspec" time="0.695">
+<system-err/></testcase></testsuite><testsuite timestamp="2013-09-09T14:12:19.965Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d42967e1" name="theCallElementInheritFromCallElementsInAncestorScenarios" package="http://www.daisy.org/ns/xprocspec" time="0.546">
 <properties><property name="input: source" value="&lt;description xmlns=&#34;http://www.daisy.org/ns/xprocspec&#34; ...&gt;...&lt;/description&gt; (Base URI: file:/home/jostein/xprocspec/xprocspec/src/test/xprocspec/test.xprocspec)"/>
 
-<property name="option: temp-dir" value="file:/tmp/xprocspec-20130909142900644/"/>
+<property name="option: temp-dir" value="file:/tmp/xprocspec-20130909161148629/"/>
 
 </properties>
 <testcase name="theStepShouldExecuteSuccessfullyWithoutThrowingAnyErrors" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>the step should execute successfully without throwing any errors: SUCCESS</system-out>
 <system-err/></testcase><testcase name="thereShouldBeAtLeastOneTestAndNoneOfTheTestsShouldFail" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>there should be at least one test, and none of the tests should fail: SUCCESS</system-out>
-<system-err/></testcase></testsuite><testsuite timestamp="2013-09-09T12:29:36.056Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d42739e1" name="theCallElementStepAttributePointingToStepDeclaredInAnXProcLibrary" package="http://www.daisy.org/ns/xprocspec" time="1.112">
+<system-err/></testcase></testsuite><testsuite timestamp="2013-09-09T14:12:19.979Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d42980e1" name="theCallElementStepAttributePointingToStepDeclaredInAnXProcLibrary" package="http://www.daisy.org/ns/xprocspec" time="0.473">
 <properties><property name="input: source" value="&lt;description xmlns=&#34;http://www.daisy.org/ns/xprocspec&#34; ...&gt;...&lt;/description&gt; (Base URI: file:/home/jostein/xprocspec/xprocspec/src/test/xprocspec/test.xprocspec)"/>
 
-<property name="option: temp-dir" value="file:/tmp/xprocspec-20130909142900644/"/>
+<property name="option: temp-dir" value="file:/tmp/xprocspec-20130909161148629/"/>
 
 </properties>
 <testcase name="theStepShouldExecuteSuccessfullyWithoutThrowingAnyErrors" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>the step should execute successfully without throwing any errors: SUCCESS</system-out>
 <system-err/></testcase><testcase name="thereShouldBeAtLeastOneTestAndNoneOfTheTestsShouldFail" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>there should be at least one test, and none of the tests should fail: SUCCESS</system-out>
-<system-err/></testcase></testsuite><testsuite timestamp="2013-09-09T12:29:36.077Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d42750e1" name="theCallElementTwoDifferentScenariosTestingDifferentStepsInTheSameLibrary" package="http://www.daisy.org/ns/xprocspec" time="0.985">
+<system-err/></testcase></testsuite><testsuite timestamp="2013-09-09T14:12:19.996Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d42991e1" name="theCallElementTwoDifferentScenariosTestingDifferentStepsInTheSameLibrary" package="http://www.daisy.org/ns/xprocspec" time="0.776">
 <properties><property name="input: source" value="&lt;description xmlns=&#34;http://www.daisy.org/ns/xprocspec&#34; ...&gt;...&lt;/description&gt; (Base URI: file:/home/jostein/xprocspec/xprocspec/src/test/xprocspec/test.xprocspec)"/>
 
-<property name="option: temp-dir" value="file:/tmp/xprocspec-20130909142900644/"/>
+<property name="option: temp-dir" value="file:/tmp/xprocspec-20130909161148629/"/>
 
 </properties>
 <testcase name="theStepShouldExecuteSuccessfullyWithoutThrowingAnyErrors" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>the step should execute successfully without throwing any errors: SUCCESS</system-out>
 <system-err/></testcase><testcase name="thereShouldBeAtLeastOneTestAndNoneOfTheTestsShouldFail" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>there should be at least one test, and none of the tests should fail: SUCCESS</system-out>
-<system-err/></testcase></testsuite><testsuite timestamp="2013-09-09T12:29:36.095Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d42765e1" name="theInputElementEmptySequence" package="http://www.daisy.org/ns/xprocspec" time="0.7">
+<system-err/></testcase></testsuite><testsuite timestamp="2013-09-09T14:12:20.012Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d43006e1" name="theInputElementEmptySequence" package="http://www.daisy.org/ns/xprocspec" time="0.571">
 <properties><property name="input: source" value="&lt;description xmlns=&#34;http://www.daisy.org/ns/xprocspec&#34; ...&gt;...&lt;/description&gt; (Base URI: file:/home/jostein/xprocspec/xprocspec/src/test/xprocspec/test.xprocspec)"/>
 
-<property name="option: temp-dir" value="file:/tmp/xprocspec-20130909142900644/"/>
+<property name="option: temp-dir" value="file:/tmp/xprocspec-20130909161148629/"/>
 
 </properties>
 <testcase name="theStepShouldExecuteSuccessfullyWithoutThrowingAnyErrors" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>the step should execute successfully without throwing any errors: SUCCESS</system-out>
 <system-err/></testcase><testcase name="thereShouldBeAtLeastOneTestAndNoneOfTheTestsShouldFail" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>there should be at least one test, and none of the tests should fail: SUCCESS</system-out>
-<system-err/></testcase></testsuite><testsuite timestamp="2013-09-09T12:29:36.113Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d42778e1" name="theInputElementSequenceOfTwoDocuments" package="http://www.daisy.org/ns/xprocspec" time="0.715">
+<system-err/></testcase></testsuite><testsuite timestamp="2013-09-09T14:12:20.028Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d43019e1" name="theInputElementSequenceOfTwoDocuments" package="http://www.daisy.org/ns/xprocspec" time="0.61">
 <properties><property name="input: source" value="&lt;description xmlns=&#34;http://www.daisy.org/ns/xprocspec&#34; ...&gt;...&lt;/description&gt; (Base URI: file:/home/jostein/xprocspec/xprocspec/src/test/xprocspec/test.xprocspec)"/>
 
-<property name="option: temp-dir" value="file:/tmp/xprocspec-20130909142900644/"/>
+<property name="option: temp-dir" value="file:/tmp/xprocspec-20130909161148629/"/>
 
 </properties>
 <testcase name="theStepShouldExecuteSuccessfullyWithoutThrowingAnyErrors" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>the step should execute successfully without throwing any errors: SUCCESS</system-out>
 <system-err/></testcase><testcase name="thereShouldBeAtLeastOneTestAndNoneOfTheTestsShouldFail" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>there should be at least one test, and none of the tests should fail: SUCCESS</system-out>
-<system-err/></testcase></testsuite><testsuite timestamp="2013-09-09T12:29:36.138Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d42791e1" name="theOptionElement" package="http://www.daisy.org/ns/xprocspec" time="1.284">
+<system-err/></testcase></testsuite><testsuite timestamp="2013-09-09T14:12:20.05Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d43032e1" name="theOptionElement" package="http://www.daisy.org/ns/xprocspec" time="1.147">
 <properties><property name="input: source" value="&lt;description xmlns=&#34;http://www.daisy.org/ns/xprocspec&#34; ...&gt;...&lt;/description&gt; (Base URI: file:/home/jostein/xprocspec/xprocspec/src/test/xprocspec/test.xprocspec)"/>
 
-<property name="option: temp-dir" value="file:/tmp/xprocspec-20130909142900644/"/>
+<property name="option: temp-dir" value="file:/tmp/xprocspec-20130909161148629/"/>
 
 </properties>
 <testcase name="theStepShouldExecuteSuccessfullyWithoutThrowingAnyErrors" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>the step should execute successfully without throwing any errors: SUCCESS</system-out>
 <system-err/></testcase><testcase name="thereShouldBeAtLeastOneTestAndNoneOfTheTestsShouldFail" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>there should be at least one test, and none of the tests should fail: SUCCESS</system-out>
-<system-err/></testcase></testsuite><testsuite timestamp="2013-09-09T12:29:36.165Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d42822e1" name="theParamElement" package="http://www.daisy.org/ns/xprocspec" time="1.177">
+<system-err/></testcase></testsuite><testsuite timestamp="2013-09-09T14:12:20.072Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d43063e1" name="theParamElement" package="http://www.daisy.org/ns/xprocspec" time="1.182">
 <properties><property name="input: source" value="&lt;description xmlns=&#34;http://www.daisy.org/ns/xprocspec&#34; ...&gt;...&lt;/description&gt; (Base URI: file:/home/jostein/xprocspec/xprocspec/src/test/xprocspec/test.xprocspec)"/>
 
-<property name="option: temp-dir" value="file:/tmp/xprocspec-20130909142900644/"/>
+<property name="option: temp-dir" value="file:/tmp/xprocspec-20130909161148629/"/>
 
 </properties>
 <testcase name="theStepShouldExecuteSuccessfullyWithoutThrowingAnyErrors" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>the step should execute successfully without throwing any errors: SUCCESS</system-out>
 <system-err/></testcase><testcase name="thereShouldBeAtLeastOneTestAndNoneOfTheTestsShouldFail" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>there should be at least one test, and none of the tests should fail: SUCCESS</system-out>
-<system-err/></testcase></testsuite><testsuite timestamp="2013-09-09T12:29:36.177Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d42853e1" name="theContextElement" time="0.001">
+<system-err/></testcase></testsuite><testsuite timestamp="2013-09-09T14:12:20.082Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d43094e1" name="theContextElement" time="0.001">
 <properties>
 
 
 </properties>
-<testcase name="pendingScenario-theContextElement" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the context element: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-09-09T12:29:36.187Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d42856e1" name="theExpectElement" time="0.002">
+<testcase name="pendingScenario-theContextElement" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the context element: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-09-09T14:12:20.089Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d43097e1" name="theExpectElement" time="0.001">
 <properties>
 
 
 </properties>
-<testcase name="pendingScenario-theExpectElement" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the expect element: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-09-09T12:29:36.219Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d42859e1" name="theDocumentElementAllTheDifferentTypesExceptErrors" package="http://www.daisy.org/ns/xprocspec" time="2.674">
+<testcase name="pendingScenario-theExpectElement" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the expect element: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-09-09T14:12:20.115Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d43100e1" name="theDocumentElementAllTheDifferentTypesExceptErrors" package="http://www.daisy.org/ns/xprocspec" time="2.057">
 <properties><property name="input: source" value="&lt;description xmlns=&#34;http://www.daisy.org/ns/xprocspec&#34; ...&gt;...&lt;/description&gt; (Base URI: file:/home/jostein/xprocspec/xprocspec/src/test/xprocspec/test.xprocspec)"/>
 
-<property name="option: temp-dir" value="file:/tmp/xprocspec-20130909142900644/"/>
+<property name="option: temp-dir" value="file:/tmp/xprocspec-20130909161148629/"/>
 
 </properties>
 <testcase name="theStepShouldExecuteSuccessfullyWithoutThrowingAnyErrors" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>the step should execute successfully without throwing any errors: SUCCESS</system-out>
 <system-err/></testcase><testcase name="thereShouldBeAtLeastOneTestAndNoneOfTheTestsShouldFail" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>there should be at least one test, and none of the tests should fail: SUCCESS</system-out>
-<system-err/></testcase></testsuite><testsuite timestamp="2013-09-09T12:29:36.237Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d42884e1" name="theDocumentElementTheErrorsType" package="http://www.daisy.org/ns/xprocspec" time="1.122">
+<system-err/></testcase></testsuite><testsuite timestamp="2013-09-09T14:12:20.129Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d43125e1" name="theDocumentElementTheErrorsType" package="http://www.daisy.org/ns/xprocspec" time="0.469">
 <properties><property name="input: source" value="&lt;description xmlns=&#34;http://www.daisy.org/ns/xprocspec&#34; ...&gt;...&lt;/description&gt; (Base URI: file:/home/jostein/xprocspec/xprocspec/src/test/xprocspec/test.xprocspec)"/>
 
-<property name="option: temp-dir" value="file:/tmp/xprocspec-20130909142900644/"/>
+<property name="option: temp-dir" value="file:/tmp/xprocspec-20130909161148629/"/>
 
 </properties>
 <testcase name="theStepShouldExecuteSuccessfullyWithoutThrowingAnyErrors" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>the step should execute successfully without throwing any errors: SUCCESS</system-out>
 <system-err/></testcase><testcase name="thereShouldBeAtLeastOneTestAndNoneOfTheTestsShouldFail" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>there should be at least one test, and none of the tests should fail: SUCCESS</system-out>
-<system-err/></testcase></testsuite><testsuite timestamp="2013-09-09T12:29:36.249Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d42895e1" name="thePendingElement" time="0.001">
+<system-err/></testcase></testsuite><testsuite timestamp="2013-09-09T14:12:20.138Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d43136e1" name="thePendingElement" time="0.001">
 <properties>
 
 
 </properties>
-<testcase name="pendingScenario-thePendingElement" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the pending element: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-09-09T12:29:36.265Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d42898e1" name="regressionTestsOnElementsInTheXprocNamespaceAllowAttributesFromOtherNamespaces" package="http://www.daisy.org/ns/xprocspec" time="0.537">
+<testcase name="pendingScenario-thePendingElement" classname="pendingScenario" assertions="1" time="0"><skipped type="xprocspec.skip" message="Not implemented">Not implemented</skipped><system-out>the pending element: SKIPPED</system-out></testcase></testsuite><testsuite timestamp="2013-09-09T14:12:20.152Z" hostname="localhost" tests="2" errors="0" failures="0" skipped="0" id="d43139e1" name="regressionTestsOnElementsInTheXprocNamespaceAllowAttributesFromOtherNamespaces" package="http://www.daisy.org/ns/xprocspec" time="0.54">
 <properties><property name="input: source" value="&lt;description xmlns=&#34;http://www.daisy.org/ns/xprocspec&#34; ...&gt;...&lt;/description&gt; (Base URI: file:/home/jostein/xprocspec/xprocspec/src/test/xprocspec/test.xprocspec)"/>
 
-<property name="option: temp-dir" value="file:/tmp/xprocspec-20130909142900644/"/>
+<property name="option: temp-dir" value="file:/tmp/xprocspec-20130909161148629/"/>
 
 </properties>
 <testcase name="theStepShouldExecuteSuccessfullyWithoutThrowingAnyErrors" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>the step should execute successfully without throwing any errors: SUCCESS</system-out>
 <system-err/></testcase><testcase name="thereShouldBeAtLeastOneTestAndNoneOfTheTestsShouldFail" classname="xprocspec" assertions="1" time="0" status="SUCCESS"><system-out>there should be at least one test, and none of the tests should fail: SUCCESS</system-out>
-<system-err/></testcase></testsuite><testsuite timestamp="2013-09-09T12:29:36.279Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d42909e1" name="regressionTestsAttributesOnXexpectxdocumenttype=inlineShouldNotBeDeleted" time="0.001">
+<system-err/></testcase></testsuite><testsuite timestamp="2013-09-09T14:12:20.162Z" hostname="localhost" tests="1" errors="0" failures="0" skipped="1" id="d43150e1" name="regressionTestsAttributesOnXexpectxdocumenttype=inlineShouldNotBeDeleted" time="0">
 <properties>
 
 

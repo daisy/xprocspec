@@ -12,6 +12,7 @@
     <p:import href="../utils/logging-library.xpl"/>
 
     <p:variable name="type" select="/*/@type"/>
+    <p:variable name="select" select="/*/@select"/>
 
     <p:variable name="temp-dir" select="/*/@temp-dir">
         <p:pipe port="description" step="main"/>
@@ -23,7 +24,7 @@
     <p:variable name="href" select="resolve-uri(/*/@href, $base-dir)"/>
     <p:variable name="method" select="if (/*/@method=('xml','html','text','binary')) then /*/@method else 'xml'"/>
     <p:variable name="recursive" select="if (/*/@recursive=('true','false')) then /*/@recursive else 'false'"/>
-    
+
     <p:identity>
         <p:input port="source">
             <p:pipe step="main" port="description"/>
@@ -34,7 +35,7 @@
             <p:variable name="position" select="if (/*/@position=('all','last') or matches(/*/@position,'\d+')) then /*/@position else 'all'">
                 <p:pipe port="document" step="main"/>
             </p:variable>
-            
+
             <p:choose>
                 <p:when test="/x:description/(x:output, x:scenario/x:call/x:input)[@port=$port]">
                     <p:filter>
@@ -61,7 +62,7 @@
                     </p:identity>
                 </p:otherwise>
             </p:choose>
-            
+
             <pxi:assert test-count-min="1">
                 <p:with-option name="message" select="concat('   * port not found: &quot;',$port,'&quot;')">
                     <p:empty/>
@@ -70,7 +71,7 @@
                     <p:empty/>
                 </p:with-option>
             </pxi:assert>
-            
+
             <p:choose>
                 <p:xpath-context>
                     <p:inline>
@@ -163,7 +164,7 @@
                             <p:pipe port="result" step="errors"/>
                         </p:input>
                     </p:identity>
-                    
+
                     <p:group>
                         <p:variable name="base" select="base-uri(/*)"/>
                         <p:wrap-sequence wrapper="x:document"/>
@@ -180,7 +181,7 @@
                 </p:otherwise>
             </p:choose>
         </p:when>
-        
+
         <p:otherwise>
             <!-- default is 'inline' -->
             <p:identity>
@@ -190,35 +191,60 @@
             </p:identity>
         </p:otherwise>
     </p:choose>
-    
+
     <p:for-each>
         <p:add-attribute match="/*" attribute-name="type" attribute-value="inline"/>
         <p:add-attribute match="/*" attribute-name="xml:space" attribute-value="preserve"/>
-        
+
         <!-- Base URI cleanup -->
         <p:group>
             <p:variable name="base-was" select="/*/*/@xml:base"/>
-            
+
             <!-- set x:document/@xml:base to either the xprocspec test document or to the temporary directory -->
             <p:add-attribute match="/*" attribute-name="xml:base">
                 <p:with-option name="attribute-value" select="if ($base-uri='temp-dir') then $temp-dir else base-uri(/*)"/>
             </p:add-attribute>
-            
+
             <!-- resolve inline document against x:document/@xml:base -->
             <p:add-attribute match="/*/*" attribute-name="xml:base">
                 <p:with-option name="attribute-value" select="resolve-uri($base-was,/*/@xml:base)"/>
             </p:add-attribute>
-            
+
             <!-- reset x:document/*/@xml:base to its original value, in case it was a relative URI -->
             <p:add-attribute match="/*/*" attribute-name="xml:base">
                 <p:with-option name="attribute-value" select="$base-was"/>
             </p:add-attribute>
-            
+
             <!-- delete explicit xml:base attribute if it was not present originally -->
             <p:delete>
                 <p:with-option name="match" select="concat('/*[',(if ($base-was) then 'false()' else 'true()'),']/*/@xml:base')"/>
             </p:delete>
         </p:group>
     </p:for-each>
+
+    <p:choose>
+        <p:xpath-context>
+            <p:empty/>
+        </p:xpath-context>
+        <p:when test="$select">
+            <p:for-each>
+                <p:variable name="unfiltered-base" select="/*/@xml:base"/>
+                <p:filter>
+                    <p:with-option name="select" select="$select"/>
+                </p:filter>
+                <p:for-each>
+                    <p:wrap-sequence wrapper="x:document"/>
+                    <p:add-attribute match="/*" attribute-name="type" attribute-value="inline"/>
+                    <p:add-attribute match="/*" attribute-name="xml:space" attribute-value="preserve"/>
+                    <p:add-attribute match="/*" attribute-name="xml:base">
+                        <p:with-option name="attribute-value" select="resolve-uri(base-uri(/*/*),$unfiltered-base)"/>
+                    </p:add-attribute>
+                </p:for-each>
+            </p:for-each>
+        </p:when>
+        <p:otherwise>
+            <p:identity/>
+        </p:otherwise>
+    </p:choose>
 
 </p:declare-step>
