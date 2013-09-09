@@ -300,6 +300,15 @@
                         </a:documentation>
                         <value>compare</value>
                     </attribute>
+                    <optional>
+                        <attribute name="normalize-space">
+                            <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+                                By default, whitespace normalization are performed on documents before comparing them with eachother.
+                                You can disable this by setting `normalize-space` to `false`.
+                            </a:documentation>
+                            <data type="boolean"/>
+                        </attribute>
+                    </optional>
                     <zeroOrMore>
                         <ref name="document"/>
                     </zeroOrMore>

@@ -205,6 +205,8 @@
                                     </p:when>
 
                                     <p:when test="/x:expect[@type='compare']">
+                                        <p:variable name="normalize-space" select="/*/@normalize-space"/>
+                                        
                                         <pxi:message message="         * is document comparison">
                                             <p:with-option name="logfile" select="$logfile">
                                                 <p:empty/>
@@ -217,6 +219,7 @@
                                         </p:for-each>
                                         
                                         <pxi:compare>
+                                            <p:with-option name="normalize-space" select="$normalize-space"/>
                                             <p:input port="source">
                                                 <p:pipe port="result" step="context"/>
                                             </p:input>

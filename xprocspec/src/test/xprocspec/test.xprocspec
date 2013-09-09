@@ -237,6 +237,7 @@
             compare a document against an empty sequence (fail)
             compare two documents against two other documents; the last in each sequence being different (fail)
             compare two document against two documents; the only difference being the ordering (fail)
+            the normalize-space attribute
         type=validate
             grammar=relax-ng
                 very basic relax-ng validation (should not be tested in C.I. as relax-ng is not supported by default)

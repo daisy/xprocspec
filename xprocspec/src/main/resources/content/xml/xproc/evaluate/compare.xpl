@@ -5,6 +5,8 @@
     <p:input port="source" primary="true" sequence="true"/>
     <p:input port="alternate" sequence="true"/>
     <p:output port="result" primary="true"/>
+    <p:option name="normalize-space" select="'true'"/>
+    
     <p:option name="logfile" select="''"/>
 
     <p:serialization port="result" indent="true"/>
@@ -13,7 +15,15 @@
 
     <p:wrap-sequence name="wrapped-source" wrapper="wrapper"/>
     <p:delete match="/*/*/@xml:space"/>
-    <p:string-replace match="text()" replace="normalize-space(replace(.,'&#x00a0;',' '))" name="source"/>
+    <p:choose>
+        <p:when test="$normalize-space='true'">
+            <p:string-replace match="text()" replace="normalize-space(replace(.,'&#x00a0;',' '))"/>
+        </p:when>
+        <p:otherwise>
+            <p:identity/>
+        </p:otherwise>
+    </p:choose>
+    <p:identity name="source"/>
 
     <p:wrap-sequence name="wrapped-alternate" wrapper="wrapper">
         <p:input port="source">
@@ -21,7 +31,15 @@
         </p:input>
     </p:wrap-sequence>
     <p:delete match="/*/*/@xml:space"/>
-    <p:string-replace match="text()" replace="normalize-space(replace(.,'&#x00a0;',' '))" name="alternate"/>
+    <p:choose>
+        <p:when test="$normalize-space='true'">
+            <p:string-replace match="text()" replace="normalize-space(replace(.,'&#x00a0;',' '))"/>
+        </p:when>
+        <p:otherwise>
+            <p:identity/>
+        </p:otherwise>
+    </p:choose>
+    <p:identity name="alternate"/>
 
     <p:compare name="compare">
         <p:with-option name="fail-if-not-equal" select="$fail-if-not-equal"/>

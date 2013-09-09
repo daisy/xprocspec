@@ -72,6 +72,9 @@
                         <attribute name="type">
                             <value>compare</value>
                         </attribute>
+                        <attribute name="normalize-space">
+                            <data type="boolean"/>
+                        </attribute>
                     </group>
                     <group>
                         <!-- Document count -->

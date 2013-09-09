@@ -43,6 +43,9 @@
             <xsl:if test="$pending">
                 <xsl:attribute name="pending" select="$pending"/>
             </xsl:if>
+            <xsl:if test="@type='compare'">
+                <xsl:attribute name="normalize-space" select="(@normalize-space,'true')[1]"/>
+            </xsl:if>
             <xsl:attribute name="contextref" select="concat('context',count(preceding-sibling::x:context[1]/preceding::x:context))"/>
             <xsl:for-each select="node()">
                 <xsl:choose>

@@ -188,7 +188,7 @@ table.simple {
   
     <h2 property="bibo:subtitle" id="subtitle">A tool for testing XProc scripts</h2>
   
-  <h2 property="dcterms:issued" datatype="xsd:dateTime" content="2013-09-09T10:31:56.000Z" id="unofficial-draft-09-september-2013">Unofficial Draft <time class="dt-published" datetime="2013-09-09">09 September 2013</time></h2>
+  <h2 property="dcterms:issued" datatype="xsd:dateTime" content="2013-09-09T11:02:19.000Z" id="unofficial-draft-09-september-2013">Unofficial Draft <time class="dt-published" datetime="2013-09-09">09 September 2013</time></h2>
   <dl>
     
     
@@ -309,7 +309,7 @@ table.simple {
 </section>
 
 <section id="the-expect-element" typeof="bibo:Chapter" resource="#the-expect-element" rel="bibo:chapter">
-<h3 aria-level="2" role="heading" id="h3_the-expect-element"><span class="secno">1.7 </span>The <code>expect</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-document-element"><code>document</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-expect-equals"><code>equals</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-focus"><code>focus</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-grammar"><code>grammar</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-label"><code>label</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-max"><code>max</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-min"><code>min</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-pending"><code>pending</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-test"><code>test</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-type"><code>type</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
+<h3 aria-level="2" role="heading" id="h3_the-expect-element"><span class="secno">1.7 </span>The <code>expect</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-document-element"><code>document</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-expect-equals"><code>equals</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-focus"><code>focus</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-grammar"><code>grammar</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-label"><code>label</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-max"><code>max</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-min"><code>min</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-normalize-space"><code>normalize-space</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-pending"><code>pending</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-test"><code>test</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-type"><code>type</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p>
                 Defines what is expected from the context document(s).
             </p>
@@ -329,6 +329,10 @@ table.simple {
 <p id="attr-expect-label">The <a href="#attr-expect-label"><code>label</code></a> attribute is used to describe the current element in human-readable words.</p>
 <p id="attr-expect-max">If <code>max</code> is specified, then there must be at most this many documents in context for the assertion to succeed.</p>
 <p id="attr-expect-min">If <code>min</code> is specified, then there must be at least this many documents in context for the assertion to succeed.</p>
+<p id="attr-expect-normalize-space">
+                                By default, whitespace normalization are performed on documents before comparing them with eachother.
+                                You can disable this by setting <code>normalize-space</code> to <code>false</code>.
+                            </p>
 <p id="attr-expect-pending">Assertions or scenarios with the <a href="#attr-expect-pending"><code>pending</code></a> attribute will remain untested, but will be
                reported as (eventual) desired behaviour. Its semantics is the same as for the
                <a href="#the-pending-element"><code>pending</code></a> element.
