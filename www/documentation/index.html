@@ -188,7 +188,7 @@ table.simple {
   
     <h2 property="bibo:subtitle" id="subtitle">A tool for testing XProc scripts</h2>
   
-  <h2 property="dcterms:issued" datatype="xsd:dateTime" content="2013-09-09T12:12:45.000Z" id="unofficial-draft-09-september-2013">Unofficial Draft <time class="dt-published" datetime="2013-09-09">09 September 2013</time></h2>
+  <h2 property="dcterms:issued" datatype="xsd:dateTime" content="2013-09-10T09:30:46.000Z" id="unofficial-draft-10-september-2013">Unofficial Draft <time class="dt-published" datetime="2013-09-10">10 September 2013</time></h2>
   <dl>
     
     
@@ -318,7 +318,7 @@ table.simple {
 </section>
 
 <section id="the-expect-element" typeof="bibo:Chapter" resource="#the-expect-element" rel="bibo:chapter">
-<h3 aria-level="2" role="heading" id="h3_the-expect-element"><span class="secno">1.7 </span>The <code>expect</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-document-element"><code>document</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-expect-equals"><code>equals</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-focus"><code>focus</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-grammar"><code>grammar</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-label"><code>label</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-max"><code>max</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-min"><code>min</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-normalize-space"><code>normalize-space</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-pending"><code>pending</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-test"><code>test</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-type"><code>type</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
+<h3 aria-level="2" role="heading" id="h3_the-expect-element"><span class="secno">1.7 </span>The <code>expect</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-document-element"><code>document</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-expect-equals"><code>equals</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-focus"><code>focus</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-grammar"><code>grammar</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-href"><code>href</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-label"><code>label</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-max"><code>max</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-min"><code>min</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-normalize-space"><code>normalize-space</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-pending"><code>pending</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-step"><code>step</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-test"><code>test</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-type"><code>type</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p>
                 Defines what is expected from the context document(s).
             </p>
@@ -335,6 +335,7 @@ table.simple {
                             The <a href="#attr-expect-grammar"><code>grammar</code></a> attribute is used to set the grammar of the <code>x:document</code> element (used when <code>type</code> is <code>validate</code>).
                             The assertion succeeds if all of the documents in context validates against the schema given by the child <code>x:document</code> element.
                         </p>
+<p id="attr-expect-href">When <code>type</code> is <code>custom</code>; the <a href="#attr-expect-href"><code>href</code></a> attribute is a URI pointing to the XProc script that must be imported for the custom step to be available.</p>
 <p id="attr-expect-label">The <a href="#attr-expect-label"><code>label</code></a> attribute is used to describe the current element in human-readable words.</p>
 <p id="attr-expect-max">If <code>max</code> is specified, then there must be at most this many documents in context for the assertion to succeed.</p>
 <p id="attr-expect-min">If <code>min</code> is specified, then there must be at least this many documents in context for the assertion to succeed.</p>
@@ -346,6 +347,10 @@ table.simple {
                reported as (eventual) desired behaviour. Its semantics is the same as for the
                <a href="#the-pending-element"><code>pending</code></a> element.
                Its content describes why the assertion or scenario should not be evaluated.</p>
+<p id="attr-expect-step">
+                            The <a href="#attr-expect-step"><code>step</code></a> attribute is the name of the custom step (as declared in XProc scripts by the <code>p:declare-step/@type</code> attribute).
+                            For instance <code>step="example:mystep"</code>.
+                        </p>
 <p id="attr-expect-test">
                             When <code>type</code> is <code>xpath</code>, you can use the <a href="#attr-expect-test"><code>test</code></a> attribute to define a XPath expression.
                             By default, the expression must evaluate to <code>true()</code> for the test to succeed.
@@ -353,7 +358,34 @@ table.simple {
 <p id="attr-expect-type">The <a href="#attr-expect-type"><code>type</code></a> attribute is used to define the type of assertion you want to make.</p><p>
                             When <code>type</code> is <a href="#the-compare-element"><code>compare</code></a>, you can put a sequence of <code>x:document</code> elements inside the <code>x:expect</code> element.
                             The assertion succeeds if the document sequence in context equals the document sequence inside the <code>x:expect</code> element.
-                        </p><p>When <code>type</code> is <a href="#the-validate-element"><code>validate</code></a>, the documents in context is validated against the schema provided in the <code>x:document</code> element inside the <code>x:expect</code> element.</p><p>When <code>type</code> is <code>count</code>, the number of documents in context is compared with the <a href="#attr-expect-min"><code>min</code></a> and <a href="#attr-expect-max"><code>max</code></a> attributes.</p>
+                        </p><p>When <code>type</code> is <a href="#the-validate-element"><code>validate</code></a>, the documents in context is validated against the schema provided in the <code>x:document</code> element inside the <code>x:expect</code> element.</p><p>When <code>type</code> is <code>count</code>, the number of documents in context is compared with the <a href="#attr-expect-min"><code>min</code></a> and <a href="#attr-expect-max"><code>max</code></a> attributes.</p><p>When <code>type</code> is <code>custom</code>, you can provide your own XProc implementation of an assertion. The step signature must be as follows:</p><pre><code>
+&lt;p:declare-step xmlns:p="http://www.w3.org/ns/xproc" type="(...)" (...)&gt;
+   &lt;p:input port="context" sequence="true"/&gt;
+   &lt;p:input port="expect" sequence="true"/&gt;
+   &lt;p:input port="parameters" kind="parameter" primary="true"/&gt;
+   &lt;p:output port="result" primary="true"/&gt;
+   (...)
+&lt;/p:declare-step&gt;
+                            </code></pre><p>How custom steps are invoked:</p><ul><li>All attributes on the <code>expect</code> element are provided as parameters in a c:param-set document on the primary parameter port of the step.
+                                    In addition, the <code>temp-dir</code> variable (path to temporary directory that can be used for the test) and the <code>temp-base-uri</code> variable (path to the xprocspec test document)
+                                    are passed as parameters in the namespace <code>http://www.daisy.org/ns/xprocspec</code>.
+                                    For instance,
+                                    <code>&lt;x:expect xmlns:ex="example" type="custom" ex:foo="bar"/&gt; will result in:
+                                    </code><pre><code>
+<code>&lt;c:param-set&gt;
+    &lt;c:param name="type" namespace="" value="custom"/&gt;
+    &lt;c:param name="foo" namespace="example" value="bar"/&gt;
+    &lt;c:param name="temp-dir" namespace="http://www.daisy.org/ns/xprocspec" value="file:/path-to-temp-dir"/&gt;
+    &lt;c:param name="temp-base-uri" namespace="http://www.daisy.org/ns/xprocspec" value="file:∕some-path/test.xprocspec"/&gt;
+&lt;/c:param-set&gt;</code>
+                                    </code></pre></li><li>The sequence of context documents are provided on the <code>context</code> port.</li><li>The sequence of documents defined inside the <code>x:expect</code> element are provided on the <code>expect</code> port.</li><li>The document on the result port must be a <code>x:test-result</code>, with a <code>result</code> attribute containing either 'passed', 'failed' or 'skipped',
+                                    and can contain <code>x:expected</code> and <code>x:was</code> elements (in that order, at most one of each). The contents of <code>x:expected</code> and <code>x:was</code> is either text or XML. For instance:
+                                    <pre><code>
+&lt;x:test-result xmlns:x="http://www.daisy.org/ns/xprocspec" result="passed"&gt;
+    &lt;x:expected xml:space="preserve"&gt;Description of what the value was expected to be.&lt;/x:expected&gt;
+    &lt;x:was xml:space="preserve"&gt;Description of what the value actually was.&lt;/x:was&gt;
+&lt;/x:test-result&gt;
+                                    </code></pre></li></ul>
 </section>
 
 

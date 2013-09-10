@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.daisy.org/ns/xprocspec/xprocspec.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<x:description xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:x="http://www.daisy.org/ns/xprocspec" xmlns:e="http://example.net/ns" script="../steps/identity.xpl">
+    
+    <x:scenario label="identity - base-uri">
+        <x:call step="e:identity">
+            <x:option name="option" select="'option'"/>
+            <x:option name="option.required" select="'option'"/>
+            <x:param name="param1" select="base-uri(.)"/>
+            <x:param name="param2" select="base-uri(/*)"/>
+            <x:param name="param3" select="base-uri()"/>
+        </x:call>
+        
+        <x:context label="a sequence of documents">
+            <x:document type="inline">
+                <doc1/>
+            </x:document>
+            <x:document type="inline">
+                <doc2/>
+            </x:document>
+            <x:document type="inline">
+                <doc3/>
+            </x:document>
+        </x:context>
+        <x:expect type="custom" label="The custom 'count' step should be successful." xmlns:custom="http://www.example.org/ns/custom" step="custom:count" href="../steps/custom-count.xpl" custom:count="[2,4]"/>
+        
+        <!--
+        type=xpath
+            test="false()" against a empty sequence should succeed
+            test="false()" against a single document should fail
+            test="/*" against a sequence of two documents should succeed
+            test="base-uri(/*)='base uri'" should succeed (tests that the correct base uri is used)
+        type=compare
+            compare two empty sequences (success)
+            compare two identical documents (success)
+            compare two identical sequences of two documents (success)
+            compare two different documents (fail)
+            compare a document against an empty sequence (fail)
+            compare two documents against two other documents; the last in each sequence being different (fail)
+            compare two document against two documents; the only difference being the ordering (fail)
+            the normalize-space attribute
+        type=validate
+            grammar=relax-ng
+                very basic relax-ng validation (should not be tested in C.I. as relax-ng is not supported by default)
+            grammar=schematron
+                very basic schematron validation (should not be tested in C.I. as schematron is not supported by default)
+            grammar=xmlschema
+                very basic xmlschema validation (should not be tested in C.I. as xmlschema is not supported by default)
+        type=count
+            test with 0,1,2,3,4 documents:
+            max 1
+            min 2 max 2 (count=2)
+            min 2 max 4 (count=3)
+            min 3
+            min 5
+        type=custom
+        -->
+        
+    </x:scenario>
+    
+</x:description>

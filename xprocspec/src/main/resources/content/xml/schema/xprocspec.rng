@@ -358,6 +358,62 @@
                         </group>
                     </choice>
                 </group>
+                <group>
+                    <attribute name="type">
+                        <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+                            <p>When `type` is `custom`, you can provide your own XProc implementation of an assertion. The step signature must be as follows:</p>
+                            <pre><code>
+&lt;p:declare-step xmlns:p="http://www.w3.org/ns/xproc" type="(...)" (...)&gt;
+   &lt;p:input port="context" sequence="true"/&gt;
+   &lt;p:input port="expect" sequence="true"/&gt;
+   &lt;p:input port="parameters" kind="parameter" primary="true"/&gt;
+   &lt;p:output port="result" primary="true"/&gt;
+   (...)
+&lt;/p:declare-step&gt;
+                            </code></pre>
+                            <p>How custom steps are invoked:</p>
+                            <ul>
+                                <li>All attributes on the `expect` element are provided as parameters in a c:param-set document on the primary parameter port of the step.
+                                    In addition, the `temp-dir` variable (path to temporary directory that can be used for the test) and the `temp-base-uri` variable (path to the xprocspec test document)
+                                    are passed as parameters in the namespace `http://www.daisy.org/ns/xprocspec`.
+                                    For instance,
+                                    `&lt;x:expect xmlns:ex="example" type="custom" ex:foo="bar"/&gt; will result in:
+                                    <pre><code>
+`&lt;c:param-set&gt;
+    &lt;c:param name="type" namespace="" value="custom"/&gt;
+    &lt;c:param name="foo" namespace="example" value="bar"/&gt;
+    &lt;c:param name="temp-dir" namespace="http://www.daisy.org/ns/xprocspec" value="file:/path-to-temp-dir"/&gt;
+    &lt;c:param name="temp-base-uri" namespace="http://www.daisy.org/ns/xprocspec" value="file:∕some-path/test.xprocspec"/&gt;
+&lt;/c:param-set&gt;`
+                                    </code></pre>
+                                </li>
+                                <li>The sequence of context documents are provided on the `context` port.</li>
+                                <li>The sequence of documents defined inside the `x:expect` element are provided on the `expect` port.</li>
+                                <li>The document on the result port must be a `x:test-result`, with a `result` attribute containing either 'passed', 'failed' or 'skipped',
+                                    and can contain `x:expected` and `x:was` elements (in that order, at most one of each). The contents of `x:expected` and `x:was` is either text or XML. For instance:
+                                    <pre><code>
+&lt;x:test-result xmlns:x="http://www.daisy.org/ns/xprocspec" result="passed"&gt;
+    &lt;x:expected xml:space="preserve"&gt;Description of what the value was expected to be.&lt;/x:expected&gt;
+    &lt;x:was xml:space="preserve"&gt;Description of what the value actually was.&lt;/x:was&gt;
+&lt;/x:test-result&gt;
+                                    </code></pre>
+                                </li>
+                            </ul>
+                        </a:documentation>
+                        <value>custom</value>
+                    </attribute>
+                    <attribute name="href">
+                        <a:documentation xmlns="http://www.w3.org/1999/xhtml">When `type` is `custom`; the `href` attribute is a URI pointing to the XProc script that must be imported for the custom step to be available.</a:documentation>
+                        <data type="anyURI"/>
+                    </attribute>
+                    <attribute name="step">
+                        <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+                            The `step` attribute is the name of the custom step (as declared in XProc scripts by the `p:declare-step/@type` attribute).
+                            For instance `step="example:mystep"`.
+                        </a:documentation>
+                        <data type="QName"/>
+                    </attribute>
+                </group>
             </choice>
             <ref name="expect.attributes"/>
         </element>

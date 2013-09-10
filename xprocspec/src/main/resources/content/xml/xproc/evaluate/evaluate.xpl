@@ -8,6 +8,9 @@
     <p:import href="compare.xpl"/>
     <p:import href="../utils/logging-library.xpl"/>
     <p:import href="../utils/document.xpl"/>
+    
+    <!-- for custom x:expect implementations: -->
+    <p:import href="http://xmlcalabash.com/extension/steps/library-1.0.xpl"/>
 
     <p:for-each name="current-test">
         <!-- for each scenario -->
@@ -102,9 +105,14 @@
                                     <p:empty/>
                                 </p:with-option>
                             </pxi:message>
+                            <p:for-each name="context.documents">
+                                <p:output port="result" sequence="true"/>
+                                <p:iteration-source select="/x:context-group/x:context/x:document"/>
+                                <p:identity/>
+                            </p:for-each>
                             <p:for-each name="context">
                                 <p:output port="result" sequence="true"/>
-                                <p:iteration-source select="/x:context-group/x:context/x:document/*"/>
+                                <p:iteration-source select="/x:document/*"/>
                                 <p:identity/>
                             </p:for-each>
                             <p:count name="context.size"/>
@@ -193,7 +201,7 @@
                                                 </p:input>
                                             </p:xslt>
                                         </p:for-each>
-                                        
+
                                         <p:wrap-sequence wrapper="x:test-result"/>
                                         <p:xslt>
                                             <p:with-param name="test" select="$test"/>
@@ -206,7 +214,7 @@
 
                                     <p:when test="/x:expect[@type='compare']">
                                         <p:variable name="normalize-space" select="/*/@normalize-space"/>
-                                        
+
                                         <pxi:message message="         * is document comparison">
                                             <p:with-option name="logfile" select="$logfile">
                                                 <p:empty/>
@@ -217,7 +225,7 @@
                                             <p:iteration-source select="/x:expect/x:document/*"/>
                                             <p:identity/>
                                         </p:for-each>
-                                        
+
                                         <pxi:compare>
                                             <p:input port="source">
                                                 <p:pipe port="result" step="context"/>
@@ -364,6 +372,51 @@
                                                 <p:empty/>
                                             </p:with-option>
                                         </pxi:message>
+                                    </p:when>
+
+                                    <p:when test="/x:expect[@type='custom']">
+                                        <p:xslt name="custom.expect-invocation">
+                                            <p:with-param name="temp-dir" select="$temp-dir"/>
+                                            <p:with-param name="test-base-uri" select="$base"/>
+                                            <p:input port="stylesheet">
+                                                <p:document href="expect-to-custom-invocation.xsl"/>
+                                            </p:input>
+                                        </p:xslt>
+                                        
+                                        <!-- multiplex context and expect document sequences for cx:eval -->
+                                        <p:for-each name="custom.expect">
+                                            <p:output port="result" sequence="true"/>
+                                            <p:iteration-source select="/x:expect/x:document">
+                                                <p:pipe port="result" step="assertion"/>
+                                            </p:iteration-source>
+                                            <p:add-attribute match="/*" attribute-name="xml:base">
+                                                <p:with-option name="attribute-value" select="base-uri(/*)"/>
+                                            </p:add-attribute>
+                                            <p:add-attribute match="/*" attribute-name="port" attribute-value="expect"/>
+                                        </p:for-each>
+                                        <p:for-each name="custom.context">
+                                            <p:output port="result" sequence="true"/>
+                                            <p:iteration-source>
+                                                <p:pipe port="result" step="context.documents"/>
+                                            </p:iteration-source>
+                                            <p:add-attribute match="/*" attribute-name="xml:base">
+                                                <p:with-option name="attribute-value" select="base-uri(/*)"/>
+                                            </p:add-attribute>
+                                            <p:add-attribute match="/*" attribute-name="port" attribute-value="context"/>
+                                        </p:for-each>
+                                        
+                                        <cx:eval>
+                                            <p:input port="pipeline">
+                                                <p:pipe port="result" step="custom.expect-invocation"/>
+                                            </p:input>
+                                            <p:input port="source">
+                                                <p:pipe port="result" step="custom.context"/>
+                                                <p:pipe port="result" step="custom.expect"/>
+                                            </p:input>
+                                            <p:input port="options">
+                                                <p:empty/>
+                                            </p:input>
+                                        </cx:eval>
                                     </p:when>
 
                                     <p:otherwise>

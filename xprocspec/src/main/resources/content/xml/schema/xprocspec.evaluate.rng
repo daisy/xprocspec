@@ -111,6 +111,18 @@
                             </choice>
                         </attribute>
                     </group>
+                    <group>
+                        <!-- Custom assertion -->
+                        <attribute name="type">
+                            <value>custom</value>
+                        </attribute>
+                        <attribute name="href">
+                            <data type="anyURI"/>
+                        </attribute>
+                        <attribute name="step">
+                            <data type="QName"/>
+                        </attribute>
+                    </group>
                 </choice>
                 <attribute name="result">
                     <choice>

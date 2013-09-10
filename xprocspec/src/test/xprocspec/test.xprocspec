@@ -210,7 +210,7 @@
     </x:scenario>
 
 
-    <x:scenario label="the expect element" pending="">
+    <x:scenario label="the expect element">
         <x:call step="x:xprocspec">
             <x:option name="temp-dir" select="$temp-dir"/>
             <x:input port="source">
@@ -222,30 +222,6 @@
             <x:document type="port" port="junit"/>
         </x:context>
         <x:expect label="there should be at least one test, and none of the tests should fail" type="xpath" test="not(/*/@tests='0') and /*/@failures='0' and /*/@errors='0'"/>
-
-        <!--
-        type=xpath
-            test="false()" against a empty sequence should succeed
-            test="false()" against a single document should fail
-            test="/*" against a sequence of two documents should succeed
-            test="base-uri(/*)='base uri'" should succeed (tests that the correct base uri is used)
-        type=compare
-            compare two empty sequences (success)
-            compare two identical documents (success)
-            compare two identical sequences of two documents (success)
-            compare two different documents (fail)
-            compare a document against an empty sequence (fail)
-            compare two documents against two other documents; the last in each sequence being different (fail)
-            compare two document against two documents; the only difference being the ordering (fail)
-            the normalize-space attribute
-        type=validate
-            grammar=relax-ng
-                very basic relax-ng validation (should not be tested in C.I. as relax-ng is not supported by default)
-            grammar=schematron
-                very basic schematron validation (should not be tested in C.I. as schematron is not supported by default)
-            grammar=xmlschema
-                very basic xmlschema validation (should not be tested in C.I. as xmlschema is not supported by default)
-        -->
     </x:scenario>
 
 
@@ -321,7 +297,7 @@
             <x:expect label="there should be at least one test, and none of the tests should fail" type="xpath" test="not(/*/@tests='0') and /*/@failures='0' and /*/@errors='0'"/>
         </x:scenario>
 
-        <x:scenario label="- attributes on x:expect/x:document[@type='inline'] should not be deleted" pending="">
+        <x:scenario label="- attributes on x:expect/x:document[@type='inline'] should not be deleted">
             <x:call>
                 <x:input port="source">
                     <x:document type="file" href="tests/regression-tests/regression-1_attributes-on-inline-document-should-not-be-deleted.xprocspec"/>
