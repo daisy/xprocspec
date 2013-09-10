@@ -602,8 +602,10 @@
                 <ref name="label"/>
             </optional>
             <oneOrMore>
-                <ref name="scenario"/>
-                <ref name="pending-scenario"/>
+                <choice>
+                    <ref name="scenario"/>
+                    <ref name="pending-scenario"/>
+                </choice>
             </oneOrMore>
         </element>
     </define>

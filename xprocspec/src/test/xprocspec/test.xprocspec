@@ -195,7 +195,7 @@
     </x:scenario>
 
 
-    <x:scenario label="the context element" pending="">
+    <x:scenario label="the context element">
         <x:call step="x:xprocspec">
             <x:option name="temp-dir" select="$temp-dir"/>
             <x:input port="source">
@@ -258,7 +258,7 @@
     </x:scenario>
 
 
-    <x:scenario label="the pending element" pending="">
+    <x:scenario label="the pending element">
         <x:call step="x:xprocspec">
             <x:option name="temp-dir" select="$temp-dir"/>
             <x:input port="source">
@@ -270,12 +270,8 @@
             <x:document type="port" port="junit"/>
         </x:context>
         <x:expect label="there should be at least one test, and none of the tests should fail" type="xpath" test="not(/*/@tests='0') and /*/@failures='0' and /*/@errors='0'"/>
-
-        <!--
-        skip assertions wrapped in the pending element
-        skip scenarios wrapped in the pending element
-        skip scenarios inside scenarios which is wrapped in the pending element
-        -->
+        <x:expect label="one of the test cases should be successful ('the step should execute successfully')" type="xpath" test="count(/testsuites/testsuite/testcase[@status='SUCCESS'])" equals="1"/>
+        <x:expect label="other than the 'execute successfully' test, all tests should be skipped" type="xpath" test="sum(/testsuites/testsuite/number(@skipped))" equals="/testsuites/number(@tests) - 1"/>
     </x:scenario>
 
 
