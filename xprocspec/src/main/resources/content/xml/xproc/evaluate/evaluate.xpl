@@ -437,17 +437,24 @@
                                         </pxi:message>
                                     </p:otherwise>
                                 </p:choose>
-
-                                <p:set-attributes match="/*">
-                                    <p:input port="attributes">
-                                        <p:pipe port="current" step="assertions"/>
-                                    </p:input>
-                                </p:set-attributes>
-                                <p:add-attribute match="/*" attribute-name="contextref">
+                                
+                                <p:add-attribute match="/*" attribute-name="contextref" name="test-result.missing-attributes">
                                     <p:with-option name="attribute-value" select="/*/@contextref">
                                         <p:pipe port="result" step="assertion"/>
                                     </p:with-option>
                                 </p:add-attribute>
+                                <p:xslt>
+                                    <p:input port="parameters">
+                                        <p:empty/>
+                                    </p:input>
+                                    <p:input port="stylesheet">
+                                        <p:document href="test-result.re-add-attributes.xsl"/>
+                                    </p:input>
+                                    <p:input port="source">
+                                        <p:pipe port="result" step="test-result.missing-attributes"/>
+                                        <p:pipe port="current" step="assertions"/>
+                                    </p:input>
+                                </p:xslt>
                             </p:for-each>
                         </p:for-each>
                         <p:identity name="test-results"/>

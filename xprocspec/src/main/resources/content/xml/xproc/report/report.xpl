@@ -47,7 +47,7 @@
             <p:pipe port="result" step="logfile"/>
         </p:input>
     </p:insert>
-    <p:viewport match="//*[self::c:errors | self::x:expected | self::x:was | self::x:document]">
+    <p:viewport match="/*//*[self::c:error | self::x:expected | self::x:was | self::x:document]">
         <p:xslt>
             <p:input port="parameters">
                 <p:empty/>
@@ -57,7 +57,7 @@
             </p:input>
         </p:xslt>
     </p:viewport>
-    <p:viewport match="c:errors | x:expected | x:was | x:document">
+    <p:viewport match="c:error | x:expected | x:was | x:document">
         <p:escape-markup/>
     </p:viewport>
     <p:xslt>
