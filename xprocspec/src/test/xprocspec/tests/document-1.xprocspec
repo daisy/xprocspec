@@ -269,6 +269,42 @@ Znp6OjUaDXt6euj1ej9FrtPpJACmpaXR4/H8p+SS5NbWFk0mE3U6HVUqFZOSkmgwGDg8PMyTkxP+
                 <span xmlns="" id="5"/>
             </x:document>
         </x:expect>
+
+        <!-- test using select expression and named namespace -->
+        <x:context label="Portions of an XML document selected using the select attribute which references a namespace using a namespace prefix" xmlns:xyz="asdf">
+            <x:document type="inline" select="//xyz:element">
+                <doc>
+                    <xyz:element/>
+                    <xyz:element/>
+                </doc>
+            </x:document>
+        </x:context>
+        <x:expect label="There should be a sequence of two `xyz:element` elements" type="compare" xmlns:xyz="asdf">
+            <x:document type="inline">
+                <xyz:element/>
+            </x:document>
+            <x:document type="inline">
+                <xyz:element/>
+            </x:document>
+        </x:expect>
+        
+        <!-- test using select expression and default namespace -->
+        <x:context label="Portions of an XML document selected using the select attribute which references a namespace using the default namespace (xmlns='...')" xmlns="asdf">
+            <x:document type="inline" select="//element">
+                <doc>
+                    <element xmlns="asdf"/>
+                    <element xmlns="asdf"/>
+                </doc>
+            </x:document>
+        </x:context>
+        <x:expect label="There should be a sequence of two `element` elements" type="compare">
+            <x:document type="inline">
+                <element xmlns="asdf"/>
+            </x:document>
+            <x:document type="inline">
+                <element xmlns="asdf"/>
+            </x:document>
+        </x:expect>
     </x:scenario>
 
 </x:description>

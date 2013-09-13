@@ -227,13 +227,34 @@
             <p:empty/>
         </p:xpath-context>
         <p:when test="$select">
-            <p:for-each>
+            <p:for-each name="select">
                 <p:variable name="unfiltered-base" select="/*/@xml:base"/>
-                <p:filter>
-                    <p:with-option name="select" select="$select"/>
-                </p:filter>
+                <p:identity>
+                    <p:input port="source">
+                        <p:pipe port="document" step="main"/>
+                    </p:input>
+                </p:identity>
+                <p:xslt name="select.xslt">
+                    <p:input port="parameters">
+                        <p:empty/>
+                    </p:input>
+                    <p:input port="stylesheet">
+                        <p:document href="document-to-select-xslt.xsl"/>
+                    </p:input>
+                </p:xslt>
+                <p:xslt>
+                    <p:input port="parameters">
+                        <p:empty/>
+                    </p:input>
+                    <p:input port="source">
+                        <p:pipe port="current" step="select"/>
+                    </p:input>
+                    <p:input port="stylesheet">
+                        <p:pipe port="result" step="select.xslt"/>
+                    </p:input>
+                </p:xslt>
                 <p:for-each>
-                    <p:wrap-sequence wrapper="x:document"/>
+                    <p:iteration-source select="/*/*"/>
                     <p:add-attribute match="/*" attribute-name="type" attribute-value="inline"/>
                     <p:add-attribute match="/*" attribute-name="xml:space" attribute-value="preserve"/>
                     <p:add-attribute match="/*" attribute-name="xml:base">
