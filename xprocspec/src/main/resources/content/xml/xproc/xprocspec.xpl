@@ -14,6 +14,8 @@
     </p:output>
 
     <p:option name="temp-dir" select="'file:/tmp/'"/>
+    
+    <p:option name="step-available-rng" select="'false'"/>
 
     <p:import href="preprocess/preprocess.xpl"/>
     <p:import href="compile/compile.xpl"/>
@@ -45,6 +47,9 @@
         <p:with-option name="logfile" select="$logfile">
             <p:empty/>
         </p:with-option>
+        <p:with-option name="step-available-rng" select="$step-available-rng">
+            <p:empty/>
+        </p:with-option>
     </pxi:test-preprocess>
 
     <!-- make XProc scripts out of each scenario -->
@@ -58,6 +63,9 @@
             <p:empty/>
         </p:with-option>
         <p:with-option name="logfile" select="$logfile">
+            <p:empty/>
+        </p:with-option>
+        <p:with-option name="step-available-rng" select="$step-available-rng">
             <p:empty/>
         </p:with-option>
     </pxi:test-compile>
@@ -118,6 +126,9 @@
         <p:with-option name="depend-on-stored-files" select="''">
             <p:pipe port="result" step="depend-on-me"/>
         </p:with-option>
+        <p:with-option name="step-available-rng" select="$step-available-rng">
+            <p:empty/>
+        </p:with-option>
     </pxi:test-run>
 
     <!-- compare the results with the expected results -->
@@ -128,6 +139,9 @@
     </pxi:message>
     <pxi:test-evaluate>
         <p:with-option name="logfile" select="$logfile">
+            <p:empty/>
+        </p:with-option>
+        <p:with-option name="step-available-rng" select="$step-available-rng">
             <p:empty/>
         </p:with-option>
     </pxi:test-evaluate>
@@ -146,6 +160,9 @@
             <p:empty/>
         </p:with-option>
         <p:with-option name="logfile" select="$logfile">
+            <p:empty/>
+        </p:with-option>
+        <p:with-option name="step-available-rng" select="$step-available-rng">
             <p:empty/>
         </p:with-option>
     </pxi:test-report>

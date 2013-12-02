@@ -8,14 +8,19 @@
 
     <p:option name="temp-dir" required="true"/>
     <p:option name="logfile" select="''"/>
+    
+    <p:option name="step-available-rng" select="'false'"/>
+    
+    <p:import href="../utils/logging-library.xpl"/>
+    <p:import href="../utils/validate-with-relax-ng.xpl"/>
+    <p:import href="http://xmlcalabash.com/extension/steps/library-1.0.xpl" use-when="p:system-property('p:product-name') = 'XML Calabash'"/>
+    
     <p:variable name="test-temp-dir" select="concat($temp-dir,'xprocspec-',replace(replace(concat(current-dateTime(),''),'\+.*',''),'[^\d]',''),'/')">
         <p:inline>
             <doc/>
         </p:inline>
     </p:variable>
-
-    <p:import href="../utils/logging-library.xpl"/>
-    <p:import href="http://xmlcalabash.com/extension/steps/library-1.0.xpl" use-when="p:system-property('p:product-name') = 'XML Calabash'"/>
+    
     <cxf:mkdir fail-on-error="false" name="mkdir" p:use-when="p:system-property('p:product-name') = 'XML Calabash'">
         <p:with-option name="href" select="$test-temp-dir">
             <p:inline>
@@ -136,11 +141,14 @@
                                 <p:empty/>
                             </p:with-option>
                         </pxi:message>
-                        <p:validate-with-relax-ng>
+                        <pxi:validate-with-relax-ng>
                             <p:input port="schema">
                                 <p:document href="../../schema/xprocspec.compile.rng"/>
                             </p:input>
-                        </p:validate-with-relax-ng>
+                            <p:with-option name="step-available" select="$step-available-rng">
+                                <p:empty/>
+                            </p:with-option>
+                        </pxi:validate-with-relax-ng>
                         <pxi:message message="   * done!">
                             <p:with-option name="logfile" select="$logfile">
                                 <p:empty/>

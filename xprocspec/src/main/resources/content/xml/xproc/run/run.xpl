@@ -5,11 +5,14 @@
     <p:output port="result" sequence="true"/>
     <p:option name="depend-on-stored-files" select="''"/>
     <p:option name="logfile" select="''"/>
+    
+    <p:option name="step-available-rng" select="'false'"/>
 
     <!-- This version of run.xpl depends on Calabash and its cx:eval. Hopefully dynamic evaluation of pipelines will be included in XProc v2. -->
 
     <p:import href="http://xmlcalabash.com/extension/steps/library-1.0.xpl"/>
     <p:import href="../utils/logging-library.xpl"/>
+    <p:import href="../utils/validate-with-relax-ng.xpl"/>
     
     <p:for-each>
         <pxi:message message="   * loading '$1'">
@@ -143,11 +146,14 @@
                 <p:try>
                     <p:group>
                         <!-- validate output grammar -->
-                        <p:validate-with-relax-ng>
+                        <pxi:validate-with-relax-ng>
                             <p:input port="schema">
                                 <p:document href="../../schema/xprocspec.run.rng"/>
                             </p:input>
-                        </p:validate-with-relax-ng>
+                            <p:with-option name="step-available" select="$step-available-rng">
+                                <p:empty/>
+                            </p:with-option>
+                        </pxi:validate-with-relax-ng>
 
                         <p:wrap-sequence wrapper="calabash-issue-102"/>
                     </p:group>

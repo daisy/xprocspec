@@ -17,8 +17,11 @@
     <p:option name="start-time" required="true"/>
     <p:option name="end-time" required="true"/>
     <p:option name="logfile" select="''"/>
+    
+    <p:option name="step-available-rng" select="'false'"/>
 
     <p:import href="../utils/logging-library.xpl"/>
+    <p:import href="../utils/validate-with-relax-ng.xpl"/>
     
     <p:try>
         <p:group>
@@ -81,11 +84,14 @@
         <p:identity name="try.input"/>
         <p:try>
             <p:group>
-                <p:validate-with-relax-ng>
+                <pxi:validate-with-relax-ng>
                     <p:input port="schema">
                         <p:document href="../../schema/xprocspec.results.rng"/>
                     </p:input>
-                </p:validate-with-relax-ng>
+                    <p:with-option name="step-available" select="$step-available-rng">
+                        <p:empty/>
+                    </p:with-option>
+                </pxi:validate-with-relax-ng>
                 <p:wrap-sequence wrapper="calabash-issue-102"/>
             </p:group>
             <p:catch name="catch">

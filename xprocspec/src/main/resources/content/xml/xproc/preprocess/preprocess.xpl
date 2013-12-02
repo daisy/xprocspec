@@ -8,8 +8,11 @@
 
     <p:option name="temp-dir" required="true"/>
     <p:option name="logfile" select="''"/>
+    
+    <p:option name="step-available-rng" select="'false'"/>
 
     <p:import href="../utils/logging-library.xpl"/>
+    <p:import href="../utils/validate-with-relax-ng.xpl"/>
 
     <p:declare-step type="pxi:perform-imports" name="perform-imports">
         <p:input port="source" primary="true"/>
@@ -20,6 +23,8 @@
         </p:input>
         <p:output port="result"/>
         <p:option name="logfile" required="true"/>
+        
+        <p:option name="step-available-rng" select="'false'"/>
 
         <p:add-attribute match="/*" attribute-name="href" name="this-import">
             <p:input port="source">
@@ -77,12 +82,18 @@
                     <pxi:validate-if-xprocspec>
                         <p:with-option name="test-base-uri" select="$import-href"/>
                         <p:with-option name="logfile" select="logfile"/>
+                        <p:with-option name="step-available-rng" select="$step-available-rng">
+                            <p:empty/>
+                        </p:with-option>
                     </pxi:validate-if-xprocspec>
                     <pxi:perform-imports>
                         <p:input port="previous-imports">
                             <p:pipe port="result" step="previous-imports"/>
                         </p:input>
                         <p:with-option name="logfile" select="$logfile"/>
+                        <p:with-option name="step-available-rng" select="$step-available-rng">
+                            <p:empty/>
+                        </p:with-option>
                     </pxi:perform-imports>
                     <p:for-each>
                         <p:iteration-source select="/*/x:scenario"/>
@@ -100,15 +111,20 @@
         <p:option name="test-base-uri" required="true"/>
         <p:option name="logfile" required="true"/>
         
+        <p:option name="step-available-rng" select="'false'"/>
+        
         <!-- if xprocspec grammar is used in the input document; validate it -->
         <p:identity name="try.input"/>
         <p:try>
             <p:group>
-                <p:validate-with-relax-ng>
+                <pxi:validate-with-relax-ng>
                     <p:input port="schema">
                         <p:document href="../../schema/xprocspec.rng"/>
                     </p:input>
-                </p:validate-with-relax-ng>
+                    <p:with-option name="step-available" select="$step-available-rng">
+                        <p:empty/>
+                    </p:with-option>
+                </pxi:validate-with-relax-ng>
                 <p:wrap-sequence wrapper="calabash-issue-102"/>
             </p:group>
             <p:catch name="catch">
@@ -169,6 +185,9 @@
             <pxi:validate-if-xprocspec>
                 <p:with-option name="test-base-uri" select="$test-base-uri"/>
                 <p:with-option name="logfile" select="logfile"/>
+                <p:with-option name="step-available-rng" select="$step-available-rng">
+                    <p:empty/>
+                </p:with-option>
             </pxi:validate-if-xprocspec>
 
             <p:add-attribute match="/*" attribute-name="test-grammar" attribute-value="xprocspec"/>
@@ -412,6 +431,9 @@
                         </pxi:message>
                         <pxi:perform-imports>
                             <p:with-option name="logfile" select="$logfile"/>
+                            <p:with-option name="step-available-rng" select="$step-available-rng">
+                                <p:empty/>
+                            </p:with-option>
                         </pxi:perform-imports>
                         <p:identity name="main-document"/>
 
@@ -733,11 +755,14 @@
         </pxi:message>
         <p:try>
             <p:group>
-                <p:validate-with-relax-ng>
+                <pxi:validate-with-relax-ng>
                     <p:input port="schema">
                         <p:document href="../../schema/xprocspec.preprocess.rng"/>
                     </p:input>
-                </p:validate-with-relax-ng>
+                    <p:with-option name="step-available" select="$step-available-rng">
+                        <p:empty/>
+                    </p:with-option>
+                </pxi:validate-with-relax-ng>
                 <p:wrap-sequence wrapper="calabash-issue-102"/>
             </p:group>
             <p:catch name="catch">

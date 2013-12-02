@@ -4,9 +4,12 @@
     <p:input port="source" sequence="true"/>
     <p:output port="result" sequence="true"/>
     <p:option name="logfile" select="''"/>
+    
+    <p:option name="step-available-rng" select="'false'"/>
 
     <p:import href="compare.xpl"/>
     <p:import href="../utils/logging-library.xpl"/>
+    <p:import href="../utils/validate-with-relax-ng.xpl"/>
     <p:import href="../utils/document.xpl"/>
     
     <!-- for custom x:expect implementations: -->
@@ -533,11 +536,14 @@
                             <p:document href="calabash-issue-107.xsl"/>
                         </p:input>
                     </p:xslt>
-                    <p:validate-with-relax-ng>
+                    <pxi:validate-with-relax-ng>
                         <p:input port="schema">
                             <p:document href="../../schema/xprocspec.evaluate.rng"/>
                         </p:input>
-                    </p:validate-with-relax-ng>
+                        <p:with-option name="step-available" select="$step-available-rng">
+                            <p:empty/>
+                        </p:with-option>
+                    </pxi:validate-with-relax-ng>
                     <p:wrap-sequence wrapper="calabash-issue-102"/>
                 </p:group>
                 <p:catch name="catch">

@@ -38,6 +38,13 @@
           <p>This is a tool for testing XProc scripts. Its grammar is based on <a href="http://code.google.com/p/xspec/wiki/WritingScenarios">XSpec</a> and is implemented in XProc.</p>
           <p>xprocspec is itself tested using xprocspec. The latest results are available as a <a href="www/documentation/test-results.html.html">xprocspec HTML report</a>. xprocspec is at this point mostly feature-complete. <a href="https://travis-ci.org/josteinaj/xprocspec"><img src="https://travis-ci.org/josteinaj/xprocspec.png?branch=master" alt="Build status icon"/></a></p>
           <section>
+              <h2>Command line</h2>
+              <p>From the command line, provide the xprocspec test on the "source" input port, and point the "result", "html" and "junit" report ports to a location of your choice. Assuming you have calabash 1.0.15-95 installed under ~/calabash-1.0.15-95 (calabash 1.0.10 or newer is recommended), cd to the "xprocspec" directory in the xprocspec repository and run the following command to run the xprocspec integration tests:</p>
+              <p><pre style="white-space: pre-wrap;"><code style="font-family: Consolas,monospace;">java -jar <span style="white-space:nowrap;">~/calabash-1.0.15-95/calabash.jar</span> <span style="white-space:nowrap;">-i source=src/test/xprocspec/test.xprocspec</span> <span style="white-space:nowrap;">-o result=target/result.xml</span> <span style="white-space:nowrap;">-o html=target/html.html</span> <span style="white-space:nowrap;">-o junit=target/junit.xml</span> <span style="white-space:nowrap;">src/main/resources/content/xml/xproc/xprocspec.xpl</span></code></pre></p>
+              <p>The xprocspec reports, including HTML and JUnit versions, will be stored in "xprocspec/target/".</p>
+              <p><small>NOTE: In Windows, you must also provide a file URI to the "temp-dir" option. It defaults to "file:/tmp/" which works in Linux and OSX.</small></p>
+          </section>
+          <section>
               <h2>Maven</h2>
               <p>If you use the Maven plugin <a href="https://github.com/bertfrees/xproc-maven-plugin">@bertfrees/xproc-maven-plugin</a>, you can do automated testing of your XProc projects!</p>
               <p>The simplest way to start an XProc project with xprocspec testing is to simply run the following command:</p>

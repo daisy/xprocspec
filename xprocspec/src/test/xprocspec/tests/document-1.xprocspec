@@ -218,22 +218,24 @@ Znp6OjUaDXt6euj1ej9FrtPpJACmpaXR4/H8p+SS5NbWFk0mE3U6HVUqFZOSkmgwGDg8PMyTkxP+
         </x:expect>
 
         <!-- test loading of html5 file -->
-        <x:context label="An HTML5 file (not well-formed XML)">
-            <x:document type="file" method="html" href="document-1.resources/html5.html"/>
-        </x:context>
-        <x:expect label="Should contain the expected content" type="compare">
-            <x:document type="inline">
-                <html xmlns="http://www.w3.org/1999/xhtml">
-                    <head>
-                        <title>Title</title>
-                    </head>
-                    <body>
-                        <h1>HTML5</h1>
-                        <p>This is a <b><i>HTML5</i></b><i>-file</i> which is *not* well-formed XML.</p>
-                    </body>
-                </html>
-            </x:document>
-        </x:expect>
+        <x:pending label="validator.nu html parser required; HTML5 tests are excluded by default since p:step-available cannot be used in a static context (i.e. inside a p:use-when)">
+            <x:context label="An HTML5 file (not well-formed XML)">
+                <x:document type="file" method="html" href="document-1.resources/html5.html"/>
+            </x:context>
+            <x:expect label="Should contain the expected content" type="compare">
+                <x:document type="inline">
+                    <html xmlns="http://www.w3.org/1999/xhtml">
+                        <head>
+                            <title>Title</title>
+                        </head>
+                        <body>
+                            <h1>HTML5</h1>
+                            <p>This is a <b><i>HTML5</i></b><i>-file</i> which is *not* well-formed XML.</p>
+                        </body>
+                    </html>
+                </x:document>
+            </x:expect>
+        </x:pending>
 
         <!-- test using select expression -->
         <x:context label="Portions of an XML document selected using the select attribute">
