@@ -46,7 +46,7 @@
           </section>
           <section>
               <h2>Maven</h2>
-              <p>If you use the Maven plugin <a href="https://github.com/bertfrees/xproc-maven-plugin">@bertfrees/xproc-maven-plugin</a>, you can do automated testing of your XProc projects!</p>
+              <p>If you use the Maven plugin <a href="https://github.com/daisy-consortium/xproc-maven-plugin">@daisy-consortium/xproc-maven-plugin</a>, you can do automated testing of your XProc projects!</p>
               <p>The simplest way to start an XProc project with xprocspec testing is to simply run the following command:</p>
               <p><pre style="white-space: pre-wrap;"><code style="font-family: Consolas,monospace;">mvn <span style="white-space:nowrap;">archetype:generate</span> <span style="white-space:nowrap;">-DarchetypeRepository=https://oss.sonatype.org/content/repositories/snapshots/</span> <span style="white-space:nowrap;">-DarchetypeGroupId=org.daisy</span> <span style="white-space:nowrap;">-DarchetypeArtifactId=xprocspec-archetype-basic</span> <span style="white-space:nowrap;">-DarchetypeVersion=1.0.0-SNAPSHOT</span> <span style="white-space:nowrap;">-DgroupId=<strong>org.example</strong></span> <span style="white-space:nowrap;">-DartifactId=<strong>my-xproc-project</strong></span></code></pre></p>
               <p>This will create the basic folder structure of your project, and includes a Hello world XProc pipeline as well as a xprocspec test for it. To test the project, run <code>mvn test</code>.</p>
