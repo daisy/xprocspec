@@ -9,7 +9,7 @@
 
     <name>xprocspec-aggregator</name>
     <description>Aggregator POM for xprocspec</description>
-    <url>http://josteinaj.github.io/xprocspec/</url>
+    <url>http://daisy-pipeline.github.io/xprocspec/</url>
     <inceptionYear>2013</inceptionYear>
     <licenses>
         <license>
@@ -31,14 +31,14 @@
         </developer>
     </developers>
     <issueManagement>
-        <url>https://github.com/josteinaj/xprocspec/issues</url>
+        <url>https://github.com/daisy-pipeline/xprocspec/issues</url>
         <system>GitHub Issues</system>
     </issueManagement>
 
     <scm>
-        <url>https://github.com/josteinaj/xprocspec</url>
-        <connection>scm:git:git://github.com/josteinaj/xprocspec.git</connection>
-        <developerConnection>scm:git:git@github.com:josteinaj/xprocspec.git</developerConnection>
+        <url>https://github.com/daisy-pipeline/xprocspec</url>
+        <connection>scm:git:git://github.com/daisy-pipeline/xprocspec.git</connection>
+        <developerConnection>scm:git:git@github.com:daisy-pipeline/xprocspec.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
