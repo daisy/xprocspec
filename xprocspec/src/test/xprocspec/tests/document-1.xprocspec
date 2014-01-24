@@ -38,6 +38,7 @@
             <x:document type="file" href="document-1.xprocspec"/>
         </x:context>
         <x:expect type="xpath" label="The loaded document should be itself (x:description as root element)" test="local-name(/*)" equals="'description'"/>
+        <x:expect type="xpath" label="The base URI should be that of the xprocspec test document" test="base-uri(/*)" equals="$test-base-uri"/>
 
         <!-- inline document -->
         <x:context label="an inline 'test' element">

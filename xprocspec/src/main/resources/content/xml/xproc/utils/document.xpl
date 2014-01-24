@@ -198,27 +198,34 @@
 
         <!-- Base URI cleanup -->
         <p:group>
-            <p:variable name="base-was" select="/*/*/@xml:base"/>
-
-            <!-- set x:document/@xml:base to either the xprocspec test document or to the temporary directory -->
-            <p:add-attribute match="/*" attribute-name="xml:base">
-                <p:with-option name="attribute-value" select="if ($base-uri='temp-dir') then $temp-dir else base-uri(/*)"/>
-            </p:add-attribute>
-
-            <!-- resolve inline document against x:document/@xml:base -->
-            <p:add-attribute match="/*/*" attribute-name="xml:base">
-                <p:with-option name="attribute-value" select="resolve-uri($base-was,/*/@xml:base)"/>
-            </p:add-attribute>
-
-            <!-- reset x:document/*/@xml:base to its original value, in case it was a relative URI -->
-            <p:add-attribute match="/*/*" attribute-name="xml:base">
-                <p:with-option name="attribute-value" select="$base-was"/>
-            </p:add-attribute>
-
-            <!-- delete explicit xml:base attribute if it was not present originally -->
-            <p:delete>
-                <p:with-option name="match" select="concat('/*[',(if ($base-was) then 'false()' else 'true()'),']/*/@xml:base')"/>
-            </p:delete>
+            <p:choose>
+                <p:when test="not(/*/@xml:base)">
+                    <p:variable name="base-was" select="/*/*/@xml:base"/>
+                    
+                    <!-- set x:document/@xml:base to either the xprocspec test document or to the temporary directory -->
+                    <p:add-attribute match="/*" attribute-name="xml:base">
+                        <p:with-option name="attribute-value" select="if ($base-uri='temp-dir') then $temp-dir else base-uri(/*)"/>
+                    </p:add-attribute>
+                    
+                    <!-- resolve inline document against x:document/@xml:base -->
+                    <p:add-attribute match="/*/*" attribute-name="xml:base">
+                        <p:with-option name="attribute-value" select="resolve-uri($base-was,/*/@xml:base)"/>
+                    </p:add-attribute>
+                    
+                    <!-- reset x:document/*/@xml:base to its original value, in case it was a relative URI -->
+                    <p:add-attribute match="/*/*" attribute-name="xml:base">
+                        <p:with-option name="attribute-value" select="$base-was"/>
+                    </p:add-attribute>
+                    
+                    <!-- delete explicit xml:base attribute if it was not present originally -->
+                    <p:delete>
+                        <p:with-option name="match" select="concat('/*[',(if ($base-was) then 'false()' else 'true()'),']/*/@xml:base')"/>
+                    </p:delete>
+                </p:when>
+                <p:otherwise>
+                    <p:identity/>
+                </p:otherwise>
+            </p:choose>
         </p:group>
     </p:for-each>
 
