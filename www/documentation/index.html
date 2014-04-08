@@ -173,6 +173,12 @@ table.simple {
 .section dl.attrs dd, .section dl.eldef dd {
     margin-bottom:  0;
 }
+
+@media print {
+    .removeOnSave {
+        display: none;
+    }
+}
 </style><link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/w3c-unofficial"><!--[if lt IE 9]><script src='https://www.w3.org/2008/site/js/html5shiv.js'></script><![endif]--></head><body style="" class="h-entry" role="document" id="respecDocument"><div class="head" role="contentinfo" id="respecHeader">
   <p>
     
@@ -181,12 +187,13 @@ table.simple {
   
     <h2 property="bibo:subtitle" id="subtitle">A tool for testing XProc scripts</h2>
   
-  <h2 property="dcterms:issued" datatype="xsd:dateTime" content="2014-01-22T12:53:09.000Z" id="unofficial-draft-22-january-2014">Unofficial Draft <time class="dt-published" datetime="2014-01-22">22 January 2014</time></h2>
+  <h2 property="dcterms:issued" datatype="xsd:dateTime" content="2014-04-08T12:15:33.000Z" id="unofficial-draft-08-april-2014">Unofficial Draft <time class="dt-published" datetime="2014-04-08">08 April 2014</time></h2>
   <dl>
     
     
       <dt>Latest editor's draft:</dt>
       <dd><a href="http://daisy-pipeline.github.io/xprocspec/www/documentation/index.html">http://daisy-pipeline.github.io/xprocspec/www/documentation/index.html</a></dd>
+    
     
     
     
@@ -328,10 +335,13 @@ table.simple {
                             The <a href="#attr-expect-grammar"><code>grammar</code></a> attribute is used to set the grammar of the <code>x:document</code> element (used when <code>type</code> is <code>validate</code>).
                             The assertion succeeds if all of the documents in context validates against the schema given by the child <code>x:document</code> element.
                         </p>
-<p id="attr-expect-href">When <code>type</code> is <code>custom</code>; the <a href="#attr-expect-href"><code>href</code></a> attribute is a URI pointing to the XProc script that must be imported for the custom step to be available.</p>
+<p id="attr-expect-href">When <code>type</code> is <code>custom</code>; the <a href="#attr-expect-href"><code>href</code></a> attribute is a URI pointing to the XProc script that must be imported for the custom
+                            step to be available.</p>
 <p id="attr-expect-label">The <a href="#attr-expect-label"><code>label</code></a> attribute is used to describe the current element in human-readable words.</p>
-<p id="attr-expect-max">If <code>max</code> is specified, then there must be at most this many documents in context for the assertion to succeed.</p>
-<p id="attr-expect-min">If <code>min</code> is specified, then there must be at least this many documents in context for the assertion to succeed.</p>
+<p id="attr-expect-max">If <code>max</code> is specified, then there must be at most this many documents in context for the assertion to
+                                succeed.</p>
+<p id="attr-expect-min">If <code>min</code> is specified, then there must be at least this many documents in context for the assertion to
+                                succeed.</p>
 <p id="attr-expect-normalize-space">
                                 By default, whitespace normalization are performed on documents before comparing them with eachother.
                                 You can disable this by setting <code>normalize-space</code> to <code>false</code>.
@@ -351,7 +361,9 @@ table.simple {
 <p id="attr-expect-type">The <a href="#attr-expect-type"><code>type</code></a> attribute is used to define the type of assertion you want to make.</p><p>
                             When <code>type</code> is <a href="#the-compare-element"><code>compare</code></a>, you can put a sequence of <code>x:document</code> elements inside the <code>x:expect</code> element.
                             The assertion succeeds if the document sequence in context equals the document sequence inside the <code>x:expect</code> element.
-                        </p><p>When <code>type</code> is <a href="#the-validate-element"><code>validate</code></a>, the documents in context is validated against the schema provided in the <code>x:document</code> element inside the <code>x:expect</code> element.</p><p>When <code>type</code> is <code>count</code>, the number of documents in context is compared with the <a href="#attr-expect-min"><code>min</code></a> and <a href="#attr-expect-max"><code>max</code></a> attributes.</p><p>When <code>type</code> is <code>custom</code>, you can provide your own XProc implementation of an assertion. The step signature must be as follows:</p><pre><code>
+                        </p><p>When <code>type</code> is <a href="#the-validate-element"><code>validate</code></a>, the documents in context is validated against the schema provided in the <code>x:document</code> element
+                            inside the <code>x:expect</code> element.</p><p>When <code>type</code> is <code>count</code>, the number of documents in context is compared with the <a href="#attr-expect-min"><code>min</code></a> and <a href="#attr-expect-max"><code>max</code></a>
+                            attributes.</p><p>When <code>type</code> is <code>custom</code>, you can provide your own XProc implementation of an assertion. The step signature must be as follows:</p><pre><code>
 &lt;p:declare-step xmlns:p="http://www.w3.org/ns/xproc" type="(...)" (...)&gt;
    &lt;p:input port="context" sequence="true"/&gt;
    &lt;p:input port="expect" sequence="true"/&gt;
@@ -407,9 +419,11 @@ table.simple {
 <h3 aria-level="2" role="heading" id="h3_the-param-element"><span class="secno">1.10 </span>The <code>param</code> element</h3><dl class="element"><dt>Content model:</dt><dd>Empty.</dd><dt>Content attributes:</dt><dd><a href="#attr-param-name"><code>name</code></a><small title="optional">?</small></dd><dd><a href="#attr-param-select"><code>select</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p>The param element is used to provide values to XProc paramaters on the XProc step you are testing.</p>
 
-<p id="attr-param-name">The <a href="#attr-param-name"><code>name</code></a> attribute is the name of the parameter to be provided on the XProc steps primary parameter input port.</p>
-<p id="attr-param-select">The <a href="#attr-param-select"><code>select</code></a> attribute is a XPath expression used to select a value for the XProc parameter (equivalent of the <code>p:with-param/@select</code> attribute in XProc).</p><p>The variable "<code>$temp-dir</code>" is available for use in the select expression. The variable refers to the temporary directory used for the test. This is useful (for instance) if the value of the parameter is a URI pointing to a
-                        directory where the XProc steps will store files. Every xprocspec scenario is assigned its own temporary directory so that subsequent evaluations of the step does not conflict with eachother.</p>
+<p id="attr-param-name">The <a href="#attr-param-name"><code>name</code></a> attribute is the name of the parameter to be provided on the XProc steps primary parameter input
+                    port.</p>
+<p id="attr-param-select">The <a href="#attr-param-select"><code>select</code></a> attribute is a XPath expression used to select a value for the XProc parameter (equivalent of the <code>p:with-param/@select</code> attribute in XProc).</p><p>The variable "<code>$temp-dir</code>" is available for use in the select expression. The variable refers to the temporary directory used for the test. This is useful (for instance) if the
+                        value of the parameter is a URI pointing to a directory where the XProc steps will store files. Every xprocspec scenario is assigned its own temporary directory so that
+                        subsequent evaluations of the step does not conflict with eachother.</p>
 </section>
 
 
@@ -426,18 +440,21 @@ table.simple {
 
 <section id="the-document-element" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
 <h3 aria-level="2" role="heading" id="h3_the-document-element"><span class="secno">1.11 </span>The <code>document</code> element</h3><dl class="element"><dt>Content model:</dt><dd>One element from any namespace. (optional)</dd><dt>Content attributes:</dt><dd><a href="#attr-document-base-uri"><code>base-uri</code></a><small title="optional">?</small></dd><dd><a href="#attr-document-href"><code>href</code></a><small title="optional">?</small></dd><dd><a href="#attr-document-method"><code>method</code></a><small title="optional">?</small></dd><dd><a href="#attr-document-port"><code>port</code></a><small title="optional">?</small></dd><dd><a href="#attr-document-position"><code>position</code></a><small title="optional">?</small></dd><dd><a href="#attr-document-recursive"><code>recursive</code></a><small title="optional">?</small></dd><dd><a href="#attr-document-select"><code>select</code></a><small title="optional">?</small></dd><dd><a href="#attr-document-type"><code>type</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
-<p>The <a href="#the-document-element"><code>document</code></a> element is used to define which documents are provided on a steps input ports, what the context is when making assertions, and for assertions when making comparisons or performing validations. It can be used in a
-                    number of ways:</p>
+<p>The <a href="#the-document-element"><code>document</code></a> element is used to define which documents are provided on a steps input ports, what the context is when making assertions, and for assertions when making comparisons
+                    or performing validations. It can be used in a number of ways:</p>
 
-<p id="attr-document-base-uri">If the <code>base-uri</code> attribute is <code>temp-dir</code>, then the URI in the <a href="#attr-document-href"><code>href</code></a> attribute (or the xml:base attribute of the <code>document</code> or inline element in the case of inline
-                                documents) will be resolved against the temporary directory used for the test, instead of the base URI of the xprocspec document.</p><!-- documented in the "inline" group --><!-- documented in the "inline" group -->
+<p id="attr-document-base-uri">If the <code>base-uri</code> attribute is <code>temp-dir</code>, then the URI in the <a href="#attr-document-href"><code>href</code></a> attribute (or the xml:base attribute of the
+                                <code>document</code> or inline element in the case of inline documents) will be resolved against the temporary directory used for the test, instead of the base URI of the
+                                xprocspec document.</p><!-- documented in the "inline" group --><!-- documented in the "inline" group -->
 <p id="attr-document-href">When <code>type</code> is <code>file</code>; the <a href="#attr-document-href"><code>href</code></a> attribute is a URI pointing to the file you want the contents of.</p><p>When <code>type</code> is <code>directory</code>; the <a href="#attr-document-href"><code>href</code></a> attribute is a URI pointing to the directory you want listed.</p>
-<p id="attr-document-method">By default, files loaded by using <code>method="file"</code> will be loaded as XML files. Non-XML files can be loaded by specifying another <code>method</code>.</p>
+<p id="attr-document-method">By default, files loaded by using <code>method="file"</code> will be loaded as XML files. Non-XML files can be loaded by
+                                specifying another <code>method</code>.</p>
 <p id="attr-document-port">
                             The <code>port</code> is the name of a XProc input or output port.
                             The <code>x:document</code> element will represent the sequence of documents provided on the input port, or the sequence of documents returned on the output port.
                         </p>
-<p id="attr-document-position">By specifying the <a href="#attr-document-position"><code>position</code></a> attribute, a certain document in the sequence of documents appearing on the port can be selected.</p>
+<p id="attr-document-position">By specifying the <a href="#attr-document-position"><code>position</code></a> attribute, a certain document in the sequence of documents appearing on the port can be
+                                selected.</p>
 <p id="attr-document-recursive">
                                 By default, the result is the same as invoking the standard XProc step <code>p:directory-list</code>. If you specify the <a href="#attr-document-recursive"><code>recursive</code></a> attribute and give it the value <code>true</code>,
                                 you will get a recursive directory listing, listing all subfolders and their contents as well.
@@ -489,4 +506,4 @@ table.simple {
             }
             catch (err) {
             }//]]&gt;</script>
-    <div id="respec-ui" class="removeOnSave" style="position: fixed; top: 20px; right: 20px; width: 202px; text-align: right; "><button style="background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: rgb(255, 255, 255); font-weight: bold; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-color: rgb(204, 204, 204); border-right-color: rgb(204, 204, 204); border-bottom-color: rgb(204, 204, 204); border-left-color: rgb(204, 204, 204); border-top-left-radius: 5px 5px; border-top-right-radius: 5px 5px; border-bottom-right-radius: 5px 5px; border-bottom-left-radius: 5px 5px; background-position: initial initial; background-repeat: initial initial; ">ReSpec</button><div style="background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: rgb(255, 255, 255); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-left-color: rgb(0, 0, 0); width: 200px; display: none; text-align: left; margin-top: 5px; margin-right: 5px; background-position: initial initial; background-repeat: initial initial; "><button style="background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: rgb(255, 255, 255); border-top-style: none; border-right-style: none; border-left-style: none; border-width: initial; border-color: initial; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(204, 204, 204); width: 100%; text-align: left; font-size: inherit; background-position: initial initial; background-repeat: initial initial; ">Save Snapshot</button><button style="background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: rgb(255, 255, 255); border-top-style: none; border-right-style: none; border-left-style: none; border-width: initial; border-color: initial; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(204, 204, 204); width: 100%; text-align: left; font-size: inherit; background-position: initial initial; background-repeat: initial initial; ">About ReSpec</button></div></div></body></html>
+    <div id="respec-ui" class="removeOnSave" style="position: fixed; top: 20px; right: 20px; width: 202px; text-align: right; "><button style="background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: rgb(255, 255, 255); font-weight: bold; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-color: rgb(204, 204, 204); border-right-color: rgb(204, 204, 204); border-bottom-color: rgb(204, 204, 204); border-left-color: rgb(204, 204, 204); border-top-left-radius: 5px 5px; border-top-right-radius: 5px 5px; border-bottom-right-radius: 5px 5px; border-bottom-left-radius: 5px 5px; background-position: initial initial; background-repeat: initial initial; ">ReSpec</button><div style="background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: rgb(255, 255, 255); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-left-color: rgb(0, 0, 0); width: 200px; display: none; text-align: left; margin-top: 5px; margin-right: 5px; background-position: initial initial; background-repeat: initial initial; "><button style="background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: rgb(255, 255, 255); border-top-style: none; border-right-style: none; border-left-style: none; border-width: initial; border-color: initial; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(204, 204, 204); width: 100%; text-align: left; font-size: inherit; background-position: initial initial; background-repeat: initial initial; ">Save Snapshot</button><button style="background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: rgb(255, 255, 255); border-top-style: none; border-right-style: none; border-left-style: none; border-width: initial; border-color: initial; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(204, 204, 204); width: 100%; text-align: left; font-size: inherit; background-position: initial initial; background-repeat: initial initial; ">About ReSpec</button><button style="background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: rgb(255, 255, 255); border-top-style: none; border-right-style: none; border-left-style: none; border-width: initial; border-color: initial; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(204, 204, 204); width: 100%; text-align: left; font-size: inherit; background-position: initial initial; background-repeat: initial initial; ">Search Specref DB</button></div></div></body></html>
