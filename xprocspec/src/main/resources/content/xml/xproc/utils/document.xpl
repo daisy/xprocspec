@@ -127,15 +127,42 @@
         </p:when>
 
         <p:when test="$type='directory'">
-            <pxi:directory-list>
-                <p:with-option name="path" select="$href"/>
-                <p:with-option name="depth" select="if ($recursive='true') then '-1' else '0'"/>
-            </pxi:directory-list>
-            <p:delete match="//*/@xml:base"/>
-            <p:wrap-sequence wrapper="x:document"/>
-            <p:add-attribute match="/*" attribute-name="xml:base">
-                <p:with-option name="attribute-value" select="$href"/>
-            </p:add-attribute>
+            <pxi:message message="    * listing directory$2: $1">
+                <p:with-option name="param1" select="$href">
+                    <p:empty/>
+                </p:with-option>
+                <p:with-option name="param2" select="if ($recursive='true') then ' recursively' else ''">
+                    <p:empty/>
+                </p:with-option>
+                <p:with-option name="logfile" select="$logfile">
+                    <p:empty/>
+                </p:with-option>
+            </pxi:message>
+            <p:try>
+                <p:group>
+                    <pxi:directory-list>
+                        <p:with-option name="path" select="$href"/>
+                        <p:with-option name="depth" select="if ($recursive='true') then '-1' else '0'"/>
+                    </pxi:directory-list>
+                    <p:delete match="//*/@xml:base"/>
+                    <p:wrap-sequence wrapper="x:document"/>
+                    <p:add-attribute match="/*" attribute-name="xml:base">
+                        <p:with-option name="attribute-value" select="$href"/>
+                    </p:add-attribute>
+                </p:group>
+                <p:catch>
+                    <pxi:message message="      * unable to read directory">
+                        <p:with-option name="logfile" select="$logfile">
+                            <p:empty/>
+                        </p:with-option>
+                    </pxi:message>
+                    <p:identity>
+                        <p:input port="source">
+                            <p:empty/>
+                        </p:input>
+                    </p:identity>
+                </p:catch>
+            </p:try>
         </p:when>
 
         <p:when test="$type='errors'">

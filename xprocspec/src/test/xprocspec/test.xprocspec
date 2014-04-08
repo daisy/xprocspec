@@ -16,6 +16,16 @@
         <x:expect label="one of the tests should be pending" type="xpath" test="sum(/*/testsuite/number(@skipped))=1"/>
     </x:scenario>
 
+    <!--<x:scenario label="the script element">
+        <x:call step="x:xprocspec">
+            <!-\- TODO: implement script element as first child of x:description, used instead of /*/@script to define an inline script -\->
+            <x:option name="temp-dir" select="$temp-dir"/>
+            <x:input port="source">
+                <x:document type="file" href="tests/script-1.xprocspec"/>
+            </x:input>
+        </x:call>
+    </x:scenario>-->
+
 
     <x:scenario label="the import element">
         <x:call step="x:xprocspec">
@@ -125,6 +135,18 @@
             <x:call>
                 <x:input port="source">
                     <x:document type="file" href="tests/call-3.xprocspec"/>
+                </x:input>
+            </x:call>
+            <x:context label="the junit output port">
+                <x:document type="port" port="junit"/>
+            </x:context>
+            <x:expect label="there should be at least one test, and none of the tests should fail" type="xpath" test="not(/*/@tests='0') and /*/@failures='0' and /*/@errors='0'"/>
+        </x:scenario>
+        
+        <x:scenario label="- step attribute pointing to step declared in an imported XProc library">
+            <x:call>
+                <x:input port="source">
+                    <x:document type="file" href="tests/call-4.xprocspec"/>
                 </x:input>
             </x:call>
             <x:context label="the junit output port">
@@ -271,7 +293,8 @@
         </x:context>
         <x:expect label="there should be at least one test, and none of the tests should fail" type="xpath" test="not(/*/@tests='0') and /*/@failures='0' and /*/@errors='0'"/>
         <x:expect label="one of the test cases should be successful ('the step should execute successfully')" type="xpath" test="count(/testsuites/testsuite/testcase[@status='SUCCESS'])" equals="1"/>
-        <x:expect label="other than the 'execute successfully' test, all tests should be skipped" type="xpath" test="sum(/testsuites/testsuite/number(@skipped))" equals="/testsuites/number(@tests) - 1"/>
+        <x:expect label="other than the 'execute successfully' test, all tests should be skipped" type="xpath" test="sum(/testsuites/testsuite/number(@skipped))"
+            equals="/testsuites/number(@tests) - 1"/>
     </x:scenario>
 
 
@@ -286,7 +309,7 @@
                     <x:document type="file" href="tests/regression-tests/regression-1_attributes-from-foreign-namespaces-on-xproc-elements.xprocspec"/>
                 </x:input>
             </x:call>
-            
+
             <x:context label="the junit output port">
                 <x:document type="port" port="junit"/>
             </x:context>
@@ -299,7 +322,7 @@
                     <x:document type="file" href="tests/regression-tests/regression-1_attributes-on-inline-document-should-not-be-deleted.xprocspec"/>
                 </x:input>
             </x:call>
-            
+
             <x:context label="the junit output port">
                 <x:document type="port" port="junit"/>
             </x:context>
