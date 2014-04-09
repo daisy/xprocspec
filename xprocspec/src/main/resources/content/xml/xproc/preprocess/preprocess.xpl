@@ -80,6 +80,10 @@
                     <p:load>
                         <p:with-option name="href" select="$import-href"/>
                     </p:load>
+                    <p:add-attribute match="//*[not(ancestor::*/@base-uri)]" attribute-name="xml:base">
+                        <p:with-option name="attribute-value" select="base-uri(/*)"/>
+                    </p:add-attribute>
+                    <p:add-xml-base all="true" relative="false"/>
                     <pxi:validate-if-xprocspec>
                         <p:with-option name="test-base-uri" select="$import-href"/>
                         <p:with-option name="logfile" select="$logfile"/>
