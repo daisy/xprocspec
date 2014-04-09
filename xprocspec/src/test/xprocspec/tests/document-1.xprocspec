@@ -114,6 +114,12 @@
                 </c:directory>
             </x:document>
         </x:expect>
+        
+        <!-- directory listing (directory doesn't exist) -->
+        <x:context label="the './does-not-exist/' directory; non-recursive">
+            <x:document type="directory" href="does-not-exist"/>
+        </x:context>
+        <x:expect type="compare" label="The directory listing should be an empty sequence when the directory does not exist"/>
 
         <!-- the position attribute (position=1) -->
         <x:context label="The [doc1,doc2] sequence: position=1">

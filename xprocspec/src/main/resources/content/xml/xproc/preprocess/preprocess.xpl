@@ -1,5 +1,6 @@
-<p:declare-step xmlns:p="http://www.w3.org/ns/xproc" type="pxi:test-preprocess" xmlns:cx="http://xmlcalabash.com/ns/extensions" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:pxi="http://www.daisy.org/ns/xprocspec/xproc-internal/"
-    exclude-inline-prefixes="#all" version="1.0" xpath-version="2.0" xmlns:t="http://xproc.org/ns/testsuite" xmlns:x="http://www.daisy.org/ns/xprocspec">
+<p:declare-step xmlns:p="http://www.w3.org/ns/xproc" type="pxi:test-preprocess" xmlns:cx="http://xmlcalabash.com/ns/extensions" xmlns:c="http://www.w3.org/ns/xproc-step"
+    xmlns:pxi="http://www.daisy.org/ns/xprocspec/xproc-internal/" exclude-inline-prefixes="#all" version="1.0" xpath-version="2.0" xmlns:t="http://xproc.org/ns/testsuite"
+    xmlns:x="http://www.daisy.org/ns/xprocspec">
 
     <p:input port="source"/>
     <p:output port="result" sequence="true">
@@ -8,7 +9,7 @@
 
     <p:option name="temp-dir" required="true"/>
     <p:option name="logfile" select="''"/>
-    
+
     <p:option name="step-available-rng" select="'false'"/>
 
     <p:import href="../utils/logging-library.xpl"/>
@@ -23,7 +24,7 @@
         </p:input>
         <p:output port="result"/>
         <p:option name="logfile" required="true"/>
-        
+
         <p:option name="step-available-rng" select="'false'"/>
 
         <p:add-attribute match="/*" attribute-name="href" name="this-import">
@@ -85,7 +86,7 @@
                     <p:add-xml-base all="true" relative="false"/>
                     <pxi:validate-if-xprocspec>
                         <p:with-option name="test-base-uri" select="$import-href"/>
-                        <p:with-option name="logfile" select="logfile"/>
+                        <p:with-option name="logfile" select="$logfile"/>
                         <p:with-option name="step-available-rng" select="$step-available-rng">
                             <p:empty/>
                         </p:with-option>
@@ -108,15 +109,104 @@
 
         </p:viewport>
     </p:declare-step>
-    
+
+    <p:declare-step type="pxi:import-xproc-declarations" name="import-xproc-declarations">
+        <p:input port="source" primary="true"/>
+        <p:input port="previous-imports">
+            <p:inline>
+                <p:imports/>
+            </p:inline>
+        </p:input>
+        <p:output port="result"/>
+        <p:option name="logfile" required="true"/>
+
+        <p:variable name="is-library" select="if (/p:library) then 'true' else 'false'"/>
+
+        <p:add-attribute match="/*" attribute-name="href" name="this-import">
+            <p:input port="source">
+                <p:inline>
+                    <p:import/>
+                </p:inline>
+            </p:input>
+            <p:with-option name="attribute-value" select="base-uri(/*)">
+                <p:pipe port="source" step="import-xproc-declarations"/>
+            </p:with-option>
+        </p:add-attribute>
+        <p:insert match="/*" position="last-child">
+            <p:input port="source">
+                <p:pipe port="previous-imports" step="import-xproc-declarations"/>
+            </p:input>
+            <p:input port="insertion">
+                <p:pipe port="result" step="this-import"/>
+            </p:input>
+        </p:insert>
+        <p:identity name="previous-imports"/>
+
+        <p:identity>
+            <p:input port="source">
+                <p:pipe port="source" step="import-xproc-declarations"/>
+            </p:input>
+        </p:identity>
+        <pxi:message message=" * checking $1 for imports">
+            <p:with-option name="param1" select="base-uri(/*)"/>
+            <p:with-option name="logfile" select="$logfile"/>
+        </pxi:message>
+        <p:viewport match="/*/p:import">
+            <p:variable name="import-href" select="resolve-uri(/*/@href,base-uri(/*))"/>
+            <p:choose>
+                <p:xpath-context>
+                    <p:pipe port="result" step="previous-imports"/>
+                </p:xpath-context>
+                <p:when test="$import-href=/*/p:import/@href">
+                    <pxi:message message=" * skipping circular import: $1">
+                        <p:with-option name="param1" select="$import-href"/>
+                        <p:with-option name="logfile" select="$logfile">
+                            <p:empty/>
+                        </p:with-option>
+                    </pxi:message>
+                </p:when>
+                <p:otherwise>
+                    <pxi:message message=" * importing: $1">
+                        <p:with-option name="param1" select="$import-href"/>
+                        <p:with-option name="logfile" select="$logfile">
+                            <p:empty/>
+                        </p:with-option>
+                    </pxi:message>
+                    <p:load>
+                        <p:with-option name="href" select="$import-href"/>
+                    </p:load>
+                    <p:choose>
+                        <p:when test="$is-library='true'">
+                            <pxi:import-xproc-declarations>
+                                <p:input port="previous-imports">
+                                    <p:pipe port="result" step="previous-imports"/>
+                                </p:input>
+                                <p:with-option name="logfile" select="$logfile">
+                                    <p:empty/>
+                                </p:with-option>
+                            </pxi:import-xproc-declarations>
+                        </p:when>
+                        <p:otherwise>
+                            <p:identity/>
+                        </p:otherwise>
+                    </p:choose>
+                    <p:for-each>
+                        <p:iteration-source select="/p:declare-step | /p:pipeline | /*/p:declare-step | /*/p:pipeline"/>
+                        <p:delete match="/*/node()[not(self::p:input or self::p:output or self::option)]"/>
+                    </p:for-each>
+                </p:otherwise>
+            </p:choose>
+        </p:viewport>
+    </p:declare-step>
+
     <p:declare-step type="pxi:validate-if-xprocspec">
         <p:input port="source"/>
         <p:output port="result"/>
         <p:option name="test-base-uri" required="true"/>
         <p:option name="logfile" required="true"/>
-        
+
         <p:option name="step-available-rng" select="'false'"/>
-        
+
         <!-- if xprocspec grammar is used in the input document; validate it -->
         <p:identity name="try.input"/>
         <p:try>
@@ -147,7 +237,7 @@
                     <p:with-option name="attribute-value" select="$test-base-uri"/>
                 </p:add-attribute>
                 <p:add-attribute match="/*" attribute-name="error-location" attribute-value="preprocess.xpl - input document validation"/>
-                
+
                 <p:identity name="errors-without-was"/>
                 <p:wrap-sequence wrapper="x:was">
                     <p:input port="source">
@@ -168,7 +258,7 @@
                         <p:pipe port="result" step="was"/>
                     </p:input>
                 </p:insert>
-                
+
                 <p:wrap-sequence wrapper="calabash-issue-102"/>
             </p:catch>
         </p:try>
@@ -188,7 +278,7 @@
 
             <pxi:validate-if-xprocspec>
                 <p:with-option name="test-base-uri" select="$test-base-uri"/>
-                <p:with-option name="logfile" select="logfile"/>
+                <p:with-option name="logfile" select="$logfile"/>
                 <p:with-option name="step-available-rng" select="$step-available-rng">
                     <p:empty/>
                 </p:with-option>
@@ -497,6 +587,11 @@
                                             </p:inline>
                                         </p:with-option>
                                     </p:load>
+                                    <pxi:import-xproc-declarations>
+                                        <p:with-option name="logfile" select="$logfile">
+                                            <p:empty/>
+                                        </p:with-option>
+                                    </pxi:import-xproc-declarations>
                                     <pxi:message message="   * success!">
                                         <p:with-option name="logfile" select="$logfile">
                                             <p:empty/>
@@ -521,7 +616,7 @@
                                 </p:input>
                             </p:xslt>
                             <p:identity name="script"/>
-                            
+
                             <p:for-each>
                                 <p:iteration-source>
                                     <p:pipe port="result" step="calls"/>
@@ -544,7 +639,6 @@
                                 <p:count/>
                                 <p:choose>
                                     <p:when test="number(.)=0">
-                                        <!-- TODO: step not found; throw error? -->
                                         <pxi:error message=" * the step $1 was not found in $2" code="XPS01">
                                             <p:with-option name="param1" select="$type"/>
                                             <p:with-option name="param2" select="$script-uri"/>
@@ -603,7 +697,7 @@
                                 <p:pipe port="result" step="main-document"/>
                             </p:input>
                         </p:identity>
-                        
+
                         <!-- the focus attribute -->
                         <p:choose>
                             <p:when test="//x:expect[@focus]">
@@ -658,7 +752,7 @@
                         <p:for-each>
                             <p:iteration-source select="/*/*"/>
                             <p:variable name="type" select="(//x:call/@x:type)[1]"/>
-                            
+
                             <p:insert match="/*" position="first-child">
                                 <p:input port="insertion">
                                     <p:pipe port="result" step="step-declarations"/>
@@ -668,7 +762,7 @@
                                 <p:with-option name="match" select="concat('/*/x:step-declaration/*[not(string(@x:type)=&quot;',$type,'&quot;)]')"/>
                             </p:delete>
                             <p:delete match="/*/x:step-declaration[not(*)]"/>
-                            
+
                             <p:choose>
                                 <p:when test="/*/x:scenario/x:context/x:document[@type='errors']">
                                     <p:identity/>

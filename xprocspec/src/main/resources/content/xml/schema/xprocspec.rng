@@ -197,14 +197,16 @@
             <a:documentation xmlns="http://www.w3.org/1999/xhtml">The param element is used to provide values to XProc paramaters on the XProc step you are testing.</a:documentation>
             <ref name="common-attributes"/>
             <attribute name="name">
-                <a:documentation xmlns="http://www.w3.org/1999/xhtml">The `name` attribute is the name of the parameter to be provided on the XProc steps primary parameter input port.</a:documentation>
+                <a:documentation xmlns="http://www.w3.org/1999/xhtml">The `name` attribute is the name of the parameter to be provided on the XProc steps primary parameter input
+                    port.</a:documentation>
                 <data type="QName"/>
             </attribute>
             <attribute name="select">
                 <a:documentation xmlns="http://www.w3.org/1999/xhtml">
                     <p>The `select` attribute is a XPath expression used to select a value for the XProc parameter (equivalent of the `p:with-param/@select` attribute in XProc).</p>
-                    <p>The variable "`$temp-dir`" is available for use in the select expression. The variable refers to the temporary directory used for the test. This is useful (for instance) if the value of the parameter is a URI pointing to a
-                        directory where the XProc steps will store files. Every xprocspec scenario is assigned its own temporary directory so that subsequent evaluations of the step does not conflict with eachother.</p>
+                    <p>The variable "`$temp-dir`" is available for use in the select expression. The variable refers to the temporary directory used for the test. This is useful (for instance) if the
+                        value of the parameter is a URI pointing to a directory where the XProc steps will store files. Every xprocspec scenario is assigned its own temporary directory so that
+                        subsequent evaluations of the step does not conflict with eachother.</p>
                 </a:documentation>
             </attribute>
         </element>
@@ -316,7 +318,8 @@
                 <group>
                     <!-- Document validation -->
                     <attribute name="type">
-                        <a:documentation xmlns="http://www.w3.org/1999/xhtml">When `type` is `validate`, the documents in context is validated against the schema provided in the `x:document` element inside the `x:expect` element.</a:documentation>
+                        <a:documentation xmlns="http://www.w3.org/1999/xhtml">When `type` is `validate`, the documents in context is validated against the schema provided in the `x:document` element
+                            inside the `x:expect` element.</a:documentation>
                         <value>validate</value>
                     </attribute>
                     <attribute name="grammar">
@@ -330,20 +333,24 @@
                             <value>xml-schema</value>
                         </choice>
                     </attribute>
+                    <ref name="document"/>
                 </group>
                 <group>
                     <!-- Document count -->
                     <attribute name="type">
-                        <a:documentation xmlns="http://www.w3.org/1999/xhtml">When `type` is `count`, the number of documents in context is compared with the `min` and `max` attributes.</a:documentation>
+                        <a:documentation xmlns="http://www.w3.org/1999/xhtml">When `type` is `count`, the number of documents in context is compared with the `min` and `max`
+                            attributes.</a:documentation>
                         <value>count</value>
                     </attribute>
                     <choice>
                         <attribute name="min">
-                            <a:documentation xmlns="http://www.w3.org/1999/xhtml">If `min` is specified, then there must be at least this many documents in context for the assertion to succeed.</a:documentation>
+                            <a:documentation xmlns="http://www.w3.org/1999/xhtml">If `min` is specified, then there must be at least this many documents in context for the assertion to
+                                succeed.</a:documentation>
                             <data type="integer"/>
                         </attribute>
                         <attribute name="max">
-                            <a:documentation xmlns="http://www.w3.org/1999/xhtml">If `max` is specified, then there must be at most this many documents in context for the assertion to succeed.</a:documentation>
+                            <a:documentation xmlns="http://www.w3.org/1999/xhtml">If `max` is specified, then there must be at most this many documents in context for the assertion to
+                                succeed.</a:documentation>
                             <data type="integer"/>
                         </attribute>
                         <group>
@@ -403,7 +410,8 @@
                         <value>custom</value>
                     </attribute>
                     <attribute name="href">
-                        <a:documentation xmlns="http://www.w3.org/1999/xhtml">When `type` is `custom`; the `href` attribute is a URI pointing to the XProc script that must be imported for the custom step to be available.</a:documentation>
+                        <a:documentation xmlns="http://www.w3.org/1999/xhtml">When `type` is `custom`; the `href` attribute is a URI pointing to the XProc script that must be imported for the custom
+                            step to be available.</a:documentation>
                         <data type="anyURI"/>
                     </attribute>
                     <attribute name="step">
@@ -425,8 +433,8 @@
     <define name="document">
         <element name="document" ns="http://www.daisy.org/ns/xprocspec">
             <a:documentation xmlns="http://www.w3.org/1999/xhtml">
-                <p>The `document` element is used to define which documents are provided on a steps input ports, what the context is when making assertions, and for assertions when making comparisons or performing validations. It can be used in a
-                    number of ways:</p>
+                <p>The `document` element is used to define which documents are provided on a steps input ports, what the context is when making assertions, and for assertions when making comparisons
+                    or performing validations. It can be used in a number of ways:</p>
             </a:documentation>
             <ref name="common-attributes"/>
             <optional>
@@ -448,8 +456,9 @@
                     </attribute>
                     <optional>
                         <attribute name="base-uri">
-                            <a:documentation xmlns="http://www.w3.org/1999/xhtml">If the `base-uri` attribute is `temp-dir`, then the URI in the `href` attribute (or the xml:base attribute of the `document` or inline element in the case of inline
-                                documents) will be resolved against the temporary directory used for the test, instead of the base URI of the xprocspec document.</a:documentation>
+                            <a:documentation xmlns="http://www.w3.org/1999/xhtml">If the `base-uri` attribute is `temp-dir`, then the URI in the `href` attribute (or the xml:base attribute of the
+                                `document` or inline element in the case of inline documents) will be resolved against the temporary directory used for the test, instead of the base URI of the
+                                xprocspec document.</a:documentation>
                             <choice>
                                 <value>temp-dir</value>
                             </choice>
@@ -475,7 +484,8 @@
                     </attribute>
                     <optional>
                         <attribute name="position">
-                            <a:documentation xmlns="http://www.w3.org/1999/xhtml">By specifying the `position` attribute, a certain document in the sequence of documents appearing on the port can be selected.</a:documentation>
+                            <a:documentation xmlns="http://www.w3.org/1999/xhtml">By specifying the `position` attribute, a certain document in the sequence of documents appearing on the port can be
+                                selected.</a:documentation>
                             <choice>
                                 <value>all</value>
                                 <value>last</value>
@@ -500,7 +510,8 @@
                     </attribute>
                     <optional>
                         <attribute name="method">
-                            <a:documentation xmlns="http://www.w3.org/1999/xhtml">By default, files loaded by using `method="file"` will be loaded as XML files. Non-XML files can be loaded by specifying another `method`.</a:documentation>
+                            <a:documentation xmlns="http://www.w3.org/1999/xhtml">By default, files loaded by using `method="file"` will be loaded as XML files. Non-XML files can be loaded by
+                                specifying another `method`.</a:documentation>
                             <choice>
                                 <value>xml</value>
                                 <value>html</value>
