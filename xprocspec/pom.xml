@@ -14,6 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <xprocspec.version>${project.version}</xprocspec.version>
         <xprocspec.basedir>${basedir}</xprocspec.basedir>
+
         <xproc-maven-plugin.version>1.0-SNAPSHOT</xproc-maven-plugin.version>
         <xproc-engine-calabash.version>1.0-SNAPSHOT</xproc-engine-calabash.version>
     </properties>
@@ -94,6 +95,7 @@
                     <xprocspec.basedir>${xprocspec.basedir}</xprocspec.basedir>
                     <xproc-maven-plugin.version>${xproc-maven-plugin.version}</xproc-maven-plugin.version>
                     <xproc-engine-calabash.version>${xproc-engine-calabash.version}</xproc-engine-calabash.version>
+
                   </properties>
                   <goals>
                     <goal>xproc:xprocspec</goal>

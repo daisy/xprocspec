@@ -1,9 +1,9 @@
-[![Build Status](https://travis-ci.org/daisy-pipeline/xprocspec.png?branch=master)](https://travis-ci.org/daisy-pipeline/xprocspec)
+[![Build Status](https://travis-ci.org/daisy-consortium/xprocspec.png?branch=master)](https://travis-ci.org/daisy-consortium/xprocspec)
 
 xprocspec - XProc testing tool
 ==============================
 
-This is an experimental tool for testing XProc scripts. See the <a href="http://daisy-pipeline.github.io/xprocspec/">homepage</a> for more information.
+This is an experimental tool for testing XProc scripts. See the <a href="http://daisy-consortium.github.io/xprocspec/">homepage</a> for more information.
 
 Copyright © 2013, Jostein Austvik Jacobsen
 All Rights Reserved.
