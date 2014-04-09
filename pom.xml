@@ -52,7 +52,7 @@
     
     <modules>
         <module>xprocspec</module>
-        <module>xprocspec-archetype-basic</module>
+        <!--<module>xprocspec-archetype-basic</module>-->
     </modules>
 
     <build>
