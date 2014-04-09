@@ -13,7 +13,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <xprocspec.version>${project.version}</xprocspec.version>
-        <xprocspec.basedir>${project.basedir}</xprocspec.basedir>
+        <xprocspec.basedir>${basedir}</xprocspec.basedir>
         <xproc-maven-plugin.version>1.0-SNAPSHOT</xproc-maven-plugin.version>
         <xproc-engine-calabash.version>1.0-SNAPSHOT</xproc-engine-calabash.version>
     </properties>
@@ -85,15 +85,15 @@
                 <artifactId>maven-invoker-plugin</artifactId>
                 <version>1.8</version>
                 <configuration>
+                  <streamLogs>true</streamLogs>
                   <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
-                  <settingsFile>src/it/settings.xml</settingsFile>
                   <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
                   <postBuildHookScript>verify</postBuildHookScript>
                   <properties>
-                    <xprocspec.version>${project.version}</xprocspec.version>
-                    <xprocspec.basedir>${basedir}</xprocspec.basedir>
-                    <xproc-maven-plugin.version>1.0-SNAPSHOT</xproc-maven-plugin.version>
-                    <xproc-engine-calabash.version>1.0-SNAPSHOT</xproc-engine-calabash.version>
+                    <xprocspec.version>${xprocspec.version}</xprocspec.version>
+                    <xprocspec.basedir>${xprocspec.basedir}</xprocspec.basedir>
+                    <xproc-maven-plugin.version>${xproc-maven-plugin.version}</xproc-maven-plugin.version>
+                    <xproc-engine-calabash.version>${xproc-engine-calabash.version}</xproc-engine-calabash.version>
                   </properties>
                   <goals>
                     <goal>xproc:xprocspec</goal>
