@@ -150,7 +150,7 @@
                                                     </p:inline>
                                                 </xsl:when>
                                                 <xsl:otherwise>
-                                                    <p:document href="{@href}"/>
+                                                    <p:document href="{resolve-uri(@href,base-uri(.))}"/>
                                                 </xsl:otherwise>
                                             </xsl:choose>
                                         </xsl:for-each>
