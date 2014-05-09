@@ -187,7 +187,7 @@ table.simple {
   
     <h2 property="bibo:subtitle" id="subtitle">A tool for testing XProc scripts</h2>
   
-  <h2 property="dcterms:issued" datatype="xsd:dateTime" content="2014-05-09T08:37:41.000Z" id="unofficial-draft-09-may-2014">Unofficial Draft <time class="dt-published" datetime="2014-05-09">09 May 2014</time></h2>
+  <h2 property="dcterms:issued" datatype="xsd:dateTime" content="2014-05-09T10:35:34.000Z" id="unofficial-draft-09-may-2014">Unofficial Draft <time class="dt-published" datetime="2014-05-09">09 May 2014</time></h2>
   <dl>
     
     
@@ -263,7 +263,7 @@ table.simple {
 </section>
 
 <section id="the-scenario-element" typeof="bibo:Chapter" resource="#the-scenario-element" rel="bibo:Chapter">
-<h3 aria-level="2" role="heading" id="h3_the-scenario-element"><span class="secno">1.3 </span>The <code>scenario</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-call-element"><code>call</code></a><small title="optional">?</small></dd><dd><a href="#the-scenario-element"><code>scenario</code></a><small title="zero or more">*</small></dd><dd><a href="#the-pending-element"><code>pending</code></a><small title="zero or more">*</small></dd><dd><a href="#the-context-element"><code>context</code></a><small title="zero or more">*</small></dd><dd><a href="#the-expect-element"><code>expect</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-scenario-focus"><code>focus</code></a><small title="optional">?</small></dd><dd><a href="#attr-scenario-label"><code>label</code></a></dd><dd>Zero or more attributes from any namespace.</dd></dl>
+<h3 aria-level="2" role="heading" id="h3_the-scenario-element"><span class="secno">1.3 </span>The <code>scenario</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-call-element"><code>call</code></a><small title="optional">?</small></dd><dd><a href="#the-scenario-element"><code>scenario</code></a><small title="zero or more">*</small></dd><dd><a href="#the-pending-element"><code>pending</code></a><small title="zero or more">*</small></dd><dd><a href="#the-context-element"><code>context</code></a><small title="zero or more">*</small></dd><dd><a href="#the-expect-element"><code>expect</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-scenario-focus"><code>focus</code></a><small title="optional">?</small></dd><dd><a href="#attr-scenario-label"><code>label</code></a></dd><dd><a href="#attr-scenario-xfail"><code>xfail</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p>
                 A scenario groups together the definition of the script environment
                 (the <a href="#the-call-element"><code>call</code></a> element) and the script assertions (the <a href="#the-context-element"><code>context</code></a> and
@@ -279,6 +279,11 @@ table.simple {
                reported. When present, only that assertion or scenario will be evaluated.
                Its content describes why you are focusing on this particular assertion or scenario.</p>
 <p id="attr-scenario-label">The <a href="#attr-scenario-label"><code>label</code></a> attribute is used to describe the current element in human-readable words.</p>
+<p id="attr-scenario-xfail">Assertions with the <a href="#attr-scenario-xfail"><code>xfail</code></a> attribute will behave just like other assertions, but
+               will succeed where other assertions fail, and will fail where other assertions succeed (i.e. the result is inverted).
+               The <a href="#attr-scenario-xfail"><code>xfail</code></a> attribute can also be applied to scenarios, in which case <code>xfail</code> will be implicitly
+               set to <code>true</code> for all of the scenarios assertions.
+               The value of the <a href="#attr-scenario-xfail"><code>xfail</code></a> attribute must be <code>true</code>.</p>
 </section>
 
 <section id="the-call-element" typeof="bibo:Chapter" resource="#the-call-element" rel="bibo:Chapter">
@@ -318,7 +323,7 @@ table.simple {
 </section>
 
 <section id="the-expect-element" typeof="bibo:Chapter" resource="#the-expect-element" rel="bibo:Chapter">
-<h3 aria-level="2" role="heading" id="h3_the-expect-element"><span class="secno">1.7 </span>The <code>expect</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-document-element"><code>document</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-expect-equals"><code>equals</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-focus"><code>focus</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-grammar"><code>grammar</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-href"><code>href</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-label"><code>label</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-max"><code>max</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-min"><code>min</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-normalize-space"><code>normalize-space</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-pending"><code>pending</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-step"><code>step</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-test"><code>test</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-type"><code>type</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
+<h3 aria-level="2" role="heading" id="h3_the-expect-element"><span class="secno">1.7 </span>The <code>expect</code> element</h3><dl class="element"><dt>Content model:</dt><dd><a href="#the-document-element"><code>document</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-expect-equals"><code>equals</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-focus"><code>focus</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-grammar"><code>grammar</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-href"><code>href</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-label"><code>label</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-max"><code>max</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-min"><code>min</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-normalize-space"><code>normalize-space</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-pending"><code>pending</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-step"><code>step</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-test"><code>test</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-type"><code>type</code></a><small title="optional">?</small></dd><dd><a href="#attr-expect-xfail"><code>xfail</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p>
                 Defines what is expected from the context document(s).
             </p>
@@ -391,6 +396,11 @@ table.simple {
     &lt;x:was xml:space="preserve"&gt;Description of what the value actually was.&lt;/x:was&gt;
 &lt;/x:test-result&gt;
                                     </code></pre></li></ul>
+<p id="attr-expect-xfail">Assertions with the <a href="#attr-expect-xfail"><code>xfail</code></a> attribute will behave just like other assertions, but
+               will succeed where other assertions fail, and will fail where other assertions succeed (i.e. the result is inverted).
+               The <a href="#attr-expect-xfail"><code>xfail</code></a> attribute can also be applied to scenarios, in which case <code>xfail</code> will be implicitly
+               set to <code>true</code> for all of the scenarios assertions.
+               The value of the <a href="#attr-expect-xfail"><code>xfail</code></a> attribute must be <code>true</code>.</p>
 </section>
 
 
