@@ -76,7 +76,7 @@
                                 <xsl:variable name="primary-parameter-port"
                                     select="if (count($parameter-ports)=1 and not($parameter-ports/@primary='false')) then $parameter-ports else if ($parameter-ports[@primary='true']) then $parameter-ports[@primary='true'] else if (count($parameter-ports[not(@primary='false')])=1) then $parameter-ports[not(@primary='false')] else ()"/>
                                 <xsl:choose>
-                                    <xsl:when test="$primary-parameter-port and not(/*/x:scenario/x:call/x:param)">
+                                    <xsl:when test="$primary-parameter-port and not(/*/x:scenario/x:call/x:input[@port=$primary-parameter-port/@port]) and not(/*/x:scenario/x:call/x:param)">
                                         <p:input port="{$primary-parameter-port/@port}">
                                             <xsl:choose>
                                                 <xsl:when test="$primary-parameter-port/*">
