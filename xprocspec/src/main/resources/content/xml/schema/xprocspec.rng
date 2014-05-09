@@ -114,6 +114,9 @@
     <define name="scenario.common">
         <ref name="common-attributes"/>
         <ref name="label"/>
+        <optional>
+            <ref name="xfail-attribute"/>
+        </optional>
     </define>
 
     <define name="scenario.common-children">
@@ -261,6 +264,9 @@
                 <ref name="pending-attribute"/>
                 <ref name="focus-attribute"/>
             </choice>
+        </optional>
+        <optional>
+            <ref name="xfail-attribute"/>
         </optional>
         <ref name="common-attributes"/>
     </define>
@@ -659,6 +665,19 @@
                Its content describes why you are focusing on this particular assertion or scenario.</p>
            </a:documentation>
             <data type="string"/>
+        </attribute>
+    </define>
+
+    <define name="xfail-attribute">
+        <attribute name="xfail">
+            <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+               <p>Assertions with the <code>xfail</code> attribute will behave just like other assertions, but
+               will succeed where other assertions fail, and will fail where other assertions succeed (i.e. the result is inverted).
+               The <code>xfail</code> attribute can also be applied to scenarios, in which case <code>xfail</code> will be implicitly
+               set to <code>true</code> for all of the scenarios assertions.
+               The value of the <code>xfail</code> attribute must be <code>true</code>.</p>
+            </a:documentation>
+            <value>true</value>
         </attribute>
     </define>
 
