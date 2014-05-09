@@ -30,6 +30,23 @@
             </element>
         </define>
 
+        <define name="description.common">
+            <ref name="common-attributes"/>
+            <attribute name="script">
+                <a:documentation xmlns="http://www.w3.org/1999/xhtml">The `script` attribute is a URI that points to the XProc script you want to test.</a:documentation>
+                <data type="anyURI"/>
+            </attribute>
+            <optional>
+                <attribute name="version">
+                    <a:documentation xmlns="http://www.w3.org/1999/xhtml">The `version` attribute can be used to aid development over time.</a:documentation>
+                    <data type="NMTOKEN"/>
+                </attribute>
+            </optional>
+            <optional>
+                <ref name="pending-attribute"/>
+            </optional>
+        </define>
+
         <define name="pending-scenario">
             <ref name="pending-scenario-attribute"/>
         </define>

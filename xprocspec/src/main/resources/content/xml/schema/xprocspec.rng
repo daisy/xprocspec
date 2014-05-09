@@ -38,10 +38,13 @@
 
     <define name="description.common">
         <ref name="common-attributes"/>
-        <attribute name="script">
-            <a:documentation xmlns="http://www.w3.org/1999/xhtml">The `script` attribute is a URI that points to the XProc script you want to test.</a:documentation>
-            <data type="anyURI"/>
-        </attribute>
+        <choice>
+            <ref name="script"/>
+            <attribute name="script">
+                <a:documentation xmlns="http://www.w3.org/1999/xhtml">The `script` attribute is a URI that points to the XProc script you want to test.</a:documentation>
+                <data type="anyURI"/>
+            </attribute>
+        </choice>
         <optional>
             <attribute name="version">
                 <a:documentation xmlns="http://www.w3.org/1999/xhtml">The `version` attribute can be used to aid development over time.</a:documentation>
@@ -51,6 +54,35 @@
         <optional>
             <ref name="pending-attribute"/>
         </optional>
+    </define>
+
+    <define name="script">
+        <element name="script" ns="http://www.daisy.org/ns/xprocspec">
+            <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+                <p>The script element can be used insted of the <code>script</code> attribute.
+                It allows you to inline the XProc script to test.
+                The base URI of the script is the same as the containing xprocspec document,
+                unless otherwise specified using `xml:base`. One of the <code id="the-declare-step-element">p:declare-step</code>,
+                <code id="the-pipeline-element">p:pipeline</code> or <code id="the-library-element">p:library</code> elements must be used.</p>
+            </a:documentation>
+            <choice>
+                <element name="declare-step" ns="http://www.w3.org/ns/xproc">
+                    <a:documentation>XProc step declaration</a:documentation>
+                    <ref name="any-attribute"/>
+                    <ref name="any-content"/>
+                </element>
+                <element name="pipeline" ns="http://www.w3.org/ns/xproc">
+                    <a:documentation>XProc pipeline declaration</a:documentation>
+                    <ref name="any-attribute"/>
+                    <ref name="any-content"/>
+                </element>
+                <element name="library" ns="http://www.w3.org/ns/xproc">
+                    <a:documentation>XProc library declaration</a:documentation>
+                    <ref name="any-attribute"/>
+                    <ref name="any-content"/>
+                </element>
+            </choice>
+        </element>
     </define>
 
     <define name="common-attributes">
