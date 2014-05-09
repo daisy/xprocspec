@@ -500,6 +500,7 @@
     <p:for-each name="for-each">
         <p:output port="scenarios" sequence="true"/>
         <p:variable name="base" select="base-uri(/*)"/>
+        <p:variable name="scenario-position" select="p:iteration-position()"/>
 
         <p:identity name="try.input"/>
         <p:try>
@@ -529,6 +530,33 @@
                                 <p:empty/>
                             </p:with-option>
                         </pxi:perform-imports>
+                        
+                        <!-- externalize inline script if present -->
+                        <p:choose>
+                            <p:when test="/*/x:script">
+                                <p:identity name="main-document.before-script-store"/>
+                                <p:add-attribute match="/*/x:script/*" attribute-name="xml:base">
+                                    <p:with-option name="attribute-value" select="/*/x:script/*/base-uri()"/>
+                                </p:add-attribute>
+                                <p:filter select="/*/x:script/*"/>
+                                <p:store name="script-stored">
+                                    <p:with-option name="href" select="concat($temp-dir,'script',$scenario-position,'.xpl')"/>
+                                </p:store>
+                                <p:add-attribute match="/*" attribute-name="script">
+                                    <p:with-option name="attribute-value" select="/*/text()">
+                                        <p:pipe port="result" step="script-stored"/>
+                                    </p:with-option>
+                                    <p:input port="source">
+                                        <p:pipe port="result" step="main-document.before-script-store"/>
+                                    </p:input>
+                                </p:add-attribute>
+                                <p:delete match="/*/x:script"/>
+                            </p:when>
+                            <p:otherwise>
+                                <p:identity/>
+                            </p:otherwise>
+                        </p:choose>
+                        
                         <p:identity name="main-document"/>
 
                         <p:group>

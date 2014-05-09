@@ -84,7 +84,7 @@
 <section xmlns:x="http://www.daisy.org/ns/pipeline/xproc/test" xmlns:f="http://www.daisy.org/ns/pipeline/xproc/test/internal-functions" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">
 <h2>Definitions</h2>
 <section id="the-description-element">
-<h2>The <code>description</code> element</h2><dl class="element"><dt>Content model:</dt><dd><a href="#the-import-element"><code>import</code></a><small title="zero or more">*</small></dd><dd><a href="#the-scenario-element"><code>scenario</code></a><small title="zero or more">*</small></dd><dd><a href="#the-pending-element"><code>pending</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-description-pending"><code>pending</code></a><small title="optional">?</small></dd><dd><a href="#attr-description-script"><code>script</code></a></dd><dd><a href="#attr-description-version"><code>version</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
+<h2>The <code>description</code> element</h2><dl class="element"><dt>Content model:</dt><dd><a href="#the-script-element"><code>script</code></a><small title="optional">?</small></dd><dd><a href="#the-import-element"><code>import</code></a><small title="zero or more">*</small></dd><dd><a href="#the-scenario-element"><code>scenario</code></a><small title="zero or more">*</small></dd><dd><a href="#the-pending-element"><code>pending</code></a><small title="zero or more">*</small></dd><dt>Content attributes:</dt><dd><a href="#attr-description-pending"><code>pending</code></a><small title="optional">?</small></dd><dd><a href="#attr-description-script"><code>script</code></a><small title="optional">?</small></dd><dd><a href="#attr-description-version"><code>version</code></a><small title="optional">?</small></dd><dd>Zero or more attributes from any namespace.</dd></dl>
 <p>The <a href="#the-description-element"><code>description</code></a> element is the root element of an xprocspec test and describes the functionality of a specific XProc script.</p>
 
 <p id="attr-description-pending">Assertions or scenarios with the <a href="#attr-description-pending"><code>pending</code></a> attribute will remain untested, but will be
@@ -94,6 +94,18 @@
 <p id="attr-description-script">The <a href="#attr-description-script"><code>script</code></a> attribute is a URI that points to the XProc script you want to test.</p>
 <p id="attr-description-version">The <a href="#attr-description-version"><code>version</code></a> attribute can be used to aid development over time.</p>
 </section>
+
+<section id="the-script-element">
+<h2>The <code>script</code> element</h2><dl class="element"><dt>Content model:</dt><dd><a href="#the-declare-step-element"><code>declare-step</code></a><small title="optional">?</small></dd><dd><a href="#the-pipeline-element"><code>pipeline</code></a><small title="optional">?</small></dd><dd><a href="#the-library-element"><code>library</code></a><small title="optional">?</small></dd><dt>Content attributes:</dt><dd>None.</dd></dl>
+<p>The script element can be used insted of the <a href="#attr-script-script"><code>script</code></a> attribute.
+                It allows you to inline the XProc script to test.
+                The base URI of the script is the same as the containing xprocspec document,
+                unless otherwise specified using <code>xml:base</code>. One of the <code id="the-declare-step-element">p:declare-step</code>,
+                <code id="the-pipeline-element">p:pipeline</code> or <code id="the-library-element">p:library</code> elements must be used.</p>
+
+</section>
+
+
 
 <section id="the-import-element">
 <h2>The <code>import</code> element</h2><dl class="element"><dt>Content model:</dt><dd>Empty.</dd><dt>Content attributes:</dt><dd><a href="#attr-import-href"><code>href</code></a></dd><dd>Zero or more attributes from any namespace.</dd></dl>
