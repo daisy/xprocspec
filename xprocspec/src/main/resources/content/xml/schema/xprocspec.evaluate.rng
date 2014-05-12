@@ -49,6 +49,7 @@
                     The expected content and the actual content are contained in the x:expected and x:was elements respectively.
                 </a:documentation>
                 <ref name="common-attributes"/>
+                <ref name="common-elements"/>
                 <ref name="label"/>
                 <optional>
                     <ref name="pending-attribute"/>

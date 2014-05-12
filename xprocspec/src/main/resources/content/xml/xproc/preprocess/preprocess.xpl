@@ -530,7 +530,7 @@
                                 <p:empty/>
                             </p:with-option>
                         </pxi:perform-imports>
-                        
+
                         <!-- externalize inline script if present -->
                         <p:choose>
                             <p:when test="/*/x:script">
@@ -556,7 +556,7 @@
                                 <p:identity/>
                             </p:otherwise>
                         </p:choose>
-                        
+
                         <p:identity name="main-document"/>
 
                         <p:group>

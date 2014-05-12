@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0" xmlns="http://www.w3.org/1999/xhtml" xmlns:html="http://www.w3.org/1999/xhtml" xpath-default-namespace="http://www.w3.org/1999/xhtml" exclude-result-prefixes="#all"
-    xmlns:x="http://www.daisy.org/ns/xprocspec" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:p="http://www.w3.org/ns/xproc" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0" xmlns="http://www.w3.org/1999/xhtml" xmlns:html="http://www.w3.org/1999/xhtml"
+    xpath-default-namespace="http://www.w3.org/1999/xhtml" exclude-result-prefixes="#all" xmlns:x="http://www.daisy.org/ns/xprocspec" xmlns:c="http://www.w3.org/ns/xproc-step"
+    xmlns:p="http://www.w3.org/ns/xproc" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
     <xsl:template match="html">
         <xsl:variable name="descriptions" select="body/x:description[not(x:scenario/@pending)]"/>
@@ -22,9 +23,22 @@
             <xsl:for-each select="head">
                 <xsl:copy>
                     <xsl:copy-of select="@*"/>
-                    <title>Test Report for <xsl:value-of select="$test-base-uri"/> (passed:<xsl:value-of select="$passed"/> / pending:<xsl:value-of select="$pending"/> / failed:<xsl:value-of select="$failed"/> / errors:<xsl:value-of
-                            select="$error-count"/> / total:<xsl:value-of select="$total"/>)</title>
+                    <title>Test Report for <xsl:value-of select="$test-base-uri"/> (passed:<xsl:value-of select="$passed"/> / pending:<xsl:value-of select="$pending"/> / failed:<xsl:value-of
+                            select="$failed"/> / errors:<xsl:value-of select="$error-count"/> / total:<xsl:value-of select="$total"/>)</title>
                     <xsl:copy-of select="node()"/>
+                    <style>
+                        .pp-tag-name{
+                            color:blue;
+                        }
+                        .pp-attr-name{
+                            color:orange;
+                        }
+                        .pp-attr-value{
+                            color:#FF4F4F;
+                        }
+                        .pp-document-element{
+                            background-color:#F5F5F5;
+                        }</style>
                 </xsl:copy>
             </xsl:for-each>
             <xsl:for-each select="body">
@@ -34,7 +48,7 @@
                     <p>Script: <a href="{$test-base-uri}"><xsl:value-of select="$test-base-uri"/></a></p>
                     <p>Tested: <xsl:value-of select="current-dateTime()"/><!-- TODO: prettier time: 10 July 2013 at 18:42 --></p>
                     <h2>Contents</h2>
-                    <table class="xspec">
+                    <table>
                         <col width="75%"/>
                         <col width="5%"/>
                         <col width="5%"/>
@@ -126,55 +140,11 @@
 
                     <xsl:if test="$errors">
                         <div id="errors">
-                            <h2 class="error">Errors<span class="scenario-totals">passed:0 / pending:0 / failed:0 / errors:<xsl:value-of select="$error-count"/> / total:<xsl:value-of select="$error-count"/></span></h2>
-                            <table class="xspec">
-                                <col width="80%"/>
-                                <col width="20%"/>
-                                <tbody>
-                                    <!-- for each static error group -->
-                                    <xsl:for-each select="$errors">
-                                        <xsl:variable name="error-location" select="@error-location"/>
-                                        <xsl:variable name="test-base-uri" select="@test-base-uri"/>
-                                        <xsl:variable name="test-grammar" select="@test-grammar"/>
-                                        <xsl:variable name="errors" select="c:error"/>
-
-                                        <tr class="error label">
-                                            <th>
-                                                <xsl:value-of select="$error-location"/>
-                                                <br/>
-                                                <br/>
-                                            </th>
-                                            <th class="nobr">Error</th>
-                                        </tr>
-
-                                        <!-- for each step error in current error group -->
-                                        <xsl:for-each select="$errors">
-                                            <xsl:variable name="name" select="@name"/>
-                                            <xsl:variable name="type" select="@type"/>
-                                            <xsl:variable name="code" select="@code"/>
-                                            <xsl:variable name="href" select="@href"/>
-                                            <xsl:variable name="line" select="@line"/>
-                                            <xsl:variable name="column" select="@column"/>
-                                            <xsl:variable name="offset" select="@offset"/>
-                                            <xsl:variable name="content" select="node()"/>
-
-                                            <tr class="error">
-                                                <td colspan="2">
-                                                    <xsl:value-of select="if ($href) then concat($href,' ') else ''"/>
-                                                    <xsl:value-of select="if ($line) then concat('line:',$line,' ') else ''"/>
-                                                    <xsl:value-of select="if ($column) then concat('column:',$column,' ') else ''"/>
-                                                    <xsl:value-of select="if ($offset) then concat('offset:',$offset,' ') else ''"/>
-                                                    <xsl:value-of select="if ($code) then concat('code:',$code,' ') else ''"/>
-                                                    <xsl:value-of select="if ($type) then concat('type:',$type,' ') else ''"/>
-                                                    <xsl:if test="* or normalize-space(string-join(node(),''))">
-                                                        <pre><code><xsl:copy-of select="node()"/></code></pre>
-                                                    </xsl:if>
-                                                </td>
-                                            </tr>
-                                        </xsl:for-each>
-                                    </xsl:for-each>
-                                </tbody>
-                            </table>
+                            <h2 class="error">Errors<span class="scenario-totals">passed:0 / pending:0 / failed:0 / errors:<xsl:value-of select="$error-count"/> / total:<xsl:value-of
+                                        select="$error-count"/></span></h2>
+                            <xsl:for-each select="$errors">
+                                <xsl:call-template name="print-context"/>
+                            </xsl:for-each>
                         </div>
                     </xsl:if>
 
@@ -192,9 +162,9 @@
                         <xsl:variable name="script-base" select="($step-descriptions/resolve-uri(@script,base-uri()))[1]"/>
 
                         <div id="{$stepid}">
-                            <h2 class="{$step-class}">Calling: <a href="{$script-base}"><xsl:value-of select="$step-shortname"/></a><span class="scenario-totals">passed:<xsl:value-of select="$passed"/> / pending:<xsl:value-of select="$pending"/> /
-                                        failed:<xsl:value-of select="$failed"/> / errors:0 / total:<xsl:value-of select="$total"/></span></h2>
-                            <table class="xspec">
+                            <h2 class="{$step-class}">Calling: <a href="{$script-base}"><xsl:value-of select="$step-shortname"/></a><span class="scenario-totals">passed:<xsl:value-of select="$passed"
+                                    /> / pending:<xsl:value-of select="$pending"/> / failed:<xsl:value-of select="$failed"/> / errors:0 / total:<xsl:value-of select="$total"/></span></h2>
+                            <table>
                                 <col width="80%"/>
                                 <col width="20%"/>
                                 <tbody>
@@ -214,7 +184,8 @@
                                             <th class="scenario-label">
                                                 <xsl:value-of select="$scenario-description/x:scenario/@label"/>
                                             </th>
-                                            <th class="nobr">passed:<xsl:value-of select="$passed"/> / pending:<xsl:value-of select="$pending"/> / failed:<xsl:value-of select="$failed"/> / errors:0 / total:<xsl:value-of select="$total"/></th>
+                                            <th class="nobr">passed:<xsl:value-of select="$passed"/> / pending:<xsl:value-of select="$pending"/> / failed:<xsl:value-of select="$failed"/> / errors:0 /
+                                                    total:<xsl:value-of select="$total"/></th>
                                         </tr>
 
                                         <!-- for each step scenario context -->
@@ -231,7 +202,8 @@
                                                 <th class="context-label">
                                                     <xsl:value-of select="@label"/>
                                                 </th>
-                                                <th class="nobr">passed:<xsl:value-of select="$passed"/> / pending:<xsl:value-of select="$pending"/> / failed:<xsl:value-of select="$failed"/> / errors:0 / total:<xsl:value-of select="$total"/></th>
+                                                <th class="nobr">passed:<xsl:value-of select="$passed"/> / pending:<xsl:value-of select="$pending"/> / failed:<xsl:value-of select="$failed"/> /
+                                                    errors:0 / total:<xsl:value-of select="$total"/></th>
                                             </tr>
                                             <xsl:if test="$context-class='failed'">
                                                 <tr class="was">
@@ -249,7 +221,7 @@
                                                     <xsl:otherwise>
                                                         <tr class="was">
                                                             <td colspan="2">
-                                                                <pre><code><xsl:copy-of select="node()"/></code></pre>
+                                                                <xsl:call-template name="print-context"/>
                                                             </td>
                                                         </tr>
                                                     </xsl:otherwise>
@@ -258,8 +230,10 @@
 
                                             <!-- for each step scenario context test -->
                                             <xsl:for-each select="$context-tests">
-                                                <xsl:variable name="test-class" select="if (@result='failed') then 'failed' else if (@result='skipped') then 'pending' else if (@result='passed') then 'successful' else ''"/>
-                                                <xsl:variable name="test-result" select="if (@result='failed') then 'Failed' else if (@result='skipped') then 'Pending' else if (@result='passed') then 'Success' else '[Unknown]'"/>
+                                                <xsl:variable name="test-class"
+                                                    select="if (@result='failed') then 'failed' else if (@result='skipped') then 'pending' else if (@result='passed') then 'successful' else ''"/>
+                                                <xsl:variable name="test-result"
+                                                    select="if (@result='failed') then 'Failed' else if (@result='skipped') then 'Pending' else if (@result='passed') then 'Success' else '[Unknown]'"/>
                                                 <tr class="{$test-class} label">
                                                     <td class="test-label">
                                                         <xsl:value-of select="@label"/>
@@ -279,12 +253,38 @@
                                                 <xsl:if test="$test-class='failed'">
                                                     <tr class="expected">
                                                         <td colspan="2">
-                                                            <xsl:if test="x:was">
-                                                                <div>Test: <pre><code><xsl:copy-of select="x:was/node()"/></code></pre></div>
-                                                            </xsl:if>
-                                                            <xsl:if test="x:expected">
-                                                                <div>Equals: <pre><code><xsl:copy-of select="x:expected/node()"/></code></pre></div>
-                                                            </xsl:if>
+                                                            <xsl:variable name="was" select="x:was"/>
+                                                            <xsl:variable name="expected" select="x:expected"/>
+                                                            <table>
+                                                                <col width="50%"/>
+                                                                <col width="50%"/>
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Result</th>
+                                                                        <th>Expected</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <xsl:for-each select="1 to max((count($was),count($expected)))">
+                                                                        <xsl:variable name="pos" select="."/>
+                                                                        <xsl:variable name="this-was" select="$was[.]"/>
+                                                                        <xsl:variable name="this-expected" select="$expected[.]"/>
+
+                                                                        <tr>
+                                                                            <td>
+                                                                                <xsl:for-each select="$this-was">
+                                                                                    <xsl:call-template name="print-context"/>
+                                                                                </xsl:for-each>
+                                                                            </td>
+                                                                            <td>
+                                                                                <xsl:for-each select="$this-expected">
+                                                                                    <xsl:call-template name="print-context"/>
+                                                                                </xsl:for-each>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </xsl:for-each>
+                                                                </tbody>
+                                                            </table>
                                                         </td>
                                                     </tr>
                                                 </xsl:if>
@@ -297,15 +297,14 @@
                     </xsl:for-each>
 
                     <!-- for each script with pending scenarios -->
-                    <!--<xsl:for-each select="distinct-values($pending-descriptions/resolve-uri(@script,base-uri()))">-->
                     <xsl:for-each select="distinct-values($pending-descriptions/(x:step-declaration/*/@type,resolve-uri(@script,base-uri()))[1])">
                         <xsl:variable name="title" select="."/>
                         <xsl:variable name="pending-script-descriptions" select="$pending-descriptions[(x:step-declaration/*/@type,resolve-uri(@script,base-uri()))[1] = $title]"/>
                         <xsl:variable name="script-base" select="($pending-script-descriptions/resolve-uri(@script,base-uri()))[1]"/>
                         <div id="pending-{count($pending-script-descriptions[1]/preceding::x:description)}">
-                            <h2 class="pending">Not calling: <a href="{$script-base}"><xsl:value-of select="$title"/></a><span class="scenario-totals">passed:0 / pending:<xsl:value-of select="count($pending-script-descriptions)"/> / failed:0 /
-                                    errors:0 / total:<xsl:value-of select="count($pending-script-descriptions)"/></span></h2>
-                            <table class="xspec">
+                            <h2 class="pending">Not calling: <a href="{$script-base}"><xsl:value-of select="$title"/></a><span class="scenario-totals">passed:0 / pending:<xsl:value-of
+                                        select="count($pending-script-descriptions)"/> / failed:0 / errors:0 / total:<xsl:value-of select="count($pending-script-descriptions)"/></span></h2>
+                            <table>
                                 <col width="80%"/>
                                 <col width="20%"/>
                                 <tbody>
@@ -331,46 +330,423 @@
 
                     <xsl:if test="$log">
                         <h2>Execution log</h2>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Time</th>
-                                    <th>Severity</th>
-                                    <th>Message</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <xsl:for-each select="$log/c:line">
-                                    <tr
-                                        style="{if (@severity='DEBUG') then 'color:#696969;' else if (@severity='INFO') then '' else if (@severity='WARN') then 'background-color:#FFD700;' else if (@severity='ERROR') then 'background-color:#FF6347;' else ''}">
-                                        <td>
-                                            <xsl:variable name="t" select="replace(string(xs:dateTime(@time)-xs:dateTime($log/c:line[1]/@time)),'[^\d\.]','')"/>
-                                            <xsl:variable name="t" select="tokenize($t,'\.')"/>
-                                            <xsl:variable name="t" select="if (count($t)=1) then concat($t,'.000') else concat($t[1],'.',$t[2], string-join(for $pad in (string-length($t[2]) to 2) return '0', ''))"/>
-                                            <xsl:value-of select="$t"/>
-                                        </td>
-                                        <td style="padding-left:0%;">
-                                            <xsl:value-of select="@severity"/>
-                                        </td>
-                                        <td>
-                                            <code>
-                                                <pre><xsl:value-of select="./text()"/></pre>
-                                            </code>
-                                        </td>
-                                    </tr>
-                                </xsl:for-each>
-                            </tbody>
-                        </table>
+                        <xsl:apply-templates select="$log"/>
                     </xsl:if>
 
-                    <!--<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js?autoload=true&amp;lang=xml">;</script>-->
-                    <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css"/>
-                    <script type="text/javascript" src="http://yandex.st/highlightjs/7.3/highlight.min.js" xml:space="preserve"> </script>
-                    <script type="text/javascript">hljs.initHighlightingOnLoad();</script>
                 </xsl:copy>
             </xsl:for-each>
 
         </xsl:copy>
+    </xsl:template>
+
+    <xsl:template match="c:log">
+        <xsl:variable name="log" select="."/>
+        <table>
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Severity</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+            <tbody>
+                <xsl:for-each select="$log/c:line">
+                    <tr
+                        style="{if (@severity='DEBUG') then 'color:#696969;' else if (@severity='INFO') then '' else if (@severity='WARN') then 'background-color:#FFD700;' else if (@severity='ERROR') then 'background-color:#FF6347;' else ''}">
+                        <td>
+                            <xsl:variable name="t" select="replace(string(xs:dateTime(@time)-xs:dateTime($log/c:line[1]/@time)),'[^\d\.]','')"/>
+                            <xsl:variable name="t" select="tokenize($t,'\.')"/>
+                            <xsl:variable name="t" select="if (count($t)=1) then concat($t,'.000') else concat($t[1],'.',$t[2], string-join(for $pad in (string-length($t[2]) to 2) return '0', ''))"/>
+                            <xsl:value-of select="$t"/>
+                        </td>
+                        <td style="padding-left:0%;">
+                            <xsl:value-of select="@severity"/>
+                        </td>
+                        <td>
+                            <code>
+                                <pre><xsl:value-of select="./text()"/></pre>
+                            </code>
+                        </td>
+                    </tr>
+                </xsl:for-each>
+            </tbody>
+        </table>
+    </xsl:template>
+
+    <xsl:template match="p:* | c:*">
+        <div class="pp-xml">
+            <xsl:call-template name="pretty-print"/>
+        </div>
+    </xsl:template>
+
+    <xsl:template match="x:description">
+        <h3>xprocspec document metadata</h3>
+        <div style="padding-left: 50px;">
+            <dl>
+                <xsl:for-each select="@*">
+                    <dt>
+                        <xsl:value-of select="name()"/>
+                    </dt>
+                    <dd>
+                        <xsl:value-of select="string(.)"/>
+                    </dd>
+                </xsl:for-each>
+            </dl>
+            <xsl:apply-templates select="x:documentation | x:step-declaration | x:scenario"/>
+        </div>
+    </xsl:template>
+
+    <xsl:template match="x:*">
+        <h3>
+            <xsl:variable name="name" select="local-name()"/>
+            <xsl:choose>
+                <xsl:when test="$name='step-declaration'">
+                    <xsl:text>XProc step declaration</xsl:text>
+                </xsl:when>
+                <xsl:when test="$name='scenario'">
+                    <xsl:text>Scenario</xsl:text>
+                </xsl:when>
+                <xsl:when test="$name='call'">
+                    <xsl:text>Invocation</xsl:text>
+                </xsl:when>
+                <xsl:when test="$name='option'">
+                    <xsl:text>Option</xsl:text>
+                </xsl:when>
+                <xsl:when test="$name='param'">
+                    <xsl:text>Parameter</xsl:text>
+                </xsl:when>
+                <xsl:when test="$name='input'">
+                    <xsl:text>Input port</xsl:text>
+                </xsl:when>
+                <xsl:when test="$name='context'">
+                    <xsl:text>Test context</xsl:text>
+                </xsl:when>
+                <xsl:when test="$name='expect'">
+                    <xsl:text>Assertion</xsl:text>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="name()"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </h3>
+        <div style="padding-left: 50px;">
+            <dl>
+                <xsl:for-each select="@*">
+                    <dt>
+                        <xsl:value-of select="name()"/>
+                    </dt>
+                    <dd>
+                        <xsl:value-of select="string(.)"/>
+                    </dd>
+                </xsl:for-each>
+            </dl>
+            <xsl:for-each select="node()">
+                <xsl:choose>
+                    <xsl:when test="self::x:* | self::c:*">
+                        <xsl:apply-templates select="."/>
+                    </xsl:when>
+                    <xsl:when test="self::*">
+                        <div class="pp-xml">
+                            <xsl:call-template name="pretty-print"/>
+                        </div>
+                    </xsl:when>
+                    <xsl:when test="self::text() and normalize-space(.)!=''">
+                        <pre><code><xsl:copy-of select="."/></code></pre>
+                    </xsl:when>
+                    <xsl:otherwise/>
+                </xsl:choose>
+            </xsl:for-each>
+        </div>
+    </xsl:template>
+
+    <xsl:template match="x:documentation">
+        <xsl:variable name="describes" select="parent::*/local-name()"/>
+        <div style="padding-left: 50px;">
+            <h4>
+                <xsl:choose>
+                    <xsl:when test="$describes='description'">
+                        <xsl:text>Description of xprocspec document:</xsl:text>
+                    </xsl:when>
+                    <xsl:when test="$describes='step-declaration'">
+                        <xsl:text>Description of XProc step declaration</xsl:text>
+                    </xsl:when>
+                    <xsl:when test="$describes='scenario'">
+                        <xsl:text>Description of scenario:</xsl:text>
+                    </xsl:when>
+                    <xsl:when test="$describes='call'">
+                        <xsl:text>Description of invocation (inputs/options/parameters):</xsl:text>
+                    </xsl:when>
+                    <xsl:when test="$describes='option'">
+                        <xsl:text>Description of option</xsl:text>
+                    </xsl:when>
+                    <xsl:when test="$describes='param'">
+                        <xsl:text>Description of parameter</xsl:text>
+                    </xsl:when>
+                    <xsl:when test="$describes='input'">
+                        <xsl:text>Description of input port</xsl:text>
+                    </xsl:when>
+                    <xsl:when test="$describes='context'">
+                        <xsl:text>Description of test context:</xsl:text>
+                    </xsl:when>
+                    <xsl:when test="$describes='expect'">
+                        <xsl:text>Description of assertion:</xsl:text>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="$describes"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </h4>
+            <div style="padding-left: 50px;">
+                <xsl:copy-of select="node()"/>
+            </div>
+        </div>
+    </xsl:template>
+
+    <xsl:template match="x:test-report">
+        <h2>Test report</h2>
+        <xsl:for-each select="node()">
+            <xsl:choose>
+                <xsl:when test="self::x:* | self::c:*">
+                    <xsl:apply-templates select="."/>
+                </xsl:when>
+                <xsl:when test="self::*">
+                    <div class="pp-xml">
+                        <xsl:call-template name="pretty-print"/>
+                    </div>
+                </xsl:when>
+                <xsl:when test="self::text() and normalize-space(.)!=''">
+                    <pre><code><xsl:copy-of select="."/></code></pre>
+                </xsl:when>
+                <xsl:otherwise/>
+            </xsl:choose>
+        </xsl:for-each>
+    </xsl:template>
+
+    <xsl:template match="x:document">
+        <xsl:param name="include-raw" select="false()" tunnel="yes"/>
+        <xsl:if test="@xml:base">
+            <p>Document base URI: <code><xsl:value-of select="@xml:base"/></code></p>
+        </xsl:if>
+        <xsl:choose>
+            <xsl:when test="@type='inline' or not(@type)">
+                <xsl:for-each select="*">
+                    <xsl:choose>
+                        <xsl:when test="self::x:* | self::c:*">
+                            <xsl:apply-templates select="."/>
+                            <xsl:if test="$include-raw">
+                                <div class="pp-xml">
+                                    <xsl:call-template name="pretty-print"/>
+                                </div>
+                            </xsl:if>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <div class="pp-xml">
+                                <xsl:call-template name="pretty-print"/>
+                            </div>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:for-each>
+            </xsl:when>
+            <xsl:otherwise>
+                <dl>
+                    <xsl:for-each select="@*">
+                        <dt>
+                            <xsl:value-of select="name()"/>
+                        </dt>
+                        <dd>
+                            <xsl:value-of select="string(.)"/>
+                        </dd>
+                    </xsl:for-each>
+                </dl>
+                <xsl:for-each select="node()">
+                    <xsl:choose>
+                        <xsl:when test="self::x:* | self::c:*">
+                            <xsl:apply-templates select="."/>
+                            <xsl:if test="$include-raw">
+                                <div class="pp-xml">
+                                    <xsl:call-template name="pretty-print"/>
+                                </div>
+                            </xsl:if>
+                        </xsl:when>
+                        <xsl:when test="self::* and $include-raw">
+                            <div class="pp-xml">
+                                <xsl:call-template name="pretty-print"/>
+                            </div>
+                        </xsl:when>
+                        <xsl:when test="self::text() and normalize-space(.)!='' and $include-raw">
+                            <pre><code><xsl:copy-of select="."/></code></pre>
+                        </xsl:when>
+                        <xsl:otherwise/>
+                    </xsl:choose>
+                </xsl:for-each>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+    <xsl:template match="c:errors">
+        <p><xsl:value-of select="count(c:error)"/> errors found.</p>
+        <dl>
+            <xsl:for-each select="@*">
+                <dt>
+                    <xsl:value-of select="name()"/>
+                </dt>
+                <dd>
+                    <xsl:value-of select="string(.)"/>
+                </dd>
+            </xsl:for-each>
+        </dl>
+        <xsl:for-each select="node()">
+            <xsl:choose>
+                <xsl:when test="self::x:* | self::c:*">
+                    <xsl:apply-templates select="."/>
+                </xsl:when>
+                <xsl:when test="self::*">
+                    <div class="pp-xml">
+                        <xsl:call-template name="pretty-print"/>
+                    </div>
+                </xsl:when>
+                <xsl:otherwise>
+                    <pre><code><xsl:copy-of select="."/></code></pre>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:for-each>
+    </xsl:template>
+
+    <xsl:template match="c:error">
+        <div style="border:2px solid;border-radius:5px;">
+            <dl>
+                <xsl:for-each select="@*">
+                    <dt>
+                        <xsl:value-of select="name()"/>
+                    </dt>
+                    <dd>
+                        <xsl:value-of select="string(.)"/>
+                    </dd>
+                </xsl:for-each>
+            </dl>
+            <xsl:for-each select="node()">
+                <xsl:choose>
+                    <xsl:when test="self::*">
+                        <div class="pp-xml">
+                            <xsl:call-template name="pretty-print"/>
+                        </div>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <pre><code><xsl:copy-of select="."/></code></pre>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:for-each>
+        </div>
+    </xsl:template>
+
+    <xsl:template name="pretty-print">
+        <xsl:param name="indent" select="0"/>
+        <xsl:element name="{if ($indent=0) then 'div' else 'span'}">
+            <xsl:attribute name="class" select="if ($indent=0) then 'pp-element pp-document-element' else 'pp-element'"/>
+            <xsl:choose>
+                <xsl:when test="self::x:was | self::x:expected">
+                    <xsl:for-each select="node()">
+                        <xsl:call-template name="pretty-print"/>
+                    </xsl:for-each>
+                </xsl:when>
+                <xsl:when test="self::text()">
+                    <pre><code><xsl:value-of select="."/></code></pre>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:variable name="indent-spaces" select="string-join(for $i in (1 to $indent) return '&#160;&#160;&#160;&#160;','')"/>
+                    <br/>
+                    <xsl:value-of select="$indent-spaces"/>
+                    <span class="pp-tag-open">&lt;</span>
+                    <span class="pp-tag-name">
+                        <xsl:value-of select="local-name()"/>
+                    </span>
+                    <xsl:if test="$indent=0 or not(namespace-uri()=parent::*/namespace-uri())">
+                        <xsl:text> </xsl:text>
+                        <span class="pp-attr-name">xmlns=</span>
+                        <span class="pp-attr-value">
+                            <xsl:text>"</xsl:text>
+                            <xsl:value-of select="namespace-uri()"/>
+                            <xsl:text>"</xsl:text>
+                        </span>
+                    </xsl:if>
+                    <xsl:for-each select="@*">
+                        <xsl:text> </xsl:text>
+                        <span class="pp-attr-name">
+                            <xsl:value-of select="name()"/>
+                            <xsl:text>=</xsl:text>
+                        </span>
+                        <span class="pp-attr-value">
+                            <xsl:text>"</xsl:text>
+                            <xsl:value-of select="string(.)"/>
+                            <xsl:text>"</xsl:text>
+                        </span>
+                    </xsl:for-each>
+                    <xsl:choose>
+                        <xsl:when test="not(node())">
+                            <span class="pp-tag-close">/&gt;</span>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <span class="pp-tag-close">&gt;</span>
+                            <xsl:for-each select="node()">
+                                <xsl:choose>
+                                    <xsl:when test="self::*">
+                                        <xsl:call-template name="pretty-print">
+                                            <xsl:with-param name="indent" select="$indent+1"/>
+                                        </xsl:call-template>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:copy-of select="."/>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:for-each>
+                            <xsl:if test="*">
+                                <br/>
+                                <xsl:value-of select="$indent-spaces"/>
+                            </xsl:if>
+                            <span class="pp-tag-open">&lt;</span>
+                            <xsl:text>/</xsl:text>
+                            <span class="pp-tag-name">
+                                <xsl:value-of select="local-name()"/>
+                            </span>
+                            <span class="pp-tag-close">&gt;</span>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:element>
+        <xsl:if test="$indent=0">
+            <br/>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="print-context">
+        <xsl:choose>
+            <xsl:when test="not(*)">
+                <pre><code><xsl:copy-of select="."/></code></pre>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:for-each select="node()">
+                    <xsl:choose>
+                        <xsl:when test="self::text() and normalize-space(.)=''"/>
+                        <xsl:when test="self::x:document">
+                            <xsl:apply-templates select=".">
+                                <xsl:with-param name="include-raw" select="true()" tunnel="yes"/>
+                            </xsl:apply-templates>
+                        </xsl:when>
+                        <xsl:when test="self::x:* | self::c:*">
+                            <xsl:apply-templates select=".">
+                                <xsl:with-param name="include-raw" select="true()" tunnel="yes"/>
+                            </xsl:apply-templates>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <div class="pp-xml">
+                                <xsl:call-template name="pretty-print"/>
+                            </div>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:for-each>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
 </xsl:stylesheet>

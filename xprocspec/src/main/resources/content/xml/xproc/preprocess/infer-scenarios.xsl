@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0" xmlns:p="http://www.w3.org/ns/xproc" xmlns:x="http://www.daisy.org/ns/xprocspec" xmlns:c="http://www.w3.org/ns/xproc-step" exclude-result-prefixes="#all">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0" xmlns:p="http://www.w3.org/ns/xproc" xmlns:x="http://www.daisy.org/ns/xprocspec"
+    xmlns:c="http://www.w3.org/ns/xproc-step" exclude-result-prefixes="#all">
 
     <xsl:output indent="yes" method="xml"/>
 
     <xsl:template match="/x:description">
+        <xsl:variable name="documentation" select="x:documentation"/>
         <x:descriptions>
             <xsl:for-each select="//x:scenario">
                 <xsl:variable name="scenarios" select="ancestor-or-self::x:scenario"/>
                 <xsl:if test="not(descendant::x:scenario)">
                     <x:description>
                         <xsl:copy-of select="/*/@*"/>
+                        <xsl:copy-of select="$documentation"/>
                         <xsl:copy>
                             <xsl:copy-of select="$scenarios/@*"/>
                             <xsl:attribute name="label" select="string-join($scenarios/@label,' ')"/>
@@ -17,15 +20,27 @@
                             <xsl:if test="$pending">
                                 <xsl:attribute name="pending" select="$pending"/>
                             </xsl:if>
+                            <xsl:if test="$scenarios/x:documentation">
+                                <x:documentation>
+                                    <xsl:copy-of select="$scenarios/x:documentation/@*"/>
+                                    <xsl:copy-of select="$scenarios/x:documentation/node()"/>
+                                </x:documentation>
+                            </xsl:if>
                             <xsl:if test="$scenarios/x:call">
                                 <x:call>
                                     <xsl:copy-of select="$scenarios/x:call/@*"/>
+                                    <xsl:if test="$scenarios/x:call/x:documentation">
+                                        <x:documentation>
+                                            <xsl:copy-of select="$scenarios/x:call/x:documentation/@*"/>
+                                            <xsl:copy-of select="$scenarios/x:call/x:documentation/node()"/>
+                                        </x:documentation>
+                                    </xsl:if>
                                     <xsl:copy-of select="x:resolve-options($scenarios/x:call/x:option)"/>
                                     <xsl:copy-of select="x:resolve-params($scenarios/x:call/x:param)"/>
                                     <xsl:copy-of select="x:resolve-inputs($scenarios/x:call/x:input)"/>
                                 </x:call>
                             </xsl:if>
-                            <xsl:apply-templates select="* except x:call">
+                            <xsl:apply-templates select="* except (x:call | x:documentation)">
                                 <xsl:with-param name="pending-scenario" select="$pending" tunnel="yes"/>
                             </xsl:apply-templates>
                         </xsl:copy>
@@ -34,7 +49,7 @@
             </xsl:for-each>
         </x:descriptions>
     </xsl:template>
-    
+
     <xsl:template match="x:expect">
         <xsl:param name="pending-scenario" tunnel="yes" required="yes"/>
         <xsl:copy>
@@ -89,7 +104,7 @@
             </xsl:for-each>
         </xsl:copy>
     </xsl:template>
-    
+
     <xsl:function name="x:is-pending">
         <xsl:param name="this"/>
         <xsl:choose>
@@ -133,7 +148,8 @@
                     <xsl:sequence select="$param"/>
                 </xsl:when>
                 <xsl:otherwise>
-                    <x:param name="{$param/@name}" select="concat('&apos;',replace(replace(replace($param/@value,'&amp;','&amp;amp;'),&quot;'&quot;,&quot;&amp;apos;&quot;),'&quot;','&amp;quot;'),'&apos;')">
+                    <x:param name="{$param/@name}"
+                        select="concat('&apos;',replace(replace(replace($param/@value,'&amp;','&amp;amp;'),&quot;'&quot;,&quot;&amp;apos;&quot;),'&quot;','&amp;quot;'),'&apos;')">
                         <xsl:if test="$param/@namespace">
                             <xsl:attribute name="ns" select="$param/@namespace"/>
                         </xsl:if>
