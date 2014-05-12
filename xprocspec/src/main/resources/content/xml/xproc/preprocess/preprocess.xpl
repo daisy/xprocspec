@@ -755,6 +755,20 @@
                         </p:choose>
                         <p:delete match="//@focus"/>
 
+                        <p:choose>
+                            <p:when test="//x:scenario[@xfail='true']">
+                                <pxi:message message=" * inferring implicit xfail attributes...">
+                                    <p:with-option name="logfile" select="$logfile">
+                                        <p:empty/>
+                                    </p:with-option>
+                                </pxi:message>
+                                <p:add-attribute match="//x:expect[(ancestor::x:scenario/@xfail)[1]='true']" attribute-name="xfail" attribute-value="true"/>
+                            </p:when>
+                            <p:otherwise>
+                                <p:identity/>
+                            </p:otherwise>
+                        </p:choose>
+
                         <!-- create a new x:description document for each x:scenario element with inferred inputs, options and parameters -->
                         <pxi:message message=" * creating a new x:description document for each x:scenario element with inferred inputs, options and parameters">
                             <p:with-option name="logfile" select="$logfile">

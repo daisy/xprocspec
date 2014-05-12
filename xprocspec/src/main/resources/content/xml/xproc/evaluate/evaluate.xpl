@@ -1,17 +1,17 @@
-<p:declare-step xmlns:p="http://www.w3.org/ns/xproc" type="pxi:test-evaluate" name="main" xmlns:cx="http://xmlcalabash.com/ns/extensions" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:pxi="http://www.daisy.org/ns/xprocspec/xproc-internal/"
-    exclude-inline-prefixes="#all" version="1.0" xpath-version="2.0" xmlns:x="http://www.daisy.org/ns/xprocspec">
+<p:declare-step xmlns:p="http://www.w3.org/ns/xproc" type="pxi:test-evaluate" name="main" xmlns:cx="http://xmlcalabash.com/ns/extensions" xmlns:c="http://www.w3.org/ns/xproc-step"
+    xmlns:pxi="http://www.daisy.org/ns/xprocspec/xproc-internal/" exclude-inline-prefixes="#all" version="1.0" xpath-version="2.0" xmlns:x="http://www.daisy.org/ns/xprocspec">
 
     <p:input port="source" sequence="true"/>
     <p:output port="result" sequence="true"/>
     <p:option name="logfile" select="''"/>
-    
+
     <p:option name="step-available-rng" select="'false'"/>
 
     <p:import href="compare.xpl"/>
     <p:import href="../utils/logging-library.xpl"/>
     <p:import href="../utils/validate-with-relax-ng.xpl"/>
     <p:import href="../utils/document.xpl"/>
-    
+
     <!-- for custom x:expect implementations: -->
     <p:import href="http://xmlcalabash.com/extension/steps/library-1.0.xpl"/>
     
@@ -276,7 +276,8 @@
                                         </pxi:message>
                                         <p:wrap-sequence wrapper="x:test-result"/>
                                         <p:add-attribute match="/*" attribute-name="result">
-                                            <p:with-option name="attribute-value" select="if (($min='' or number($min) &lt;= number(.)) and ($max='' or number($max) &gt;= number(.))) then 'passed' else 'failed'"/>
+                                            <p:with-option name="attribute-value"
+                                                select="if (($min='' or number($min) &lt;= number(.)) and ($max='' or number($max) &gt;= number(.))) then 'passed' else 'failed'"/>
                                         </p:add-attribute>
                                         <pxi:message message="         * assertion $1">
                                             <p:with-option name="param1" select="/*/@result"/>
@@ -385,7 +386,7 @@
                                                 <p:document href="expect-to-custom-invocation.xsl"/>
                                             </p:input>
                                         </p:xslt>
-                                        
+
                                         <!-- multiplex context and expect document sequences for cx:eval -->
                                         <p:for-each name="custom.expect">
                                             <p:output port="result" sequence="true"/>
@@ -407,7 +408,7 @@
                                             </p:add-attribute>
                                             <p:add-attribute match="/*" attribute-name="port" attribute-value="context"/>
                                         </p:for-each>
-                                        
+
                                         <cx:eval>
                                             <p:input port="pipeline">
                                                 <p:pipe port="result" step="custom.expect-invocation"/>
@@ -440,7 +441,7 @@
                                         </pxi:message>
                                     </p:otherwise>
                                 </p:choose>
-                                
+
                                 <p:add-attribute match="/*" attribute-name="contextref" name="test-result.missing-attributes">
                                     <p:with-option name="attribute-value" select="/*/@contextref">
                                         <p:pipe port="result" step="assertion"/>
@@ -460,6 +461,21 @@
                                 </p:xslt>
                             </p:for-each>
                         </p:for-each>
+
+                        <!-- invert result on xfail -->
+                        <p:for-each>
+                            <p:choose>
+                                <p:when test="/*/@xfail='true'">
+                                    <p:add-attribute match="/*" attribute-name="result">
+                                        <p:with-option name="attribute-value" select="if (/*/@result='passed') then 'failed' else if (/*/@result='failed') then 'passed' else /*/@result"/>
+                                    </p:add-attribute>
+                                </p:when>
+                                <p:otherwise>
+                                    <p:identity/>
+                                </p:otherwise>
+                            </p:choose>
+                        </p:for-each>
+
                         <p:identity name="test-results"/>
 
                         <p:insert match="/*" position="last-child">
