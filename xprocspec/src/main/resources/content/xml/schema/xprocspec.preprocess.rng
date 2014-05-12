@@ -32,6 +32,7 @@
 
         <define name="description.common">
             <ref name="common-attributes"/>
+            <ref name="common-elements"/>
             <attribute name="script">
                 <a:documentation xmlns="http://www.w3.org/1999/xhtml">The `script` attribute is a URI that points to the XProc script you want to test.</a:documentation>
                 <data type="anyURI"/>
@@ -63,6 +64,7 @@
 
         <define name="context.attributes">
             <ref name="common-attributes"/>
+            <ref name="common-elements"/>
             <optional>
                 <ref name="pending-attribute"/>
             </optional>
@@ -74,6 +76,7 @@
 
         <define name="expect.attributes">
             <ref name="common-attributes"/>
+            <ref name="common-elements"/>
             <optional>
                 <ref name="pending-attribute"/>
             </optional>
@@ -113,6 +116,7 @@
                     <attribute name="xml:base"/>
                 </choice>
             </zeroOrMore>
+            <ref name="common-elements"/>
             <attribute name="error-location"/>
             <attribute name="test-base-uri"/>
             <optional>
@@ -121,6 +125,7 @@
             <zeroOrMore>
                 <element name="error" ns="http://www.w3.org/ns/xproc-step">
                     <ref name="common-attributes"/>
+                    <ref name="common-elements"/>
                     <optional>
                         <attribute name="name">
                             <data type="NCName"/>
@@ -214,6 +219,7 @@
             </attribute>
         </optional>
         <ref name="common-attributes"/>
+        <ref name="common-elements"/>
     </define>
 
     <define name="xproc.declare-step">
@@ -353,6 +359,7 @@
         </attribute>
         <ref name="xproc.common"/>
         <ref name="common-attributes"/>
+        <ref name="common-elements"/>
     </define>
 
     <define name="xproc.document-inline-data">

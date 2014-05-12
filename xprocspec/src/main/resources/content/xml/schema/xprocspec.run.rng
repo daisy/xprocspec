@@ -34,7 +34,7 @@
                 </choice>
             </element>
         </define>
-        
+
         <define name="scenario">
             <element name="scenario" ns="http://www.daisy.org/ns/xprocspec">
                 <a:documentation>after execution, the scenario will contain the start-time and end-time attributes</a:documentation>
@@ -48,7 +48,7 @@
                 </attribute>
             </element>
         </define>
-        
+
         <define name="pending-scenario-attribute">
             <element name="scenario" ns="http://www.daisy.org/ns/xprocspec">
                 <ref name="pending-attribute"/>
@@ -74,7 +74,8 @@
 
         <define name="xproc.param-set">
             <element name="inline" ns="http://www.w3.org/ns/xproc">
-                <a:documentation>after execution, the set of parameters are inferred and provided as a c:param-set inside a p:inline on the parameter input port in the step-declaration</a:documentation>
+                <a:documentation>after execution, the set of parameters are inferred and provided as a c:param-set inside a p:inline on the parameter input port in the
+                    step-declaration</a:documentation>
                 <ref name="any-attribute"/>
                 <element name="param-set" ns="http://www.w3.org/ns/xproc-step">
                     <zeroOrMore>
@@ -100,6 +101,7 @@
             <element name="option" ns="http://www.daisy.org/ns/xprocspec">
                 <attribute name="value"/>
                 <ref name="common-attributes"/>
+                <ref name="common-elements"/>
                 <attribute name="name">
                     <data type="QName"/>
                 </attribute>
@@ -118,6 +120,7 @@
             <element name="param" ns="http://www.daisy.org/ns/xprocspec">
                 <attribute name="value"/>
                 <ref name="common-attributes"/>
+                <ref name="common-elements"/>
                 <attribute name="name">
                     <data type="QName"/>
                 </attribute>
