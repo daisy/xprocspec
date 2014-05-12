@@ -38,6 +38,7 @@
 
     <define name="description.common">
         <ref name="common-attributes"/>
+        <ref name="common-elements"/>
         <choice>
             <ref name="script"/>
             <attribute name="script">
@@ -101,6 +102,23 @@
         </zeroOrMore>
     </define>
 
+    <define name="common-elements">
+        <optional>
+            <ref name="documentation"/>
+        </optional>
+    </define>
+
+    <define name="documentation">
+        <element name="documentation" ns="http://www.daisy.org/ns/xprocspec">
+            <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+                The documentation element contains human-readable documentation.
+                There are no constraints on the content of the p:documentation element.
+                Documentation is ignored when running xprocspec tests.
+            </a:documentation>
+            <ref name="any-content"/>
+        </element>
+    </define>
+
     <define name="import">
         <element name="import" ns="http://www.daisy.org/ns/xprocspec">
             <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
@@ -111,6 +129,7 @@
                 imported document will actually be imported).
             </a:documentation>
             <ref name="common-attributes"/>
+            <ref name="common-elements"/>
             <attribute name="href">
                 <a:documentation xmlns="http://www.w3.org/1999/xhtml">The `href` attribute contains a URI pointing to the xprocspec file to be imported.</a:documentation>
                 <data type="anyURI"/>
@@ -145,6 +164,7 @@
 
     <define name="scenario.common">
         <ref name="common-attributes"/>
+        <ref name="common-elements"/>
         <ref name="label"/>
     </define>
 
@@ -173,6 +193,7 @@
 
     <define name="call.common">
         <ref name="common-attributes"/>
+        <ref name="common-elements"/>
         <zeroOrMore>
             <choice>
                 <ref name="input"/>
@@ -206,6 +227,7 @@
         <element name="option" ns="http://www.daisy.org/ns/xprocspec">
             <a:documentation xmlns="http://www.w3.org/1999/xhtml">The option element is used to provide values to XProc options on the XProc step you are testing.</a:documentation>
             <ref name="common-attributes"/>
+            <ref name="common-elements"/>
             <attribute name="name">
                 <a:documentation xmlns="http://www.w3.org/1999/xhtml">The `name` attribute is the name of the option used in the XProc step.</a:documentation>
                 <data type="QName"/>
@@ -228,6 +250,7 @@
         <element name="param" ns="http://www.daisy.org/ns/xprocspec">
             <a:documentation xmlns="http://www.w3.org/1999/xhtml">The param element is used to provide values to XProc paramaters on the XProc step you are testing.</a:documentation>
             <ref name="common-attributes"/>
+            <ref name="common-elements"/>
             <attribute name="name">
                 <a:documentation xmlns="http://www.w3.org/1999/xhtml">The `name` attribute is the name of the parameter to be provided on the XProc steps primary parameter input
                     port.</a:documentation>
@@ -248,6 +271,7 @@
         <element name="input" ns="http://www.daisy.org/ns/xprocspec">
             <a:documentation xmlns="http://www.w3.org/1999/xhtml">The input element is used to provide documents on the input ports of the XProc step you are testing.</a:documentation>
             <ref name="common-attributes"/>
+            <ref name="common-elements"/>
             <attribute name="port">
                 <data type="string">
                     <param name="pattern">.+</param>
@@ -270,6 +294,7 @@
 
     <define name="context.attributes">
         <ref name="common-attributes"/>
+        <ref name="common-elements"/>
         <optional>
             <ref name="pending-attribute"/>
         </optional>
@@ -295,6 +320,7 @@
             </choice>
         </optional>
         <ref name="common-attributes"/>
+        <ref name="common-elements"/>
     </define>
 
     <define name="expect">
@@ -469,6 +495,7 @@
                     or performing validations. It can be used in a number of ways:</p>
             </a:documentation>
             <ref name="common-attributes"/>
+            <ref name="common-elements"/>
             <optional>
                 <attribute name="select">
                     <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
@@ -618,6 +645,7 @@
                 the pending assertions and scenarios in the resulting reports.</p>
             </a:documentation>
             <ref name="common-attributes"/>
+            <ref name="common-elements"/>
             <optional>
                 <ref name="label"/>
             </optional>
@@ -644,6 +672,7 @@
     <define name="pending-scenario-wrapped">
         <element name="pending" ns="http://www.daisy.org/ns/xprocspec">
             <ref name="common-attributes"/>
+            <ref name="common-elements"/>
             <optional>
                 <ref name="label"/>
             </optional>

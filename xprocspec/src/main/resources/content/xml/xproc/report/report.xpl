@@ -60,9 +60,6 @@
             </p:input>
         </p:xslt>
     </p:viewport>
-    <p:viewport match="c:error | x:expected | x:was | x:document">
-        <p:escape-markup/>
-    </p:viewport>
     <p:xslt>
         <p:input port="parameters">
             <p:empty/>
