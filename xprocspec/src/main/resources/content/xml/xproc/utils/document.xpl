@@ -55,11 +55,12 @@
                     </p:for-each>
                 </p:when>
                 <p:otherwise>
-                    <p:identity>
-                        <p:input port="source">
+                    <pxi:error code="XPS03" message="       * port not found: $1">
+                        <p:with-option name="param1" select="$port"/>
+                        <p:with-option name="logfile" select="$logfile">
                             <p:empty/>
-                        </p:input>
-                    </p:identity>
+                        </p:with-option>
+                    </pxi:error>
                 </p:otherwise>
             </p:choose>
 

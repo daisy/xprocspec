@@ -27,9 +27,9 @@
         <xsl:variable name="pending" select="count($tests[@result='skipped'] | $pending-description)"/>
         <xsl:variable name="failed" select="count($tests[@result='failed'])"/>
         <xsl:variable name="error-count" select="count($errors)"/>
-        <xsl:variable name="total" select="count($tests) + $error-count"/>
+        <xsl:variable name="total" select="count($tests | $pending-description) + $error-count"/>
 
-        <testsuite timestamp="{x:now()}" hostname="localhost" tests="{count($tests | $pending-description)}" errors="{$error-count}" failures="{$failed}" skipped="{$pending}" id="{generate-id()}"
+        <testsuite timestamp="{x:now()}" hostname="localhost" tests="{$total}" errors="{$error-count}" failures="{$failed}" skipped="{$pending}" id="{generate-id()}"
             temp-global-duration="{x:duration($start-time,$end-time)}" temp-global-name="{x:camelCase(replace(replace(@test-base-uri,'\.xprocspec$','','i'),'^.*/([^/]*)$','$1'))}">
             <!-- the @disabled attribute is not used (don't know what it means as opposed to @skipped...) -->
 
