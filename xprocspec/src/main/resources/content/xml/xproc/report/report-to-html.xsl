@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0" xmlns="http://www.w3.org/1999/xhtml" xmlns:html="http://www.w3.org/1999/xhtml"
     xpath-default-namespace="http://www.w3.org/1999/xhtml" exclude-result-prefixes="#all" xmlns:x="http://www.daisy.org/ns/xprocspec" xmlns:c="http://www.w3.org/ns/xproc-step"
-    xmlns:p="http://www.w3.org/ns/xproc" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    xmlns:p="http://www.w3.org/ns/xproc" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:f="http://www.daisy.org/ns/xprocspec/xslt-internal">
 
     <xsl:template match="html">
         <xsl:variable name="descriptions" select="body/x:description[not(x:scenario/@pending)]"/>
@@ -31,13 +31,16 @@
                             color:blue;
                         }
                         .pp-attr-name{
-                            color:orange;
+                            color:#8A8A00;
                         }
                         .pp-attr-value{
                             color:#FF4F4F;
                         }
                         .pp-document-element{
                             background-color:#F5F5F5;
+                        }
+                        .diff{
+                            background-color:pink;
                         }</style>
                 </xsl:copy>
             </xsl:for-each>
@@ -273,12 +276,16 @@
                                                                         <tr>
                                                                             <td>
                                                                                 <xsl:for-each select="$this-was">
-                                                                                    <xsl:call-template name="print-context"/>
+                                                                                    <xsl:call-template name="print-context">
+                                                                                        <xsl:with-param name="diff-with" select="$this-expected"/>
+                                                                                    </xsl:call-template>
                                                                                 </xsl:for-each>
                                                                             </td>
                                                                             <td>
                                                                                 <xsl:for-each select="$this-expected">
-                                                                                    <xsl:call-template name="print-context"/>
+                                                                                    <xsl:call-template name="print-context">
+                                                                                        <xsl:with-param name="diff-with" select="$this-was"/>
+                                                                                    </xsl:call-template>
                                                                                 </xsl:for-each>
                                                                             </td>
                                                                         </tr>
@@ -641,44 +648,70 @@
 
     <xsl:template name="pretty-print">
         <xsl:param name="indent" select="0"/>
+        <xsl:param name="diff-with" select="()"/>
         <xsl:element name="{if ($indent=0) then 'div' else 'span'}">
             <xsl:attribute name="class" select="if ($indent=0) then 'pp-element pp-document-element' else 'pp-element'"/>
             <xsl:choose>
                 <xsl:when test="self::x:was | self::x:expected">
                     <xsl:for-each select="node()">
-                        <xsl:call-template name="pretty-print"/>
+                        <xsl:variable name="pos" select="position()"/>
+                        <xsl:call-template name="pretty-print">
+                            <xsl:with-param name="diff-with" select="$diff-with/node()[$pos]"/>
+                        </xsl:call-template>
                     </xsl:for-each>
                 </xsl:when>
-                <xsl:when test="self::text()">
-                    <pre><code><xsl:value-of select="."/></code></pre>
+                <xsl:when test="self::node() and not(self::*)">
+                    <pre>
+                        <xsl:if test="$diff-with and f:diff(.,$diff-with)">
+                            <xsl:attribute name="class" select="'diff'"/>
+                        </xsl:if>
+                        <code><xsl:value-of select="."/></code>
+                    </pre>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:variable name="indent-spaces" select="string-join(for $i in (1 to $indent) return '&#160;&#160;&#160;&#160;','')"/>
                     <br/>
                     <xsl:value-of select="$indent-spaces"/>
                     <span class="pp-tag-open">&lt;</span>
-                    <span class="pp-tag-name">
-                        <xsl:value-of select="local-name()"/>
-                    </span>
-                    <xsl:if test="$indent=0 or not(namespace-uri()=parent::*/namespace-uri())">
-                        <xsl:text> </xsl:text>
-                        <span class="pp-attr-name">xmlns=</span>
-                        <span class="pp-attr-value">
-                            <xsl:text>"</xsl:text>
-                            <xsl:value-of select="namespace-uri()"/>
-                            <xsl:text>"</xsl:text>
-                        </span>
-                    </xsl:if>
-                    <xsl:for-each select="@*">
-                        <xsl:text> </xsl:text>
-                        <span class="pp-attr-name">
+                    <span>
+                        <xsl:if test="$diff-with and f:diff(.,$diff-with)">
+                            <xsl:attribute name="class" select="'diff'"/>
+                        </xsl:if>
+                        <span class="pp-tag-name">
                             <xsl:value-of select="name()"/>
-                            <xsl:text>=</xsl:text>
                         </span>
-                        <span class="pp-attr-value">
-                            <xsl:text>"</xsl:text>
-                            <xsl:value-of select="string(.)"/>
-                            <xsl:text>"</xsl:text>
+                        <xsl:if test="$indent=0 or not(namespace-uri()=parent::*/namespace-uri() and replace(name(),'(.*:)?.+','$1')=replace(parent::*/name(),'(.*:)?.+','$1'))">
+                            <xsl:text> </xsl:text>
+                            <span class="pp-attr-name">xmlns</span>
+                            <xsl:if test="replace(name(),'(.*:)?.+','$1')!=replace(parent::*/name(),'(.*:)?.+','$1')">
+                                <span class="pp-attr-name-prefix">
+                                    <xsl:value-of select="if (contains(name(),':')) then concat(':',tokenize(name(),':')[1]) else ''"/>
+                                </span>
+                            </xsl:if>
+                            <span>=</span>
+                            <span class="pp-attr-value">
+                                <xsl:text>"</xsl:text>
+                                <xsl:value-of select="namespace-uri()"/>
+                                <xsl:text>"</xsl:text>
+                            </span>
+                        </xsl:if>
+                    </span>
+                    <xsl:for-each select="@*">
+                        <xsl:variable name="attr" select="."/>
+                        <xsl:text> </xsl:text>
+                        <span>
+                            <xsl:if test="$diff-with and f:diff(.,$diff-with/@*[local-name()=$attr/local-name() and namespace-uri()=$attr/namespace-uri()])">
+                                <xsl:attribute name="class" select="'diff'"/>
+                            </xsl:if>
+                            <span class="pp-attr-name">
+                                <xsl:value-of select="name()"/>
+                                <xsl:text>=</xsl:text>
+                            </span>
+                            <span class="pp-attr-value">
+                                <xsl:text>"</xsl:text>
+                                <xsl:value-of select="string(.)"/>
+                                <xsl:text>"</xsl:text>
+                            </span>
                         </span>
                     </xsl:for-each>
                     <xsl:choose>
@@ -688,10 +721,12 @@
                         <xsl:otherwise>
                             <span class="pp-tag-close">&gt;</span>
                             <xsl:for-each select="node()">
+                                <xsl:variable name="pos" select="position()"/>
                                 <xsl:choose>
                                     <xsl:when test="self::*">
                                         <xsl:call-template name="pretty-print">
                                             <xsl:with-param name="indent" select="$indent+1"/>
+                                            <xsl:with-param name="diff-with" select="$diff-with/node()[$pos]"/>
                                         </xsl:call-template>
                                     </xsl:when>
                                     <xsl:otherwise>
@@ -720,12 +755,19 @@
     </xsl:template>
 
     <xsl:template name="print-context">
+        <xsl:param name="diff-with"/>
         <xsl:choose>
             <xsl:when test="not(*)">
-                <pre><code><xsl:copy-of select="."/></code></pre>
+                <pre>
+                    <xsl:if test="$diff-with and f:diff(.,$diff-with)">
+                        <xsl:attribute name="class" select="'diff'"/>
+                    </xsl:if>
+                    <code><xsl:copy-of select="."/></code>
+                </pre>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:for-each select="node()">
+                    <xsl:variable name="pos" select="position()"/>
                     <xsl:choose>
                         <xsl:when test="self::text() and normalize-space(.)=''"/>
                         <xsl:when test="self::x:document">
@@ -740,7 +782,9 @@
                         </xsl:when>
                         <xsl:otherwise>
                             <div class="pp-xml">
-                                <xsl:call-template name="pretty-print"/>
+                                <xsl:call-template name="pretty-print">
+                                    <xsl:with-param name="diff-with" select="$diff-with/node()[$pos]"/>
+                                </xsl:call-template>
                             </div>
                         </xsl:otherwise>
                     </xsl:choose>
@@ -748,5 +792,26 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
+
+    <xsl:function name="f:diff" as="xs:boolean">
+        <!-- returns true if nodes/attributes are different -->
+        <xsl:param name="a" required="yes"/>
+        <xsl:param name="b" required="yes"/>
+        <xsl:choose>
+            <xsl:when test="$a[self::*] and $b[self::*] and $a/name()=$b/name() and namespace-uri($a)=namespace-uri($b)">
+                <xsl:sequence select="false()"/>
+            </xsl:when>
+            <xsl:when test="$a[parent::*/@* intersect .] and $b[parent::*/@* intersect .] and $a/name()=$b/name() and namespace-uri($a)=namespace-uri($b) and string($a)=string($b)">
+                <xsl:sequence select="false()"/>
+            </xsl:when>
+            <xsl:when
+                test="$a[self::node() and not(self::*) and not(parent::*/@* intersect .)] and $a[self::node() and not(self::*) and not(parent::*/@* intersect .)] and normalize-space($a)=normalize-space($b)">
+                <xsl:sequence select="false()"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="true()"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
 
 </xsl:stylesheet>

@@ -244,7 +244,6 @@
                                             </p:with-option>
                                         </pxi:compare>
                                         <p:rename match="/*" new-name="x:test-result"/>
-                                        <p:delete match="/*/x:was"/>
                                         <p:add-attribute match="/*" attribute-name="result">
                                             <p:with-option name="attribute-value" select="if (/*/@result='true') then 'passed' else 'failed'"/>
                                         </p:add-attribute>
