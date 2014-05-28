@@ -795,8 +795,8 @@
 
     <xsl:function name="f:diff" as="xs:boolean">
         <!-- returns true if nodes/attributes are different -->
-        <xsl:param name="a" required="yes"/>
-        <xsl:param name="b" required="yes"/>
+        <xsl:param name="a"/>
+        <xsl:param name="b"/>
         <xsl:choose>
             <xsl:when test="$a[self::*] and $b[self::*] and $a/name()=$b/name() and namespace-uri($a)=namespace-uri($b)">
                 <xsl:sequence select="false()"/>

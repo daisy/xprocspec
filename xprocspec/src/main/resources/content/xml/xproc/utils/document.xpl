@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<p:declare-step name="main" type="pxi:document" xmlns:p="http://www.w3.org/ns/xproc" xmlns:c="http://www.w3.org/ns/xproc-step" version="1.0" xmlns:pxi="http://www.daisy.org/ns/xprocspec/xproc-internal/" exclude-inline-prefixes="#all"
-    xpath-version="2.0" xmlns:x="http://www.daisy.org/ns/xprocspec">
+<p:declare-step name="main" type="pxi:document" xmlns:p="http://www.w3.org/ns/xproc" xmlns:c="http://www.w3.org/ns/xproc-step" version="1.0"
+    xmlns:pxi="http://www.daisy.org/ns/xprocspec/xproc-internal/" exclude-inline-prefixes="#all" xpath-version="2.0" xmlns:x="http://www.daisy.org/ns/xprocspec">
 
     <p:input port="document" primary="true"/>
     <p:input port="description"/>
@@ -229,22 +229,22 @@
             <p:choose>
                 <p:when test="not(/*/@xml:base)">
                     <p:variable name="base-was" select="/*/*/@xml:base"/>
-                    
+
                     <!-- set x:document/@xml:base to either the xprocspec test document or to the temporary directory -->
                     <p:add-attribute match="/*" attribute-name="xml:base">
                         <p:with-option name="attribute-value" select="if ($base-uri='temp-dir') then $temp-dir else base-uri(/*)"/>
                     </p:add-attribute>
-                    
+
                     <!-- resolve inline document against x:document/@xml:base -->
                     <p:add-attribute match="/*/*" attribute-name="xml:base">
                         <p:with-option name="attribute-value" select="resolve-uri($base-was,/*/@xml:base)"/>
                     </p:add-attribute>
-                    
+
                     <!-- reset x:document/*/@xml:base to its original value, in case it was a relative URI -->
                     <p:add-attribute match="/*/*" attribute-name="xml:base">
                         <p:with-option name="attribute-value" select="$base-was"/>
                     </p:add-attribute>
-                    
+
                     <!-- delete explicit xml:base attribute if it was not present originally -->
                     <p:delete>
                         <p:with-option name="match" select="concat('/*[',(if ($base-was) then 'false()' else 'true()'),']/*/@xml:base')"/>
@@ -269,6 +269,9 @@
                         <p:pipe port="document" step="main"/>
                     </p:input>
                 </p:identity>
+                <pxi:message message="select: $1">
+                    <p:with-option name="param1" select="$select"/>
+                </pxi:message>
                 <p:xslt name="select.xslt">
                     <p:input port="parameters">
                         <p:empty/>
@@ -277,23 +280,22 @@
                         <p:document href="document-to-select-xslt.xsl"/>
                     </p:input>
                 </p:xslt>
-                <p:xslt>
-                    <p:input port="parameters">
-                        <p:empty/>
-                    </p:input>
-                    <p:input port="source">
-                        <p:pipe port="current" step="select"/>
-                    </p:input>
-                    <p:input port="stylesheet">
-                        <p:pipe port="result" step="select.xslt"/>
-                    </p:input>
-                </p:xslt>
                 <p:for-each>
-                    <p:iteration-source select="/*/*"/>
+                    <p:iteration-source select="/*/*">
+                        <p:pipe port="current" step="select"/>
+                    </p:iteration-source>
+                    <p:xslt>
+                        <p:input port="parameters">
+                            <p:empty/>
+                        </p:input>
+                        <p:input port="stylesheet">
+                            <p:pipe port="result" step="select.xslt"/>
+                        </p:input>
+                    </p:xslt>
                     <p:add-attribute match="/*" attribute-name="type" attribute-value="inline"/>
                     <p:add-attribute match="/*" attribute-name="xml:space" attribute-value="preserve"/>
                     <p:add-attribute match="/*" attribute-name="xml:base">
-                        <p:with-option name="attribute-value" select="resolve-uri(base-uri(/*/*),$unfiltered-base)"/>
+                        <p:with-option name="attribute-value" select="resolve-uri(base-uri(/*),$unfiltered-base)"/>
                     </p:add-attribute>
                 </p:for-each>
             </p:for-each>
