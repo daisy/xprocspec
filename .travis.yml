@@ -5,7 +5,7 @@ script: mvn verify
 
 # if the build succeeds, deploy the artifact (tests are skipped)
 after_success:
-  - git clone -b travis https://github.com/daisy-consortium/maven-parents.git target/travis
+  - git clone -b travis https://github.com/daisy/maven-parents.git target/travis
   - ./target/travis/maven_deploy.sh
 
 # whitelist; only deploy master branch
@@ -25,4 +25,3 @@ env:
       PQpYc7DyUrohx8z7UNNdA1cykThGRJVfIbcFxqq20T75nBT+7MVrlxaUnyx3
 
       FiCHa5o6B6o8pg7jm4Xn/X27QHJAfZujx7yz0nj+NCM7tPSxmv4='
-
