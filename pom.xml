@@ -41,14 +41,6 @@
         <developerConnection>scm:git:git@github.com:daisy-pipeline/xprocspec.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
-
-    <distributionManagement>
-        <repository>
-            <id>bintray</id>
-            <name>bintray.com</name>
-            <url>https://api.bintray.com/maven/josteinaj/maven/xprocspec</url>
-        </repository>
-    </distributionManagement>
     
     <modules>
         <module>xprocspec</module>

@@ -14,24 +14,18 @@
             <xsl:attribute name="xpath-default-namespace" select="namespace-uri-for-prefix('',/*)"/>
 
             <xsl:copy-of select="//namespace::*"/>
-            
+
             <xsl:element name="{$xsl-prefix}:output" namespace="http://www.w3.org/1999/XSL/Transform">
                 <xsl:attribute name="indent" select="'yes'"/>
             </xsl:element>
 
             <xsl:element name="{$xsl-prefix}:template" namespace="http://www.w3.org/1999/XSL/Transform">
                 <xsl:attribute name="match" select="'/'"/>
-                <x:documents>
-                    <xsl:element name="{$xsl-prefix}:for-each" namespace="http://www.w3.org/1999/XSL/Transform">
-
-                        <xsl:attribute name="select" select="/*/@select"/>
-                        <x:document>
-                            <xsl:element name="{$xsl-prefix}:copy-of" namespace="http://www.w3.org/1999/XSL/Transform">
-                                <xsl:attribute name="select" select="'.'"/>
-                            </xsl:element>
-                        </x:document>
+                <x:document>
+                    <xsl:element name="{$xsl-prefix}:copy-of" namespace="http://www.w3.org/1999/XSL/Transform">
+                        <xsl:attribute name="select" select="if (/*/@select) then /*/@select else '/*'"/>
                     </xsl:element>
-                </x:documents>
+                </x:document>
             </xsl:element>
 
         </xsl:element>

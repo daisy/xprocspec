@@ -15,9 +15,19 @@
         <enabled>false</enabled>
       </releases>
       <snapshots>
-        <enabled>true</enabled>
+        <enabled>false</enabled>
       </snapshots>
       <url>http://oss.sonatype.org/content/repositories/snapshots/</url>
+    </pluginRepository>
+    <pluginRepository>
+      <id>local.central</id>
+      <url>@localRepositoryUrl@</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
     </pluginRepository>
   </pluginRepositories>
 

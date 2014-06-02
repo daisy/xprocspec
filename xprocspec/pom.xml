@@ -82,7 +82,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
+            <!--<plugin>
                 <artifactId>maven-invoker-plugin</artifactId>
                 <version>1.8</version>
                 <configuration>
@@ -110,7 +110,7 @@
                     </goals>
                   </execution>
                 </executions>
-              </plugin>
+              </plugin>-->
         </plugins>
     </build>
     <reporting>

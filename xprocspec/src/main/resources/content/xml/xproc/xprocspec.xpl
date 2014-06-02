@@ -1,5 +1,6 @@
-<p:declare-step xmlns:p="http://www.w3.org/ns/xproc" type="px:xprocspec" name="main" xmlns:cx="http://xmlcalabash.com/ns/extensions" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:px="http://www.daisy.org/ns/xprocspec"
-    xmlns:pxi="http://www.daisy.org/ns/xprocspec/xproc-internal/" exclude-inline-prefixes="#all" version="1.0" xpath-version="2.0" xmlns:pkg="http://expath.org/ns/pkg" pkg:import-uri="http://www.daisy.org/ns/xprocspec/xprocspec.xpl">
+<p:declare-step xmlns:p="http://www.w3.org/ns/xproc" type="px:xprocspec" name="main" xmlns:cx="http://xmlcalabash.com/ns/extensions" xmlns:c="http://www.w3.org/ns/xproc-step"
+    xmlns:px="http://www.daisy.org/ns/xprocspec" xmlns:pxi="http://www.daisy.org/ns/xprocspec/xproc-internal/" exclude-inline-prefixes="#all" version="1.0" xpath-version="2.0"
+    xmlns:pkg="http://expath.org/ns/pkg" pkg:import-uri="http://www.daisy.org/ns/xprocspec/xprocspec.xpl">
 
     <p:input port="source"/>
 
@@ -14,7 +15,7 @@
     </p:output>
 
     <p:option name="temp-dir" select="'file:/tmp/'"/>
-    
+
     <p:option name="step-available-rng" select="'false'"/>
 
     <p:import href="preprocess/preprocess.xpl"/>
@@ -23,7 +24,7 @@
     <p:import href="evaluate/evaluate.xpl"/>
     <p:import href="report/report.xpl"/>
     <p:import href="utils/logging-library.xpl"/>
-    
+
     <p:variable name="start-time" select="adjust-dateTime-to-timezone(current-dateTime(),xs:dayTimeDuration('PT0H'))"/>
     <p:variable name="logfile" select="concat($temp-dir,'xprocspec-log-',replace($start-time,'[^\d]',''),'.xml')"/>
 

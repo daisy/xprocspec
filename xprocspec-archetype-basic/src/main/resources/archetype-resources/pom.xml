@@ -8,7 +8,7 @@
     <packaging>jar</packaging>
 
     <name>XProc project with XProcSpec testing</name>
-    <url>http://josteinaj.github.io/xprocspec/</url>
+    <url>http://daisy.github.io/xprocspec/</url>
 
     <repositories>
         <repository>

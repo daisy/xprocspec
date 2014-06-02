@@ -14,7 +14,7 @@
 
     <!-- for custom x:expect implementations: -->
     <p:import href="http://xmlcalabash.com/extension/steps/library-1.0.xpl"/>
-    
+
     <p:for-each name="current-test">
         <!-- for each scenario -->
 
@@ -77,7 +77,7 @@
 
                         <pxi:message message="   * grouping x:expect elements with their x:context...">
                             <p:with-option name="logfile" select="$logfile">
-                                <p:empty/>
+                                <!--<p:empty/>-->
                             </p:with-option>
                         </pxi:message>
                         <p:add-attribute match="/*" attribute-name="xml:base">
@@ -118,7 +118,11 @@
                                 <p:iteration-source select="/x:document/*"/>
                                 <p:identity/>
                             </p:for-each>
-                            <p:count name="context.size"/>
+                            <p:count name="context.size">
+                                <p:input port="source">
+                                    <p:pipe port="result" step="context"/>
+                                </p:input>
+                            </p:count>
                             <p:for-each name="assertions">
                                 <p:iteration-source select="/x:context-group/*[position()&gt;1]">
                                     <p:pipe port="result" step="context-group"/>
@@ -244,7 +248,6 @@
                                             </p:with-option>
                                         </pxi:compare>
                                         <p:rename match="/*" new-name="x:test-result"/>
-                                        <p:delete match="/*/x:was"/>
                                         <p:add-attribute match="/*" attribute-name="result">
                                             <p:with-option name="attribute-value" select="if (/*/@result='true') then 'passed' else 'failed'"/>
                                         </p:add-attribute>
