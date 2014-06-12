@@ -2,13 +2,27 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.daisy</groupId>
+    <parent>
+        <groupId>org.daisy</groupId>
+        <artifactId>daisy</artifactId>
+        <version>3</version>
+        <relativePath />
+    </parent>
+    
+    <groupId>org.daisy.xprocspec</groupId>
     <artifactId>xprocspec</artifactId>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>1.1.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>xprocspec</name>
     <description>A tool for testing XProc scripts</description>
+    
+    <scm>
+        <url>http://github.com/daisy/xprocspec</url>
+        <connection>scm:git:git@github.com:daisy/xprocspec.git</connection>
+        <developerConnection>scm:git:git@github.com:daisy/xprocspec.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -19,28 +33,6 @@
         <xproc-engine-calabash.version>1.0-SNAPSHOT</xproc-engine-calabash.version>
     </properties>
     
-    <repositories>
-        <repository>
-            <id>central</id>
-            <name>Maven Central</name>
-            <url>http://repo.maven.apache.org/maven2/</url>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>sonatype-nexus-snapshots</id>
-            <name>oss.sonatype.org github Release Repository Snapshot Repository</name>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <url>http://oss.sonatype.org/content/repositories/snapshots/</url>
-        </pluginRepository>
-    </pluginRepositories>
-
     <build>
         <resources>
             <resource>
@@ -118,7 +110,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>2.14.1</version>
             </plugin>
         </plugins>
     </reporting>
