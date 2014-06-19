@@ -20,14 +20,14 @@
           <h1>xprocspec</h1>
           <h2>A tool for testing XProc scripts</h2>
         </header>
-        <section id="buttons" class="clearfix">
-          <a href="https://github.com/daisy-consortium/xprocspec/zipball/master" id="button-left" class="button">
-            <span>Download .zip</span>
+        <section class="buttons clearfix">
+          <a href="https://github.com/daisy/xprocspec/archive/v1.1.0.zip" id="button-left" class="button">
+            <span>Download v1.1.0</span>
           </a>
-          <a href="http://daisy-consortium.github.com/xprocspec/www/documentation/index.html" id="button-middle" class="button">
+          <a href="http://daisy.github.com/xprocspec/www/documentation/index.html" id="button-middle" class="button">
             <span>Documentation</span>
           </a>
-          <a href="https://github.com/daisy-consortium/xprocspec" id="button-right" class="button">
+          <a href="https://github.com/daisy/xprocspec" id="button-right" class="button">
             <span>View on GitHub</span>
           </a>
         </section>
@@ -35,21 +35,25 @@
         <section id="main_content">
           <h1>
             <a name="xprocspec---xproc-testing-tool" class="anchor" href="#xprocspec---xproc-testing-tool"><span class="octicon octicon-link"></span></a>xprocspec - XProc testing tool</h1>
-          <p>This is a tool for testing XProc scripts. Its grammar is based on <a href="http://code.google.com/p/xspec/wiki/WritingScenarios">XSpec</a> and is implemented in XProc.</p>
-          <p>xprocspec is itself tested using xprocspec. The latest results are available as a <a href="www/documentation/test-results.html.html">xprocspec HTML report</a>. xprocspec is at this point mostly feature-complete. <a href="https://travis-ci.org/daisy-consortium/xprocspec"><img src="https://travis-ci.org/daisy-consortium/xprocspec.png?branch=master" alt="Build status icon"/></a></p>
+          <p>This is a tool for testing XProc scripts. Its grammar is inspired by <a href="http://code.google.com/p/xspec/wiki/WritingScenarios">XSpec</a> and is implemented in XProc.</p>
+          <!--<p>xprocspec is itself tested using xprocspec. The latest results are available as a <a href="www/documentation/test-results.html.html">xprocspec HTML report</a>. xprocspec is at this point mostly feature-complete.--> <a href="https://travis-ci.org/daisy/xprocspec"><img src="https://travis-ci.org/daisy/xprocspec.png?branch=master" alt="Build status icon"/></a></p>
           <section>
-              <h2>Command line</h2>
-              <p>From the command line, provide the xprocspec test on the "source" input port, and point the "result", "html" and "junit" report ports to a location of your choice. Assuming you have calabash 1.0.15-95 installed under ~/calabash-1.0.15-95 (calabash 1.0.10 or newer is recommended), cd to the "xprocspec" directory in the xprocspec repository and run the following command to run the xprocspec integration tests:</p>
-              <p><pre style="white-space: pre-wrap;"><code style="font-family: Consolas,monospace;">java -jar <span style="white-space:nowrap;">~/calabash-1.0.15-95/calabash.jar</span> <span style="white-space:nowrap;">-i source=src/test/xprocspec/test.xprocspec</span> <span style="white-space:nowrap;">-o result=target/result.xml</span> <span style="white-space:nowrap;">-o html=target/html.html</span> <span style="white-space:nowrap;">-o junit=target/junit.xml</span> <span style="white-space:nowrap;">src/main/resources/content/xml/xproc/xprocspec.xpl</span></code></pre></p>
-              <p>The xprocspec reports, including HTML and JUnit versions, will be stored in "xprocspec/target/".</p>
-              <p><small>NOTE: In Windows, you must also provide a file URI to the "temp-dir" option. It defaults to "file:/tmp/" which works in Linux and OSX.</small></p>
+            <h2>XProc</h2>
+            <p>Using Calabash (calabash 1.0.10-95 or newer is recommended), provide the xprocspec test on the "source" input port, and point the "result", "html" and "junit" report ports to a location of your choice.</p>
+            <p><small>NOTE: In Windows, you must also provide a file URI to the "temp-dir" option. It defaults to "file:/tmp/" which works in Linux and OSX.</small></p>
           </section>
           <section>
-              <h2>Maven</h2>
-              <p>If you use the Maven plugin <a href="https://github.com/daisy-consortium/xproc-maven-plugin">@daisy-consortium/xproc-maven-plugin</a>, you can do automated testing of your XProc projects!</p>
-              <p>The simplest way to start an XProc project with xprocspec testing is to simply run the following command:</p>
-              <p><pre style="white-space: pre-wrap;"><code style="font-family: Consolas,monospace;">mvn <span style="white-space:nowrap;">archetype:generate</span> <span style="white-space:nowrap;">-DarchetypeRepository=https://oss.sonatype.org/content/repositories/snapshots/</span> <span style="white-space:nowrap;">-DarchetypeGroupId=org.daisy</span> <span style="white-space:nowrap;">-DarchetypeArtifactId=xprocspec-archetype-basic</span> <span style="white-space:nowrap;">-DarchetypeVersion=1.0.0-SNAPSHOT</span> <span style="white-space:nowrap;">-DgroupId=<strong>org.example</strong></span> <span style="white-space:nowrap;">-DartifactId=<strong>my-xproc-project</strong></span></code></pre></p>
-              <p>This will create the basic folder structure of your project, and includes a Hello world XProc pipeline as well as a xprocspec test for it. To test the project, run <code>mvn test</code>.</p>
+            <h2>Maven</h2>
+            <p>If you use the Maven plugin <a href="https://github.com/daisy/xproc-maven-plugin">xproc-maven-plugin</a>, you can do automated testing of your XProc projects! Read more on <a href="https://github.com/daisy/xproc-maven-plugin">xproc-maven-plugin</a> project homepage.</p>
+          </section>
+          <section>
+            <h2>Get started now!</h2>
+            <pre style="font-family: Monaco, monospace;">
+wget http://daisy.github.io/xprocspec/www/hello-world.zip
+cd hello-world
+mvn test
+</pre>
+            <p>This will download a <a href="hello-world.zip">"hello world" template project</a> and run a sample xprocspec test (as well as a xspec test, using <a href="https://github.com/daisy/xspec-maven-plugin">xspec-maven-plugin</a>).</p>
           </section>
         </section>
         <footer>xprocspec is mainly maintained by <a href="https://github.com/josteinaj">Jostein Austvik Jacobsen</a><br /> Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</footer>

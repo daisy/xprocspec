@@ -98,7 +98,7 @@ header h2 {
   max-width: 100%;
 }
 
-#buttons {
+.buttons {
   margin-bottom: 40px;
 }
 
@@ -352,7 +352,7 @@ footer a:hover {
     padding-top: 10px;
     padding-bottom: 10px;
   }
-  #buttons {
+  .buttons {
     margin-bottom: 25px;
   }
   /*#button-left, #button-middle {
