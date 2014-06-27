@@ -10,16 +10,10 @@
             <x:document type="errors"/>
         </x:context>
         <x:expect label="the error document must have c:errors as its root element" type="xpath" test="/c:errors"/>
-        <x:expect label="the error document must match the expected error document" type="compare"
-            pending="this does not work in the current version of calabash; catching errors that are thrown from invoked
-            steps does not work properly, only errors that are thrown directly inside the try/group-element.
-            See if it works in the newest version of calabash before submitting an issue report.">
-            <x:document type="inline">
-                <c:errors>
-                    <c:error code="ex:TODO"/>
-                </c:errors>
-            </x:document>
-        </x:expect>
+        <x:expect label="there must be exactly one c:error in the c:errors element" type="xpath" test="count(/c:errors/c:error)" equals="1"/>
+        <x:expect label="there must be no other elements than c:error in the c:errors element" type="xpath" test="count(/c:errors/*[not(self::c:error)])" equals="0"/>
+        <x:expect label="the error code must be 'ex:TESTERROR'" type="xpath" test="/c:errors/c:error/@code" equals="'ex:TESTERROR'"/>
+        <x:expect label="the error message must be 'MESSAGE'" type="xpath" test="normalize-space(/c:errors/c:error/text())" equals="'MESSAGE'"/>
     </x:scenario>
 
 </x:description>
