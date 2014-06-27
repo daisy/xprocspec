@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0" xmlns:t="http://xproc.org/ns/testsuite" xmlns:x="http://www.daisy.org/ns/xprocspec" xmlns:xprocspec="http://www.daisy.org/ns/xprocspec"
-    exclude-result-prefixes="#all">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0" xmlns:t="http://xproc.org/ns/testsuite" xmlns:x="http://www.daisy.org/ns/xprocspec"
+    xmlns:xprocspec="http://www.daisy.org/ns/xprocspec" xmlns:c="http://www.w3.org/ns/xproc-step" exclude-result-prefixes="#all">
 
     <xsl:output exclude-result-prefixes="#all" indent="yes" method="xml"/>
 
@@ -19,7 +19,6 @@
                     <xsl:attribute name="script" select="t:pipeline/@href"/>
                 </xsl:when>
                 <xsl:otherwise>
-                    <!-- this pipeline will be stored by the XProc step that invokes this XSLT -->
                     <x:script>
                         <xsl:choose>
                             <xsl:when test="not(t:compare-pipeline)">
@@ -36,7 +35,8 @@
                                 </xsl:for-each>
                             </xsl:when>
                             <xsl:otherwise>
-                                <p:declare-step xmlns:p="http://www.w3.org/ns/xproc" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:xprocspec="http://www.daisy.org/ns/xprocspec" type="xprocspec:step" name="main" version="1.0">
+                                <p:declare-step xmlns:p="http://www.w3.org/ns/xproc" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:xprocspec="http://www.daisy.org/ns/xprocspec" type="xprocspec:step"
+                                    name="main" version="1.0">
                                     <xsl:namespace name="xprocspec" select="'http://www.daisy.org/ns/xprocspec'"/>
                                     <xsl:copy-of select="t:pipeline/*/p:input" copy-namespaces="no"/>
                                     <xsl:for-each select="t:compare-pipeline/*/p:output">
@@ -137,7 +137,10 @@
                 </x:call>
                 <xsl:apply-templates select="t:output"/>
                 <xsl:if test="/t:test/@error">
-                    <x:expect error="{/t:test/@error}" label="the error {/t:test/@error} should be thrown"/>
+                    <x:context label="the error document">
+                        <x:document type="errors"/>
+                    </x:context>
+                    <x:expect label="should contain the error '{/t:test/@error}'" type="xpath" test="count(/c:errors/c:error[@code='{/t:test/@error}']) &gt; 0"/>
                 </xsl:if>
             </x:scenario>
         </x:description>
@@ -178,7 +181,11 @@
     </xsl:template>
 
     <xsl:template match="t:output">
-        <x:expect port="{@port}" label="the output port {@port} should contain {count(*)} document{if(count(*)=1)then''else's'}">
+        <x:context label="the output port '{@port}'">
+            <x:document type="port" port="{@port}"/>
+        </x:context>
+        <xsl:variable name="document-count" select="count(*)"/>
+        <x:expect type="compare" label="should contain the expected{if($document-count&gt;1)then concat(' ',$document-count) else ''} document{if($document-count=1) then '' else 's'}{if($document-count=0) then ' (an empty sequence)' else ''}">
             <xsl:choose>
                 <xsl:when test="@href">
                     <x:document href="{@href}"/>

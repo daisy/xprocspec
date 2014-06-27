@@ -386,25 +386,6 @@
                                         <p:document href="xprocTestSuite-to-xprocspec.xsl"/>
                                     </p:input>
                                 </p:xslt>
-                                <p:add-attribute match="/*" attribute-name="script" name="xproctestsuite">
-                                    <p:with-option name="attribute-value" select="$href"/>
-                                </p:add-attribute>
-
-                                <pxi:message message=" * storing inlined XProc script">
-                                    <p:with-option name="logfile" select="$logfile">
-                                        <p:empty/>
-                                    </p:with-option>
-                                </pxi:message>
-                                <p:store>
-                                    <p:input port="source" select="/*/x:script/*"/>
-                                    <p:with-option name="href" select="$href"/>
-                                </p:store>
-                                <p:identity>
-                                    <p:input port="source">
-                                        <p:pipe port="result" step="xproctestsuite"/>
-                                    </p:input>
-                                </p:identity>
-                                <p:delete match="/*/x:script"/>
                             </p:otherwise>
                         </p:choose>
                     </p:group>
