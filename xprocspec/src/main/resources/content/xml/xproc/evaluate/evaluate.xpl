@@ -537,15 +537,6 @@
                     <p:add-attribute match="/*" attribute-name="xml:base">
                         <p:with-option name="attribute-value" select="base-uri(/*)"/>
                     </p:add-attribute>
-                    <p:xslt>
-                        <!-- create missing namespaces in c:error/@code (see https://github.com/ndw/xmlcalabash1/issues/107) -->
-                        <p:input port="parameters">
-                            <p:empty/>
-                        </p:input>
-                        <p:input port="stylesheet">
-                            <p:document href="calabash-issue-107.xsl"/>
-                        </p:input>
-                    </p:xslt>
                     <pxi:validate-with-relax-ng>
                         <p:input port="schema">
                             <p:document href="../../schema/xprocspec.evaluate.rng"/>
