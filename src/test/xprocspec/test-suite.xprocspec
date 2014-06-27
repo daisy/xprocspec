@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.daisy.org/ns/xprocspec/xprocspec.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<x:description xmlns:x="http://www.daisy.org/ns/xprocspec" xmlns:example="http://www.example.net/">
+    
+    <!-- all xprocspec documents must currently define a script. see: https://github.com/daisy/xprocspec/issues/27 -->
+    <x:script>
+        <p:pipeline xmlns:p="http://www.w3.org/ns/xproc" type="example:identity">
+            <p:identity/>
+        </p:pipeline>
+    </x:script>
+    
+    <!-- imports currently do not work. see: https://github.com/daisy/xprocspec/issues/26 -->
+    <x:import href="test-suite.xml"/>
+
+</x:description>
