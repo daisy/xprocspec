@@ -3,12 +3,12 @@
 <x:description xmlns:x="http://www.daisy.org/ns/xprocspec" script="../../steps/pipx.xpl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:p="http://www.w3.org/ns/xproc"
     xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:pipx="http://pipx.org/ns/pipx" xmlns:t="http://pipx.org/ns/test">
 
-    <!--<x:scenario label="Calling the step 'pipx:parameter'">
-        <x:call step="pipx:parameter"/>-->
+    <x:scenario label="Calling the step 'pipx:parameter'">
+        <x:call step="pipx:parameter"/>
 
 
-        <!--<x:scenario label="with an optional parameter, provided through p:with-param">
-            <!-\- <p>Provides a parameter <code>foo</code> using <code>p:with-param</code>, and asks for its value. The result must include this parameter, with the correct value.</p> -\->
+        <x:scenario label="with an optional parameter, provided through p:with-param">
+            <!-- <p>Provides a parameter <code>foo</code> using <code>p:with-param</code>, and asks for its value. The result must include this parameter, with the correct value.</p> -->
             <x:call>
                 <x:option name="param-name" select="'foo'"/>
                 <x:param name="foo" select="'bar'"/>
@@ -24,7 +24,7 @@
         </x:scenario>
 
         <x:scenario label="with a required parameter, provided through p:with-param.">
-            <!-\-  <p>Provides a parameter <code>foo</code> using <code>p:with-param</code>, and asks for its value. The result must include this parameter, with the correct value.</p> -\->
+            <!--  <p>Provides a parameter <code>foo</code> using <code>p:with-param</code>, and asks for its value. The result must include this parameter, with the correct value.</p> -->
             <x:call>
                 <x:option name="param-name" select="'foo'"/>
                 <x:option name="required" select="'true'"/>
@@ -38,7 +38,7 @@
                     <param name="foo">bar</param>
                 </x:document>
             </x:expect>
-        </x:scenario>-->
+        </x:scenario>
 
         <x:scenario label="with a required parameter, none provided.">
             <!--  <p>Requires a parameter <code>foo</code> but does not provide any parameter. The error <code>pipx:no-parameter</code> must be thrown.</p> -->
@@ -55,6 +55,6 @@
             <x:expect label="should contain the error 'pipx:no-parameter'" type="xpath" test="count(/c:errors/c:error[@code='pipx:no-parameter']) &gt; 0"/>
         </x:scenario>
 
-    <!--</x:scenario>-->
+    </x:scenario>
 
 </x:description>
