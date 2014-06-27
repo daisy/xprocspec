@@ -89,7 +89,6 @@
                         <p:empty/>
                     </p:with-option>
                 </pxi:validate-with-relax-ng>
-                <p:wrap-sequence wrapper="calabash-issue-102"/>
             </p:group>
             <p:catch name="catch">
                 <p:identity>
@@ -121,14 +120,8 @@
                 </p:insert>
 
                 <p:wrap-sequence wrapper="x:test-report"/>
-                <p:wrap-sequence wrapper="calabash-issue-102"/>
             </p:catch>
         </p:try>
-        <p:for-each>
-            <!-- temporary fix for https://github.com/ndw/xmlcalabash1/issues/102 -->
-            <p:iteration-source select="/calabash-issue-102/*"/>
-            <p:identity/>
-        </p:for-each>
     </p:for-each>
     <p:identity name="result"/>
 

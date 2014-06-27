@@ -219,7 +219,6 @@
                         <p:empty/>
                     </p:with-option>
                 </pxi:validate-with-relax-ng>
-                <p:wrap-sequence wrapper="calabash-issue-102"/>
             </p:group>
             <p:catch name="catch">
                 <p:identity>
@@ -258,15 +257,8 @@
                         <p:pipe port="result" step="was"/>
                     </p:input>
                 </p:insert>
-
-                <p:wrap-sequence wrapper="calabash-issue-102"/>
             </p:catch>
         </p:try>
-        <p:for-each>
-            <!-- temporary fix for https://github.com/ndw/xmlcalabash1/issues/102 -->
-            <p:iteration-source select="/calabash-issue-102/*"/>
-            <p:identity/>
-        </p:for-each>
     </p:declare-step>
 
     <p:variable name="test-base-uri" select="base-uri(/*)"/>
@@ -309,7 +301,6 @@
                                     <p:with-option name="href" select="$href"/>
                                 </p:load>
                                 <p:delete match="/*/@error-location"/>
-                                <p:wrap-sequence wrapper="calabash-issue-102"/>
                             </p:group>
                             <p:catch name="catch">
                                 <p:identity>
@@ -348,15 +339,8 @@
                                         <p:pipe port="result" step="was"/>
                                     </p:input>
                                 </p:insert>
-
-                                <p:wrap-sequence wrapper="calabash-issue-102"/>
                             </p:catch>
                         </p:try>
-                        <p:for-each>
-                            <!-- temporary fix for https://github.com/ndw/xmlcalabash1/issues/102 -->
-                            <p:iteration-source select="/calabash-issue-102/*"/>
-                            <p:identity/>
-                        </p:for-each>
                         <p:add-attribute match="/*" attribute-name="test-uri">
                             <p:with-option name="attribute-value" select="$href"/>
                         </p:add-attribute>
@@ -423,7 +407,6 @@
                                 <p:delete match="/*/x:script"/>
                             </p:otherwise>
                         </p:choose>
-                        <p:wrap-sequence wrapper="calabash-issue-102"/>
                     </p:group>
                     <p:catch name="catch">
                         <p:identity>
@@ -461,16 +444,8 @@
                                 <p:pipe port="result" step="was"/>
                             </p:input>
                         </p:insert>
-
-                        <p:wrap-sequence wrapper="calabash-issue-102"/>
                     </p:catch>
                 </p:try>
-                <p:for-each>
-                    <!-- temporary fix for https://github.com/ndw/xmlcalabash1/issues/102 -->
-                    <p:iteration-source select="/calabash-issue-102/*"/>
-                    <p:identity/>
-                </p:for-each>
-
                 <p:add-attribute match="/*" attribute-name="test-grammar" attribute-value="XProc Test Suite"/>
             </p:for-each>
         </p:when>
@@ -827,7 +802,6 @@
                         </p:for-each>
                     </p:otherwise>
                 </p:choose>
-                <p:wrap-sequence wrapper="calabash-issue-102"/>
             </p:group>
             <p:catch name="catch">
                 <p:output port="result" sequence="true"/>
@@ -866,15 +840,8 @@
                         <p:pipe port="result" step="was"/>
                     </p:input>
                 </p:insert>
-
-                <p:wrap-sequence wrapper="calabash-issue-102"/>
             </p:catch>
         </p:try>
-        <p:for-each>
-            <!-- temporary fix for https://github.com/ndw/xmlcalabash1/issues/102 -->
-            <p:iteration-source select="/calabash-issue-102/*"/>
-            <p:identity/>
-        </p:for-each>
 
         <p:for-each>
             <p:add-attribute match="/*" attribute-name="test-base-uri">
@@ -903,7 +870,6 @@
                         <p:empty/>
                     </p:with-option>
                 </pxi:validate-with-relax-ng>
-                <p:wrap-sequence wrapper="calabash-issue-102"/>
             </p:group>
             <p:catch name="catch">
                 <p:identity>
@@ -944,15 +910,8 @@
                         <p:pipe port="result" step="was"/>
                     </p:input>
                 </p:insert>
-
-                <p:wrap-sequence wrapper="calabash-issue-102"/>
             </p:catch>
         </p:try>
-        <p:for-each>
-            <!-- temporary fix for https://github.com/ndw/xmlcalabash1/issues/102 -->
-            <p:iteration-source select="/calabash-issue-102/*"/>
-            <p:identity/>
-        </p:for-each>
     </p:for-each>
     <p:identity name="result"/>
 

@@ -96,7 +96,6 @@
                                 </p:with-option>
                             </p:add-attribute>
                         </p:viewport>
-                        <p:wrap-sequence wrapper="calabash-issue-102"/>
                     </p:group>
                     <p:catch name="catch">
                         <p:identity>
@@ -132,16 +131,8 @@
                                 <p:pipe port="result" step="was"/>
                             </p:input>
                         </p:insert>
-
-                        <p:wrap-sequence wrapper="calabash-issue-102"/>
                     </p:catch>
                 </p:try>
-                <p:for-each>
-                    <!-- temporary fix for https://github.com/ndw/xmlcalabash1/issues/102 -->
-                    <p:iteration-source select="/calabash-issue-102/*"/>
-                    <p:identity/>
-                </p:for-each>
-
                 <p:identity name="try.input.2"/>
                 <p:try>
                     <p:group>
@@ -154,8 +145,6 @@
                                 <p:empty/>
                             </p:with-option>
                         </pxi:validate-with-relax-ng>
-
-                        <p:wrap-sequence wrapper="calabash-issue-102"/>
                     </p:group>
                     <p:catch name="catch">
                         <p:identity>
@@ -191,15 +180,8 @@
                                 <p:pipe port="result" step="was"/>
                             </p:input>
                         </p:insert>
-
-                        <p:wrap-sequence wrapper="calabash-issue-102"/>
                     </p:catch>
                 </p:try>
-                <p:for-each>
-                    <!-- temporary fix for https://github.com/ndw/xmlcalabash1/issues/102 -->
-                    <p:iteration-source select="/calabash-issue-102/*"/>
-                    <p:identity/>
-                </p:for-each>
             </p:otherwise>
         </p:choose>
     </p:for-each>
