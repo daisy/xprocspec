@@ -58,7 +58,7 @@
             </p:inline>
         </p:with-option>
         <p:with-option name="replace" use-when="not(p:system-property('p:xpath-version')='1.0')"
-            select="concat('&quot;',replace(replace(replace(replace(replace(replace(replace(replace(replace($message,'\$1',$param1),'\$2',$param2),'\$3',$param3),'\$4',$param4),'\$5',$param5),'\$6',$param6),'\$7',$param7),'\$8',$param8),'\$9',$param9),'&quot;')">
+            select="concat('&quot;',replace(replace(replace(replace(replace(replace(replace(replace(replace($message,'\$1',replace($param1,'\$','\\\$')),'\$2',replace($param2,'\$','\\\$')),'\$3',replace($param3,'\$','\\\$')),'\$4',replace($param4,'\$','\\\$')),'\$5',replace($param5,'\$','\\\$')),'\$6',replace($param6,'\$','\\\$')),'\$7',replace($param7,'\$','\\\$')),'\$8',replace($param8,'\$','\\\$')),'\$9',replace($param9,'\$','\\\$')),'&quot;')">
             <p:inline>
                 <irrelevant/>
             </p:inline>
