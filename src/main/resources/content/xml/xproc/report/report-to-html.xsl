@@ -782,9 +782,16 @@
                         </xsl:when>
                         <xsl:otherwise>
                             <div class="pp-xml">
-                                <xsl:call-template name="pretty-print">
-                                    <xsl:with-param name="diff-with" select="$diff-with/node()[$pos]"/>
-                                </xsl:call-template>
+                                <xsl:choose>
+                                    <xsl:when test="$diff-with instance of node()">
+                                        <xsl:call-template name="pretty-print">
+                                            <xsl:with-param name="diff-with" select="$diff-with/node()[$pos]"/>
+                                        </xsl:call-template>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:value-of select="$diff-with"/>
+                                    </xsl:otherwise>
+                                </xsl:choose>
                             </div>
                         </xsl:otherwise>
                     </xsl:choose>

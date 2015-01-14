@@ -91,20 +91,20 @@
                             <xsl:for-each select="$scenario/x:call/x:input">
                                 <property name="input: {@port}">
                                     <xsl:attribute name="value">
-                                        <xsl:for-each select="*[position() &lt; 5]">
+                                        <xsl:for-each select="*[position() &lt; 5 and *]">
                                             <xsl:value-of
                                                 select="concat(
-                                                '&lt;',*/local-name(),' xmlns=&quot;',*/namespace-uri(),'&quot;',
+                                                '&lt;',*[1]/local-name(),' xmlns=&quot;',*[1]/namespace-uri(),'&quot;',
                                                 if (.[@*]) then ' ...' else '',
-                                                if (*/node()) then concat('&gt;...&lt;/',*/local-name(),'&gt;') else '/&gt;',
+                                                if (*[1]/node()) then concat('&gt;...&lt;/',*[1]/local-name(),'&gt;') else '/&gt;',
                                                 if ($include-xml-base) then concat(' (Base URI: ',@xml:base,')') else ''
                                                 )"/>
                                             <xsl:if test="following-sibling::*">
                                                 <xsl:value-of select="'&#xA;'"/>
                                             </xsl:if>
                                         </xsl:for-each>
-                                        <xsl:if test="count(*) &gt; 5">
-                                            <xsl:value-of select="concat('... ',(count(*)-5),' more documents (a total of ',count(*),') ...')"/>
+                                        <xsl:if test="count(*/*) &gt; 5">
+                                            <xsl:value-of select="concat('... ',(count(*/*)-5),' more documents (a total of ',count(*/*),') ...')"/>
                                         </xsl:if>
                                     </xsl:attribute>
                                 </property>
