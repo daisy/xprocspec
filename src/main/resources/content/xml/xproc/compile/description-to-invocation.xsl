@@ -66,7 +66,9 @@
                                     <p:with-option name="{@name}" select="{@select}">
                                         <xsl:copy-of select="namespace::*"/>
                                         <p:inline>
-                                            <context xml:base="{$test-base-uri}"/>
+                                            <context>
+                                                <xsl:attribute name="xml:base" select="$test-base-uri"/>
+                                            </context>
                                         </p:inline>
                                     </p:with-option>
                                     <!-- TODO: ability to set custom context for p:with-option ? -->
@@ -97,7 +99,9 @@
         </xsl:text>
                                             <p:with-param name="{@name}" select="{@select}" port="{$parameter-port}">
                                                 <p:inline>
-                                                    <context xml:base="{$test-base-uri}"/>
+                                                    <context>
+                                                        <xsl:attribute name="xml:base" select="$test-base-uri"/>
+                                                    </context>
                                                 </p:inline>
                                             </p:with-param>
                                             <!-- TODO: ability to set custom context for p:with-param ? -->

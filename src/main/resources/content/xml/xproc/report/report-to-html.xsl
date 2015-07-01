@@ -212,9 +212,8 @@
                                                 <tr class="was">
                                                     <td colspan="2">Was:</td>
                                                 </tr>
-                                                <xsl:variable name="context-documents" select="$scenario-description/x:scenario/x:context[@id=$id]/x:document"/>
                                                 <xsl:choose>
-                                                    <xsl:when test="count($context-documents)=0">
+                                                    <xsl:when test="count(x:document)=0">
                                                         <tr class="was">
                                                             <td colspan="2">
                                                                 <pre><code>(empty sequence)</code></pre>
@@ -772,7 +771,7 @@
                         <xsl:when test="self::text() and normalize-space(.)=''"/>
                         <xsl:when test="self::x:document">
                             <xsl:apply-templates select=".">
-                                <xsl:with-param name="include-raw" select="true()" tunnel="yes"/>
+                                <xsl:with-param name="include-raw" select="false()" tunnel="yes"/>
                             </xsl:apply-templates>
                         </xsl:when>
                         <xsl:when test="self::x:* | self::c:*">
