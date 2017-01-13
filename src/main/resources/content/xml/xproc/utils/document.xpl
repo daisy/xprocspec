@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <p:declare-step name="main" type="pxi:document" xmlns:p="http://www.w3.org/ns/xproc" xmlns:c="http://www.w3.org/ns/xproc-step" version="1.0"
-    xmlns:pxi="http://www.daisy.org/ns/xprocspec/xproc-internal/" exclude-inline-prefixes="#all" xpath-version="2.0" xmlns:x="http://www.daisy.org/ns/xprocspec">
+    xmlns:pxi="http://www.daisy.org/ns/xprocspec/xproc-internal/" exclude-inline-prefixes="#all" xpath-version="2.0" xmlns:x="http://www.daisy.org/ns/xprocspec" xmlns:cx="http://xmlcalabash.com/ns/extensions">
 
     <p:input port="document" primary="true"/>
     <p:input port="description"/>
@@ -208,6 +208,43 @@
                     </p:group>
                 </p:otherwise>
             </p:choose>
+        </p:when>
+
+        <p:when test="$type='zip'">
+            <pxi:message message="    * listing zip file contents: $1">
+                <p:with-option name="param1" select="$href">
+                    <p:empty/>
+                </p:with-option>
+                <p:with-option name="logfile" select="$logfile">
+                    <p:empty/>
+                </p:with-option>
+            </pxi:message>
+            <p:try>
+                <p:group>
+                    <cx:unzip>
+                        <p:with-option name="href" select="$href"/>
+                    </cx:unzip>
+                    <p:label-elements match="/c:zipfile" attribute="name" label="replace(@href,'^.*/([^/]*)$','$1')"/>
+                    <p:delete match="c:directory"/>
+                    <p:delete match="@*[not(namespace-uri()='' and local-name()='name')]"/>
+                    <p:wrap-sequence wrapper="x:document"/>
+                    <p:add-attribute match="/*" attribute-name="xml:base">
+                        <p:with-option name="attribute-value" select="$href"/>
+                    </p:add-attribute>
+                </p:group>
+                <p:catch>
+                    <pxi:message message="      * unable to read zip file">
+                        <p:with-option name="logfile" select="$logfile">
+                            <p:empty/>
+                        </p:with-option>
+                    </pxi:message>
+                    <p:identity>
+                        <p:input port="source">
+                            <p:empty/>
+                        </p:input>
+                    </p:identity>
+                </p:catch>
+            </p:try>
         </p:when>
 
         <p:otherwise>
