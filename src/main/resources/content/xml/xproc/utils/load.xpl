@@ -59,6 +59,29 @@
     <p:sink/>
 
     <p:choose>
+        <p:when test="contains($href, '!/')">
+            <pxi:message>
+                <p:input port="source">
+                    <p:inline>
+                        <doc/>
+                    </p:inline>
+                </p:input>
+                <p:with-option name="message" select="replace($href, '^([^!]+)!/(.+)$', 'loading $2 from ZIP $1')"/>
+                <p:with-option name="logfile" select="$logfile">
+                    <p:empty/>
+                </p:with-option>
+            </pxi:message>
+            <p:sink/>
+            <cx:unzip>
+                <!--
+                    note that "file" needs to be specified before "href" because otherwise $href
+                    variable in select part is affected
+                -->
+                <p:with-option name="file" select="replace($href, '^([^!]+)!/(.+)$', '$2')"/>
+                <p:with-option name="href" select="replace($href, '^([^!]+)!/(.+)$', '$1')"/>
+            </cx:unzip>
+        </p:when>
+
         <!-- Force HTML -->
         <p:when test="$method='html'">
             <pxi:html-load>
