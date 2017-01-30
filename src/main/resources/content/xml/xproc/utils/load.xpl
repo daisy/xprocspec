@@ -68,24 +68,9 @@
 
         <!-- XML -->
         <p:when test="$method='xml'">
-            <p:try>
-                <p:group>
-                    <p:load>
-                        <p:with-option name="href" select="$href"/>
-                    </p:load>
-                </p:group>
-                <p:catch>
-                    <pxi:message>
-                        <p:input port="source">
-                            <p:empty/>
-                        </p:input>
-                        <p:with-option name="message" select="concat('unable to load ',$href,' as XML')"/>
-                        <p:with-option name="logfile" select="$logfile">
-                            <p:empty/>
-                        </p:with-option>
-                    </pxi:message>
-                </p:catch>
-            </p:try>
+            <p:load>
+                <p:with-option name="href" select="$href"/>
+            </p:load>
         </p:when>
 
         <!-- text -->
