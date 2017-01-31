@@ -9,6 +9,7 @@
 
     <p:option name="temp-dir" required="true"/>
     <p:option name="logfile" select="''"/>
+    <p:option name="document-position" required="true"/> <!-- string to distinguish separate runs of pxi:test-preprocess from each other when generating filenames -->
 
     <p:option name="step-available-rng" select="'false'"/>
 
@@ -496,7 +497,7 @@
                                 </p:add-attribute>
                                 <p:filter select="/*/x:script/*"/>
                                 <p:store name="script-stored">
-                                    <p:with-option name="href" select="concat($temp-dir,'script',$scenario-position,'.xpl')"/>
+                                    <p:with-option name="href" select="concat($temp-dir,'script-',$document-position,'-',$scenario-position,'.xpl')"/>
                                 </p:store>
                                 <p:add-attribute match="/*" attribute-name="script">
                                     <p:with-option name="attribute-value" select="/*/text()">

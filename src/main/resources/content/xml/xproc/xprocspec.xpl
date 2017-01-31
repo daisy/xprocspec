@@ -2,7 +2,7 @@
     xmlns:px="http://www.daisy.org/ns/xprocspec" xmlns:pxi="http://www.daisy.org/ns/xprocspec/xproc-internal/" exclude-inline-prefixes="#all" version="1.0" xpath-version="2.0"
     xmlns:pkg="http://expath.org/ns/pkg" pkg:import-uri="http://www.daisy.org/ns/xprocspec/xprocspec.xpl">
 
-    <p:input port="source"/>
+    <p:input port="source" sequence="true"/>
 
     <p:output port="result">
         <p:pipe port="result" step="report"/>
@@ -36,26 +36,25 @@
         * Converts any other XProc test syntaxes (currently supported: XProc Test Suite).
         * Splits the x:description documents into multiple documents; one for each x:scenario with no dependencies between them.
     -->
-    <pxi:message message="#### $1 ####">
-        <p:with-option name="logfile" select="$logfile"/>
-        <p:with-option name="param1" select="base-uri(/*)"/>
-    </pxi:message>
-    <pxi:message message=" * temporary directory: $1">
-        <p:with-option name="logfile" select="$logfile"/>
-        <p:with-option name="param1" select="$temp-dir"/>
-    </pxi:message>
-    <pxi:message message="preprocessing...">
-        <p:with-option name="logfile" select="$logfile"/>
-    </pxi:message>
-    <pxi:test-preprocess name="preprocess">
-        <p:with-option name="temp-dir" select="$temp-dir"/>
-        <p:with-option name="logfile" select="$logfile">
-            <p:empty/>
-        </p:with-option>
-        <p:with-option name="step-available-rng" select="$step-available-rng">
-            <p:empty/>
-        </p:with-option>
-    </pxi:test-preprocess>
+    <p:for-each>
+        <pxi:message message="#### $1 ####">
+            <p:with-option name="logfile" select="$logfile"/>
+            <p:with-option name="param1" select="base-uri(/*)"/>
+        </pxi:message>
+        <pxi:message message=" * temporary directory: $1">
+            <p:with-option name="logfile" select="$logfile"/>
+            <p:with-option name="param1" select="$temp-dir"/>
+        </pxi:message>
+        <pxi:message message="preprocessing...">
+            <p:with-option name="logfile" select="$logfile"/>
+        </pxi:message>
+        <pxi:test-preprocess name="preprocess">
+            <p:with-option name="document-position" select="p:iteration-position()"/>
+            <p:with-option name="temp-dir" select="$temp-dir"/>
+            <p:with-option name="logfile" select="$logfile"/>
+            <p:with-option name="step-available-rng" select="$step-available-rng"/>
+        </pxi:test-preprocess>
+    </p:for-each>
 
     <!-- make XProc scripts out of each scenario -->
     <pxi:message message="compiling...">
