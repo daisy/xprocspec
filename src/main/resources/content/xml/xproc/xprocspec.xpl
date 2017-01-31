@@ -18,7 +18,7 @@
 
     <p:option name="step-available-rng" select="'false'"/>
 
-    <p:option name="enable-log" select="'true'"/>
+    <p:option name="enable-log" select="'false'"/>
 
     <p:import href="preprocess/preprocess.xpl"/>
     <p:import href="compile/compile.xpl"/>
