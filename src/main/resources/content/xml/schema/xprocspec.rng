@@ -11,6 +11,7 @@
             <ref name="description.common"/>
             <choice>
                 <group>
+                    <ref name="script-ref"/>
                     <zeroOrMore>
                         <ref name="import"/>
                     </zeroOrMore>
@@ -22,6 +23,9 @@
                     </oneOrMore>
                 </group>
                 <group>
+                    <optional>
+                        <ref name="script-ref"/>
+                    </optional>
                     <oneOrMore>
                         <ref name="import"/>
                     </oneOrMore>
@@ -39,13 +43,6 @@
     <define name="description.common">
         <ref name="common-attributes"/>
         <ref name="common-elements"/>
-        <choice>
-            <ref name="script"/>
-            <attribute name="script">
-                <a:documentation xmlns="http://www.w3.org/1999/xhtml">The `script` attribute is a URI that points to the XProc script you want to test.</a:documentation>
-                <data type="anyURI"/>
-            </attribute>
-        </choice>
         <optional>
             <attribute name="version">
                 <a:documentation xmlns="http://www.w3.org/1999/xhtml">The `version` attribute can be used to aid development over time.</a:documentation>
@@ -55,9 +52,16 @@
         <optional>
             <ref name="pending-attribute"/>
         </optional>
-        <optional>
-            <ref name="focus-attribute"/>
-        </optional>
+    </define>
+    
+    <define name="script-ref">
+        <choice>
+            <ref name="script"/>
+            <attribute name="script">
+                <a:documentation xmlns="http://www.w3.org/1999/xhtml">The `script` attribute is a URI that points to the XProc script you want to test.</a:documentation>
+                <data type="anyURI"/>
+            </attribute>
+        </choice>
     </define>
 
     <define name="script">
@@ -620,29 +624,6 @@
                             <data type="boolean"/>
                         </attribute>
                     </optional>
-                    <optional>
-                        <attribute name="base-uri">
-                            <a:documentation xmlns="http://www.w3.org/1999/xhtml"><!-- documented in the "inline" group --></a:documentation>
-                            <choice>
-                                <value>temp-dir</value>
-                            </choice>
-                        </attribute>
-                    </optional>
-                </group>
-                <group>
-                    <!-- zip -->
-                    <attribute name="type">
-                        <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
-                            If the `type` attribute is `zip`, then the `document` element will be replaced with a content listing of the zip pointed to by the `href` attribute. The `href` URI is
-                            by default resolved against the base URI of the xprocspec test document. However, if you provide the `base-uri` attribute with a value of `temp-dir`, then the `href` URI will be resolved against the temporary directory
-                            used for the test instead.
-                        </a:documentation>
-                        <value>zip</value>
-                    </attribute>
-                    <attribute name="href">
-                        <a:documentation xmlns="http://www.w3.org/1999/xhtml">When `type` is `zip`; the `href` attribute is a URI pointing to the zip you want listed.</a:documentation>
-                        <data type="anyURI"/>
-                    </attribute>
                     <optional>
                         <attribute name="base-uri">
                             <a:documentation xmlns="http://www.w3.org/1999/xhtml"><!-- documented in the "inline" group --></a:documentation>
