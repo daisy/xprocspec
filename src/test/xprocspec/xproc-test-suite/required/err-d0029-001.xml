@@ -12,7 +12,7 @@
 
     <p:identity>
       <p:input port="source">
-	<p:data href="http://i-do-not-exist.com/no/documents/here"/>
+	<p:data href="http://xproc.org/no/documents/here"/>
       </p:input>
     </p:identity>
   </p:declare-step>

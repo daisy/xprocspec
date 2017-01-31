@@ -4,7 +4,7 @@
         xmlns:c="http://www.w3.org/ns/xproc-step"
         xmlns:err="http://www.w3.org/ns/xproc-error">
 
-<t:title>Serialization test escape-uri-attributes-001</t:title>
+<t:title>Serialization test escape-uri-001</t:title>
 
 <t:pipeline>
 <p:declare-step version='1.0' name="main">

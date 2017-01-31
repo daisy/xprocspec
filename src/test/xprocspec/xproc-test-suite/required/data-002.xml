@@ -15,11 +15,15 @@
           <p:data href="../doc/textdata-utf8.txt" content-type="text/plain;charset=UTF-8"/>
         </p:input>
       </p:identity>
+
+      <p:string-replace match="/c:data/@content-type"
+                        replace="translate(.,'&quot; ','')"/>
+
     </p:declare-step>
   </t:pipeline>
-  
+
   <t:output port='result'>
-    <c:data xmlns:c="http://www.w3.org/ns/xproc-step" content-type='text/plain; charset="utf-8"'>Toman a lesní panna
+    <c:data xmlns:c="http://www.w3.org/ns/xproc-step" content-type='text/plain;charset=utf-8'>Toman a lesní panna
 František Ladislav Čelakovský
 
 Večer před svatým Janem

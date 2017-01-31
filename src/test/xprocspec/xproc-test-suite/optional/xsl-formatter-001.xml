@@ -15,9 +15,7 @@
 <t:pipeline>
 <p:declare-step version='1.0' name="main">
 <p:input port="parameters" kind="parameter"/>
-<p:output port="result">
-  <p:pipe step="xsl-fo" port="result"/>
-</p:output>
+<p:output port="result"/>
 
 <p:xsl-formatter name="xsl-fo"
 		 href="file:///tmp/out.pdf" content-type="application/pdf">
@@ -29,11 +27,18 @@
   </p:with-param>
 </p:xsl-formatter>
 
+<p:string-replace match="/c:result/text()"
+                  replace="translate(normalize-space(translate(.,'/',' ')),' ','/')">
+  <p:input port="source">
+    <p:pipe step="xsl-fo" port="result"/>
+  </p:input>
+</p:string-replace>
+
 </p:declare-step>
 </t:pipeline>
 
 <t:output port='result'>
-<c:result>file:///tmp/out.pdf</c:result>
+<c:result>file:/tmp/out.pdf</c:result>
 </t:output>
 
 </t:test>

@@ -18,7 +18,7 @@
 </t:input>
 
 <t:pipeline>
-<p:declare-step version='1.0' name="pipeline">
+<p:declare-step version='1.0' name="pipeline" psvi-required="true">
 <p:input port="parameters" kind="parameter"/>
 <p:input port="source"/>
 <p:output port="result"/>

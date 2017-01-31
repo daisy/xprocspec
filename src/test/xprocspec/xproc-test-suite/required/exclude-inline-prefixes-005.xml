@@ -14,7 +14,7 @@
 
   <p:identity name="identity">
     <p:input port="source">
-      <p:inline exclude-inline-prefixes="#default t p err"><doc/></p:inline>
+      <p:inline exclude-inline-prefixes="#default t p err"><c:doc/></p:inline>
     </p:input>
   </p:identity>
 

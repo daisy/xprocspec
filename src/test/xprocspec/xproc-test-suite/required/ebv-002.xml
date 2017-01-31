@@ -11,9 +11,10 @@
 </t:description>
 
 <t:pipeline>
-<p:declare-step xmlns:p="http://www.w3.org/ns/xproc" version="1.0"
+<p:declare-step xmlns:p="http://www.w3.org/ns/xproc"
+                xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 exclude-inline-prefixes="ex"
-                xpath-version="2.0"
+                version="1.0" xpath-version="2.0"
                 xmlns:ex="http://example.com/ex">
 
   <p:output port="result"/>

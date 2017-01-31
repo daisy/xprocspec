@@ -5,7 +5,7 @@
         xmlns:err="http://www.w3.org/ns/xproc-error"
         error="err:XD0022">
   <t:title>Test for err:XD0022 #001</t:title>
-  
+
   <t:description xmlns="http://www.w3.org/1999/xhtml">
     <p>It is a dynamic error if a processor that does
     not support PSVI annotations attempts to invoke
@@ -24,9 +24,9 @@
         <p:output port="result" sequence="true"/>
         <p:identity/>
       </p:declare-step>
-      
+
       <p:choose>
-        <p:when test="p:system-property('p:psvi-supported')">
+        <p:when test="p:system-property('p:psvi-supported') = 'true'">
           <!-- simulate err:XD0022 for processors that
                support PSVI annotations -->
           <p:error code="err:XD0022">
@@ -41,5 +41,5 @@
       </p:choose>
     </p:pipeline>
   </t:pipeline>
-  
+
 </t:test>
