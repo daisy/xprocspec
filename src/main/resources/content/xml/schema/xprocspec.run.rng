@@ -126,6 +126,11 @@
                 </attribute>
                 <attribute name="select"/>
                 <optional>
+                    <attribute name="port">
+                        <data type="QName"/>
+                    </attribute>
+                </optional>
+                <optional>
                     <attribute name="base-uri">
                         <choice>
                             <value>temp-dir</value>

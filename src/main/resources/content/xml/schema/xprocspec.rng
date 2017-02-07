@@ -291,6 +291,15 @@
                 </a:documentation>
             </attribute>
             <optional>
+                <attribute name="port">
+                    <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+                        The `port` is the name of a XProc input parameter port.
+                        The parameter will be sent to this port if provided, or to the default parameter port if not provided.
+                    </a:documentation>
+                    <data type="QName"/>
+                </attribute>
+            </optional>
+            <optional>
                 <attribute name="base-uri">
                     <a:documentation xmlns="http://www.w3.org/1999/xhtml">If the `base-uri` attribute is `temp-dir`, then the base URI in the context
                         will be the temporary directory used for the test, instead of the base URI of the xprocspec document.
