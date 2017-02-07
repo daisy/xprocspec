@@ -126,6 +126,12 @@
               </executions>
               <dependencies>
                 <dependency>
+                  <!-- use project version of xprocspec -->
+                  <groupId>org.daisy.xprocspec</groupId>
+                  <artifactId>xprocspec</artifactId>
+                  <version>${project.version}</version>
+                </dependency>
+                <dependency>
                   <groupId>org.daisy.maven</groupId>
                   <artifactId>xproc-engine-calabash</artifactId>
                   <version>1.0.1-SNAPSHOT</version>
