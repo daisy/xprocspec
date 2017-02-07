@@ -65,13 +65,15 @@
         </xsl:text>
                                     <p:with-option name="{@name}" select="{@select}">
                                         <xsl:copy-of select="namespace::*"/>
+                                        <xsl:if test="not(@xml:base)">
+                                            <xsl:attribute name="xml:base" select="if (@base-uri='temp-dir') then $temp-dir else $test-base-uri"/>
+                                        </xsl:if>
                                         <p:inline>
                                             <context>
-                                                <xsl:attribute name="xml:base" select="$test-base-uri"/>
+                                                <xsl:attribute name="xml:base" select="if (@base-uri='temp-dir') then $temp-dir else $test-base-uri"/>
                                             </context>
                                         </p:inline>
                                     </p:with-option>
-                                    <!-- TODO: ability to set custom context for p:with-option ? -->
                                 </xsl:for-each>
 
                                 <xsl:variable name="parameter-ports" select="/*/x:step-declaration/*/p:input[@kind='parameter']"/>
@@ -98,13 +100,16 @@
                                             <xsl:text>
         </xsl:text>
                                             <p:with-param name="{@name}" select="{@select}" port="{$parameter-port}">
+                                                <xsl:copy-of select="namespace::*"/>
+                                                <xsl:if test="not(@xml:base)">
+                                                    <xsl:attribute name="xml:base" select="if (@base-uri='temp-dir') then $temp-dir else $test-base-uri"/>
+                                                </xsl:if>
                                                 <p:inline>
                                                     <context>
-                                                        <xsl:attribute name="xml:base" select="$test-base-uri"/>
+                                                        <xsl:attribute name="xml:base" select="if (@base-uri='temp-dir') then $temp-dir else $test-base-uri"/>
                                                     </context>
                                                 </p:inline>
                                             </p:with-param>
-                                            <!-- TODO: ability to set custom context for p:with-param ? -->
                                         </xsl:for-each>
                                     </xsl:otherwise>
                                 </xsl:choose>

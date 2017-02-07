@@ -31,7 +31,28 @@
     <p:variable name="logfile" select="if ($enable-log='true')
                                        then concat($temp-dir,'xprocspec-log-',replace($start-time,'[^\d]',''),'.xml')
                                        else ''"/>
-
+    
+    <!-- If there's multiple input documents and some of them has a focus attribute on the root element; don't process the documents without a focus attribute -->
+    <p:split-sequence test="/*/@focus" name="focus-split"/>
+    <p:count/>
+    <p:choose>
+        <p:when test=".='0'">
+            <p:identity>
+                <p:input port="source">
+                    <p:pipe port="not-matched" step="focus-split"/>
+                </p:input>
+            </p:identity>
+        </p:when>
+        <p:otherwise>
+            <p:for-each>
+                <p:iteration-source>
+                    <p:pipe port="matched" step="focus-split"/>
+                </p:iteration-source>
+                <p:delete match="/*/@focus"/>
+            </p:for-each>
+        </p:otherwise>
+    </p:choose>
+    
     <!--
         * Converts any other XProc test syntaxes (currently supported: XProc Test Suite).
         * Splits the x:description documents into multiple documents; one for each x:scenario with no dependencies between them.

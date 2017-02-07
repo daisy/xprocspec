@@ -453,7 +453,7 @@
             <p:add-attribute match="/*" attribute-name="test-grammar" attribute-value="Unknown"/>
         </p:otherwise>
     </p:choose>
-
+    
     <p:for-each name="for-each">
         <p:output port="scenarios" sequence="true"/>
         <p:variable name="base" select="base-uri(/*)"/>
@@ -710,7 +710,7 @@
                                 <p:identity/>
                             </p:otherwise>
                         </p:choose>
-                        <p:delete match="//@focus"/>
+                        <p:delete match="//x:description/*//@focus"/>
 
                         <p:choose>
                             <p:when test="//x:scenario[@xfail='true']">
