@@ -20,9 +20,7 @@
         </p:inline>
     </p:input>
     <p:input port="source.parameter.primary.sequence" primary="true" kind="parameter" sequence="true"/>
-    
-    <!-- multiple parameter ports does not work: https://github.com/ndw/xmlcalabash1/issues/120 -->
-    <!--<p:input port="source.parameter.secondary" kind="parameter"/>-->
+    <p:input port="source.parameter.secondary" kind="parameter"/>
     
     <p:output port="result.document.primary" primary="true">
         <p:pipe port="source.document.primary" step="main"/>
@@ -36,9 +34,9 @@
     <p:output port="result.parameter.primary">
         <p:pipe port="result" step="parameters"/>
     </p:output>
-    <!--<p:output port="result.parameter.secondary">
+    <p:output port="result.parameter.secondary">
         <p:pipe port="source.parameter.secondary" step="main"/>
-    </p:output>-->
+    </p:output>
     <p:output port="options">
         <p:pipe port="result" step="options"/>
     </p:output>

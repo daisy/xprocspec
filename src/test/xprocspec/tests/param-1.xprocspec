@@ -44,4 +44,29 @@
         
     </x:scenario>
     
+    <x:scenario label="identity - multiple parameter ports">
+        <x:call step="e:identity">
+            <x:option name="option" select="'option'"/>
+            <x:option name="option.required" select="'option'"/>
+            <x:param name="param0" select="'value0'"/>
+            <x:param name="param1" select="'value1'" port="source.parameter.primary.sequence"/>
+            <x:param name="param2" select="'value2'" port="source.parameter.secondary"/>
+        </x:call>
+        
+        <x:context label="the primary parameter port">
+            <x:document type="port" port="result.parameter.primary"/>
+        </x:context>
+        <x:expect type="xpath" label="Parameters should be wrapped in a c:param-set element" test="count(/c:param-set)" equals="1"/>
+        <x:expect type="xpath" label="Parameters should be stored in c:param elements inside the root c:param-set element" test="count(/c:param-set/c:param) &gt; 0"/>
+        <x:expect type="xpath" label="the parameter 'param0' should have the value 'value0'" test="/c:param-set/c:param[@name='param1']/@value" equals="'param1'"/>
+        <x:expect type="xpath" label="the parameter 'param1' should have the value 'value1'" test="/c:param-set/c:param[@name='param1']/@value" equals="'param1'"/>
+        
+        <x:context label="the secondary parameter port">
+            <x:document type="port" port="result.parameter.secondary"/>
+        </x:context>
+        <x:expect type="xpath" label="Parameters should be wrapped in a c:param-set element" test="count(/c:param-set)" equals="1"/>
+        <x:expect type="xpath" label="Parameters should be stored in c:param elements inside the root c:param-set element" test="count(/c:param-set/c:param) &gt; 0"/>
+        <x:expect type="xpath" label="the parameter 'param1' should have the value 'value2'" test="/c:param-set/c:param[@name='param1']/@value" equals="'param1'"/>
+    </x:scenario>
+    
 </x:description>

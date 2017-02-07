@@ -79,40 +79,34 @@
                                 <xsl:variable name="parameter-ports" select="/*/x:step-declaration/*/p:input[@kind='parameter']"/>
                                 <xsl:variable name="primary-parameter-port"
                                     select="if (count($parameter-ports)=1 and not($parameter-ports/@primary='false')) then $parameter-ports else if ($parameter-ports[@primary='true']) then $parameter-ports[@primary='true'] else if (count($parameter-ports[not(@primary='false')])=1) then $parameter-ports[not(@primary='false')] else ()"/>
-                                <xsl:choose>
-                                    <xsl:when test="$primary-parameter-port and not(/*/x:scenario/x:call/x:input[@port=$primary-parameter-port/@port]) and not(/*/x:scenario/x:call/x:param)">
-                                        <p:input port="{$primary-parameter-port/@port}">
-                                            <xsl:choose>
-                                                <xsl:when test="$primary-parameter-port/*">
-                                                    <xsl:copy-of select="$primary-parameter-port/*"/>
-                                                </xsl:when>
-                                                <xsl:otherwise>
-                                                    <p:inline>
-                                                        <c:param-set/>
-                                                    </p:inline>
-                                                </xsl:otherwise>
-                                            </xsl:choose>
-                                        </p:input>
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                        <xsl:for-each select="/*/x:scenario/x:call/x:param">
-                                            <xsl:variable name="parameter-port" select="(@port,$primary-parameter-port/@port)[1]"/>
-                                            <xsl:text>
+                                <xsl:if test="count($primary-parameter-port) and not(/*/x:scenario/x:call/x:input[@port=$primary-parameter-port/@port]) and not(/*/x:scenario/x:call/x:param[not(@port) or @port=$primary-parameter-port/@port])">
+                                    <p:input port="{$primary-parameter-port/@port}">
+                                        <xsl:choose>
+                                            <xsl:when test="$primary-parameter-port/*">
+                                                <xsl:copy-of select="$primary-parameter-port/*"/>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <p:empty/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                    </p:input>
+                                </xsl:if>
+                                <xsl:for-each select="/*/x:scenario/x:call/x:param">
+                                    <xsl:variable name="parameter-port" select="(@port,$primary-parameter-port/@port)[1]"/>
+                                    <xsl:text>
         </xsl:text>
-                                            <p:with-param name="{@name}" select="{@select}" port="{$parameter-port}">
-                                                <xsl:copy-of select="namespace::*"/>
-                                                <xsl:if test="not(@xml:base)">
-                                                    <xsl:attribute name="xml:base" select="if (@base-uri='temp-dir') then $temp-dir else $test-base-uri"/>
-                                                </xsl:if>
-                                                <p:inline>
-                                                    <context>
-                                                        <xsl:attribute name="xml:base" select="if (@base-uri='temp-dir') then $temp-dir else $test-base-uri"/>
-                                                    </context>
-                                                </p:inline>
-                                            </p:with-param>
-                                        </xsl:for-each>
-                                    </xsl:otherwise>
-                                </xsl:choose>
+                                    <p:with-param name="{@name}" select="{@select}" port="{$parameter-port}">
+                                        <xsl:copy-of select="namespace::*"/>
+                                        <xsl:if test="not(@xml:base)">
+                                            <xsl:attribute name="xml:base" select="if (@base-uri='temp-dir') then $temp-dir else $test-base-uri"/>
+                                        </xsl:if>
+                                        <p:inline>
+                                            <context>
+                                                <xsl:attribute name="xml:base" select="if (@base-uri='temp-dir') then $temp-dir else $test-base-uri"/>
+                                            </context>
+                                        </p:inline>
+                                    </p:with-param>
+                                </xsl:for-each>
 
                                 <xsl:variable name="non-parameter-ports" select="/*/x:step-declaration/*/p:input[not(@kind='parameter')]"/>
                                 <xsl:variable name="document" select="/*"/>
@@ -125,8 +119,6 @@
                                         <xsl:for-each select="$primary-port">
                                             <xsl:copy>
                                                 <xsl:copy-of select="@port|@select"/>
-                                                <!--<xsl:attribute name="kind" select="(@kind,'document')[1]"/>-->
-                                                <!--<xsl:attribute name="primary" select="'true'"/>-->
                                                 <xsl:copy-of select="node()"/>
                                             </xsl:copy>
                                         </xsl:for-each>
