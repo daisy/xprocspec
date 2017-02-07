@@ -57,9 +57,7 @@
                 <p:otherwise>
                     <pxi:error code="XPS03" message="       * port not found: $1">
                         <p:with-option name="param1" select="$port"/>
-                        <p:with-option name="logfile" select="$logfile">
-                            <p:empty/>
-                        </p:with-option>
+                        <p:with-option name="logfile" select="$logfile"/>
                     </pxi:error>
                 </p:otherwise>
             </p:choose>
