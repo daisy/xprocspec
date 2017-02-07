@@ -18,6 +18,7 @@
         
         <!-- input port -->
         <x:context label="the primary input port">
+            <!-- comment inside x:context (regression for issue #43) -->
             <x:document type="port" port="source.document.primary"/>
         </x:context>
         <x:expect type="count" label="There should be a single document on the primary input port" min="1" max="1"/>
