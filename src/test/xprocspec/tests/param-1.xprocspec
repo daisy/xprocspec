@@ -58,15 +58,15 @@
         </x:context>
         <x:expect type="xpath" label="Parameters should be wrapped in a c:param-set element" test="count(/c:param-set)" equals="1"/>
         <x:expect type="xpath" label="Parameters should be stored in c:param elements inside the root c:param-set element" test="count(/c:param-set/c:param) &gt; 0"/>
-        <x:expect type="xpath" label="the parameter 'param0' should have the value 'value0'" test="/c:param-set/c:param[@name='param1']/@value" equals="'param1'"/>
-        <x:expect type="xpath" label="the parameter 'param1' should have the value 'value1'" test="/c:param-set/c:param[@name='param1']/@value" equals="'param1'"/>
+        <x:expect type="xpath" label="the parameter 'param0' should have the value 'value0'" test="/c:param-set/c:param[@name='param0']/@value" equals="'value0'"/>
+        <x:expect type="xpath" label="the parameter 'param1' should have the value 'value1'" test="/c:param-set/c:param[@name='param1']/@value" equals="'value1'"/>
         
         <x:context label="the secondary parameter port">
             <x:document type="port" port="result.parameter.secondary"/>
         </x:context>
         <x:expect type="xpath" label="Parameters should be wrapped in a c:param-set element" test="count(/c:param-set)" equals="1"/>
         <x:expect type="xpath" label="Parameters should be stored in c:param elements inside the root c:param-set element" test="count(/c:param-set/c:param) &gt; 0"/>
-        <x:expect type="xpath" label="the parameter 'param1' should have the value 'value2'" test="/c:param-set/c:param[@name='param1']/@value" equals="'param1'"/>
+        <x:expect type="xpath" label="the parameter 'param2' should have the value 'value2'" test="/c:param-set/c:param[@name='param2']/@value" equals="'value2'"/>
     </x:scenario>
     
 </x:description>
