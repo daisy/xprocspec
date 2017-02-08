@@ -85,7 +85,12 @@
                 <doc1/>
             </x:document>
         </x:context>
-        <x:expect xfail="true" type="compare" label="...should not equal a 'doc2'-document (xfail attribute on `x:expect`-element)">
+        <x:expect xfail="some text here" type="compare" label="...should not equal a 'doc2'-document (xfail attribute on `x:expect`-element)">
+            <x:document type="inline">
+                <doc2/>
+            </x:document>
+        </x:expect>
+        <x:expect xfail="" type="compare" label="...should not equal a 'doc2'-document (empty xfail attribute)">
             <x:document type="inline">
                 <doc2/>
             </x:document>
@@ -93,7 +98,7 @@
 
     </x:scenario>
 
-    <x:scenario label="identity - xfail attribute on scenario" xfail="true">
+    <x:scenario label="identity - xfail attribute on scenario" xfail="some text here">
         <x:call step="e:identity">
             <x:option name="option.required" select="'option'"/>
         </x:call>

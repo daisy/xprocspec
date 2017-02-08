@@ -713,13 +713,13 @@
                         <p:delete match="//x:description/*//@focus"/>
 
                         <p:choose>
-                            <p:when test="//x:scenario[@xfail='true']">
+                            <p:when test="//x:scenario[@xfail]">
                                 <pxi:message message=" * inferring implicit xfail attributes...">
                                     <p:with-option name="logfile" select="$logfile">
                                         <p:empty/>
                                     </p:with-option>
                                 </pxi:message>
-                                <p:add-attribute match="//x:expect[(ancestor::x:scenario/@xfail)[1]='true']" attribute-name="xfail" attribute-value="true"/>
+                                <p:add-attribute match="//x:expect[ancestor::x:scenario/@xfail]" attribute-name="xfail" attribute-value=""/>
                             </p:when>
                             <p:otherwise>
                                 <p:identity/>

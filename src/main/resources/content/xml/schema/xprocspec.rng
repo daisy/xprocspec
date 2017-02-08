@@ -759,7 +759,7 @@
                <a href="#the-pending-element"><code>pending</code></a> element.
                Its content describes why the assertion or scenario should not be evaluated.</p>
            </a:documentation>
-            <data type="string"/>
+           <data type="string"/>
         </attribute>
     </define>
 
@@ -770,7 +770,7 @@
                reported. When present, only that assertion or scenario will be evaluated.
                Its content describes why you are focusing on this particular assertion or scenario.</p>
            </a:documentation>
-            <data type="string"/>
+           <data type="string"/>
         </attribute>
     </define>
 
@@ -780,10 +780,9 @@
                <p>Assertions with the <code>xfail</code> attribute will behave just like other assertions, but
                will succeed where other assertions fail, and will fail where other assertions succeed (i.e. the result is inverted).
                The <code>xfail</code> attribute can also be applied to scenarios, in which case <code>xfail</code> will be implicitly
-               set to <code>true</code> for all of the scenarios assertions.
-               The value of the <code>xfail</code> attribute must be <code>true</code>.</p>
+               enabled for all of the scenarios assertions. Its content describes why you are expecting the test to fail.</p>
             </a:documentation>
-            <value>true</value>
+            <data type="string"/>
         </attribute>
     </define>
 

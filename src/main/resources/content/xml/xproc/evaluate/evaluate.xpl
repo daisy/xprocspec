@@ -468,7 +468,7 @@
                         <!-- invert result on xfail -->
                         <p:for-each>
                             <p:choose>
-                                <p:when test="/*/@xfail='true'">
+                                <p:when test="/*[@xfail]">
                                     <p:add-attribute match="/*" attribute-name="result">
                                         <p:with-option name="attribute-value" select="if (/*/@result='passed') then 'failed' else if (/*/@result='failed') then 'passed' else /*/@result"/>
                                     </p:add-attribute>
