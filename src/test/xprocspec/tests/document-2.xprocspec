@@ -31,5 +31,22 @@
         <x:expect label="both the error code must be 'ex:TESTERROR' and the error message must be 'MESSAGE' (#3)" type="error" code="ex:TESTERROR" message="FOO" xfail=""/>
         <x:expect label="both the error code must be 'ex:TESTERROR' and the error message must be 'MESSAGE' (#4)" type="error" code="ex:TESTERROR" message="MESSAGE"/>
     </x:scenario>
+    
+    <x:scenario label="script that gives an error, with xfail on the x:scenario element" xfail="">
+        <x:call step="e:error"/>
+        
+        <x:context label="an empty sequence of documents"/>
+        <x:expect type="count" label="test that is expected to succeed" min="0" max="0"/>
+        <x:expect type="count" label="test that is expected to fail" min="10" xfail=""/>
+    </x:scenario>
+    
+    <x:scenario label="script that gives an error, with xfail on the x:scenario element, while checking for errors with x:expect" xfail="">
+        <x:call step="e:error"/>
+        
+        <x:context label="the error document">
+            <x:document type="errors"/>
+        </x:context>
+        <x:expect label="test if the error code is 'ex:FOO'" type="error" code="ex:FOO"/>
+    </x:scenario>
 
 </x:description>

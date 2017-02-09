@@ -108,7 +108,7 @@
                 <doc3/>
             </x:document>
         </x:context>
-        <x:expect type="compare" label="...should not equal a 'doc2'-document (xfail attribute on `x:expect`-element)">
+        <x:expect type="compare" label="...should not equal a 'doc2'-document">
             <x:document type="inline">
                 <doc4/>
             </x:document>

@@ -9,6 +9,7 @@
 
     <xsl:template match="x:scenario">
         <xsl:copy>
+            <xsl:copy-of select="@*"/>
             <xsl:copy-of select="x:call"/>
             <xsl:for-each-group select="x:context|x:expect" group-starting-with="x:context">
                 <x:context-group>

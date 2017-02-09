@@ -76,9 +76,7 @@
                         <p:identity name="description"/>
 
                         <pxi:message message="   * grouping x:expect elements with their x:context...">
-                            <p:with-option name="logfile" select="$logfile">
-                                <!--<p:empty/>-->
-                            </p:with-option>
+                            <p:with-option name="logfile" select="$logfile"/>
                         </pxi:message>
                         <p:add-attribute match="/*" attribute-name="xml:base">
                             <!-- since it won't be preserved through XSLT transforms (see this thread: http://lists.w3.org/Archives/Public/xproc-dev/2013Mar/0013.html) -->
@@ -100,7 +98,10 @@
                             </p:with-option>
                         </pxi:message>
                         <p:for-each>
-                            <p:iteration-source select="/x:description/x:scenario/x:context-group"/>
+                            <p:iteration-source select="/x:description/x:scenario"/>
+                            <p:identity name="scenario"/>
+                            <p:for-each>
+                            <p:iteration-source select="/*/x:context-group"/>
                             <p:identity name="context-group"/>
                             <pxi:message message="     * setting context to '$1'">
                                 <p:with-option name="param1" select="(/x:context-group/x:context/@label)[1]"/>
@@ -380,12 +381,12 @@
                                             </p:with-option>
                                         </pxi:message>
                                     </p:when>
-                                    
+
                                     <p:when test="/x:expect[@type='error']">
                                         <!-- evaluate @code and/or @message against error document in context -->
                                         <p:variable name="code" select="/c:errors[1]/c:error[1]/@code"/>
                                         <p:variable name="message" select="normalize-space(/c:errors[1]/c:error[1]/text())"/>
-                                        
+
                                         <!-- the XPath expression must evalutate to true() for all documents on the output port, and there must be at least one document on the output port -->
                                         <p:identity>
                                             <p:input port="source">
@@ -413,7 +414,7 @@
                                             </p:otherwise>
                                         </p:choose>
                                         <p:identity name="assertion.context"/>
-                                        
+
                                         <p:identity>
                                             <p:input port="source">
                                                 <p:pipe port="result" step="assertion"/>
@@ -467,9 +468,9 @@ Error message: "{/*/text()/normalize-space()}"
                                             <p:delete match="/*/*/@result"/>
                                             <p:string-replace match="/*/x:expected/text()">
                                                 <p:with-option name="replace" select="concat('''',replace(
-                                                                                          concat('Error code: ',(if ($has-code='true') then concat('&quot;',$code,'&quot;') else '(any)'),'&#10;',
-                                                                                                 'Error message: ',(if ($has-message='true') then concat('&quot;',$message,'&quot;') else '(any)'),'&#10;')
-                                                                                      ,'''',''''''),'''')"/>
+                                                    concat('Error code: ',(if ($has-code='true') then concat('&quot;',$code,'&quot;') else '(any)'),'&#10;',
+                                                    'Error message: ',(if ($has-message='true') then concat('&quot;',$message,'&quot;') else '(any)'),'&#10;')
+                                                    ,'''',''''''),'''')"/>
                                             </p:string-replace>
                                             <p:string-replace match="/*/x:was/x:was[1]" replace="string-join(/*/x:was/x:was/string(),'')"/>
                                             <p:delete match="/*/x:was/x:was | /*/@code | /*/@message"/>
@@ -558,20 +559,57 @@ Error message: "{/*/text()/normalize-space()}"
                                     </p:input>
                                 </p:xslt>
                             </p:for-each>
-                        </p:for-each>
+                            </p:for-each>
+                            
+                            <!-- invert result on x:expect/@xfail -->
+                            <p:for-each>
+                                <p:choose>
+                                    <p:when test="/*[@xfail]">
+                                        <p:add-attribute match="/*" attribute-name="result">
+                                            <p:with-option name="attribute-value" select="if (/*/@result='passed') then 'failed' else if (/*/@result='failed') then 'passed' else /*/@result"/>
+                                        </p:add-attribute>
+                                    </p:when>
+                                    <p:otherwise>
+                                        <p:identity/>
+                                    </p:otherwise>
+                                </p:choose>
+                            </p:for-each>
 
-                        <!-- invert result on xfail -->
-                        <p:for-each>
-                            <p:choose>
-                                <p:when test="/*[@xfail]">
-                                    <p:add-attribute match="/*" attribute-name="result">
-                                        <p:with-option name="attribute-value" select="if (/*/@result='passed') then 'failed' else if (/*/@result='failed') then 'passed' else /*/@result"/>
-                                    </p:add-attribute>
-                                </p:when>
-                                <p:otherwise>
-                                    <p:identity/>
-                                </p:otherwise>
-                            </p:choose>
+                            <!-- invert result on x:scenario/@xfail -->
+                            <p:wrap-sequence wrapper="x:wrapper"/>
+                            <p:group>
+                                <p:variable name="has-xfail" select="boolean(/*[@xfail])">
+                                    <p:pipe port="result" step="scenario"/>
+                                </p:variable>
+                                <p:variable name="xfail-text" select="/*/@xfail/normalize-space()">
+                                    <p:pipe port="result" step="scenario"/>
+                                </p:variable>
+                                <p:choose>
+                                    <p:when test="$has-xfail = 'true' and count(//x:test-result[@result='failed']) &gt; 0">
+                                        <!-- there is a failed test in the scenario, which is expected; mark all tests as passed -->
+                                        <p:viewport match="//x:test-result[@result='failed']">
+                                            <p:add-attribute match="/*" attribute-name="label">
+                                                <p:with-option name="attribute-value" select="concat(/*/@label,' (',if ($xfail-text) then $xfail-text else 'failed but marked as passed because of x:scenario/@xfail',')')"/>
+                                            </p:add-attribute>
+                                            <p:add-attribute match="/*" attribute-name="result" attribute-value="passed"/>
+                                        </p:viewport>
+                                    </p:when>
+                                    <p:when test="$has-xfail = 'true' and count(//x:test-result[@result='failed']) = 0">
+                                        <!-- xfail on scenario fails if there are no tests in the scenario that fails -->
+                                        <p:viewport match="//x:test-result[@result='passed']">
+                                            <p:add-attribute match="/*" attribute-name="label">
+                                                <p:with-option name="attribute-value" select="concat(/*/@label,' (passed but marked as failed because of x:scenario/@xfail)')"/>
+                                            </p:add-attribute>
+                                            <p:add-attribute match="/*" attribute-name="result" attribute-value="failed"/>
+                                        </p:viewport>
+                                    </p:when>
+                                    <p:otherwise>
+                                        <p:identity/>
+                                    </p:otherwise>
+                                </p:choose>
+                            </p:group>
+                            <p:filter select="/*/*"/>
+
                         </p:for-each>
 
                         <p:identity name="test-results"/>
@@ -584,6 +622,7 @@ Error message: "{/*/text()/normalize-space()}"
                                 <p:pipe port="result" step="test-results"/>
                             </p:input>
                         </p:insert>
+
                     </p:group>
                     <p:catch name="catch">
                         <p:identity>
