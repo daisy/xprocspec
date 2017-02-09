@@ -113,6 +113,26 @@
                         </attribute>
                     </group>
                     <group>
+                        <!-- Error assertions -->
+                        <attribute name="type">
+                            <value>error</value>
+                        </attribute>
+                        <choice>
+                            <group>
+                                <attribute name="code"/>
+                                <optional>
+                                    <attribute name="message"/>
+                                </optional>
+                            </group>
+                            <group>
+                                <optional>
+                                    <attribute name="code"/>
+                                </optional>
+                                <attribute name="message"/>
+                            </group>
+                        </choice>
+                    </group>
+                    <group>
                         <!-- Custom assertion -->
                         <attribute name="type">
                             <value>custom</value>

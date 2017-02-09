@@ -380,6 +380,101 @@
                                             </p:with-option>
                                         </pxi:message>
                                     </p:when>
+                                    
+                                    <p:when test="/x:expect[@type='error']">
+                                        <!-- evaluate @code and/or @message against error document in context -->
+                                        <p:variable name="code" select="/c:errors[1]/c:error[1]/@code"/>
+                                        <p:variable name="message" select="normalize-space(/c:errors[1]/c:error[1]/text())"/>
+                                        
+                                        <!-- the XPath expression must evalutate to true() for all documents on the output port, and there must be at least one document on the output port -->
+                                        <p:identity>
+                                            <p:input port="source">
+                                                <p:pipe port="result" step="context"/>
+                                            </p:input>
+                                        </p:identity>
+                                        <pxi:message message="         * is error assertion">
+                                            <p:with-option name="logfile" select="$logfile">
+                                                <p:empty/>
+                                            </p:with-option>
+                                        </pxi:message>
+                                        <p:choose>
+                                            <p:xpath-context>
+                                                <p:pipe port="result" step="context.size"/>
+                                            </p:xpath-context>
+                                            <p:when test=".='0'">
+                                                <pxi:message message="         * no documents in context => no error occured => fail">
+                                                    <p:with-option name="logfile" select="$logfile">
+                                                        <p:empty/>
+                                                    </p:with-option>
+                                                </pxi:message>
+                                            </p:when>
+                                            <p:otherwise>
+                                                <p:identity/>
+                                            </p:otherwise>
+                                        </p:choose>
+                                        <p:identity name="assertion.context"/>
+                                        
+                                        <p:identity>
+                                            <p:input port="source">
+                                                <p:pipe port="result" step="assertion"/>
+                                            </p:input>
+                                        </p:identity>
+                                        <p:rename match="/*" new-name="x:test-result"/>
+                                        <p:delete match="/*/@*[not(. intersect ../(@label, @type, @code, @message))] | /*/node()"/>
+                                        <p:identity name="test-result.before-evaluate"/>
+                                        <p:group>
+                                            <p:variable name="has-code" select="if (/*[@code]) then 'true' else 'false'"/>
+                                            <p:variable name="code" select="/*/@code"/>
+                                            <p:variable name="has-message" select="if (/*[@message]) then 'true' else 'false'"/>
+                                            <p:variable name="message" select="/*/@message"/>
+                                            <p:in-scope-names name="vars"/>
+                                            <p:for-each name="assertion.context.current">
+                                                <p:iteration-source select="/c:errors/c:error">
+                                                    <p:pipe port="result" step="assertion.context"/>
+                                                </p:iteration-source>
+                                                <p:template>
+                                                    <p:input port="template">
+                                                        <p:inline><x:was xml:space="preserve" result="{if (($has-code = 'false' or /*/@code = $code) and ($has-message = 'false' or /*/text()/normalize-space() = $message) and ($has-code,$has-message) = 'true') then 'passed' else 'failed'}"><![CDATA[Error code: "{/*/@code}"
+Error message: "{/*/text()/normalize-space()}"
+]]></x:was></p:inline>
+                                                    </p:input>
+                                                    <p:input port="parameters">
+                                                        <p:pipe step="vars" port="result"/>
+                                                    </p:input>
+                                                </p:template>
+                                            </p:for-each>
+                                            <p:wrap-sequence wrapper="x:was"/>
+                                            <p:add-attribute match="/*" attribute-name="xml:space" attribute-value="preserve"/>
+                                            <p:add-attribute match="/*" attribute-name="result">
+                                                <p:with-option name="attribute-value" select="if (/*/*/@result = 'passed') then 'passed' else 'failed'"/>
+                                            </p:add-attribute>
+                                            <p:delete match="/*/*/@result"/>
+                                            <p:identity name="was"/>
+                                            <p:insert match="/*" position="first-child">
+                                                <p:input port="source">
+                                                    <p:pipe port="result" step="test-result.before-evaluate"/>
+                                                </p:input>
+                                                <p:input port="insertion">
+                                                    <p:pipe port="result" step="was"/>
+                                                    <p:inline>
+                                                        <x:expected xml:space="preserve">EXPECTED</x:expected>
+                                                    </p:inline>
+                                                </p:input>
+                                            </p:insert>
+                                            <p:add-attribute match="/*" attribute-name="result">
+                                                <p:with-option name="attribute-value" select="if (//x:was/@result = 'passed') then 'passed' else 'failed'"/>
+                                            </p:add-attribute>
+                                            <p:delete match="/*/*/@result"/>
+                                            <p:string-replace match="/*/x:expected/text()">
+                                                <p:with-option name="replace" select="concat('''',replace(
+                                                                                          concat('Error code: ',(if ($has-code='true') then concat('&quot;',$code,'&quot;') else '(any)'),'&#10;',
+                                                                                                 'Error message: ',(if ($has-message='true') then concat('&quot;',$message,'&quot;') else '(any)'),'&#10;')
+                                                                                      ,'''',''''''),'''')"/>
+                                            </p:string-replace>
+                                            <p:string-replace match="/*/x:was/x:was[1]" replace="string-join(/*/x:was/x:was/string(),'')"/>
+                                            <p:delete match="/*/x:was/x:was | /*/@code | /*/@message"/>
+                                        </p:group>
+                                    </p:when>
 
                                     <p:when test="/x:expect[@type='custom']">
                                         <p:xslt name="custom.expect-invocation">

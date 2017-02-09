@@ -4,7 +4,7 @@
 
     <x:scenario label="error">
         <x:call step="e:error"/>
-
+        
         <!-- test getting errors document (should be c:errors when errors) -->
         <x:context label="the error document">
             <x:document type="errors"/>
@@ -14,6 +14,22 @@
         <x:expect label="there must be no other elements than c:error in the c:errors element" type="xpath" test="count(/c:errors/*[not(self::c:error)])" equals="0"/>
         <x:expect label="the error code must be 'ex:TESTERROR'" type="xpath" test="/c:errors/c:error/@code" equals="'ex:TESTERROR'"/>
         <x:expect label="the error message must be 'MESSAGE'" type="xpath" test="normalize-space(/c:errors/c:error/text())" equals="'MESSAGE'"/>
+    </x:scenario>
+    
+    <x:scenario label="simplified error assertion">
+        <x:call step="e:error"/>
+        
+        <x:context label="the error document">
+            <x:document type="errors"/>
+        </x:context>
+        <x:expect label="the error code must be 'ex:TESTERROR'" type="error" code="ex:TESTERROR"/>
+        <x:expect label="the error code must not be 'ex:FOO'" type="error" code="ex:FOO" xfail=""/>
+        <x:expect label="the error message must be 'MESSAGE'" type="error" message="MESSAGE"/>
+        <x:expect label="the error message must not be 'FOO'" type="error" message="FOO" xfail=""/>
+        <x:expect label="both the error code must be 'ex:TESTERROR' and the error message must be 'MESSAGE' (#1)" type="error" code="ex:FOO" message="FOO" xfail=""/>
+        <x:expect label="both the error code must be 'ex:TESTERROR' and the error message must be 'MESSAGE' (#2)" type="error" code="ex:FOO" message="MESSAGE" xfail=""/>
+        <x:expect label="both the error code must be 'ex:TESTERROR' and the error message must be 'MESSAGE' (#3)" type="error" code="ex:TESTERROR" message="FOO" xfail=""/>
+        <x:expect label="both the error code must be 'ex:TESTERROR' and the error message must be 'MESSAGE' (#4)" type="error" code="ex:TESTERROR" message="MESSAGE"/>
     </x:scenario>
 
 </x:description>

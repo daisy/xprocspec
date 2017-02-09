@@ -475,6 +475,47 @@
                     </choice>
                 </group>
                 <group>
+                    <!-- Error assertions -->
+                    <attribute name="type">
+                        <a:documentation xmlns="http://www.w3.org/1999/xhtml">The `type` attribute is used to define the type of assertion you want to make.</a:documentation>
+                        <value>error</value>
+                    </attribute>
+                    <choice>
+                        <group>
+                            <attribute name="code">
+                                <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+                                    When `type` is `error`, the `code` attribute is used to declare what the expected error code is.
+                                    The `code` attribute is a string. If you need to evaluate XPath expressions, then set the `type` attribute to `xpath` instead. 
+                                </a:documentation>
+                            </attribute>
+                            <optional>
+                                <attribute name="message">
+                                    <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+                                        When `type` is `error`, the `code` attribute is used to declare what the expected error code is.
+                                        The `code` attribute is a string. If you need to evaluate XPath expressions, then set the `type` attribute to `xpath` instead. 
+                                    </a:documentation>
+                                </attribute>
+                            </optional>
+                        </group>
+                        <group>
+                            <optional>
+                                <attribute name="code">
+                                    <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+                                        When `type` is `error`, the `code` attribute is used to declare what the expected error code is.
+                                        The `code` attribute is a string. If you need to evaluate XPath expressions, then set the `type` attribute to `xpath` instead. 
+                                    </a:documentation>
+                                </attribute>
+                            </optional>
+                            <attribute name="message">
+                                <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+                                    When `type` is `error`, the `code` attribute is used to declare what the expected error code is.
+                                    The `code` attribute is a string. If you need to evaluate XPath expressions, then set the `type` attribute to `xpath` instead. 
+                                </a:documentation>
+                            </attribute>
+                        </group>
+                    </choice>
+                </group>
+                <group>
                     <attribute name="type">
                         <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
                             <p>When `type` is `custom`, you can provide your own XProc implementation of an assertion. The step signature must be as follows:</p>

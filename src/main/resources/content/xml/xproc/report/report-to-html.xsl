@@ -677,7 +677,7 @@
                     <xsl:when test="self::comment()">
                         <xsl:element name="{if ($indent=0) then 'div' else 'span'}">
                             <xsl:choose>
-                                <xsl:when test="$diff-with and f:diff(.,$diff-with,$preserve-space)">
+                                <xsl:when test="not(tokenize($class,'\s+')='pp-document-element') and $diff-with and f:diff(.,$diff-with,$preserve-space)">
                                     <xsl:attribute name="class" select="concat($class,' diff')"/>
                                 </xsl:when>
                                 <xsl:otherwise>
@@ -692,7 +692,7 @@
                     <xsl:when test="self::processing-instruction()">
                         <xsl:element name="{if ($indent=0) then 'div' else 'span'}">
                             <xsl:choose>
-                                <xsl:when test="$diff-with and f:diff(.,$diff-with,$preserve-space)">
+                                <xsl:when test="not(tokenize($class,'\s+')='pp-document-element') and $diff-with and f:diff(.,$diff-with,$preserve-space)">
                                     <xsl:attribute name="class" select="concat($class,' diff')"/>
                                 </xsl:when>
                                 <xsl:otherwise>
@@ -710,7 +710,7 @@
                         <xsl:if test="normalize-space()">
                             <xsl:element name="{if ($indent=0) then 'div' else 'span'}">
                                 <xsl:choose>
-                                    <xsl:when test="$diff-with and f:diff(.,$diff-with,$preserve-space)">
+                                    <xsl:when test="not(tokenize($class,'\s+')='pp-document-element') and $diff-with and f:diff(.,$diff-with,$preserve-space)">
                                         <xsl:attribute name="class" select="concat($class,' diff')"/>
                                     </xsl:when>
                                     <xsl:otherwise>
@@ -736,7 +736,7 @@
                                     <xsl:variable name="element-pos" select="count(preceding-sibling::*) + 1"/>
                                     <xsl:call-template name="pretty-print">
                                         <xsl:with-param name="diff-with" select="if (self::*) then $diff-with-document/*[$element-pos] else $diff-with-document/node()[$node-pos]"/>
-                                        <xsl:with-param name="preserve-space" select="$preserve-space"/>
+                                        <xsl:with-param name="preserve-space" select="$preserve-space-descendants"/>
                                     </xsl:call-template>
                                 </xsl:for-each>
                             </xsl:for-each>
