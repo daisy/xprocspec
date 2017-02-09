@@ -55,6 +55,9 @@
         <optional>
             <ref name="pending-attribute"/>
         </optional>
+        <optional>
+            <ref name="focus-attribute"/>
+        </optional>
     </define>
 
     <define name="script">
