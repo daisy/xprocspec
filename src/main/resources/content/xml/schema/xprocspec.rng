@@ -489,22 +489,12 @@
                                 </a:documentation>
                             </attribute>
                             <optional>
-                                <attribute name="message">
-                                    <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
-                                        When `type` is `error`, the `code` attribute is used to declare what the expected error code is.
-                                        The `code` attribute is a string. If you need to evaluate XPath expressions, then set the `type` attribute to `xpath` instead. 
-                                    </a:documentation>
-                                </attribute>
+                                <attribute name="message"/>
                             </optional>
                         </group>
                         <group>
                             <optional>
-                                <attribute name="code">
-                                    <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
-                                        When `type` is `error`, the `code` attribute is used to declare what the expected error code is.
-                                        The `code` attribute is a string. If you need to evaluate XPath expressions, then set the `type` attribute to `xpath` instead. 
-                                    </a:documentation>
-                                </attribute>
+                                <attribute name="code"/>
                             </optional>
                             <attribute name="message">
                                 <a:documentation xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
