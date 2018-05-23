@@ -722,6 +722,14 @@
                         <data type="anyURI"/>
                     </attribute>
                     <optional>
+                        <attribute name="ordered">
+                            <a:documentation xmlns="http://www.w3.org/1999/xhtml">When `ordered` is
+                            `true`, the ZIP entries are listed in lexicographical
+                            order.</a:documentation>
+                            <data type="boolean"/>
+                        </attribute>
+                    </optional>
+                    <optional>
                         <attribute name="base-uri">
                             <a:documentation xmlns="http://www.w3.org/1999/xhtml"><!-- documented in the "inline" group --></a:documentation>
                             <choice>
