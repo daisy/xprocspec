@@ -111,21 +111,68 @@
 
 <h3>XML Calabash</h3>
 
+<h4>Installation of XML Calabash</h4>
+
 <p>If you haven't already, install <a href="http://xmlcalabash.com/" target="_blank">XML Calabash</a>.</p>
 
 <p><strong>Note: XML Calabash 1.1.16 or newer is required.</strong></p>
 
-<pre><code class="bash"># download and unzip xprocspec v1.4.0
+<p>Installation from JAR file, as of version 1.2.1-99:</p>
+
+<pre><code class="bash"># go back to home directory
+cd ~
+
+# download XML Calabash 1.2.1-99 (newest version as of August 25th 2020)
+wget https://github.com/ndw/xmlcalabash1/releases/download/1.2.1-99/xmlcalabash-1.2.1-99.jar
+
+# run installer
+java -jar xmlcalabash-1.2.1-99.jar
+
+Welcome to the installation of XML Calabash 1.2.1-99!
+ - Norman Walsh &lt;ndw@nwalsh.com&gt;
+The homepage is at: http://xmlcalabash.com/
+press 1 to continue, 2 to quit, 3 to redisplay
+1
+
+press Enter to continue until the end of the license agreement
+
+# set target path (`/root` is the typical home directory in a Docker container)
+Select target path [/root]
+/root/xmlcalabash
+press 1 to continue, 2 to quit, 3 to redisplay
+1
+
+Select the packs you want to install:
+
+[&lt;required&gt;] Base (The base files)
+
+...pack selection done.
+press 1 to continue, 2 to quit, 3 to redisplay
+1
+
+Install was successful
+application installed on /root/xmlcalabash
+</code></pre>
+
+<h4>Download and unzip xprocspec</h4>
+
+<pre><code class="bash"># go back to home directory
+cd ~
+
+# download and unzip xprocspec v1.4.0
 wget https://oss.sonatype.org/content/repositories/releases/org/daisy/xprocspec/xprocspec/1.4.0/xprocspec-1.4.0.jar
 unzip xprocspec-1.4.0.jar -d xprocspec
+</code></pre>
 
-# run the xprocspec test (change calabash path if necessary)
-java -jar ~/xmlcalabash-1.1.16-97/xmlcalabash-1.1.16-97.jar \
-     -i src/test/xprocspec/test.xprocspec \
+<h4>Running xprocspec with XML Calabash</h4>
+
+<pre><code class="bash"># run the xprocspec test (change calabash path if necessary)
+java -jar ~/xmlcalabash/xmlcalabash-1.2.1-99.jar \
+     -i ~/my-project/src/test/xprocspec/test.xprocspec \
      -o html=result.html \
      -o junit=junit.xml \
      -o result=result.xml \
-     xprocspec/content/xml/xproc/xprocspec.xpl
+     ~/xprocspec/content/xml/xproc/xprocspec.xpl
 </code></pre>
 
 <p>Now, open <code>result.html</code> in a browser to view the HTML report.</p>
@@ -173,27 +220,61 @@ TODO:
 
 <h3>EXPath Packaging System</h3>
 
+<h4>Installing the EXPath Repository Manager</h4>
+
 <p>If you haven't already, install the <a href="http://expath.org/files" target="_blank">EXPath Packaging - Repository Manager</a>.</p>
 
-<pre><code class="bash"># create a local expath repository
-~/expath/pkg/bin/xrepo create repo
-export EXPATH_REPO=`pwd`/repo
+<p>Installation from JAR file, as of version 0.13.1:</p>
+
+<pre><code class="bash"># go back to home directory
+cd ~
+
+# download the expath repository manager installer
+wget http://expath.org/file/pkg/expath-repo-installer-0.13.1.jar
+
+# run the installer
+java -jar expath-repo-installer-0.13.1.jar
+
+# press enter several times to install all packs
+# then press 1 to continue
+
+# set target path (`/root` is the typical home directory in a Docker container)
+Select target path [/root]
+/root/xrepo
+
+# press 1 to continue
+
+[ Console installation done ]
+</code></pre>
+
+<h4>Install xprocspec with xrepo</h4>
+
+<pre><code class="bash"># go back to home directory
+cd ~
+
+# create a local expath repository
+xrepo/bin/xrepo create xprocspec-xrepo
+export EXPATH_REPO=`pwd`/xprocspec-xrepo
 
 # download and install xprocspec v1.4.0
 wget https://oss.sonatype.org/content/repositories/releases/org/daisy/xprocspec/xprocspec/1.4.0/xprocspec-1.4.0.jar
-~/expath/pkg/bin/xrepo install xprocspec-1.4.0.jar
+xrepo/bin/xrepo install xprocspec-1.4.0.jar
 
 # optionally, observe that xprocspec is installed
-~/expath/pkg/bin/xrepo list
-~/expath/pkg/bin/xrepo lookup xproc http://www.daisy.org/ns/xprocspec/xprocspec.xpl
-~/expath/pkg/bin/xrepo lookup rng http://www.daisy.org/ns/xprocspec/xprocspec.rng
+xrepo/bin/xrepo list
+xrepo/bin/xrepo lookup xproc http://www.daisy.org/ns/xprocspec/xprocspec.xpl
+xrepo/bin/xrepo lookup rng http://www.daisy.org/ns/xprocspec/xprocspec.rng
+</code></pre>
 
+<h4>Run xprocspec through xrepo</h4>
+
+<pre><code class="bash">
 # run the xprocspec test
-~/expath/pkg/bin/calabash -i src/test/xprocspec/test.xprocspec \
-                          -o html=result.html \
-                          -o junit=junit.xml \
-                          -o result=result.xml \
-                          http://www.daisy.org/ns/xprocspec/xprocspec.xpl
+xrepo/bin/calabash -i ~/my-project/src/test/xprocspec/test.xprocspec \
+                   -o html=result.html \
+                   -o junit=junit.xml \
+                   -o result=result.xml \
+                   http://www.daisy.org/ns/xprocspec/xprocspec.xpl
 </code></pre>
 
 <p>Now, open <code>result.html</code> in a browser to view the detailed results.</p>
