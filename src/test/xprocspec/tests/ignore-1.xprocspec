@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.daisy.org/ns/xprocspec/xprocspec.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<x:description xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:x="http://www.daisy.org/ns/xprocspec" xmlns:e="http://example.net/ns" script="../steps/identity.xpl">
+
+    <x:scenario label="running xprocspec test which refers to a non-existing port">
+        <x:call step="e:identity">
+            <x:option name="option.required" select="''"/>
+            <x:input port="source.document.primary">
+                <x:document type="inline">
+                    <doc1 attr="value">
+                        <child>text-content</child>
+                        <child>mix<e>ed</e>content</child>
+                    </doc1>
+                </x:document>
+            </x:input>
+        </x:call>
+
+        <x:context label="the primary input port">
+            <x:document type="port" port="source.document.primary"/>
+        </x:context>
+        <x:expect type="compare" label="Should be equal to input document ignoring ...">
+            <x:document type="inline">
+                <doc1 attr="value">
+                    <child>...</child>
+                    <child>mix<e>ed</e>content</child>
+                </doc1>
+            </x:document>
+        </x:expect>
+        <x:expect type="compare" label="Should be equal to input document ignoring mixed content with ...">
+            <x:document type="inline">
+                <doc1 attr="value">
+                    <child>text-content</child>
+                    <child>...</child>
+                </doc1>
+            </x:document>
+        </x:expect>
+        <x:expect type="compare" label="Should be equal to input document ignoring attributes with ...">
+            <x:document type="inline">
+                <doc1 attr="...">
+                    <child>text-content</child>
+                    <child>mix<e>ed</e>content</child>
+                </doc1>
+            </x:document>
+        </x:expect>
+    </x:scenario>
+
+</x:description>
