@@ -40,12 +40,24 @@
         </p:otherwise>
     </p:choose>
     <p:identity name="alternate"/>
+    
+    <p:xslt name="ignores">
+        <p:input port="source">
+            <p:pipe port="result" step="source"/>
+            <p:pipe port="result" step="alternate"/>
+        </p:input>
+        <p:input port="stylesheet">
+            <p:document href="ignore.xsl"/>
+        </p:input>
+        <p:input port="parameters">
+            <p:empty/>
+        </p:input>
+    </p:xslt>
+    
+    
 
     <p:compare name="compare">
         <p:with-option name="fail-if-not-equal" select="$fail-if-not-equal"/>
-        <p:input port="source">
-            <p:pipe port="result" step="source"/>
-        </p:input>
         <p:input port="alternate">
             <p:pipe port="result" step="alternate"/>
         </p:input>
